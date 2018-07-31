@@ -1,0 +1,954 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/widgets/AccountField.php" line="122" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f117da65-acfa-4a39-a516-b519c0d5a430" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/../../v1.3/protected/humhub/components/Widget.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../v1.3/protected/humhub/components/Widget.php" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="FundingController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/FundingController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="595">
+              <caret line="36" column="133" selection-start-line="36" selection-start-column="25" selection-end-line="36" selection-end-column="133" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Exchange.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/Exchange.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="449">
+              <caret line="139" lean-forward="true" selection-start-line="139" selection-end-line="139" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ExchangeGridView.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grids/ExchangeGridView.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-497">
+              <caret line="45" selection-start-line="45" selection-end-line="45" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/exchange/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="242">
+              <caret line="11" column="60" selection-start-line="11" selection-start-column="60" selection-end-line="11" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="buy.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/exchange/buy.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="176">
+              <caret line="21" selection-start-line="21" selection-end-line="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ExchangeController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/ExchangeController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="89" column="62" selection-start-line="89" selection-start-column="62" selection-end-line="89" selection-end-column="62" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="select-account.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/views/transaction/select-account.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="15" column="155" selection-start-line="15" selection-start-column="155" selection-end-line="15" selection-end-column="155" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SenderAccountGridView.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grids/SenderAccountGridView.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="427">
+              <caret line="105" selection-start-line="105" selection-end-line="105" />
+              <folding>
+                <element signature="e#34#40#1" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Funding.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/Funding.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="22">
+              <caret line="50" column="12" selection-start-line="50" selection-start-column="12" selection-end-line="50" selection-end-column="59" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ExchangeBuy.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/ExchangeBuy.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="116" column="51" selection-start-line="116" selection-start-column="51" selection-end-line="116" selection-end-column="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>foobar123</find>
+      <find>data</find>
+      <find>value</find>
+      <find>text</find>
+      <find>console</find>
+      <find>wanted_amount</find>
+      <find>amount</find>
+      <find>exchange_rate</find>
+      <find>FileHelper</find>
+      <find>user</find>
+      <find>getMinBuy</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/../../v1.3/protected/humhub/components/Widget.php" />
+        <option value="$PROJECT_DIR$/widgets/AccountOwnerField.php" />
+        <option value="$PROJECT_DIR$/widgets/AccountField.php" />
+        <option value="$PROJECT_DIR$/models/Transaction.php" />
+        <option value="$PROJECT_DIR$/models/Funding.php" />
+        <option value="$PROJECT_DIR$/controllers/FundingController.php" />
+        <option value="$PROJECT_DIR$/views/transaction/transfer.php" />
+        <option value="$PROJECT_DIR$/../../v1.3/protected/humhub/modules/user/models/User.php" />
+        <option value="$PROJECT_DIR$/../../v1.3/protected/humhub/modules/user/migrations/m180315_112748_fix_email_length.php" />
+        <option value="$PROJECT_DIR$/../../v1.3/protected/humhub/docs/CHANGELOG_DEV.md" />
+        <option value="$PROJECT_DIR$/migrations/m180420_102220_exchange.php" />
+        <option value="$PROJECT_DIR$/views/exchange/offer_asset.php" />
+        <option value="$PROJECT_DIR$/models/FundingInvest.php" />
+        <option value="$PROJECT_DIR$/views/funding/invest.php" />
+        <option value="$PROJECT_DIR$/controllers/AjaxController.php" />
+        <option value="$PROJECT_DIR$/models/Exchange.php" />
+        <option value="$PROJECT_DIR$/../../v1.3/protected/humhub/modules/content/widgets/richtext/RichTextCompatibilityParser.php" />
+        <option value="$PROJECT_DIR$/../../v1.3/protected/humhub/modules/file/components/StorageManager.php" />
+        <option value="$PROJECT_DIR$/../../v1.3/protected/humhub/modules/user/models/Invite.php" />
+        <option value="$PROJECT_DIR$/helpers/AssetHelper.php" />
+        <option value="$PROJECT_DIR$/helpers/AccountHelper.php" />
+        <option value="$PROJECT_DIR$/views/exchange/index.php" />
+        <option value="$PROJECT_DIR$/views/funding/index.php" />
+        <option value="$PROJECT_DIR$/Events.php" />
+        <option value="$PROJECT_DIR$/views/exchange/offer.php" />
+        <option value="$PROJECT_DIR$/views/exchange/buy.php" />
+        <option value="$PROJECT_DIR$/grids/ExchangeGridView.php" />
+        <option value="$PROJECT_DIR$/models/ExchangeBuy.php" />
+        <option value="$PROJECT_DIR$/controllers/ExchangeController.php" />
+        <option value="$PROJECT_DIR$/grids/SenderAccountGridView.php" />
+        <option value="$PROJECT_DIR$/views/transaction/select-account.php" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/../../v1.3/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/../../v1.3/assets/15871e4b/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/1722ebf0/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/188bedda/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/1a9e1074/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/247ada1a/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/260bffce/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/2cd63e69/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/344fe172/benchmark/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/344fe172/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/344fe172/test/browser/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/475ff673/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/4762f711/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/49d2fc7b/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/4b57e039/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/500c8944/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/5341e85e/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/54e02c9/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/56d58863/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/5de3c67a/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/7fa6333d/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/8f19646a/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/a16a9b41/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/b6813fbe/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/bc1b7885/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/bef0b9ba/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/ca666980/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/cb4449d/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/d834b069/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/d8b2ad4f/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/d8b60b3/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/da38d1e1/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/e13cce4f/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/e6c9204c/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/ec3c6753/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/ed5d51f0/benchmark/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/ed5d51f0/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/ed5d51f0/test/browser/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/ef795f94/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/f6140604/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/assets/f87d4fb4/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/animate.css/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/autosize/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/bluebird/benchmark/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/bluebird/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/bluebird/test/browser/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/blueimp-canvas-to-blob/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/blueimp-file-upload/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/blueimp-load-image/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/blueimp-tmpl/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/bootstrap-markdown/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/bootstrap/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/caret.js/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/clipboard.js/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/ev-emitter/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/fontawesome/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/html5shiv/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/imagesloaded/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/inputmask/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/jplayer/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/jquery-color/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/jquery-knob/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/jquery-nicescroll/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/jquery-placeholder/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/jquery-timeago/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/jquery-ui/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/jquery.cookie/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/jquery/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/nprogress/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/punycode/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/select2-bootstrap-theme/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/select2/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/typeahead.js/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/bower-asset/yii2-pjax/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/kartik-v/bootstrap-fileinput/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/kartik-v/bootstrap-star-rating/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/kartik-v/dependent-dropdown/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/after/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/arraybuffer.slice/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/async-limiter/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/at.js/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/backo2/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/base64-arraybuffer/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/better-assert/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/blob/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/callsite/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/component-bind/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/component-emitter/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/component-inherit/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/debug/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/engine.io-client/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/engine.io-parser/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/has-binary2/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/has-cors/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/humhub-prosemirror-richtext/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/indexof/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/isarray/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/ms/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/object-component/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/parseqs/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/parseuri/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/safe-buffer/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/socket.io-client/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/socket.io-parser/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/to-array/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/ultron/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/ws/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/xmlhttprequest-ssl/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/protected/vendor/npm-asset/yeast/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/static/assets/1a9c1f46/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/static/assets/26761edb/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/static/assets/28649445/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/static/assets/2a88c12e/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/static/assets/4dc54e83/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/static/assets/6192ee62/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/static/assets/70922237/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/static/assets/8802858f/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/static/assets/aa4e5fc2/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/static/assets/fd1b5b32/package.json" />
+      <path value="$PROJECT_DIR$/../../v1.3/static/assets/fdb53193/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-7" />
+    <option name="width" value="1932" />
+    <option name="height" value="1148" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="xcoin" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="xcoin" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="controllers" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="xcoin" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="grids" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="xcoin" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="models" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="xcoin" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="views" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="xcoin" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="views" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="exchange" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="xcoin" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="views" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="funding" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="xcoin" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="views" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="transaction" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="docs" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="comment" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="comment" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="views" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="comment" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="widgets" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="comment" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="widgets" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="views" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="content" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="file" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="file" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="components" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="file" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="libs" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="user" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="user" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="models" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="humhub" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="widgets" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="kartik-v" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="kartik-v" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="yii2-widget-select2" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="xcoin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="v1.3" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="protected" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="kartik-v" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="yii2-widgets" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\humhub\modules\xcoin\views\exchange" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f117da65-acfa-4a39-a516-b519c0d5a430" name="Default" comment="" />
+      <created>1519000304614</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1519000304614</updated>
+      <workItem from="1519000305956" duration="67000" />
+      <workItem from="1521025519961" duration="18000" />
+      <workItem from="1521025546523" duration="2000" />
+      <workItem from="1521025594585" duration="9000" />
+      <workItem from="1522054580914" duration="1802000" />
+      <workItem from="1522138965135" duration="618000" />
+      <workItem from="1522407126264" duration="1786000" />
+      <workItem from="1522602021075" duration="5337000" />
+      <workItem from="1523955260403" duration="1778000" />
+      <workItem from="1524057571216" duration="256000" />
+      <workItem from="1524128294937" duration="22683000" />
+      <workItem from="1524215540953" duration="21534000" />
+      <workItem from="1524322602149" duration="5190000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="61080000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1477" height="797" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2303486" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Message" order="0" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/../../v13" />
+      <path value="$PROJECT_DIR$/../../v1_3" />
+    </ignored-roots>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/controllers/FundingController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="792">
+          <caret line="36" column="133" selection-start-line="36" selection-start-column="25" selection-end-line="36" selection-end-column="133" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="15716" column="4" selection-start-line="15716" selection-start-column="4" selection-end-line="15716" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/TransactionController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="748">
+          <caret line="55" column="46" selection-start-line="55" selection-start-column="46" selection-end-line="55" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/humhub/components/Widget.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/widgets/AmountField.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="970">
+          <caret line="61" column="12" selection-start-line="61" selection-start-column="12" selection-end-line="61" selection-end-column="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/vendor/yiisoft/yii2/base/Widget.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="129" column="27" selection-start-line="129" selection-start-column="27" selection-end-line="129" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/vendor/yiisoft/yii2/widgets/InputWidget.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1424">
+          <caret line="107" column="59" selection-start-line="107" selection-start-column="54" selection-end-line="107" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/vendor/yiisoft/yii2-bootstrap/src/InputWidget.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="15" column="43" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/vendor/kartik-v/yii2-widgets/Select2.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="21" column="43" selection-start-line="21" selection-start-column="43" selection-end-line="21" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/vendor/kartik-v/yii2-widget-select2/Select2.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2244">
+          <caret line="64" column="114" lean-forward="true" selection-start-line="64" selection-start-column="96" selection-end-line="64" selection-end-column="114" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/vendor/yiisoft/yii2/helpers/BaseArrayHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="574" column="27" selection-start-line="574" selection-start-column="27" selection-end-line="574" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/vendor/yiisoft/yii2/helpers/BaseHtml.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="1315" column="27" selection-start-line="1315" selection-start-column="27" selection-end-line="1315" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/Transaction.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="816">
+          <caret line="87" column="13" lean-forward="true" selection-start-line="87" selection-start-column="13" selection-end-line="87" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/widgets/AccountOwnerField.php" />
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/vendor/yiisoft/yii2/base/BaseObject.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="822">
+          <caret line="103" column="20" selection-start-line="103" selection-start-column="20" selection-end-line="103" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/Account.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="707">
+          <caret line="170" column="20" selection-start-line="170" selection-start-column="20" selection-end-line="170" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/transaction/transfer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="28" column="220" selection-start-line="28" selection-start-column="220" selection-end-line="28" selection-end-column="220" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/migrations/m171205_062620_funding.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="13" column="58" lean-forward="true" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/humhub/modules/user/migrations/m180315_112748_fix_email_length.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="13" column="59" selection-start-line="13" selection-start-column="59" selection-end-line="13" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/humhub/docs/CHANGELOG.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/humhub/docs/CHANGELOG_DEV.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="792">
+            <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/migrations/m180420_102220_exchange.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="20" column="20" lean-forward="true" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/humhub/widgets/ModalButton.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="509">
+          <caret line="52" column="27" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/exchange/offer_asset.php" />
+    <entry file="file://$PROJECT_DIR$/widgets/AccountField.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="48" selection-start-line="48" selection-end-line="66" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/funding/edit.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="28" selection-start-line="28" selection-end-line="38" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/exchange/offerb.php" />
+    <entry file="file://$PROJECT_DIR$/controllers/AjaxController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="596">
+          <caret line="85" column="50" selection-start-line="85" selection-start-column="50" selection-end-line="85" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/funding/invest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="10" column="39" lean-forward="true" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/FundingInvest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="838">
+          <caret line="149" selection-start-line="149" selection-end-line="152" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/humhub/modules/file/libs/FileHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="426">
+          <caret line="27" column="6" selection-start-line="27" selection-start-column="6" selection-end-line="27" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/humhub/modules/content/widgets/richtext/RichTextCompatibilityParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2640">
+          <caret line="120" column="61" selection-start-line="120" selection-start-column="61" selection-end-line="120" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/humhub/modules/file/components/StorageManager.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/humhub/modules/user/models/Invite.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="56" column="46" selection-start-line="56" selection-start-column="46" selection-end-line="56" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helpers/AssetHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="830">
+          <caret line="66" column="29" selection-start-line="66" selection-start-column="29" selection-end-line="66" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helpers/AccountHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="816">
+          <caret line="119" column="25" selection-start-line="119" selection-start-column="25" selection-end-line="119" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/humhub/modules/comment/widgets/views/link.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="21" selection-start-line="21" selection-end-line="21" selection-end-column="153" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../v1.3/protected/humhub/modules/user/models/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="814">
+          <caret line="142" column="19" lean-forward="true" selection-start-line="142" selection-start-column="19" selection-end-line="142" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/funding/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="956">
+          <caret line="69" selection-start-line="69" selection-end-line="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Events.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="70" column="6" selection-start-line="70" selection-start-column="6" selection-end-line="70" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/exchange/offer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="463">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/exchange/buy.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/exchange/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="11" column="60" selection-start-line="11" selection-start-column="60" selection-end-line="11" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/FundingController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="36" column="133" selection-start-line="36" selection-start-column="25" selection-end-line="36" selection-end-column="133" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/Funding.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="50" column="12" selection-start-line="50" selection-start-column="12" selection-end-line="50" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/Exchange.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="139" lean-forward="true" selection-start-line="139" selection-end-line="139" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/ExchangeBuy.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="116" column="51" selection-start-line="116" selection-start-column="51" selection-end-line="116" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grids/ExchangeGridView.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-497">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/ExchangeController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="89" column="62" selection-start-line="89" selection-start-column="62" selection-end-line="89" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grids/SenderAccountGridView.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="105" selection-start-line="105" selection-end-line="105" />
+          <folding>
+            <element signature="e#34#40#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/transaction/select-account.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="15" column="155" selection-start-line="15" selection-start-column="155" selection-end-line="15" selection-end-column="155" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
