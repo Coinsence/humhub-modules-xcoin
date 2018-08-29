@@ -12,6 +12,7 @@ class uninstall extends Migration
         $this->dropTable('xcoin_exchange');
         $this->dropTable('xcoin_funding');
         $this->dropTable('xcoin_transaction');
+        $this->dropTable('xcoin_v_account_balance');
     }
 
     public function down()
