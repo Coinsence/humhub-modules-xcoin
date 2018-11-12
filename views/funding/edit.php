@@ -20,7 +20,7 @@ Select2BootstrapAsset::register($this);
 
 <div class="modal-body">
     <?= $form->field($model, 'asset_id')->hiddenInput()->label(false) ?>
-    <?= $form->field($model, 'available_amount')->widget(AmountField::classname(), ['asset' => $myAsset])->label(Yii::t('XcoinModule.base', 'Maximum offered amount')); ?>
+    <?= $form->field($model, 'available_amount')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.base', 'Maximum offered amount')); ?>
     <p class='alert alert-info'>
         The current balance of the funding account is: <strong><?= $fundingAccountBalance; ?></strong>
     </p>
@@ -28,13 +28,13 @@ Select2BootstrapAsset::register($this);
     <p><?= Yii::t('XcoinModule.base', 'Determine the exchange rate for which you are willing to trade assets.'); ?></p>
     <div class="row">
         <div class = "col-md-5">
-            <?= $form->field($model, 'exchange_rate')->widget(AmountField::classname(), ['asset' => $myAsset])->label(Yii::t('XcoinModule.base', 'Provided asset')); ?>
+            <?= $form->field($model, 'exchange_rate')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.base', 'Provided asset')); ?>
         </div>
         <div class="col-md-2 text-center">
             <i class="fa fa-exchange colorSuccess" style="font-size:28px;padding-top:24px" aria-hidden="true"></i>
         </div>
         <div class="col-md-5">
-            <?= $form->field($model, 'amount')->widget(AmountField::classname(), ['asset' => $model->asset, 'readonly' => true])->label(Yii::t('XcoinModule.base', 'Requested asset')); ?>
+            <?= $form->field($model, 'amount')->widget(AmountField::class, ['asset' => $model->asset, 'readonly' => true])->label(Yii::t('XcoinModule.base', 'Requested asset')); ?>
         </div>
     </div>
 
