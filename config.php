@@ -10,10 +10,10 @@ return [
     'class' => 'humhub\modules\xcoin\Module',
     'namespace' => 'humhub\modules\xcoin',
     'events' => [
-        ['class' => Menu::className(), 'event' => Menu::EVENT_INIT, 'callback' => ['humhub\modules\xcoin\Events', 'onSpaceMenuInit']],
-        ['class' => ProfileMenu::className(), 'event' => ProfileMenu::EVENT_INIT, 'callback' => ['humhub\modules\xcoin\Events', 'onProfileMenuInit']],
-        ['class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => ['humhub\modules\xcoin\Events', 'onTopMenuInit']],
-        ['class' => AccountTopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => ['humhub\modules\xcoin\Events', 'onAccountTopMenuInit']],
+        ['class' => Menu::class, 'event' => Menu::EVENT_INIT, 'callback' => ['humhub\modules\xcoin\Events', 'onSpaceMenuInit']],
+        ['class' => ProfileMenu::class, 'event' => ProfileMenu::EVENT_INIT, 'callback' => ['humhub\modules\xcoin\Events', 'onProfileMenuInit']],
+        ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => ['humhub\modules\xcoin\Events', 'onTopMenuInit']],
+        ['class' => AccountTopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => ['humhub\modules\xcoin\Events', 'onAccountTopMenuInit']],
     ],
 ];
 ?>
