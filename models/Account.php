@@ -108,7 +108,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getSpace()
     {
-        return $this->hasOne(Space::className(), ['id' => 'space_id']);
+        return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
 
     /**
@@ -116,7 +116,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**
@@ -124,7 +124,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getTransactionsFrom()
     {
-        return $this->hasMany(Transaction::className(), ['from_account_id' => 'id']);
+        return $this->hasMany(Transaction::class, ['from_account_id' => 'id']);
     }
 
     /**
@@ -132,7 +132,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getTransactionsTo()
     {
-        return $this->hasMany(Transaction::className(), ['to_account_id' => 'id']);
+        return $this->hasMany(Transaction::class, ['to_account_id' => 'id']);
     }
 
     /**
@@ -159,7 +159,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getBalances()
     {
-        return $this->hasMany(AccountBalance::className(), ['account_id' => 'id']);
+        return $this->hasMany(AccountBalance::class, ['account_id' => 'id']);
     }
 
     /**
