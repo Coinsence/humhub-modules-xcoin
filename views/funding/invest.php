@@ -18,10 +18,10 @@ Select2BootstrapAsset::register($this);
 
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'amountPay')->widget(AmountField::classname(), ['asset' => $model->getPayAsset()]); ?>
+            <?= $form->field($model, 'amountPay')->widget(AmountField::class, ['asset' => $model->getPayAsset()]); ?>
         </div>
         <div class = "col-md-6">
-            <?= $form->field($model, 'amountBuy')->widget(AmountField::classname(), ['asset' => $model->getBuyAsset(), 'readonly' => true]); ?>
+            <?= $form->field($model, 'amountBuy')->widget(AmountField::class, ['asset' => $model->getBuyAsset(), 'readonly' => true]); ?>
         </div>
     </div>
 </div>
