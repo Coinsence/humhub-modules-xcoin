@@ -18,7 +18,7 @@ Select2BootstrapAsset::register($this);
 <?= Html::hiddenInput('step', '1'); ?>
 <div class="modal-body">
     <?=
-    $form->field($model, 'asset_id')->widget(Select2::classname(), [
+    $form->field($model, 'asset_id')->widget(Select2::class, [
         'data' => $assetList,
         'options' => ['placeholder' => '- Select asset - '],
         'theme' => Select2::THEME_BOOTSTRAP,
