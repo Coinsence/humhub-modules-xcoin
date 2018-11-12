@@ -92,11 +92,11 @@ class Events
 
         if ($user->isModuleEnabled('xcoin')) {
 
-            $event->sender->addItem(array(
+            $event->sender->addItem([
                 'label' => '---',
                 'url' => '#',
                 'sortOrder' => 205,
-            ));
+            ]);
             $event->sender->addItem([
                 'label' => Yii::t('XcoinModule.base', 'Accounts'),
                 'url' => $user->createUrl('/xcoin/overview'),
