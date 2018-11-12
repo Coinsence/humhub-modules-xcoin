@@ -118,7 +118,7 @@ class Transaction extends \yii\db\ActiveRecord
      */
     public function getAsset()
     {
-        return $this->hasOne(Asset::className(), ['id' => 'asset_id']);
+        return $this->hasOne(Asset::class, ['id' => 'asset_id']);
     }
 
     /**
@@ -126,7 +126,7 @@ class Transaction extends \yii\db\ActiveRecord
      */
     public function getFromAccount()
     {
-        return $this->hasOne(Account::className(), ['id' => 'from_account_id']);
+        return $this->hasOne(Account::class, ['id' => 'from_account_id']);
     }
 
     /**
@@ -134,7 +134,7 @@ class Transaction extends \yii\db\ActiveRecord
      */
     public function getToAccount()
     {
-        return $this->hasOne(Account::className(), ['id' => 'to_account_id']);
+        return $this->hasOne(Account::class, ['id' => 'to_account_id']);
     }
 
 }
