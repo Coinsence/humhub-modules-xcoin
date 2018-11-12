@@ -68,7 +68,7 @@ class Asset extends \yii\db\ActiveRecord
      */
     public function getSpace()
     {
-        return $this->hasOne(Space::className(), ['id' => 'space_id']);
+        return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
 
     /**
@@ -76,7 +76,7 @@ class Asset extends \yii\db\ActiveRecord
      */
     public function getTransactions()
     {
-        return $this->hasMany(Transaction::className(), ['asset_id' => 'id']);
+        return $this->hasMany(Transaction::class, ['asset_id' => 'id']);
     }
 
     public function getIssuedAmount()
