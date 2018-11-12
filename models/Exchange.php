@@ -92,7 +92,7 @@ class Exchange extends \yii\db\ActiveRecord
      */
     public function getAccount()
     {
-        return $this->hasOne(Account::className(), ['id' => 'account_id']);
+        return $this->hasOne(Account::class, ['id' => 'account_id']);
     }
 
     /**
@@ -100,7 +100,7 @@ class Exchange extends \yii\db\ActiveRecord
      */
     public function getAsset()
     {
-        return $this->hasOne(Asset::className(), ['id' => 'asset_id']);
+        return $this->hasOne(Asset::class, ['id' => 'asset_id']);
     }
 
     /**
@@ -108,7 +108,7 @@ class Exchange extends \yii\db\ActiveRecord
      */
     public function getWantedAsset()
     {
-        return $this->hasOne(Asset::className(), ['id' => 'wanted_asset_id']);
+        return $this->hasOne(Asset::class, ['id' => 'wanted_asset_id']);
     }
 
     public function beforeSave($insert)
