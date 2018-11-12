@@ -163,7 +163,7 @@ class AccountField extends InputWidget
 
     protected function getFieldId($fieldName)
     {
-        return crc32($this->model->class . $this->attribute . $fieldName);
+        return crc32($this->model->className() . $this->attribute . $fieldName);
     }
 
 }
