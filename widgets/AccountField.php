@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Luke
- * Date: 28.02.2018
- * Time: 09:13
- */
 
 namespace humhub\modules\xcoin\widgets;
 
@@ -169,7 +163,7 @@ class AccountField extends InputWidget
 
     protected function getFieldId($fieldName)
     {
-        return crc32($this->model->className() . $this->attribute . $fieldName);
+        return crc32($this->model->class . $this->attribute . $fieldName);
     }
 
 }
