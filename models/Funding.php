@@ -95,7 +95,7 @@ class Funding extends \yii\db\ActiveRecord
      */
     public function getAsset()
     {
-        return $this->hasOne(Asset::className(), ['id' => 'asset_id']);
+        return $this->hasOne(Asset::class, ['id' => 'asset_id']);
     }
 
     /**
@@ -103,7 +103,7 @@ class Funding extends \yii\db\ActiveRecord
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
     /**
@@ -111,7 +111,7 @@ class Funding extends \yii\db\ActiveRecord
      */
     public function getSpace()
     {
-        return $this->hasOne(Space::className(), ['id' => 'space_id']);
+        return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
 
     
