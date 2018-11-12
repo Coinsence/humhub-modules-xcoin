@@ -15,7 +15,7 @@ use humhub\modules\user\widgets\UserPickerField;
     <?= $form->field($account, 'title'); ?>
     <?php if ($account->isNewRecord && empty($account->user_id)) : ?>
         <?=
-        $form->field($account, 'editFieldManager')->widget(UserPickerField::className(), [
+        $form->field($account, 'editFieldManager')->widget(UserPickerField::class, [
             'maxSelection' => 1,
         ]);
         ?>
