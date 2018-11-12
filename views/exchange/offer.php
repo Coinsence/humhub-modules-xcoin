@@ -50,7 +50,7 @@ Select2BootstrapAsset::register($this);
     <div class="row blockDefineExchangeRate">
         <div class="col-md-6">
             <?=
-            $form->field($exchange, 'wanted_asset_id')->widget(Select2::classname(), [
+            $form->field($exchange, 'wanted_asset_id')->widget(Select2::class, [
                 'data' => $assetList,
                 'options' => ['placeholder' => '- Select asset - '],
                 'theme' => Select2::THEME_BOOTSTRAP,
