@@ -16,7 +16,7 @@ class m171116_101607_exchange extends Migration
             'minimum_amount' => $this->float(4)->notNull(),
             'wanted_asset_id' => $this->integer()->notNull(),
             'wanted_amount' => $this->float(4)->notNull(),
-            'created_at' => $this->dateTime()->defaultValue(new \yii\db\Expression('NOW()'))->notNull(),
+            'created_at' => $this->dateTime()->defaultValue(date('Y-m-d H:i:s'))->notNull(),
         ]);
 
         $this->addForeignKey('fk_offer_account', 'xcoin_exchange', 'account_id', 'xcoin_account', 'id', 'CASCADE', 'CASCADE');

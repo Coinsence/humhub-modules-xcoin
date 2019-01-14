@@ -6,7 +6,7 @@ class m171105_184625_transaction_timestamp extends Migration
 {
     public function safeUp()
     {
-        $this->addColumn('xcoin_transaction', 'created_at', $this->dateTime()->defaultValue(new \yii\db\Expression('NOW()'))->notNull());
+        $this->addColumn('xcoin_transaction', 'created_at', $this->dateTime()->defaultValue(date('Y-m-d H:i:s'))->notNull());
     }
 
     public function safeDown()

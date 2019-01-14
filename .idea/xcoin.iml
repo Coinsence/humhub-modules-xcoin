@@ -5,5 +5,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="v1.3" />
+    <orderEntry type="module" module-name="coinsence" />
   </component>
 </module>

@@ -14,7 +14,7 @@ class m171205_062620_funding extends Migration
             'exchange_rate' => $this->float(4)->notNull(),
             'total_amount' => $this->float(4)->notNull(),
             'available_amount' => $this->float(4)->notNull(),
-            'created_at' => $this->dateTime()->defaultValue(new \yii\db\Expression('NOW()'))->notNull(),
+            'created_at' => $this->dateTime()->defaultValue(date('Y-m-d H:i:s'))->notNull(),
             'created_by' => $this->integer()->notNull(),
         ]);
 
