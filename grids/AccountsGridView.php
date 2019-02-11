@@ -79,7 +79,15 @@ class AccountsGridView extends GridView
                         return '<span class="label label-info">DEFAULT</span>';
                     }
                     if ($model->account_type == Account::TYPE_TASK) {
-                        return '<span class="label label-info">TASK</span>';
+                        return '<span class="label label-info">TASK</span> '.
+                            Html::a(
+                                Html::encode($model->title),
+                                [
+                                    '/tasks/task/view',
+                                    'id' => $model->task->id,
+                                    'container' => $this->contentContainer
+                                ]
+                            );
                     }
                     return Html::encode($model->title);
                 }
@@ -103,7 +111,7 @@ class AccountsGridView extends GridView
                 'value' => function ($model) {
 
                     $transferButton = '';
-                    if (AccountHelper::canManageAccount($model)) {
+                    if (AccountHelper::canManageAccount($model) && Account::TYPE_TASK != $model->account_type) {
                         $transferButton = Html::a('<i class="fa fa-exchange" aria-hidden="true"></i>', ['/xcoin/transaction/transfer', 'accountId' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']) . '&nbsp;';
                     }
 
