@@ -38,14 +38,6 @@ class AccountsGridView extends GridView
         ]);
 
         $this->columns = [
-            /*
-              [
-              'attribute' => 'id',
-              'options' => [
-              'style' => 'width:50px',
-              ]
-              ],
-             */
             [
                 'attribute' => 'space_id',
                 'label' => 'Owner',
@@ -116,21 +108,6 @@ class AccountsGridView extends GridView
                     return $transferButton . Html::a('<i class="fa fa-search" aria-hidden="true"></i>', ['/xcoin/account', 'id' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default']);
                 }
             ],
-                /*
-                  [
-                  'class' => ActionColumn::class,
-                  'actions' => function($account) {
-                  $actions = [];
-                  $actions['Open account'] = ['/xcoin/account', 'container' => $this->contentContainer];
-                  if (AccountHelper::canManageAccount($account)) {
-                  $actions[] = '---';
-                  $actions['Edit'] = ['/xcoin/account/edit', 'container' => $this->contentContainer, 'linkOptions' => ['data-target' => '#globalModal']];
-                  }
-                  return $actions;
-                  }
-                  ],
-                 *
-                 */
         ];
 
 
