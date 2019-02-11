@@ -78,7 +78,9 @@ class AccountsGridView extends GridView
                     if ($model->account_type == Account::TYPE_DEFAULT) {
                         return '<span class="label label-info">DEFAULT</span>';
                     }
-                    
+                    if ($model->account_type == Account::TYPE_TASK) {
+                        return '<span class="label label-info">TASK</span>';
+                    }
                     return Html::encode($model->title);
                 }
             ],

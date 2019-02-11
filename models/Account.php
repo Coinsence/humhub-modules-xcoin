@@ -27,6 +27,7 @@ class Account extends \yii\db\ActiveRecord
     const TYPE_ISSUE = 2;
     const TYPE_FUNDING = 3;
     const TYPE_DEFAULT = 4;
+    const TYPE_TASK = 5;
 
     public $editFieldManager;
 
