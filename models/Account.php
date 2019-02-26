@@ -2,6 +2,8 @@
 
 namespace humhub\modules\xcoin\models;
 
+use humhub\modules\tasks\models\account\TaskAccount;
+use humhub\modules\tasks\models\Task;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -17,6 +19,8 @@ use humhub\modules\user\models\User;
  *
  * @property Space $space
  * @property User $user
+ * @preperty TaskAccount $account
+ * @property Task $task
  * @property TcoinTransaction[] $xcoinTransactions
  * @property TcoinTransaction[] $xcoinTransactions0
  */
@@ -27,6 +31,7 @@ class Account extends \yii\db\ActiveRecord
     const TYPE_ISSUE = 2;
     const TYPE_FUNDING = 3;
     const TYPE_DEFAULT = 4;
+    const TYPE_TASK = 5;
 
     public $editFieldManager;
 
@@ -185,6 +190,22 @@ class Account extends \yii\db\ActiveRecord
         }
 
         return true;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaskAccount()
+    {
+        return $this->hasOne(TaskAccount::class, ['account_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTask()
+    {
+        return $this->hasOne(Task::class, ['id' => 'task_id'])->via('taskAccount');
     }
 
 }
