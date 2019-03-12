@@ -26,6 +26,7 @@ class Transaction extends \yii\db\ActiveRecord
 
     const TRANSACTION_TYPE_TRANSFER = 1;
     const TRANSACTION_TYPE_ISSUE = 2;
+    const TRANSACTION_TYPE_TASK_PAYMENT = 3;
 
     /**
      * @inheritdoc
