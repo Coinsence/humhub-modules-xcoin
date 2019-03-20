@@ -19,6 +19,11 @@ use humhub\modules\xcoin\helpers\AssetHelper;
  * @property integer $available_amount
  * @property string $created_at
  * @property integer $created_by
+ * @property string title
+ * @property string description
+ * @property string $deadline
+ * @property string needs
+ * @property string commitments
  *
  * @property TcoinAsset $asset
  * @property User $createdBy
