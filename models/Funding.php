@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\models;
 
+use humhub\libs\DbDateValidator;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -19,11 +20,11 @@ use humhub\modules\xcoin\helpers\AssetHelper;
  * @property integer $available_amount
  * @property string $created_at
  * @property integer $created_by
- * @property string title
- * @property string description
+ * @property string $title
+ * @property string $description
  * @property string $deadline
- * @property string needs
- * @property string commitments
+ * @property string $needs
+ * @property string $commitments
  *
  * @property TcoinAsset $asset
  * @property User $createdBy
@@ -51,7 +52,20 @@ class Funding extends \yii\db\ActiveRecord
     {
         return [
             //  'total_amount', 'available_amount',
-            [['space_id', 'asset_id', 'exchange_rate', 'created_by', 'available_amount'], 'required'],
+            [
+                [
+                    'space_id',
+                    'asset_id',
+                    'exchange_rate',
+                    'created_by',
+                    'available_amount',
+                    'title',
+                    'description',
+                    'deadline',
+                    'needs',
+                    'commitments'
+                ], 'required'
+            ],
             [['space_id', 'asset_id', 'total_amount', 'created_by'], 'integer'],
             [['available_amount'], 'number', 'min' => '0'],
             [['exchange_rate'], 'number', 'min' => '0.001'],
@@ -59,13 +73,25 @@ class Funding extends \yii\db\ActiveRecord
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
+            [['title'], 'string', 'max' => 255],
+            [['description', 'needs', 'commitments'], 'string'],
+            [['deadline'], DbDateValidator::class],
         ];
     }
 
     public function scenarios()
     {
         return [
-            self::SCENARIO_EDIT => ['asset_id', 'exchange_rate', 'available_amount'],
+            self::SCENARIO_EDIT => [
+                'asset_id',
+                'exchange_rate',
+                'available_amount',
+                'title',
+                'description',
+                'needs',
+                'commitments',
+                'deadline'
+            ],
         ];
     }
 
@@ -85,6 +111,11 @@ class Funding extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'amount' => 'Offered asset',
             'amountConverted' => 'Wanted',
+            'title' => 'Title',
+            'description' => 'Description',
+            'needs' => 'Needs',
+            'commitments' => 'Commitments',
+            'deadline' => 'Deadline',
         ];
     }
 
@@ -119,10 +150,10 @@ class Funding extends \yii\db\ActiveRecord
         return $this->hasOne(Space::className(), ['id' => 'space_id']);
     }
 
-    
+
     /**
      * Gets the amount in the target asset
-     * 
+     *
      * @return type
      */
     /*
@@ -133,10 +164,10 @@ class Funding extends \yii\db\ActiveRecord
     }
      * *
      */
-    
+
     /**
      * Returns the available funding space assets based on funding account balance and available amount
-     * 
+     *
      * @return int
      */
     public function getBaseMaximumAmount()
@@ -155,6 +186,19 @@ class Funding extends \yii\db\ActiveRecord
     {
         return AccountHelper::getFundingAccount($this->space);
     }
-    
 
+    public function isFirstStep()
+    {
+        return empty($this->asset_id);
+    }
+
+    public function isSecondStep()
+    {
+        return empty($this->available_amount) || empty($this->exchange_rate);
+    }
+
+    public function isThirdStep()
+    {
+        return empty($this->title) || empty($this->description) || empty($this->needs) || empty($this->commitments) || empty($this->deadline);
+    }
 }
