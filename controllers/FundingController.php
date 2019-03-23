@@ -112,13 +112,21 @@ class FundingController extends ContentContainerController
         }
 
         // Try Save Step 3
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
-            $this->view->saved();
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3') {
 
+            // Step 4: Gallery
+            return $this->renderAjax('media', ['model' => $model]);
+        }
+
+        // Try Save Step 4
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '4' && $model->save()) {
+            $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
+            $this->view->saved();
             return $this->htmlRedirect(['/xcoin/funding', 'container' => $this->contentContainer]);
         }
 
-        // check for validation
+        // Check validation
         if ($model->hasErrors() && $model->isThirdStep()) {
 
             return $this->renderAjax('details', ['model' => $model]);

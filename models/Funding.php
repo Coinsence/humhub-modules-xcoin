@@ -2,12 +2,13 @@
 
 namespace humhub\modules\xcoin\models;
 
+use humhub\components\ActiveRecord;
 use humhub\libs\DbDateValidator;
-use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
-use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\permissions\DeleteFile;
+use Yii;
 
 /**
  * This is the model class for table "xcoin_funding".
@@ -23,14 +24,13 @@ use humhub\modules\xcoin\helpers\AssetHelper;
  * @property string $title
  * @property string $description
  * @property string $deadline
- * @property string $needs
- * @property string $commitments
+ * @property string $content
  *
  * @property TcoinAsset $asset
  * @property User $createdBy
  * @property User $space
  */
-class Funding extends \yii\db\ActiveRecord
+class Funding extends ActiveRecord
 {
 
     const SCENARIO_EDIT = 'sedit';
@@ -62,8 +62,7 @@ class Funding extends \yii\db\ActiveRecord
                     'title',
                     'description',
                     'deadline',
-                    'needs',
-                    'commitments'
+                    'content'
                 ], 'required'
             ],
             [['space_id', 'asset_id', 'total_amount', 'created_by'], 'integer'],
@@ -74,7 +73,7 @@ class Funding extends \yii\db\ActiveRecord
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['title'], 'string', 'max' => 255],
-            [['description', 'needs', 'commitments'], 'string'],
+            [['description', 'content'], 'string'],
             [['deadline'], DbDateValidator::class],
         ];
     }
@@ -88,9 +87,7 @@ class Funding extends \yii\db\ActiveRecord
                 'available_amount',
                 'title',
                 'description',
-                'needs',
-                'commitments',
-                'deadline'
+                'content',
             ],
         ];
     }
@@ -113,8 +110,7 @@ class Funding extends \yii\db\ActiveRecord
             'amountConverted' => 'Wanted',
             'title' => 'Title',
             'description' => 'Description',
-            'needs' => 'Needs',
-            'commitments' => 'Commitments',
+            'content' => 'Needs & Commitments',
             'deadline' => 'Deadline',
         ];
     }
@@ -199,6 +195,16 @@ class Funding extends \yii\db\ActiveRecord
 
     public function isThirdStep()
     {
-        return empty($this->title) || empty($this->description) || empty($this->needs) || empty($this->commitments) || empty($this->deadline);
+        return empty($this->title) || empty($this->description) || empty($this->content) || empty($this->deadline);
+    }
+
+    public function canDelete()
+    {
+        $space = Space::findOne(['id' => $this->space_id]);
+
+        if ($space->isAdmin(Yii::$app->user->identity))
+            return true;
+
+        return false;
     }
 }

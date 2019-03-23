@@ -15,8 +15,7 @@ class m190320_011028_xcoin_optimize_funding extends Migration
         $this->addColumn('xcoin_funding','title', $this->string(255)->notNull());
         $this->addColumn('xcoin_funding','description', $this->text()->notNull());
         $this->addColumn('xcoin_funding', 'deadline', $this->dateTime()->notNull());
-        $this->addColumn('xcoin_funding','needs', $this->text()->notNull());
-        $this->addColumn('xcoin_funding','commitments', $this->text()->notNull());
+        $this->addColumn('xcoin_funding','content', $this->text()->notNull());
     }
 
     /**
@@ -27,7 +26,6 @@ class m190320_011028_xcoin_optimize_funding extends Migration
         $this->dropColumn('xcoin_funding','title');
         $this->dropColumn('xcoin_funding','description');
         $this->dropColumn('xcoin_funding', 'deadline');
-        $this->dropColumn('xcoin_funding','needs');
-        $this->dropColumn('xcoin_funding','commitments');
+        $this->dropColumn('xcoin_funding','content');
     }
 }
