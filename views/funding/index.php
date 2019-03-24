@@ -46,7 +46,7 @@ use yii\bootstrap\Progress;
                         <?php if ($cover) : ?>
                             <?= Html::img($cover->getUrl(), ['height' => '150']) ?>
                         <?php else : ?>
-                            <?= Html::img('https://www.bbsocal.com/wp-content/uploads/2017/07/Funding-icon.jpg', ['height' => '190', 'width' => '320']) ?>
+                            <?= Html::img('https://www.bbsocal.com/wp-content/uploads/2017/07/Funding-icon.jpg', ['height' => '150', 'width' => '280']) ?>
                         <?php endif ?>
                         <!-- campaign cover end -->
 

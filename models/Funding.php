@@ -178,7 +178,11 @@ class Funding extends ActiveRecord
 
     public function getRaisedPercentage()
     {
-        return round(($this->getRaisedAmount() / $this->getRequestedAmount()) * 100);
+        if ($this->getRequestedAmount()) {
+            return round(($this->getRaisedAmount() / $this->getRequestedAmount()) * 100);
+        }
+
+        return 0;
     }
 
 
