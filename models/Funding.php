@@ -2,12 +2,13 @@
 
 namespace humhub\modules\xcoin\models;
 
+use DateTime;
 use humhub\components\ActiveRecord;
 use humhub\libs\DbDateValidator;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
-use humhub\modules\xcoin\permissions\DeleteFile;
+
 use Yii;
 
 /**
@@ -26,9 +27,9 @@ use Yii;
  * @property string $deadline
  * @property string $content
  *
- * @property TcoinAsset $asset
+ * @property Asset $asset
  * @property User $createdBy
- * @property User $space
+ * @property Space $space
  */
 class Funding extends ActiveRecord
 {
@@ -88,6 +89,7 @@ class Funding extends ActiveRecord
                 'title',
                 'description',
                 'content',
+                'deadline'
             ],
         ];
     }
@@ -127,7 +129,7 @@ class Funding extends ActiveRecord
      */
     public function getAsset()
     {
-        return $this->hasOne(Asset::className(), ['id' => 'asset_id']);
+        return $this->hasOne(Asset::class, ['id' => 'asset_id']);
     }
 
     /**
@@ -135,7 +137,7 @@ class Funding extends ActiveRecord
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
     /**
@@ -143,23 +145,53 @@ class Funding extends ActiveRecord
      */
     public function getSpace()
     {
-        return $this->hasOne(Space::className(), ['id' => 'space_id']);
+        return $this->hasOne(Space::class, ['id' => 'space_id']);
+    }
+
+    /**
+     * Gets the requested amount in the target asset
+     *
+     * @return float
+     */
+
+    public function getRequestedAmount()
+    {
+        return $this->total_amount / $this->exchange_rate;
+    }
+
+    /**
+     * Gets the raised amount in the target asset
+     *
+     * @return float
+     */
+
+    public function getRaisedAmount()
+    {
+        return $this->getFundingAccount()->getAssetBalance($this->asset);
+    }
+
+    /**
+     * Gets the raised amount in the target asset
+     *
+     * @return float
+     */
+
+    public function getRaisedPercentage()
+    {
+        return round(($this->getRaisedAmount() / $this->getRequestedAmount()) * 100);
     }
 
 
     /**
-     * Gets the amount in the target asset
+     * Gets the offering amount percentage
      *
-     * @return type
+     * @return float
      */
-    /*
-    public function getMaximumAmount()
+
+    public function getOfferedAmountPercentage()
     {
-        print $this->getBaseMaximumAmount();
-        return $this->getBaseMaximumAmount() / $this->exchange_rate;
+        return round(($this->total_amount / Asset::findOne(['space_id' => $this->space_id])->getIssuedAmount()) * 100);
     }
-     * *
-     */
 
     /**
      * Returns the available funding space assets based on funding account balance and available amount
@@ -206,5 +238,37 @@ class Funding extends ActiveRecord
             return true;
 
         return false;
+    }
+
+    /**
+     * Calculate remaining days to deadline , current day is not omitted
+     *
+     * @return int
+     * @throws \Exception
+     */
+    public function getRemainingDays()
+    {
+        $now = new DateTime();
+        $deadline = (new DateTime($this->deadline))->modify('+1 day');
+        $remainingDays = $deadline->diff($now)->format("%a");
+
+        return intval($remainingDays);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if ($this->isNewRecord) {
+            $this->total_amount = $this->available_amount;
+        }
+
+        return parent::beforeSave($insert);
+    }
+
+    public function shortenDescription()
+    {
+        return (strlen($this->description) > 100) ? substr($this->description, 0, 97) . '...' : $this->description;
     }
 }

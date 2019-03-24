@@ -29,7 +29,7 @@ use humhub\modules\ui\form\widgets\DatePicker;
         <div class="col-md-6">
             <?= $form->field($model, 'deadline')->widget(DatePicker::class, [
                 'dateFormat' => Yii::$app->params['formatter']['defaultDateFormat'],
-                'clientOptions' => [],
+                'clientOptions' => ['minDate' => '+1d'],
                 'options' => ['class' => 'form-control', 'autocomplete' => "off"]])
                 ->hint('Please enter your campaign deadline') ?>
         </div>
