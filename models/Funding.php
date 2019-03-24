@@ -271,4 +271,9 @@ class Funding extends ActiveRecord
     {
         return (strlen($this->description) > 100) ? substr($this->description, 0, 97) . '...' : $this->description;
     }
+
+    public function canInvest()
+    {
+        return $this->getBaseMaximumAmount() == 0 && $this->getRemainingDays() > 0;
+    }
 }
