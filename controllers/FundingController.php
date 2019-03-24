@@ -12,6 +12,7 @@ use humhub\modules\xcoin\models\Funding;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\FundingInvest;
+use yii\web\HttpException;
 
 /**
  * Description of AccountController
@@ -38,6 +39,19 @@ class FundingController extends ContentContainerController
             'fundings' => $fundings,
             'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
             'activeFundings' => $activeFundings,
+        ]);
+    }
+
+    public function actionOverview($fundingId)
+    {
+        $funding = Funding::findOne(['id' => $fundingId]);
+
+        if(!$funding) {
+            throw new HttpException(404);
+        }
+
+        return $this->render('overview', [
+            'funding' => $funding,
         ]);
     }
 

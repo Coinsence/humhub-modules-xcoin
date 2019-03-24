@@ -124,6 +124,10 @@ use yii\bootstrap\Progress;
                             <?= Html::a(Yii::t('base', 'Edit'), ['edit', 'id' => $funding->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']); ?>
                         <?php endif; ?>
                         <!-- campaign edit button end -->
+
+                        <!-- campaign details button start -->
+                        <?= Html::a('See details', ['/xcoin/funding/overview', 'container' => $this->context->contentContainer, 'fundingId' => $funding->id], ['class' => 'btn btn-default btn-sm']); ?>
+                        <!-- campaign details button end -->
                     </div>
                 </div>
             </div>
