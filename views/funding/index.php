@@ -39,98 +39,260 @@ use yii\bootstrap\Progress;
             $cover = File::find()->where(['object_model' => Funding::class, 'object_id' => $funding->id])->orderBy(['id' => SORT_ASC])->one();
             ?>
 
-            <div class="col-md-4">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <!-- campaign cover start -->
-                        <?php if ($cover) : ?>
-                            <?= Html::img($cover->getUrl(), ['height' => '150']) ?>
-                        <?php else : ?>
-                            <?= Html::img('https://www.bbsocal.com/wp-content/uploads/2017/07/Funding-icon.jpg', ['height' => '150', 'width' => '280']) ?>
-                        <?php endif ?>
-                        <!-- campaign cover end -->
+      <a href="<?=$space->createUrl('/xcoin/funding/overview', ['container' => $this->context->contentContainer, 'fundingId' => $funding->id]);?>">
+        <div class="col-md-4 crowd-funding">
+          <div class="panel">
+            <div class="panel-heading">
 
-                        <!-- space image start -->
-                        <?= SpaceImage::widget(['space' => $space, 'width' => 32, 'showTooltip' => true, 'link' => true]); ?>
-                        <!-- space image end -->
+              <!-- campaign cover start -->
+                <?php if ($cover) : ?>
+                    <?= Html::img($cover->getUrl(), ['height' => '140']) ?>
+                <?php else : ?>
+                    <?= Html::img('https://www.bbsocal.com/wp-content/uploads/2017/07/Funding-icon.jpg', ['height' => '190', 'width' => '320']) ?>
+                <?php endif ?>
+              <!-- campaign cover end -->
 
-                        <br>
+              <div class="project-owner">
 
-                        <!-- campaign title start -->
-                        <?= Html::encode($funding->title); ?>
-                        <!-- campaign title end -->
+                <!-- space image start -->
+                  <?= SpaceImage::widget(['space' => $space, 'width' => 34, 'showTooltip' => true, 'link' => false]); ?>
+                <!-- space image end -->
 
-                        <!-- campaign invest action start -->
-                        <div class="pull-right">
-                            <?php if (Yii::$app->user->isGuest): ?>
-                                <?= Html::a(Yii::t('XcoinModule.base', 'Invest'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal', 'class' => 'btn btn-success btn']) ?>
-                            <?php else: ?>
-                                <?= Html::a(Yii::t('XcoinModule.base', 'Invest'), ['invest', 'fundingId' => $funding->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-success btn', 'data-target' => '#globalModal', 'disabled' => $funding->canInvest()]); ?>
-                            <?php endif; ?>
-                        </div>
-                        <!-- campaign invest action end -->
-                    </div>
-                    <div class="panel-body">
-                        <div class="media">
-                            <div class="media-left media-middle">
-                            </div>
-                            <div class="media-body">
-                                <!-- campaign description start -->
-                                <h4 class="media-heading"><?= Html::encode($funding->shortenDescription()); ?></h4>
-                                <!-- campaign description end -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <!-- campaign requesting start -->
-                        Requesting :
-                        <?= $funding->getRequestedAmount() ?>
-                        <?= SpaceImage::widget(['space' => $funding->asset->space, 'width' => 24, 'showTooltip' => true, 'link' => true]); ?>
-                        <!-- campaign requesting end -->
+                <!-- campaign title start -->
+                <span><?= "Project by <strong>" . Html::encode($space->name) . "</strong>"; ?></span>
+                <!-- campaign title end -->
 
-                        <!-- campaign raised start -->
-                        <div class="pull-right">
-                            Raised : <?= $funding->getRaisedAmount() ?>
-                            (<?= $funding->getRaisedPercentage() ?>%)
-                        </div>
-                        <!-- campaign raised end -->
-
-                        <br><br>
-
-                        <!-- campaign raised start -->
-                        <?php echo Progress::widget([
-                            'percent' => $funding->getRaisedPercentage(),
-                        ]); ?>
-
-                        <!-- campaign offering start -->
-                        Offering : <?= $funding->getOfferedAmountPercentage() ?>
-                        % <?= SpaceImage::widget(['space' => $funding->space, 'width' => 24, 'showTooltip' => true, 'link' => true]); ?>
-                        <!-- campaign offering end -->
-
-                        <br>
-
-                        <!-- campaign space name start -->
-                        <?= Html::encode($space->name); ?>
-                        <!-- campaign space name end -->
-
-                        <br>
-
-                        <!-- campaign remaining days start -->
-                        <?= $funding->getRemainingDays() ?> <?= $funding->getRemainingDays() > 1 ? 'Days' : 'Day' ?> left
-                        <!-- campaign remaining days end -->
-
-                        <!-- campaign edit button start -->
-                        <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
-                            <?= Html::a(Yii::t('base', 'Edit'), ['edit', 'id' => $funding->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']); ?>
-                        <?php endif; ?>
-                        <!-- campaign edit button end -->
-
-                        <!-- campaign details button start -->
-                        <?= Html::a('See details', ['/xcoin/funding/overview', 'container' => $this->context->contentContainer, 'fundingId' => $funding->id], ['class' => 'btn btn-default btn-sm']); ?>
-                        <!-- campaign details button end -->
-                    </div>
-                </div>
+              </div>
             </div>
+            <div class="panel-body">
+                <h4 class="funding-title"><?=Html::encode($funding->title); ?></h4>
+              <div class="media">
+                <div class="media-left media-middle">
+                </div>
+                <div class="media-body">
+                  <!-- campaign description start -->
+                  <h4 class="media-heading"><?= Html::encode($funding->shortenDescription()); ?></h4>
+                  <!-- campaign description end -->
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer">
+
+              <div class="funding-progress">
+
+                <div>
+                  <!-- campaign raised start -->
+                  Raised: <strong><?= $funding->getRaisedAmount() ?></strong>
+                  (<strong><?= $funding->getRaisedPercentage() ?>%</strong>)
+                  <!-- campaign raised end -->
+                </div>
+
+                <div class="pull-right">
+
+                  <div class="clock"></div>
+
+                  <div class="days">
+                    <!-- campaign remaining days start -->
+                      <?= $funding->getRemainingDays() ?> <?= $funding->getRemainingDays() > 1 ? 'Days' : 'Day' ?> left
+                    <!-- campaign remaining days end -->
+                  </div>
+
+                </div>
+
+                <!-- campaign raised start -->
+                  <?php echo Progress::widget([
+                          'percent' => $funding->getRaisedPercentage(),
+                  ]); ?>
+              </div>
+              <div class="funding-details row">
+
+                <div class="col-md-6">
+                  <!-- campaign requesting start -->
+                  <span>
+                                      Requesting:
+                                        <strong><?= $funding->getRequestedAmount() ?></strong>
+                                    </span>
+                    <?= SpaceImage::widget(['space' => $funding->asset->space, 'width' => 16, 'showTooltip' => true, 'link' => false]); ?>
+                  <!-- campaign requesting end -->
+                </div>
+                <div class="col-md-6">
+                  <!-- campaign offering start -->
+                  <span>
+                                      Offering:
+                                        <strong><?= $funding->getOfferedAmountPercentage() ?>%</strong>
+                                    </span>
+                    <?= SpaceImage::widget(['space' => $funding->space, 'width' => 16, 'showTooltip' => true, 'link' => false]); ?>
+                  <!-- campaign offering end -->
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </a>
 
     <?php endforeach; ?>
 </div>
+
+<style>
+
+  .layout-content-container .crowd-funding .panel {
+    border-radius: 8px;
+    position: relative;
+  }
+
+  .layout-content-container .crowd-funding .panel::after {
+
+    content: '';
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    box-shadow: 0 0 40px #dadada;
+    -webkit-box-shadow: 0 0 40px #dadada;
+    -moz-box-shadow: 0 0 40px #dadada;
+
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .layout-content-container .crowd-funding .panel:hover::after {
+    opacity: 1;
+  }
+
+  .layout-content-container .crowd-funding .panel:hover::after {
+    opacity: 1;
+  }
+
+  .layout-content-container .crowd-funding .panel-heading {
+    padding: 0;
+    position: relative;
+  }
+
+  .layout-content-container .crowd-funding .panel-heading img {
+      width: 100%;
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+  }
+
+  .layout-content-container .crowd-funding .panel-heading .project-owner {
+    position: absolute;
+    bottom: -34px;
+    left: 0;
+    right: 0;
+  }
+
+  .layout-content-container .crowd-funding .panel-heading .project-owner div.space-acronym {
+    display: block;
+    margin: 0 auto;
+    border: white 2px solid;
+  }
+
+  .layout-content-container .crowd-funding .panel-heading .project-owner span {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .layout-content-container .crowd-funding .panel-heading .project-owner strong {
+    font-weight: 600;
+  }
+
+  .layout-content-container .crowd-funding .panel-body {
+    margin-top: 38px;
+    height: 100px;
+  }
+
+  .layout-content-container .crowd-funding .panel-body .funding-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .layout-content-container .crowd-funding .panel-body .media {
+    margin-top: 6px;
+  }
+
+  .layout-content-container .crowd-funding .panel-body .media h4.media-heading {
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer {
+    background-color: white;
+    border: none;
+    padding: 0;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer .funding-progress {
+    padding: 0 15px;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer .funding-progress > div:not(.progress) {
+    display: inline-block;
+    font-size: 10px;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer .funding-progress .clock::before {
+    content: 'L';
+    color: white;
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin-left: 1px;
+    font-size: 10px;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer .funding-progress .clock {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 18px;
+    border-radius: 18px;
+    background: gray;
+    margin-right: 4px;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer .funding-progress .days {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer .funding-progress .progress {
+    width: 100%;
+    height: 6px;
+    margin-top: 12px;
+    background: #e4e8eb;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer .funding-progress .progress-bar {
+    background-color: #28aa69;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer .funding-details {
+    padding: 0 15px;
+    border-top: 1px solid #f0f5f8;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer .funding-details .col-md-6 {
+    padding: 12px 2px 12px 15px;
+    font-size: 12px;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer .funding-details .col-md-6:first-of-type {
+    border-right: 1px solid #f0f5f8;
+  }
+
+  .layout-content-container .crowd-funding .panel-footer .funding-details .col-md-6 span {
+    vertical-align: middle;
+    margin-right: 2px;
+  }
+
+</style>
