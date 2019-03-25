@@ -64,13 +64,7 @@ use yii\bootstrap\Progress;
                             <!-- campaign invest action end -->
                             <!-- campaign edit button start -->
                             <?php if ( AssetHelper::canManageAssets( $this->context->contentContainer ) ): ?>
-                                <a class="edit-btn" data-target="#globalModal"
-                                   href="<?= $space->createUrl( '/xcoin/funding/edit', [
-                                           'id'        => $funding->id,
-                                           'container' => $this->context->contentContainer
-                                   ] ); ?>">
-                                    <i class="fa fa-pencil"></i>Edit
-                                </a>
+                                <?= Html::a( Yii::t( 'XcoinModule.base', '<i class="fa fa-pencil"></i>Edit' ), ['/xcoin/funding/edit', 'id' => $funding->id, 'container' => $this->context->contentContainer], [ 'data-target' => '#globalModal', 'class' => 'edit-btn' ] ) ?>
                             <?php endif; ?>
                             <!-- campaign edit button end -->
 
@@ -82,14 +76,15 @@ use yii\bootstrap\Progress;
                             <!-- campaign title end -->
 
                             <div class="row">
-                                <div class="col-md-7">
+                                <div class="col-md-6">
                                     <!-- campaign description start -->
                                     <p class="media-heading"><?= Html::encode( $funding->description ); ?></p>
                                     <!-- campaign description end -->
                                 </div>
-                                <div class="col-md-5 row funding-details">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-12 funding-details">
                                         <!-- campaign requesting start -->
                                         Requesting :
                                         <strong><?= $funding->getRequestedAmount() ?></strong>
@@ -101,7 +96,7 @@ use yii\bootstrap\Progress;
                                         ] ); ?>
                                         <!-- campaign requesting end -->
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12 funding-details">
                                         <!-- campaign offering start -->
                                         Offering :
                                         <strong><?= $funding->getOfferedAmountPercentage() ?></strong>%
@@ -223,32 +218,28 @@ use yii\bootstrap\Progress;
         text-transform: uppercase;
         color: #fff;
         display: inline-block;
-        padding: 14px 20px;
-        font-size: 10px;
+        padding: 26px 20px;
+        font-size: 17px;
         font-weight: bold;
     }
 
     .fundingPanels .panel.cover .panel-heading .invest-btn a:hover {
-        background: #208c56;
+        background: #25a264;
     }
 
     .fundingPanels .panel.cover .panel-heading .edit-btn {
-        display: none;
         position: absolute;
         top: 18px;
         left: 18px;
         color: black;
         background: white;
         border-radius: 20px;
-        font-size: 12px;
+        font-size: 14px;
         padding: 4px 12px;
+        font-weight: bold;
     }
 
-    .fundingPanels .panel.cover .panel-heading:hover .edit-btn {
-        display: block;
-    }
-
-    .fundingPanels .panel.cover .panel-heading:hover .edit-btn:hover {
+    .fundingPanels .panel.cover .panel-heading .edit-btn:hover {
         background: #cecece;
     }
 
@@ -268,9 +259,13 @@ use yii\bootstrap\Progress;
 
     .fundingPanels .panel.cover .panel-body .funding-details {
         border: #eaf1f6 solid 1px;
-        box-shadow: 0 2px 18px 0 #ececec;
-        -webkit-box-shadow: 0 2px 18px 0 #ececec;
-        -moz-box-shadow: 0 2px 18px 0 #ececec;
+        box-shadow: 0 1px 0px 0 #c5c5c5;
+        -webkit-box-shadow: 0 2px 2px 0 #c5c5c5;
+        -moz-box-shadow: 0 1px 0px 0 #c5c5c5;
+        padding: 10px 18px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        text-align: center;
     }
 
     .fundingPanels .panel.cover .panel-body .funding-details .col-md-6:first-of-type {
@@ -344,6 +339,10 @@ use yii\bootstrap\Progress;
 
     .fundingPanels .panel.cover .panel-footer .funding-progress .progress-bar {
         background-color: #28aa69;
+    }
+
+    .fundingPanels .panel.content .panel-heading {
+        padding: 20px 10px;
     }
 
     .fundingPanels .panel.content .panel-heading .col-md-4 {

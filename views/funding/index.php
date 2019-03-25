@@ -158,6 +158,7 @@ use yii\bootstrap\Progress;
     .layout-content-container .crowd-funding .panel {
         border-radius: 8px;
         position: relative;
+        transition: transform 0.3s ease-in-out;
     }
 
     .layout-content-container .crowd-funding .panel::after {
@@ -170,12 +171,18 @@ use yii\bootstrap\Progress;
         top: 0;
         left: 0;
 
-        box-shadow: 0 0 40px #dadada;
-        -webkit-box-shadow: 0 0 40px #dadada;
-        -moz-box-shadow: 0 0 40px #dadada;
+        box-shadow: 0 0 40px #c5c5c5;
+        -webkit-box-shadow: 0 0 40px #c5c5c5;
+        -moz-box-shadow: 0 0 40px #c5c5c5;
 
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
+    }
+
+
+
+    .layout-content-container .crowd-funding .panel:hover {
+        transform: translate(0, -5px);
     }
 
     .layout-content-container .crowd-funding .panel:hover::after {
