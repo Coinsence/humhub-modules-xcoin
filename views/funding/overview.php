@@ -48,8 +48,11 @@ use yii\bootstrap\Progress;
                             </div>
                             <!-- campaign cover end -->
                             <!-- campaign invest action start -->
-                            <div class="invest-btn">
-
+                            <?php if ( $funding->canInvest() ): ?>
+                                <div class="invest-btn disabled">
+                            <?php else: ?>
+                                <div class="invest-btn">
+                            <?php endif; ?>
                                 <?php if ( Yii::$app->user->isGuest ): ?>
                                     <?= Html::a( Yii::t( 'XcoinModule.base', 'Invest in this project' ), Yii::$app->user->loginUrl, [ 'data-target' => '#globalModal' ] ) ?>
                                 <?php else: ?>
@@ -57,7 +60,7 @@ use yii\bootstrap\Progress;
                                             'invest',
                                             'fundingId' => $funding->id,
                                             'container' => $this->context->contentContainer
-                                    ], [ 'data-target' => '#globalModal', 'disabled' => $funding->canInvest() ] ); ?>
+                                    ], [ 'data-target' => '#globalModal'] ); ?>
                                 <?php endif; ?>
 
                             </div>
@@ -225,6 +228,16 @@ use yii\bootstrap\Progress;
 
     .fundingPanels .panel.cover .panel-heading .invest-btn a:hover {
         background: #25a264;
+    }
+
+    .fundingPanels .panel.cover .panel-heading .invest-btn.disabled {
+        cursor: not-allowed;
+    }
+
+    .fundingPanels .panel.cover .panel-heading .invest-btn.disabled a {
+        pointer-events: none;
+        display: inline-block;
+        opacity: 0.5;
     }
 
     .fundingPanels .panel.cover .panel-heading .edit-btn {
