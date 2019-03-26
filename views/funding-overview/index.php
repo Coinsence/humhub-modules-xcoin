@@ -38,7 +38,9 @@ use yii\bootstrap\Progress;
                         ] )->orderBy( [ 'id' => SORT_ASC ] )->one();
                         ?>
 
-                        <a href="<?= $space->createUrl( '/xcoin/funding' ); ?>">
+                        <a href="<?= $space->createUrl('/xcoin/funding/overview', [
+                            'fundingId' => $funding->id
+                        ]); ?>">
                             <div class="col-md-3">
                                 <div class="panel">
                                     <div class="panel-heading">
