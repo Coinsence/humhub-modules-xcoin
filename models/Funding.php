@@ -74,8 +74,8 @@ class Funding extends ActiveRecord
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
-            [['title'], 'string', 'max' => 255],
-            [['description', 'content'], 'string'],
+            [['title', 'description'], 'string', 'max' => 255],
+            [['content'], 'string'],
             [['deadline'], DbDateValidator::class],
         ];
     }
@@ -232,7 +232,7 @@ class Funding extends ActiveRecord
 
     public function isThirdStep()
     {
-        return empty($this->title) || empty($this->description) || empty($this->content) || empty($this->deadline);
+        return empty($this->title) || empty($this->description) || empty($this->content) || empty($this->deadline) || strlen($this->description) > 255 ;
     }
 
     public function canDelete()
