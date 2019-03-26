@@ -35,7 +35,7 @@ $upload = Upload::withName();
                         'options' => ['accept' => 'image/*'],
                         'cssButtonClass' => 'btn-default btn-sm',
                         'dropZone' => '#account-form',
-                        'max' => Yii::$app->getModule('content')->maxAttachedFiles,
+                        'max' => 7,
                     ]) ?>
                 </div>
                 <div class="col-md-1"></div>

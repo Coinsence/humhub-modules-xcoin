@@ -50,8 +50,8 @@ use yii\bootstrap\Progress;
                         <?php if ( $cover ) : ?>
                             <?= Html::img( $cover->getUrl(), [ 'height' => '140' ] ) ?>
                         <?php else : ?>
-                            <?= Html::img( 'https://www.bbsocal.com/wp-content/uploads/2017/07/Funding-icon.jpg', [
-                                    'height' => '190',
+                            <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
+                                    'height' => '140',
                                     'width'  => '320'
                             ] ) ?>
                         <?php endif ?>

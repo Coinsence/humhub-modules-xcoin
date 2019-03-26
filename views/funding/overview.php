@@ -1,8 +1,6 @@
 <?php
 
 use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\file\models\File;
-use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Funding;
 use yii\bootstrap\Html;
@@ -32,8 +30,7 @@ use yii\bootstrap\Progress;
                                 <?php if ($cover) : ?>
                                     <?= Html::img($cover->getUrl(), ['width' => '100%']) ?>
                                 <?php else : ?>
-                                    <?= Html::img('https://www.bbsocal.com/wp-content/uploads/2017/07/Funding-icon.jpg', [
-                                        'height' => '300',
+                                    <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
                                         'width' => '100%'
                                     ]) ?>
                                 <?php endif ?>
