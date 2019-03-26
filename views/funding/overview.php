@@ -339,7 +339,7 @@ use yii\bootstrap\Progress;
         .fundingPanels .panel.cover .panel-footer .funding-progress .progress {
             width: 100%;
             height: 8px;
-            margin-top: 12px;
+            margin-top: 3px;
             background: #e4e8eb;
         }
 

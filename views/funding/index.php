@@ -66,11 +66,6 @@ use yii\bootstrap\Progress;
                                     'link'        => false
                             ] ); ?>
                             <!-- space image end -->
-
-                            <!-- campaign title start -->
-                            <span><?= "Project by <strong>" . Html::encode( $space->name ) . "</strong>"; ?></span>
-                            <!-- campaign title end -->
-
                         </div>
                     </div>
                     <div class="panel-body">
@@ -200,7 +195,7 @@ use yii\bootstrap\Progress;
 
     .layout-content-container .crowd-funding .panel-heading .project-owner {
         position: absolute;
-        bottom: -34px;
+        bottom: -18px;
         left: 0;
         right: 0;
     }
@@ -223,7 +218,7 @@ use yii\bootstrap\Progress;
     }
 
     .layout-content-container .crowd-funding .panel-body {
-        margin-top: 38px;
+        margin-top: 20px;
         height: 100px;
     }
 
@@ -295,7 +290,7 @@ use yii\bootstrap\Progress;
     .layout-content-container .crowd-funding .panel-footer .funding-progress .progress {
         width: 100%;
         height: 6px;
-        margin-top: 12px;
+        margin-top: 3px;
         background: #e4e8eb;
     }
 
