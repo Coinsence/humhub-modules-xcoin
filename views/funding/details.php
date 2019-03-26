@@ -35,7 +35,7 @@ use humhub\modules\ui\form\widgets\DatePicker;
         </div>
 
         <div class="col-md-12">
-            <?= $form->field($model, 'description')->textarea()
+            <?= $form->field($model, 'description')->textarea(['maxlength'=>255])
                 ->hint('Please enter your campaign description') ?>
         </div>
         <div class="col-md-12">
