@@ -38,7 +38,7 @@ use yii\bootstrap\Progress;
                             </div>
                             <!-- campaign cover end -->
                             <!-- campaign invest action start -->
-                            <?php if ($funding->canInvest()): ?>
+                            <?php if (!$funding->canInvest()): ?>
                             <div class="invest-btn disabled">
                                 <?php else: ?>
                                 <div class="invest-btn">
@@ -128,8 +128,12 @@ use yii\bootstrap\Progress;
                                             <div class="clock red"></div>
                                         <?php endif; ?>
                                         <div class="days">
-                                            <strong><?= $funding->getRemainingDays() ?></strong> <?= $funding->getRemainingDays() > 1 ? 'Days' : 'Day' ?>
-                                            left
+                                            <?php if ($funding->getRemainingDays() > 0) : ?>
+                                                <strong><?= $funding->getRemainingDays() ?></strong> <?= $funding->getRemainingDays() > 1 ? 'Days' : 'Day' ?>
+                                                left
+                                            <?php else : ?>
+                                                <strong>Closed</strong>
+                                            <?php endif; ?>
                                         </div>
                                         <!-- campaign remaining days end -->
 

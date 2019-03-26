@@ -279,7 +279,7 @@ class Funding extends ActiveRecord
 
     public function canInvest()
     {
-        return $this->getBaseMaximumAmount() == 0 && $this->getRemainingDays() > 0;
+        return $this->getBaseMaximumAmount() > 0 && $this->getRemainingDays() > 0;
     }
 
     public function getCover()
