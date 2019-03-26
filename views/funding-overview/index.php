@@ -31,11 +31,8 @@ use yii\bootstrap\Progress;
                 <?php foreach ( $fundings as $funding ): ?>
                     <?php if ( $funding->getBaseMaximumAmount() > 0 && $funding->getRemainingDays() > 0 ): ?>
                         <?php
-                        $space = Space::findOne( [ 'id' => $funding->space_id ] );
-                        $cover = File::find()->where( [
-                                'object_model' => Funding::class,
-                                'object_id'    => $funding->id
-                        ] )->orderBy( [ 'id' => SORT_ASC ] )->one();
+                        $space = $funding->getSpace()->one();
+                        $cover = $funding->getCover();
                         ?>
 
                         <a href="<?= $space->createUrl('/xcoin/funding/overview', [

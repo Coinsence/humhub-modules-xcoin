@@ -1,9 +1,6 @@
 <?php
 
-use humhub\modules\file\models\File;
-use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
-use humhub\modules\xcoin\models\Funding;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use yii\bootstrap\Html;
 use yii\bootstrap\Progress;
@@ -38,11 +35,8 @@ use yii\bootstrap\Progress;
 <div class="row">
     <?php foreach ( $fundings as $funding ): ?>
         <?php
-        $space = Space::findOne( [ 'id' => $funding->space_id ] );
-        $cover = File::find()->where( [
-                'object_model' => Funding::class,
-                'object_id'    => $funding->id
-        ] )->orderBy( [ 'id' => SORT_ASC ] )->one();
+        $space = $funding->getSpace()->one();
+        $cover = $funding->getCover();
         ?>
 
         <a href="<?= $space->createUrl( '/xcoin/funding/overview', [

@@ -5,6 +5,7 @@ namespace humhub\modules\xcoin\models;
 use DateTime;
 use humhub\components\ActiveRecord;
 use humhub\libs\DbDateValidator;
+use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
@@ -279,5 +280,28 @@ class Funding extends ActiveRecord
     public function canInvest()
     {
         return $this->getBaseMaximumAmount() == 0 && $this->getRemainingDays() > 0;
+    }
+
+    public function getCover()
+    {
+        $cover = File::find()->where([
+            'object_model' => Funding::class,
+            'object_id' => $this->id
+        ])->orderBy(['id' => SORT_ASC])->one();
+
+        return $cover;
+    }
+
+    public function getGallery()
+    {
+        $gallery = File::find()->where([
+            'object_model' => Funding::class,
+            'object_id' => $this->id
+        ])->orderBy(['id' => SORT_ASC])->all();
+
+        //removing cover
+        array_shift($gallery);
+
+        return $gallery;
     }
 }
