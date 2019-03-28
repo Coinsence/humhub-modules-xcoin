@@ -3,10 +3,8 @@
 namespace humhub\modules\xcoin\controllers;
 
 use Yii;
-use yii\data\ActiveDataProvider;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\xcoin\helpers\AccountHelper;
-use humhub\modules\xcoin\helpers\TransactionHelper;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
@@ -14,6 +12,7 @@ use humhub\modules\xcoin\models\Funding;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\FundingInvest;
+use yii\web\HttpException;
 
 /**
  * Description of AccountController
@@ -37,9 +36,22 @@ class FundingController extends ContentContainerController
         $activeFundings = Funding::find()->where(['space_id' => $this->contentContainer->id])->andWhere(['>', 'available_amount', 0])->all();
 
         return $this->render('index', [
-                    'fundings' => $fundings,
-                    'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
-                    'activeFundings' => $activeFundings,
+            'fundings' => $fundings,
+            'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
+            'activeFundings' => $activeFundings,
+        ]);
+    }
+
+    public function actionOverview($fundingId)
+    {
+        $funding = Funding::findOne(['id' => $fundingId]);
+
+        if(!$funding) {
+            throw new HttpException(404);
+        }
+
+        return $this->render('overview', [
+            'funding' => $funding,
         ]);
     }
 
@@ -59,8 +71,8 @@ class FundingController extends ContentContainerController
         $fromAccount = Account::findOne(['id' => Yii::$app->request->get('accountId')]);
         if ($fromAccount === null) {
             return $this->renderAjax('@xcoin/views/transaction/select-account', [
-                        'contentContainer' => Yii::$app->user->getIdentity(),
-                        'nextRoute' => ['/xcoin/funding/invest', 'fundingId' => $funding->id, 'container' => $this->contentContainer],
+                'contentContainer' => Yii::$app->user->getIdentity(),
+                'nextRoute' => ['/xcoin/funding/invest', 'fundingId' => $funding->id, 'container' => $this->contentContainer],
             ]);
         }
 
@@ -73,12 +85,11 @@ class FundingController extends ContentContainerController
         }
 
         return $this->renderAjax('invest', [
-                    'funding' => $funding,
-                    'model' => $model,
-                    'fromAccount' => $fromAccount
+            'funding' => $funding,
+            'model' => $model,
+            'fromAccount' => $fromAccount
         ]);
     }
-
 
 
     public function actionEdit()
@@ -98,7 +109,7 @@ class FundingController extends ContentContainerController
         $model->load(Yii::$app->request->post());
 
         // Step 1: Wanted Asset Selection
-        if (empty($model->asset_id)) {
+        if ($model->isFirstStep()) {
             $assetList = [];
             foreach (Asset::find()->andWhere(['!=', 'id', AssetHelper::getSpaceAsset($this->contentContainer)->id])->all() as $asset) {
                 $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
@@ -107,17 +118,39 @@ class FundingController extends ContentContainerController
             return $this->renderAjax('create', ['model' => $model, 'assetList' => $assetList]);
         }
 
-        // Try Save
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') != '1' && $model->save()) {
+        // Try Save Step 2
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
+
+            // Step 3: Details
+            return $this->renderAjax('details', ['model' => $model]);
+        }
+
+        // Try Save Step 3
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3') {
+
+            // Step 4: Gallery
+            return $this->renderAjax('media', ['model' => $model]);
+        }
+
+        // Try Save Step 4
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '4' && $model->save()) {
+            $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
             $this->view->saved();
             return $this->htmlRedirect(['/xcoin/funding', 'container' => $this->contentContainer]);
         }
 
+        // Check validation
+        if ($model->hasErrors() && $model->isThirdStep()) {
+
+            return $this->renderAjax('details', ['model' => $model]);
+        }
+
         // Step 2: Exchange Rate
         return $this->renderAjax('edit', [
-                    'model' => $model,
-                    'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
-                    'fundingAccountBalance' => AccountHelper::getFundingAccountBalance($this->contentContainer),
+            'model' => $model,
+            'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
+            'fundingAccountBalance' => AccountHelper::getFundingAccountBalance($this->contentContainer),
         ]);
     }
 
