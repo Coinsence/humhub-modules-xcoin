@@ -198,7 +198,7 @@ use yii\bootstrap\Progress;
         position: relative;
     }
 
-    .layout-content-container .crowd-funding .panel-heading img {
+    .layout-content-container .crowd-funding .panel-heading > img {
         width: 100%;
         border-top-right-radius: 4px;
         border-top-left-radius: 4px;
@@ -209,11 +209,16 @@ use yii\bootstrap\Progress;
         bottom: -34px;
         left: 0;
         right: 0;
+        text-align: center;
     }
 
     .layout-content-container .crowd-funding .panel-heading .project-owner div.space-acronym {
         display: block;
         margin: 0 auto;
+        border: white 2px solid;
+    }
+
+    .layout-content-container .crowd-funding .panel-heading .project-owner img.profile-user-photo {
         border: white 2px solid;
     }
 

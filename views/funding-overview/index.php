@@ -206,7 +206,7 @@ use yii\bootstrap\Progress;
         position: relative;
     }
 
-    .fundingPanels .panel-heading img {
+    .fundingPanels .panel-heading > img {
         width: 100%;
         border-top-right-radius: 4px;
         border-top-left-radius: 4px;
@@ -217,11 +217,16 @@ use yii\bootstrap\Progress;
         bottom: -34px;
         left: 0;
         right: 0;
+        text-align: center;
     }
 
     .fundingPanels .panel-heading .project-owner div.space-acronym {
         display: block;
         margin: 0 auto;
+        border: white 2px solid;
+    }
+
+    .fundingPanels .panel-heading .project-owner img.profile-user-photo {
         border: white 2px solid;
     }
 
