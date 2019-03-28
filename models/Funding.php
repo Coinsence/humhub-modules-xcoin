@@ -157,7 +157,7 @@ class Funding extends ActiveRecord
 
     public function getRequestedAmount()
     {
-        return $this->total_amount / $this->exchange_rate;
+        return round($this->total_amount / $this->exchange_rate);
     }
 
     /**
@@ -235,7 +235,7 @@ class Funding extends ActiveRecord
         return empty($this->title) || empty($this->description) || empty($this->content) || empty($this->deadline) || strlen($this->description) > 255 ;
     }
 
-    public function canDelete()
+    public function canDeleteFile()
     {
         $space = Space::findOne(['id' => $this->space_id]);
 
