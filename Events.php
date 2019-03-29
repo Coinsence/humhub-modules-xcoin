@@ -13,15 +13,6 @@ class Events
     public static function onTopMenuInit($event)
     {
         $event->sender->addItem([
-            'label' => Yii::t('XcoinModule.base', 'Asset Exchange'),
-            'url' => Url::to(['/xcoin/exchange']),
-            'icon' => '<i class="fa fa-exchange"></i>',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'exchange'),
-            'sortOrder' => 100000,
-        ]);
-
-
-        $event->sender->addItem([
             'label' => Yii::t('XcoinModule.base', 'Crowd Funding'),
             'url' => Url::to(['/xcoin/funding-overview']),
             'icon' => '<i class="fa fa-line-chart"></i>',
@@ -29,23 +20,34 @@ class Events
             'sortOrder' => 900,
         ]);
 
-        /*
-          $event->sender->addItem([
-          'label' => Yii::t('XcoinModule.base', 'Jobs / Help wanted'),
-          'url' => Url::to(['/xcoin/job/overview']),
-          'icon' => '<i class="fa fa-gavel"></i>',
-          'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'job' && Yii::$app->controller->action->id == 'overview'),
-          'sortOrder' => 900,
-          ]);
+        // deactivate directory menu item
+        $event->sender->deleteItemByUrl(Url::to(['/directory/directory']));
 
-          $event->sender->addItem([
-          'label' => Yii::t('XcoinModule.base', 'Marketplace'),
-          'url' => Url::to(['/xcoin/marketplace']),
-          'icon' => '<i class="fa fa-shopping-basket"></i>',
-          'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'marketplace'),
-          'sortOrder' => 900,
-          ]);
-         */
+        /*
+        $event->sender->addItem([
+            'label' => Yii::t('XcoinModule.base', 'Asset Exchange'),
+            'url' => Url::to(['/xcoin/exchange']),
+            'icon' => '<i class="fa fa-exchange"></i>',
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'exchange'),
+            'sortOrder' => 100000,
+        ]);
+
+        $event->sender->addItem([
+            'label' => Yii::t('XcoinModule.base', 'Jobs / Help wanted'),
+            'url' => Url::to(['/xcoin/job/overview']),
+            'icon' => '<i class="fa fa-gavel"></i>',
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'job' && Yii::$app->controller->action->id == 'overview'),
+            'sortOrder' => 900,
+        ]);
+
+        $event->sender->addItem([
+            'label' => Yii::t('XcoinModule.base', 'Marketplace'),
+            'url' => Url::to(['/xcoin/marketplace']),
+            'icon' => '<i class="fa fa-shopping-basket"></i>',
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'marketplace'),
+            'sortOrder' => 900,
+        ]);
+        */
     }
 
     public static function onSpaceMenuInit($event)
