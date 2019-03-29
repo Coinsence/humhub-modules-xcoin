@@ -4,7 +4,9 @@ namespace humhub\modules\xcoin;
 
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Funding;
+use humhub\widgets\TopMenu;
 use Yii;
+use yii\base\Event;
 use yii\helpers\Url;
 
 class Events
@@ -20,8 +22,11 @@ class Events
             'sortOrder' => 900,
         ]);
 
-        // deactivate directory menu item
-        $event->sender->deleteItemByUrl(Url::to(['/directory/directory']));
+        Event::on(TopMenu::class, TopMenu::EVENT_BEFORE_RUN, function ($event){
+            // deactivate directory menu item
+            $event->sender->deleteItemByUrl(Url::to(['/directory/directory']));
+        });
+
 
         /*
         $event->sender->addItem([
