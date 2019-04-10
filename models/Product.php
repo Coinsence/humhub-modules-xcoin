@@ -14,9 +14,11 @@ use yii\db\ActiveQuery;
  * @property string $description
  * @property float $price
  * @property string $content
- * @property integer asset_id
- * @property integer created_by
+ * @property integer $asset_id
+ * @property integer $created_by
  * @property string $created_at
+ * @property integer $space_id
+ * @property integer $product_type
  *
  * @property Asset $asset
  * @property User $owner
@@ -25,6 +27,9 @@ class Product extends ActiveRecord
 {
     const SCENARIO_EDIT = 'sedit';
     const SCENARIO_CREATE = 'screate';
+
+    const TYPE_PERSONAL = 1;
+    const TYPE_SPACE = 2;
 
     public $pictureFile;
 
@@ -43,7 +48,7 @@ class Product extends ActiveRecord
     {
         return [
             [['name', 'description', 'price', 'content', 'asset_id'], 'required'],
-            [['asset_id', 'created_by'], 'integer'],
+            [['asset_id', 'created_by', 'product_type', 'space_id'], 'integer'],
             [['price'], 'number', 'min' => '0'],
             [['created_at'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],

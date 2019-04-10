@@ -11,10 +11,17 @@ use Yii;
 class ProductController extends Controller
 {
 
-    public function actionCreate()
+    public function actionCreate($spaceId = null)
     {
         $model = new Product();
         $model->scenario = Product::SCENARIO_CREATE;
+
+        if ($spaceId) {
+            $model->space_id = $spaceId;
+            $model->product_type = Product::TYPE_SPACE;
+        } else {
+            $model->product_type = Product::TYPE_PERSONAL;
+        }
 
         $assetList = [];
         foreach (Asset::find()->all() as $asset) {
@@ -24,8 +31,8 @@ class ProductController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
-
             $this->view->saved();
+
             return $this->htmlRedirect(['/xcoin/marketplace']);
         }
 
