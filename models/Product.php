@@ -5,7 +5,6 @@ namespace humhub\modules\xcoin\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
 use yii\db\ActiveQuery;
-use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "xcoin_product".
@@ -27,9 +26,6 @@ class Product extends ActiveRecord
     const SCENARIO_EDIT = 'sedit';
     const SCENARIO_CREATE = 'screate';
 
-    /**
-     * @var UploadedFile
-     */
     public $pictureFile;
 
     /**
@@ -54,7 +50,7 @@ class Product extends ActiveRecord
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['name', 'description'], 'string', 'max' => 255],
             [['content'], 'string'],
-//            [['pictureFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['pictureFile'], 'safe'],
         ];
     }
 
@@ -67,7 +63,6 @@ class Product extends ActiveRecord
                 'price',
                 'content',
                 'asset_id',
-                'pictureFile'
             ],
             self::SCENARIO_EDIT => [
                 'name',
@@ -75,7 +70,6 @@ class Product extends ActiveRecord
                 'price',
                 'content',
                 'asset_id',
-                'pictureFile'
             ],
         ];
     }
@@ -94,7 +88,6 @@ class Product extends ActiveRecord
             'name' => 'Name',
             'description' => 'Description',
             'content' => 'Detailed Description',
-            'pictureFile' => 'Picture'
         ];
     }
 
@@ -117,15 +110,5 @@ class Product extends ActiveRecord
     public function shortenDescription()
     {
         return (strlen($this->description) > 100) ? substr($this->description, 0, 97) . '...' : $this->description;
-    }
-
-    public function upload()
-    {
-        if ($this->validate()) {
-            $this->pictureFile->saveAs('uploads/' . $this->pictureFile->baseName . '.' . $this->pictureFile->extension);
-            return true;
-        } else {
-            return false;
-        }
     }
 }

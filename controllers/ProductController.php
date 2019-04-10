@@ -23,6 +23,8 @@ class ProductController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
+            $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
             $this->view->saved();
             return $this->htmlRedirect(['/xcoin/marketplace']);
         }
