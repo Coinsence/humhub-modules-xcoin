@@ -3,11 +3,10 @@
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Product;
+use humhub\modules\xcoin\widgets\BuyProductButton;
 use humhub\widgets\TimeAgo;
 use yii\bootstrap\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
-use yii\bootstrap\Progress;
-
 /**
  * @var $product Product
  */
@@ -40,15 +39,12 @@ use yii\bootstrap\Progress;
                             <!-- product image end -->
                             <!-- product buy action start -->
                             <div class="invest-btn">
-                                <?= Html::a(Yii::t('XcoinModule.base', 'Buy this product'), [
-                                    'invest',
-                                    'fundingId' => $product->id,
-                                    'container' => $this->context->contentContainer
-                                ], ['data-target' => '#globalModal']); ?>
+                                <?= BuyProductButton::widget(['guid' => $product->getCreatedBy()->one()->guid])?>
                             </div>
                             <!-- product buy action end -->
                             <!-- product edit button start -->
-                            <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
+
+                            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) || $product->isOwner(Yii::$app->user->identity)): ?>
                                 <?= Html::a(Yii::t('XcoinModule.base', '<i class="fa fa-pencil"></i>Edit'), ['/xcoin/product/edit', 'id' => $product->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
                             <?php endif; ?>
                             <!-- product edit button end -->
@@ -129,19 +125,10 @@ use yii\bootstrap\Progress;
     }
 
     .fundingPanels .panel.cover .panel-heading .invest-btn {
-        /*position: absolute;*/
-        /*bottom: 0;*/
-        /*left: 0;*/
         width: 100%;
-        /*height: 0;*/
-        /*-webkit-transition: height .25s ease-in-out;*/
-        /*-moz-transition: height .25s ease-in-out;*/
-        /*-ms-transition: height .25s ease-in-out;*/
-        /*-o-transition: height .25s ease-in-out;*/
-        /*transition: height .25s ease-in-out;*/
     }
 
-    .fundingPanels .panel.cover .panel-heading .invest-btn a {
+    .fundingPanels .panel.cover .panel-heading .invest-btn button {
         -webkit-border-radius: 0;
         -moz-border-radius: 0;
         border-radius: 0;
@@ -149,13 +136,14 @@ use yii\bootstrap\Progress;
         background: #28aa69;
         text-transform: uppercase;
         color: #fff;
+        border: 0;
         display: inline-block;
         padding: 26px 20px;
         font-size: 17px;
         font-weight: bold;
     }
 
-    .fundingPanels .panel.cover .panel-heading .invest-btn a:hover {
+    .fundingPanels .panel.cover .panel-heading .invest-btn button:hover {
         background: #25a264;
     }
 
@@ -163,7 +151,7 @@ use yii\bootstrap\Progress;
         cursor: not-allowed;
     }
 
-    .fundingPanels .panel.cover .panel-heading .invest-btn.disabled a {
+    .fundingPanels .panel.cover .panel-heading .invest-btn.disabled button {
         pointer-events: none;
         display: inline-block;
         opacity: 0.5;

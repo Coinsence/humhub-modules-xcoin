@@ -51,7 +51,7 @@ $upload = Upload::forModel($model, $model->pictureFile);
                 ],
             ])->hint('Please choose the payment asset for your product'); ?>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-6">
             <?=
             $form->field($model, 'payment_type')->widget(Select2::class, [
                 'data' => Product::getPaymentTypes(),
@@ -63,6 +63,19 @@ $upload = Upload::forModel($model, $model->pictureFile);
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ],
             ])->hint('Please choose the sale type for your product'); ?>
+        </div>
+        <div class="col-md-6">
+            <?=
+            $form->field($model, 'status')->widget(Select2::class, [
+                'data' => Product::getStatuses(),
+                'options' => ['placeholder' => '- Select status - '],
+                'theme' => Select2::THEME_BOOTSTRAP,
+                'hideSearch' => true,
+                'pluginOptions' => [
+                    'allowClear' => false,
+                    'escapeMarkup' => new JsExpression("function(m) { return m; }"),
+                ],
+            ])->hint('Please choose your product status'); ?>
         </div>
         <div class="col-md-12">
             <label class="control-label" for="product-price">Picture</label><br>

@@ -1,17 +1,21 @@
 <?php
 
-use humhub\libs\ProfileImage;
+use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\xcoin\models\Product;
 use humhub\widgets\TimeAgo;
 use yii\bootstrap\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
-use yii\bootstrap\Progress;
 
 /** @var $products Product[] */
 ?>
 
 <div class="container">
     <div class="row">
+        <div class="pull-right sell-button">
+            <?= Html::a('Sell Product', [
+                '/xcoin/marketplace/sell',
+            ], ['class' => 'btn btn-success btn-lg', 'data-target' => '#globalModal']); ?>
+        </div>
         <div class="col-md-12 fundingPanels">
             <?php if (count($products) === 0): ?>
                 <div class="panel">
@@ -30,13 +34,15 @@ use yii\bootstrap\Progress;
             <div class="row">
                 <?php foreach ($products as $product): ?>
                     <?php
-                    $user = Yii::$app->user->identity->getProfile();
+                    $user = $product->getCreatedBy()->one();
+                    $userProfile = $user->getProfile()->one();
                     $space = $product->getSpace()->one();
                     $picture = $product->getPicture();
                     $overviewLink = $product->isSpaceProduct() ? $space->createUrl('/xcoin/product/overview', [
                         'productId' => $product->id
-                    ]) : '/product'
-                    ?>
+                    ]) : $user->createUrl('/xcoin/product/overview', [
+                        'productId' => $product->id
+                    ]) ?>
                     <a href="<?= $overviewLink ?>">
                         <div class="col-md-3">
                             <div class="panel">
@@ -62,14 +68,19 @@ use yii\bootstrap\Progress;
                                             <!-- space image end -->
                                         <?php else : ?>
                                             <!-- user profile image start -->
-
+                                            <?= UserImage::widget([
+                                                'user' => $user,
+                                                'width' => 34,
+                                                'showTooltip' => true,
+                                                'link' => false
+                                            ]); ?>
                                             <!-- user profile image end -->
                                         <?php endif; ?>
                                         <!-- product name start -->
                                         <span>
                                             <?= $product->isSpaceProduct() ?
                                                 "<strong>" . Html::encode($space->name) . "</strong>" :
-                                                "<strong>" . Html::encode($user->firstname) . " " . Html::encode($user->lastname) . "</strong>"; ?>
+                                                "<strong>" . Html::encode($userProfile->firstname) . " " . Html::encode($userProfile->lastname) . "</strong>"; ?>
                                         </span>
                                         <!-- product name end -->
                                     </div>
@@ -302,4 +313,8 @@ use yii\bootstrap\Progress;
         margin-right: 2px;
     }
 
+    .sell-button {
+        margin-bottom: 15px;
+        margin-right: 15px;
+    }
 </style>

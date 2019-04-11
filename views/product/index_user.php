@@ -14,18 +14,16 @@ use yii\bootstrap\Html;
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="pull-right">
-            <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
-                <?= Html::a(Yii::t('XcoinModule.base', 'Sell product'), [
-                    '/xcoin/product/create',
-                    'container' => $this->context->contentContainer
-                ], ['class' => 'btn btn-success btn-sm', 'data-target' => '#globalModal']); ?>
-            <?php endif; ?>
+            <?= Html::a(Yii::t('XcoinModule.base', 'Sell product'), [
+                '/xcoin/marketplace/sell',
+                'container' => $this->context->contentContainer
+            ], ['class' => 'btn btn-success btn-sm', 'data-target' => '#globalModal']); ?>
         </div>
-        <?= Yii::t('XcoinModule.base', '<strong>Products</strong>'); ?>
+        <?= Yii::t('XcoinModule.base', '<strong>Your products</strong>'); ?>
     </div>
 
     <div class="panel-body">
-        <p><?= Yii::t('XcoinModule.base', 'This is the list of space products.'); ?></p>
+        <p><?= Yii::t('XcoinModule.base', 'This is the list of your products.'); ?></p>
 
         <?php if (count($products) === 0): ?>
             <br/>
@@ -39,12 +37,11 @@ use yii\bootstrap\Html;
 <div class="row">
     <?php foreach ($products as $product): ?>
         <?php
-        $space = $product->getSpace()->one();
+        $user = Yii::$app->user->identity;
         $picture = $product->getPicture();
         ?>
 
-        <a href="<?= $space->createUrl('/xcoin/product/overview', [
-            'container' => $this->context->contentContainer,
+        <a href="<?= $user->createUrl('/xcoin/product/overview', [
             'productId' => $product->id
         ]); ?>">
             <div class="col-md-4 crowd-funding">
@@ -62,14 +59,9 @@ use yii\bootstrap\Html;
                         <!-- product picture end -->
                         <div class="project-owner">
 
-                            <!-- space image start -->
-                            <?= SpaceImage::widget([
-                                'space' => $space,
-                                'width' => 34,
-                                'showTooltip' => true,
-                                'link' => false
-                            ]); ?>
-                            <!-- space image end -->
+                            <!-- user profile image start -->
+
+                            <!-- user profile image end -->
                         </div>
                     </div>
                     <div class="panel-body">

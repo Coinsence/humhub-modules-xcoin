@@ -6,6 +6,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\file\models\File;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use Yii;
 use yii\db\ActiveQuery;
 
 /**
@@ -164,12 +165,20 @@ class Product extends ActiveRecord
         return parent::beforeSave($insert);
     }
 
-    public function getPaymentTypes()
+    public static function getPaymentTypes()
     {
         return [
             self::PAYMENT_PER_UNIT => 'Per Unit',
             self::PAYMENT_PER_HOUR => 'Per Hour',
             self::PAYMENT_PER_DAY => 'Per Day'
+        ];
+    }
+
+    public static function getStatuses()
+    {
+        return [
+            self::STATUS_AVAILABLE => 'Available',
+            self::STATUS_UNAVAILABLE => 'Unavailable',
         ];
     }
 
@@ -181,5 +190,22 @@ class Product extends ActiveRecord
     public function isSpaceProduct()
     {
         return $this->product_type == self::TYPE_SPACE;
+    }
+
+    public function canDeleteFile()
+    {
+        $space = Space::findOne(['id' => $this->space_id]);
+        $actionPerformer = Yii::$app->user->identity;
+
+        if (($space && $space->isAdmin($actionPerformer)) || $this->isOwner($actionPerformer)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isOwner($user)
+    {
+        return $user->id == $this->getCreatedBy()->one()->id;
     }
 }

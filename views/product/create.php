@@ -54,7 +54,7 @@ $upload = Upload::forModel($model, $model->pictureFile);
         <div class="col-md-12">
             <?=
             $form->field($model, 'payment_type')->widget(Select2::class, [
-                'data' => $model->getPaymentTypes(),
+                'data' => Product::getPaymentTypes(),
                 'options' => ['placeholder' => '- Select payment type - '],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
