@@ -74,7 +74,15 @@ class Events
                 'label' => Yii::t('XcoinModule.base', 'Accounts'),
                 'url' => $space->createUrl('/xcoin/overview'),
                 'icon' => '<i class="fa fa fa-money"></i>',
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id !== 'funding'),
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' &&  !in_array(Yii::$app->controller->id, ['funding', 'product'])),
+            ]);
+
+            $event->sender->addItem([
+                'label' => Yii::t('XcoinModule.base', 'Products'),
+                'url' => $space->createUrl('/xcoin/product'),
+                'icon' => '<i class="fa fa fa-product-hunt"></i>',
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'product'),
+                'sortOrder' => 20000,
             ]);
         }
     }

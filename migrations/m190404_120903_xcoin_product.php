@@ -23,6 +23,8 @@ class m190404_120903_xcoin_product extends Migration
             'created_by' => $this->integer()->notNull(),
             'product_type' => $this->integer()->notNull(),
             'space_id' => $this->integer(),
+            'payment_type' => $this->integer(),
+            'status' => $this->integer(),
         ]);
 
         $this->addForeignKey('fk_product_asset', 'xcoin_product', 'asset_id', 'xcoin_asset', 'id', 'CASCADE', 'CASCADE');

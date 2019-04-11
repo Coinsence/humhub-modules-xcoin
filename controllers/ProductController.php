@@ -2,26 +2,41 @@
 
 namespace humhub\modules\xcoin\controllers;
 
-use humhub\components\Controller;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\modules\xcoin\helpers\AccountHelper;
+use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Product;
 use Yii;
+use yii\web\HttpException;
 
-class ProductController extends Controller
+class ProductController extends ContentContainerController
 {
+    /**
+     * @inheritdoc
+     */
+    public $validContentContainerClasses = [Space::class];
 
-    public function actionCreate($spaceId = null)
+    public function actionIndex()
+    {
+        AssetHelper::initContentContainer($this->contentContainer);
+        AccountHelper::initContentContainer($this->contentContainer);
+
+        $products = Product::find()->where(['space_id' => $this->contentContainer->id])->all();
+
+        return $this->render('index', [
+            'products' => $products,
+        ]);
+    }
+
+    public function actionCreate()
     {
         $model = new Product();
         $model->scenario = Product::SCENARIO_CREATE;
-
-        if ($spaceId) {
-            $model->space_id = $spaceId;
-            $model->product_type = Product::TYPE_SPACE;
-        } else {
-            $model->product_type = Product::TYPE_PERSONAL;
-        }
+        $model->product_type = Product::TYPE_SPACE;
+        $model->space_id = $this->contentContainer->id;
 
         $assetList = [];
         foreach (Asset::find()->all() as $asset) {
@@ -33,10 +48,22 @@ class ProductController extends Controller
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
 
-            return $this->htmlRedirect(['/xcoin/marketplace']);
+            return $this->htmlRedirect(['/xcoin/product', 'container' => $this->contentContainer]);
         }
 
         return $this->renderAjax('create', ['model' => $model, 'assetList' => $assetList]);
     }
 
+    public function actionOverview($productId)
+    {
+        $product = Product::findOne(['id' => $productId]);
+
+        if(!$product) {
+            throw new HttpException(404);
+        }
+
+        return $this->render('overview', [
+            'product' => $product,
+        ]);
+    }
 }
