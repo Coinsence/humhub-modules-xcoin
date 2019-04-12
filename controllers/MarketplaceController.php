@@ -28,7 +28,9 @@ class MarketplaceController extends Controller
 
         $assetList = [];
         foreach (Asset::find()->all() as $asset) {
-            $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
+            if ($asset->getIssuedAmount()) {
+                $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
+            }
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

@@ -2,9 +2,10 @@
 
 namespace humhub\modules\xcoin\models;
 
-use Yii;
+use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "xcoin_asset".
@@ -14,9 +15,9 @@ use humhub\modules\user\models\User;
  * @property string $title
  *
  * @property Space $space
- * @property TcoinTransaction[] $xcoinTransactions
+ * @property Transaction[] $xcoinTransactions
  */
-class Asset extends \yii\db\ActiveRecord
+class Asset extends ActiveRecord
 {
 
     /**
@@ -64,7 +65,7 @@ class Asset extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getSpace()
     {
@@ -72,7 +73,7 @@ class Asset extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTransactions()
     {
@@ -81,12 +82,7 @@ class Asset extends \yii\db\ActiveRecord
 
     public function getIssuedAmount()
     {
-        #$plus = Transaction::find()->andWhere(['asset_id' => $asset->id])->sum('amount');
-        #$minus = Transaction::find()->where(['from_account_id' => $this->id])->andWhere(['asset_id' => $asset->id])->sum('amount');
-        #return $plus - $minus;
-        #return Transaction::find()->andWhere(['asset_id' => $this->id, 'transaction_type' => Transaction::TRANSACTION_TYPE_ISSUE])->sum('amount');
-
-        $issueAccount = \humhub\modules\xcoin\helpers\AccountHelper::getIssueAccount($this->space);
+        $issueAccount = AccountHelper::getIssueAccount($this->space);
         $query = AccountBalance::find()->where(['asset_id' => $this->id])->andWhere(['!=', 'account_id', $issueAccount->id]);
 
         return $query->sum('balance');
