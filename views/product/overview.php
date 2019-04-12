@@ -79,7 +79,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
                                     <div class="col-md-12 funding-details">
                                         <!-- product payment type -->
                                         Payment :
-                                        <strong><?= $product->getPaymentType() ?></strong>
+                                        <strong><?= $product->getOfferType() ?></strong>
                                         <!-- product payment end -->
                                     </div>
                                 </div>

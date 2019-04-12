@@ -8,7 +8,6 @@ use humhub\widgets\TimeAgo;
 use yii\bootstrap\Html;
 
 /** @var $products Product[] */
-
 ?>
 
 <div class="panel panel-default">
@@ -106,7 +105,7 @@ use yii\bootstrap\Html;
                             <div class="col-md-6">
                                 <!-- product payment type -->
                                 Payment :
-                                <strong><?= $product->getPaymentType() ?></strong>
+                                <strong><?= $product->getOfferType() ?></strong>
                                 <!-- product payment end -->
                             </div>
                         </div>

@@ -22,8 +22,10 @@ use yii\db\ActiveQuery;
  * @property string $created_at
  * @property integer $space_id
  * @property integer $product_type
- * @property integer $payment_type
+ * @property integer $offer_type
  * @property integer $status
+ * @property string $comment
+ * @property float $discount
  *
  * @property Asset $asset
  * @property User $owner
@@ -38,10 +40,9 @@ class Product extends ActiveRecord
     const TYPE_PERSONAL = 1;
     const TYPE_SPACE = 2;
 
-    // Product payment type
-    const PAYMENT_PER_UNIT = 1;
-    const PAYMENT_PER_HOUR = 2;
-    const PAYMENT_PER_DAY = 3;
+    // Product offer type
+    const OFFER_DISCOUNT_FOR_COINS = 1;
+    const OFFER_TOTAL_PRICE_IN_COINS = 2;
 
     // Product status
     const STATUS_UNAVAILABLE = 0;
@@ -63,13 +64,20 @@ class Product extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'description', 'price', 'content', 'asset_id'], 'required'],
-            [['asset_id', 'created_by', 'product_type', 'space_id', 'sale_type', 'status',], 'integer'],
+            [['name', 'description', 'content', 'asset_id', 'comment', 'offer_type'], 'required'],
+            [['price'], 'required', 'when' => function ($model) {
+                return $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS;
+            }],
+            [['discount'], 'required', 'when' => function ($model) {
+                return $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS;
+            }],
+            [['asset_id', 'created_by', 'product_type', 'space_id', 'sale_type', 'status', 'offer_type'], 'integer'],
             [['price'], 'number', 'min' => '0'],
+            [['discount'], 'number', 'min' => '0', 'max' => '100'],
             [['created_at'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
-            [['name', 'description'], 'string', 'max' => 255],
+            [['name', 'description', 'comment'], 'string', 'max' => 255],
             [['content'], 'string'],
             [['pictureFile'], 'safe'],
         ];
@@ -84,7 +92,9 @@ class Product extends ActiveRecord
                 'price',
                 'content',
                 'asset_id',
-                'payment_type',
+                'offer_type',
+                'discount',
+                'comment'
             ],
             self::SCENARIO_EDIT => [
                 'name',
@@ -92,8 +102,10 @@ class Product extends ActiveRecord
                 'price',
                 'content',
                 'asset_id',
-                'payment_type',
-                'status'
+                'offer_type',
+                'status',
+                'discount',
+                'comment'
             ],
         ];
     }
@@ -112,8 +124,21 @@ class Product extends ActiveRecord
             'name' => 'Name',
             'description' => 'Description',
             'content' => 'Detailed Description',
-            'payment_type' => 'Payment Type',
+            'offer_type' => 'Offer Type',
             'status' => 'Status',
+            'comment' => 'Comment',
+            'discount' => 'Discount',
+        ];
+    }
+
+    public function attributeHints()
+    {
+        return [
+            'comment' =>
+                ($this->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) ?
+            'please indicate if the price is e.g. per unit, per day, per service, per hour,...' :
+            'please type what is your regular currency e.g. $, €, tnd,... and how much discount you offer per coin'
+
         ];
     }
 
@@ -165,12 +190,11 @@ class Product extends ActiveRecord
         return parent::beforeSave($insert);
     }
 
-    public static function getPaymentTypes()
+    public static function getOfferTypes()
     {
         return [
-            self::PAYMENT_PER_UNIT => 'Per Unit',
-            self::PAYMENT_PER_HOUR => 'Per Hour',
-            self::PAYMENT_PER_DAY => 'Per Day'
+            self::OFFER_DISCOUNT_FOR_COINS => 'Discount for coins',
+            self::OFFER_TOTAL_PRICE_IN_COINS => 'Total price in coins',
         ];
     }
 
@@ -182,9 +206,9 @@ class Product extends ActiveRecord
         ];
     }
 
-    public function getPaymentType()
+    public function getOfferType()
     {
-        return $this->getPaymentTypes()[$this->payment_type];
+        return $this->getOfferTypes()[$this->offer_type];
     }
 
     public function isSpaceProduct()
