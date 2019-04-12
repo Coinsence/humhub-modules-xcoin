@@ -2,7 +2,6 @@
 
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\xcoin\models\Product;
-use humhub\widgets\TimeAgo;
 use yii\bootstrap\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
 
@@ -101,12 +100,14 @@ use humhub\modules\space\widgets\Image as SpaceImage;
                                     <div class="funding-details row">
                                         <div class="col-md-12">
                                             <!-- product pricing & discount start -->
-                                            <?= SpaceImage::widget([
-                                                'space' => $product->asset->space,
-                                                'width' => 30,
-                                                'showTooltip' => true,
-                                                'link' => false
-                                            ]); ?>
+                                            <div class="pull-left">
+                                                <?= SpaceImage::widget([
+                                                    'space' => $product->asset->space,
+                                                    'width' => 30,
+                                                    'showTooltip' => true,
+                                                    'link' => false
+                                                ]); ?>
+                                            </div>
                                             <div class="text-center">
                                                 <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
                                                     <?= $product->price ?> <?= $product->getOfferType() ?>
@@ -291,7 +292,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
     }
 
     .fundingPanels .panel-footer .funding-details {
-        padding: 0 15px;
+        padding: 10px 15px;
         border-top: 1px solid #f0f5f8;
     }
 
