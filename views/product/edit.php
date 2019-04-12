@@ -58,7 +58,7 @@ $upload = Upload::forModel($model, $model->pictureFile);
                         $('#product-comment p:first').text('please indicate if the price is e.g. per unit, per day, per service, per hour,...');
                      }
                 }"),]
-            ])->hint('Please choose the offer type for your product'); ?>
+            ])->hint('Please choose the type of you offer'); ?>
         </div>
         <div class="col-md-6">
             <?=
@@ -71,7 +71,7 @@ $upload = Upload::forModel($model, $model->pictureFile);
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ]
-            ])->hint('Please choose the payment asset for your product'); ?>
+            ])->hint('Please choose the type of coin you are accepting'); ?>
         </div>
         <div class="col-md-6" id="product-price" style="display: <?= $model->hasErrors('price') && $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" :  "none"; ?>">
             <?= $form->field($model, 'price')->input('number', ['min' => 0.01])

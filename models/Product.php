@@ -117,7 +117,7 @@ class Product extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'asset_id' => 'Payment asset',
+            'asset_id' => 'Requested Coin',
             'price' => 'Price',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
@@ -127,7 +127,7 @@ class Product extends ActiveRecord
             'offer_type' => 'Offer Type',
             'status' => 'Status',
             'comment' => 'Comment',
-            'discount' => 'Discount',
+            'discount' => 'Discount in %',
         ];
     }
 
