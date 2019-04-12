@@ -65,22 +65,24 @@ use humhub\modules\space\widgets\Image as SpaceImage;
                                 <div class="col-md-3"></div>
                                 <div class="col-md-3">
                                     <div class="col-md-12 funding-details">
-                                        <!-- product pricing start -->
-                                        Requesting :
-                                        <strong><?= $product->price ?></strong>
+                                        <!-- product pricing & discount start -->
                                         <?= SpaceImage::widget([
                                             'space' => $product->asset->space,
-                                            'width' => 24,
+                                            'width' => 30,
                                             'showTooltip' => true,
-                                            'link' => true
+                                            'link' => false
                                         ]); ?>
-                                        <!-- product pricing end -->
-                                    </div>
-                                    <div class="col-md-12 funding-details">
-                                        <!-- product payment type -->
-                                        Payment :
-                                        <strong><?= $product->getOfferType() ?></strong>
-                                        <!-- product payment end -->
+                                        <div class="text-center">
+                                            <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
+                                                <?= $product->price ?> <?= $product->getOfferType() ?>
+                                            <?php else : ?>
+                                                <?= $product->discount ?> % <?= $product->getOfferType() ?>
+                                            <?php endif; ?>
+                                        </div>
+                                        <small class="pull-right" style="color: grey">
+                                            <?= $product->comment ?>
+                                        </small>
+                                        <!-- product pricing & discount end -->
                                     </div>
                                 </div>
                             </div>

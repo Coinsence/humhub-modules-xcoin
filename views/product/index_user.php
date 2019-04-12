@@ -57,12 +57,6 @@ use yii\bootstrap\Html;
                             ]) ?>
                         <?php endif ?>
                         <!-- product picture end -->
-                        <div class="project-owner">
-
-                            <!-- user profile image start -->
-
-                            <!-- user profile image end -->
-                        </div>
                     </div>
                     <div class="panel-body">
                         <h4 class="funding-title"><?= Html::encode($product->name); ?></h4>
@@ -72,34 +66,30 @@ use yii\bootstrap\Html;
                                 <!-- product description start -->
                                 <h4 class="media-heading"><?= Html::encode($product->shortenDescription()); ?></h4>
                                 <!-- product description end -->
-                                <div class="pull-right">
-                                    <?= Html::icon('time') ?>
-                                    <?= TimeAgo::widget(['timestamp' => $product->created_at]); ?>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="panel-footer">
                         <div class="funding-details row">
-                            <div class="col-md-6">
-                                <!-- product pricing start -->
-                                <span>
-                                    Requesting:
-                                    <strong><?= $product->price ?></strong>
-                                </span>
+                            <div class="col-md-12">
+                                <!-- product pricing & discount start -->
                                 <?= SpaceImage::widget([
                                     'space' => $product->asset->space,
-                                    'width' => 16,
+                                    'width' => 30,
                                     'showTooltip' => true,
                                     'link' => false
                                 ]); ?>
-                                <!-- product pricing end -->
-                            </div>
-                            <div class="col-md-6">
-                                <!-- product payment type -->
-                                Payment :
-                                <strong><?= $product->getOfferType() ?></strong>
-                                <!-- product payment end -->
+                                <div class="text-center">
+                                    <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
+                                        <?= $product->price ?> <?= $product->getOfferType() ?>
+                                    <?php else : ?>
+                                        <?= $product->discount ?> % <?= $product->getOfferType() ?>
+                                    <?php endif; ?>
+                                </div>
+                                <small class="pull-right" style="color: grey">
+                                    <?= $product->comment ?>
+                                </small>
+                                <!-- product pricing & discount end -->
                             </div>
                         </div>
                     </div>
