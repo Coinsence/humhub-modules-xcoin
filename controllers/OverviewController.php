@@ -15,7 +15,6 @@ use humhub\modules\xcoin\helpers\AssetHelper;
  * Description of AccountController
  *
  * @author Luke
- * @author gdaly
  */
 class OverviewController extends ContentContainerController
 {
@@ -27,11 +26,11 @@ class OverviewController extends ContentContainerController
 
         if ($this->contentContainer instanceof Space) {
             return $this->render('index_space', [
-                'asset' => AssetHelper::getSpaceAsset($this->contentContainer)
+                        'asset' => AssetHelper::getSpaceAsset($this->contentContainer)
             ]);
         } else {
             return $this->render('index_profile', [
-                'isOwner' => ($this->contentContainer->id === Yii::$app->user->id)
+                        'isOwner' => ($this->contentContainer->id === Yii::$app->user->id)
             ]);
         }
     }
@@ -50,4 +49,5 @@ class OverviewController extends ContentContainerController
     {
         return $this->render('shareholder-list', ['asset' => AssetHelper::getSpaceAsset($this->contentContainer)]);
     }
-}
+
+    }
