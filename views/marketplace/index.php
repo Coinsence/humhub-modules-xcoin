@@ -110,14 +110,11 @@ use humhub\modules\space\widgets\Image as SpaceImage;
                                             </div>
                                             <div class="text-center">
                                                 <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
-                                                    <?= $product->price ?> <?= $product->getOfferType() ?>
+                                                    Price : <?= $product->price ?>
                                                 <?php else : ?>
-                                                    <?= $product->discount ?> % <?= $product->getOfferType() ?>
+                                                    <?= $product->discount ?> % Discount
                                                 <?php endif; ?>
                                             </div>
-                                            <small class="pull-right" style="color: grey">
-                                                <?= $product->comment ?>
-                                            </small>
                                             <!-- product pricing & discount end -->
                                         </div>
                                     </div>
