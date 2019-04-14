@@ -47,15 +47,12 @@ $upload = Upload::forModel($model, $model->pictureFile);
                 'pluginEvents' => [
                     "select2:select" => new JsExpression("function() {  
                      var offer_type = $(this).val();
-                     $('#product-comment').show();
                      if(offer_type == 1){
                         $('#product-price').hide();
                         $('#product-discount').show();
-                        $('#product-comment p:first').text('please type what is your regular currency e.g. $, €, tnd,... and how much discount you offer per coin');
                      } else {
                         $('#product-price').show();
                         $('#product-discount').hide();
-                        $('#product-comment p:first').text('please indicate if the price is e.g. per unit, per day, per service, per hour,...');
                      }
                 }"),]
             ])->hint('Please choose the type of you offer'); ?>
@@ -80,9 +77,6 @@ $upload = Upload::forModel($model, $model->pictureFile);
         <div class="col-md-6" id="product-discount" style="display: <?= $model->hasErrors('discount') && $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS ? "block" :  "none"; ?>">
             <?= $form->field($model, 'discount')->input('number', ['min' => 0.01, 'max' => 100])
                 ->hint('Please enter the discount in percentage') ?>
-        </div>
-        <div class="col-md-6" id="product-comment">
-            <?= $form->field($model, 'comment')->textInput() ?>
         </div>
         <div class="col-md-12">
             <?=

@@ -24,7 +24,6 @@ use yii\db\ActiveQuery;
  * @property integer $product_type
  * @property integer $offer_type
  * @property integer $status
- * @property string $comment
  * @property float $discount
  *
  * @property Asset $asset
@@ -64,7 +63,7 @@ class Product extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'description', 'content', 'asset_id', 'comment', 'offer_type'], 'required'],
+            [['name', 'description', 'content', 'asset_id', 'offer_type'], 'required'],
             [['price'], 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS;
             }],
@@ -77,7 +76,7 @@ class Product extends ActiveRecord
             [['created_at'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
-            [['name', 'description', 'comment'], 'string', 'max' => 255],
+            [['name', 'description'], 'string', 'max' => 255],
             [['content'], 'string'],
             [['pictureFile'], 'safe'],
         ];
@@ -94,7 +93,6 @@ class Product extends ActiveRecord
                 'asset_id',
                 'offer_type',
                 'discount',
-                'comment'
             ],
             self::SCENARIO_EDIT => [
                 'name',
@@ -105,7 +103,6 @@ class Product extends ActiveRecord
                 'offer_type',
                 'status',
                 'discount',
-                'comment'
             ],
         ];
     }
@@ -126,19 +123,7 @@ class Product extends ActiveRecord
             'content' => 'Detailed Description',
             'offer_type' => 'Offer Type',
             'status' => 'Status',
-            'comment' => 'Comment',
             'discount' => 'Discount in %',
-        ];
-    }
-
-    public function attributeHints()
-    {
-        return [
-            'comment' =>
-                ($this->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) ?
-            'please indicate if the price is e.g. per unit, per day, per service, per hour,...' :
-            'please type what is your regular currency e.g. $, €, tnd,... and how much discount you offer per coin'
-
         ];
     }
 
