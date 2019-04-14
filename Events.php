@@ -17,7 +17,7 @@ class Events
         $event->sender->addItem([
             'label' => Yii::t('XcoinModule.base', 'Crowd Funding'),
             'url' => Url::to(['/xcoin/funding-overview']),
-            'icon' => '<i class="fa fa-line-chart"></i>',
+            'icon' => '<i class="fa fa-leaf"></i>',
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'funding-overview'),
             'sortOrder' => 900,
         ]);
@@ -64,7 +64,7 @@ class Events
                 $event->sender->addItem([
                     'label' => Yii::t('XcoinModule.base', 'Crowd Funding'),
                     'url' => $space->createUrl('/xcoin/funding'),
-                    'icon' => '<i class="fa fa-line-chart"></i>',
+                    'icon' => '<i class="fa fa-leaf"></i>',
                     'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'funding'),
                     'sortOrder' => 10000,
                 ]);
