@@ -12,7 +12,7 @@ class m190415_144556_xcoin_product_payment_type extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('xcoin_product','payment_type', $this->integer());
+        $this->addColumn('xcoin_product','payment_type', $this->integer()->defaultValue(1));
     }
 
     /**
