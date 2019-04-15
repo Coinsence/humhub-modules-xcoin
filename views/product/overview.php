@@ -74,7 +74,8 @@ use humhub\modules\space\widgets\Image as SpaceImage;
                                         ]); ?>
                                         <div class="text-center">
                                             <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
-                                                Price : <?= $product->price ?>
+                                                Price : <b><?= $product->price ?></b>
+                                                <small> <?= $product->getPaymentType() ?> </small>
                                             <?php else : ?>
                                                 <?= $product->discount ?> % Discount
                                             <?php endif; ?>

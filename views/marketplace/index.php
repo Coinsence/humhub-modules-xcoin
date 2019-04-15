@@ -71,7 +71,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
                                                 'user' => $user,
                                                 'width' => 34,
                                                 'showTooltip' => true,
-                                                'link' => false
+                                                'link' => false,
                                             ]); ?>
                                             <!-- user profile image end -->
                                         <?php endif; ?>
@@ -110,7 +110,8 @@ use humhub\modules\space\widgets\Image as SpaceImage;
                                             </div>
                                             <div class="text-center">
                                                 <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
-                                                    Price : <?= $product->price ?>
+                                                    Price : <b><?= $product->price ?></b>
+                                                    <small> <?= $product->getPaymentType() ?> </small>
                                                 <?php else : ?>
                                                     <?= $product->discount ?> % Discount
                                                 <?php endif; ?>
@@ -193,6 +194,10 @@ use humhub\modules\space\widgets\Image as SpaceImage;
     }
 
     .fundingPanels .panel-heading .project-owner img.profile-user-photo {
+        border: white 2px solid;
+    }
+
+    .fundingPanels .panel-heading .project-owner span img {
         border: white 2px solid;
     }
 
