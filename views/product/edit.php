@@ -49,9 +49,11 @@ $upload = Upload::forModel($model, $model->pictureFile);
                      var offer_type = $(this).val();
                      if(offer_type == 1){
                         $('#product-price').hide();
+                        $('#product-payment-type').hide();
                         $('#product-discount').show();
                      } else {
                         $('#product-price').show();
+                        $('#product-payment-type').show();
                         $('#product-discount').hide();
                      }
                 }"),]
@@ -70,13 +72,25 @@ $upload = Upload::forModel($model, $model->pictureFile);
                 ]
             ])->hint('Please choose the type of coin you are accepting'); ?>
         </div>
-        <div class="col-md-12" id="product-price" style="display: <?= $model->hasErrors('price') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" :  "none"; ?>">
+        <div class="col-md-6" id="product-price" style="display: <?= $model->hasErrors('price') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" :  "none"; ?>">
             <?= $form->field($model, 'price')->input('number', ['min' => 0.01])
                 ->hint('Please enter a price for your product') ?>
         </div>
         <div class="col-md-12" id="product-discount" style="display: <?= $model->hasErrors('discount') || $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS ? "block" :  "none"; ?>">
             <?= $form->field($model, 'discount')->input('number', ['min' => 0.01, 'max' => 100])
                 ->hint('Please enter the discount in percentage') ?>
+        </div>
+        <div class="col-md-6" id="product-payment-type" style="display: <?= $model->hasErrors('payment_type') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" :  "none"; ?>">
+            <?=
+            $form->field($model, 'payment_type')->widget(Select2::class, [
+                'data' => Product::getPaymentTypes(),
+                'options' => ['placeholder' => '- Select payment type - '],
+                'theme' => Select2::THEME_BOOTSTRAP,
+                'hideSearch' => true,
+                'pluginOptions' => [
+                    'allowClear' => false,
+                ]
+            ])->hint('Please choose the payment type for your product'); ?>
         </div>
         <div class="col-md-12">
             <?=

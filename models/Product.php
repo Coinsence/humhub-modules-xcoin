@@ -25,6 +25,7 @@ use yii\db\ActiveQuery;
  * @property integer $offer_type
  * @property integer $status
  * @property float $discount
+ * @property integer $payment_type
  *
  * @property Asset $asset
  * @property User $owner
@@ -47,6 +48,12 @@ class Product extends ActiveRecord
     const STATUS_UNAVAILABLE = 0;
     const STATUS_AVAILABLE = 1;
 
+    // Product payment types
+    const PAYMENT_PER_UNIT = 1;
+    const PAYMENT_PER_HOUR = 2;
+    const PAYMENT_PER_DAY = 3;
+    const PAYMENT_PER_SERVICE = 4;
+
     public $pictureFile;
 
     /**
@@ -64,13 +71,13 @@ class Product extends ActiveRecord
     {
         return [
             [['name', 'description', 'content', 'asset_id', 'offer_type'], 'required'],
-            [['price'], 'required', 'when' => function ($model) {
+            [['price', 'payment_type'], 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS;
             }],
             [['discount'], 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS;
             }],
-            [['asset_id', 'created_by', 'product_type', 'space_id', 'sale_type', 'status', 'offer_type'], 'integer'],
+            [['asset_id', 'created_by', 'product_type', 'space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
             [['price'], 'number', 'min' => '0'],
             [['discount'], 'number', 'min' => '0', 'max' => '100'],
             [['created_at'], 'safe'],
@@ -93,6 +100,7 @@ class Product extends ActiveRecord
                 'asset_id',
                 'offer_type',
                 'discount',
+                'payment_type'
             ],
             self::SCENARIO_EDIT => [
                 'name',
@@ -103,6 +111,7 @@ class Product extends ActiveRecord
                 'offer_type',
                 'status',
                 'discount',
+                'payment_type'
             ],
         ];
     }
@@ -124,6 +133,7 @@ class Product extends ActiveRecord
             'offer_type' => 'Offer Type',
             'status' => 'Status',
             'discount' => 'Discount in %',
+            'payment_type' => 'Payment Type'
         ];
     }
 
@@ -191,9 +201,24 @@ class Product extends ActiveRecord
         ];
     }
 
+    public static function getPaymentTypes()
+    {
+        return [
+            self::PAYMENT_PER_UNIT => 'Per Unit',
+            self::PAYMENT_PER_HOUR => 'Per Hour',
+            self::PAYMENT_PER_DAY => 'Per Day',
+            self::PAYMENT_PER_SERVICE => 'Per Service'
+        ];
+    }
+
+    public function getPaymentType()
+    {
+        return static::getPaymentTypes()[$this->payment_type];
+    }
+
     public function getOfferType()
     {
-        return $this->getOfferTypes()[$this->offer_type];
+        return static::getOfferTypes()[$this->offer_type];
     }
 
     public function isSpaceProduct()
