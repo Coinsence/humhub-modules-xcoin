@@ -37,6 +37,8 @@ class Account extends ActiveRecord
 
     public $editFieldManager;
 
+    public $mnemonic;
+
     /**
      * @inheritdoc
      */
