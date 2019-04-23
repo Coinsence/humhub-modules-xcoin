@@ -58,11 +58,7 @@ class AccountController extends ContentContainerController
 
         if ($account->load(Yii::$app->request->post()) && $account->save()) {
 
-            if ($account->mnemonic) {
-                $this->view->info("Please save this in some secure place for future use : {$account->mnemonic}");
-            } else {
-                $this->view->saved();
-            }
+            $this->view->info("Please save this in some secure place for future use : {$account->mnemonic}");
 
             return $this->htmlRedirect(['/xcoin/account', 'id' => $account->id, 'container' => $this->contentContainer]);
         }
