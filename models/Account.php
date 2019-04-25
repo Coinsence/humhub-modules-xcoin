@@ -21,6 +21,7 @@ use yii\db\Expression;
  * @property integer $account_type
  * @property string $title
  * @property string $guid
+ * @property string $ethereum_address
  *
  * @property Space $space
  * @property User $user
