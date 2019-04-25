@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\helpers;
 
+use humhub\components\Event;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -26,6 +27,8 @@ class AccountHelper
                 $account->space_id = $container->id;
                 $account->account_type = Account::TYPE_DEFAULT;
                 $account->save();
+
+                Event::trigger(Account::class, Account::EVENT_DEFAULT_SPACE_ACCOUNT_CREATED, new Event(['sender' => $container]));
             }
         } else {
             if (Account::find()->andWhere(['user_id' => $container->id])->count() == 0) {
@@ -67,6 +70,7 @@ class AccountHelper
         foreach (self::getAccounts($container) as $account) {
             $accounts[$account->id] = $account->title;
         }
+
         return $accounts;
     }
 
@@ -109,6 +113,7 @@ class AccountHelper
         if ($container instanceof Space) {
             $account->space_id = $container->id;
         }
+
 #        $account->user_id = Yii::$app->user->id;
 
         return $account;
@@ -155,6 +160,7 @@ class AccountHelper
     public static function getFundingAccountBalance($space)
     {
         $asset = AssetHelper::getSpaceAsset($space);
+
         return AccountHelper::getFundingAccount($space)->getAssetBalance($asset);
     }
 

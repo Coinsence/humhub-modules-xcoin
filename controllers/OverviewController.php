@@ -25,8 +25,6 @@ class OverviewController extends ContentContainerController
         AccountHelper::initContentContainer($this->contentContainer);
 
         if ($this->contentContainer instanceof Space) {
-            Event::trigger(Account::class,Account::EVENT_DEFAULT_SPACE_ACCOUNT_CREATED, new Event(['sender' => $this->contentContainer]));
-
             return $this->render('index_space', [
                 'asset' => AssetHelper::getSpaceAsset($this->contentContainer)
             ]);
