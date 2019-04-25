@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\components\Event;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\space\widgets\Image as SpaceImage;
@@ -67,7 +68,11 @@ class TransactionController extends ContentContainerController
         $transaction->asset_id = array_keys($accountAssetList)[0];
 
         if ($transaction->load(Yii::$app->request->post()) && $transaction->save()) {
+
+            Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_TRANSFER, new Event(['sender' => $transaction]));
+
             $this->view->saved();
+
             return $this->htmlRedirect([
                 '/xcoin/account',
                 'id' => $transaction->from_account_id,
@@ -85,10 +90,9 @@ class TransactionController extends ContentContainerController
     public function actionDetails($id)
     {
         $transaction = Transaction::findOne(['id' => $id]);
+
         return $this->renderAjax('details', ['transaction' => $transaction]);
     }
-
-
 
 
 }

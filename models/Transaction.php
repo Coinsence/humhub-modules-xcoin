@@ -33,6 +33,10 @@ class Transaction extends \yii\db\ActiveRecord
      */
     const EVENT_TRANSACTION_TYPE_ISSUE = 'transactionTypeIssue';
 
+    /** @var Event this event is dispatched a transaction with TRANSACTION_TYPE_ISSUE is triggered
+     */
+    const EVENT_TRANSACTION_TYPE_TRANSFER = 'transactionTypeTransfer';
+
     /**
      * @inheritdoc
      */
