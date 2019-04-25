@@ -3,6 +3,7 @@
 namespace humhub\modules\xcoin\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\components\Event;
 use humhub\modules\tasks\models\account\TaskAccount;
 use humhub\modules\tasks\models\Task;
 use humhub\modules\space\models\Space;
@@ -34,6 +35,11 @@ class Account extends ActiveRecord
     const TYPE_FUNDING = 3;
     const TYPE_DEFAULT = 4;
     const TYPE_TASK = 5;
+
+    /** @var Event this event is dispatched when account with
+     * TYPE_DEFAULT is created for space in order to create ethereum DAO
+     */
+    const EVENT_DEFAULT_SPACE_ACCOUNT_CREATED = 'defaultSpaceAccountCreated';
 
     public $editFieldManager;
 
