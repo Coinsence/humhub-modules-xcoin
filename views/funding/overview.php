@@ -28,8 +28,10 @@ use yii\bootstrap\Progress;
                             <div class="img-container">
 
                                 <?php if ($cover) : ?>
+                                    <div class="bg" style="background-image: url('<?= $cover->getUrl() ?>')"></div>
                                     <?= Html::img($cover->getUrl(), ['width' => '100%']) ?>
                                 <?php else : ?>
+                                    <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
                                     <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
                                         'width' => '100%'
                                     ]) ?>
@@ -189,8 +191,36 @@ use yii\bootstrap\Progress;
             border-radius: 0;
         }
 
+        .fundingPanels .panel.cover .panel-heading .img-container {
+            position: relative;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /*.fundingPanels .panel.cover .panel-heading .img-container .bg {*/
+            /*position: absolute;*/
+            /*top: -10%;*/
+            /*left: -10%;*/
+            /*height: 120%;*/
+            /*width: 120%;*/
+            /*filter: blur(20px);*/
+            /*!*opacity: 0.125;*!*/
+            /*z-index: -1;*/
+            /*background-repeat: no-repeat;*/
+            /*background-size: cover;*/
+        /*}*/
+
+        .fundingPanels .panel.cover .panel-heading .img-container .bg {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            z-index: -1;
+            background-size: 1px 1px;
+        }
+
         .fundingPanels .panel.cover .panel-heading .img-container img {
             max-height: 400px;
+            object-fit: contain;
         }
 
         .fundingPanels .panel.cover .panel-heading .invest-btn {

@@ -41,8 +41,10 @@ use yii\bootstrap\Progress;
 
                                         <!-- campaign cover start -->
                                         <?php if ( $cover ) : ?>
+                                            <div class="bg" style="background-image: url('<?= $cover->getUrl() ?>')"></div>
                                             <?= Html::img( $cover->getUrl(), [ 'height' => '140' ] ) ?>
                                         <?php else : ?>
+                                            <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
                                             <img src="<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>" height="140"/>
                                         <?php endif ?>
                                         <!-- campaign cover end -->
@@ -199,10 +201,22 @@ use yii\bootstrap\Progress;
         position: relative;
     }
 
+    .fundingPanels .panel-heading > .bg {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-size: 1px 1px;
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+    }
+
     .fundingPanels .panel-heading > img {
+        position: relative;
         width: 100%;
         border-top-right-radius: 4px;
         border-top-left-radius: 4px;
+        object-fit: contain;
+        object-position: center;
     }
 
     .fundingPanels .panel-heading .project-owner {
