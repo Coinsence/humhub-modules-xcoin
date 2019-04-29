@@ -47,8 +47,10 @@ use yii\bootstrap\Html;
                     <div class="panel-heading">
                         <!-- product picture start -->
                         <?php if ($picture) : ?>
+                            <div class="bg" style="background-image: url('<?= $picture->getUrl() ?>')"></div>
                             <?= Html::img($picture->getUrl(), ['height' => '140']) ?>
                         <?php else : ?>
+                            <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
                             <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
                                 'height' => '140',
                                 'width' => '320'
@@ -141,10 +143,22 @@ use yii\bootstrap\Html;
         position: relative;
     }
 
+    .layout-content-container .crowd-funding .panel-heading > .bg {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-size: 1px 1px;
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+    }
+
     .layout-content-container .crowd-funding .panel-heading > img {
+        position: relative;
         width: 100%;
         border-top-right-radius: 4px;
         border-top-left-radius: 4px;
+        object-fit: contain;
+        object-position: center;
     }
 
     .layout-content-container .crowd-funding .panel-heading .project-owner {

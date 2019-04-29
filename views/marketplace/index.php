@@ -48,8 +48,10 @@ use humhub\modules\space\widgets\Image as SpaceImage;
                                 <div class="panel-heading">
                                     <!-- product picture start -->
                                     <?php if ($picture) : ?>
+                                        <div class="bg" style="background-image: url('<?= $picture->getUrl() ?>')"></div>
                                         <?= Html::img($picture->getUrl(), ['height' => '140']) ?>
                                     <?php else : ?>
+                                        <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
                                         <img src="<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>"
                                              height="140"/>
                                     <?php endif ?>
@@ -173,10 +175,22 @@ use humhub\modules\space\widgets\Image as SpaceImage;
         position: relative;
     }
 
+    .fundingPanels .panel-heading > .bg {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-size: 1px 1px;
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+    }
+
     .fundingPanels .panel-heading > img {
+        position: relative;
         width: 100%;
         border-top-right-radius: 4px;
         border-top-left-radius: 4px;
+        object-fit: contain;
+        object-position: center;
     }
 
     .fundingPanels .panel-heading .project-owner {

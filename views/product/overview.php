@@ -28,8 +28,10 @@ use humhub\modules\space\widgets\Image as SpaceImage;
                             <div class="img-container">
 
                                 <?php if ($picture) : ?>
+                                    <div class="bg" style="background-image: url('<?= $picture->getUrl() ?>')"></div>
                                     <?= Html::img($picture->getUrl(), ['width' => '100%']) ?>
                                 <?php else : ?>
+                                    <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
                                     <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
                                         'width' => '100%'
                                     ]) ?>
@@ -120,8 +122,27 @@ use humhub\modules\space\widgets\Image as SpaceImage;
         border-radius: 0;
     }
 
+    .fundingPanels .panel.cover .panel-heading .img-container {
+
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+
+    }
+
+    .fundingPanels .panel.cover .panel-heading .img-container .bg {
+
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: -1;
+        background-size: 1px 1px;
+
+    }
+
     .fundingPanels .panel.cover .panel-heading .img-container img {
         max-height: 400px;
+        object-fit: contain;
     }
 
     .fundingPanels .panel.cover .panel-heading .invest-btn {
