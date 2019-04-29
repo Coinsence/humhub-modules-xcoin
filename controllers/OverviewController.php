@@ -2,12 +2,11 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\components\Event;
+use humhub\modules\xcoin\models\Account;
 use Yii;
-use yii\data\ActiveDataProvider;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\xcoin\helpers\AccountHelper;
-use humhub\modules\xcoin\helpers\TransactionHelper;
-use humhub\modules\xcoin\models\Asset;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
 

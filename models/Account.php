@@ -2,11 +2,15 @@
 
 namespace humhub\modules\xcoin\models;
 
+use humhub\components\behaviors\GUID;
+use humhub\components\Event;
 use humhub\modules\tasks\models\account\TaskAccount;
 use humhub\modules\tasks\models\Task;
-use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "xcoin_account".
@@ -14,17 +18,17 @@ use humhub\modules\user\models\User;
  * @property integer $id
  * @property integer $user_id
  * @property integer $space_id
- * @property integer $account_type 
+ * @property integer $account_type
  * @property string $title
+ * @property string $guid
+ * @property string $ethereum_address
  *
  * @property Space $space
  * @property User $user
  * @preperty TaskAccount $account
  * @property Task $task
- * @property TcoinTransaction[] $xcoinTransactions
- * @property TcoinTransaction[] $xcoinTransactions0
  */
-class Account extends \yii\db\ActiveRecord
+class Account extends ActiveRecord
 {
 
     const TYPE_STANDARD = 1;
@@ -33,7 +37,14 @@ class Account extends \yii\db\ActiveRecord
     const TYPE_DEFAULT = 4;
     const TYPE_TASK = 5;
 
+    /** @var Event this event is dispatched when account with
+     * TYPE_DEFAULT is created for space in order to create ethereum DAO
+     */
+    const EVENT_DEFAULT_SPACE_ACCOUNT_CREATED = 'defaultSpaceAccountCreated';
+
     public $editFieldManager;
+
+    public $mnemonic;
 
     /**
      * @inheritdoc
@@ -50,25 +61,19 @@ class Account extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            #[['user_id', 'space_id'], 'integer'],
             [['title'], 'string', 'max' => 100],
             [['editFieldManager'], 'safe'],
-                #[['user_id', 'space_id', 'title'], 'unique', 'targetAttribute' => ['user_id', 'space_id', 'title'], 'message' => 'The combination of User ID, Space ID and Title has already been taken.'],
-                #[['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::className(), 'targetAttribute' => ['space_id' => 'id']],
-                #[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
-        /*
-          return [
-          [['user_id', 'title'], 'required'],
-          [['user_id', 'space_id'], 'integer'],
-          [['title'], 'string', 'max' => 100],
-          [['editFieldManager'], 'safe'],
-          [['user_id', 'space_id', 'title'], 'unique', 'targetAttribute' => ['user_id', 'space_id', 'title'], 'message' => 'The combination of User ID, Space ID and Title has already been taken.'],
-          [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::className(), 'targetAttribute' => ['space_id' => 'id']],
-          [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-          ];
-         *
-         */
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            GUID::class,
+        ];
     }
 
     /**
@@ -102,7 +107,7 @@ class Account extends \yii\db\ActiveRecord
         }
 
         if (empty($this->user_id)) {
-            $this->user_id = new \yii\db\Expression('NULL');
+            $this->user_id = new Expression('NULL');
         }
 
         return parent::beforeSave($insert);
@@ -113,7 +118,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getSpace()
     {
-        return $this->hasOne(Space::className(), ['id' => 'space_id']);
+        return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
 
     /**
@@ -121,7 +126,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**
@@ -129,7 +134,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getTransactionsFrom()
     {
-        return $this->hasMany(Transaction::className(), ['from_account_id' => 'id']);
+        return $this->hasMany(Transaction::class, ['from_account_id' => 'id']);
     }
 
     /**
@@ -137,7 +142,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getTransactionsTo()
     {
-        return $this->hasMany(Transaction::className(), ['to_account_id' => 'id']);
+        return $this->hasMany(Transaction::class, ['to_account_id' => 'id']);
     }
 
     /**
@@ -160,17 +165,17 @@ class Account extends \yii\db\ActiveRecord
     /**
      * Returns all balances used in this account by asset
      *
-     * @return AccountBalance[] the account balances by asset
+     * @return ActiveQuery
      */
     public function getBalances()
     {
-        return $this->hasMany(AccountBalance::className(), ['account_id' => 'id']);
+        return $this->hasMany(AccountBalance::class, ['account_id' => 'id']);
     }
 
     /**
      * Calculate account asset balance
      *
-     * @param \humhub\modules\xcoin\models\Asset $asset
+     * @param Asset $asset
      * @return int the current balance
      */
     public function getAssetBalance(Asset $asset)
@@ -193,7 +198,7 @@ class Account extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTaskAccount()
     {
@@ -201,7 +206,7 @@ class Account extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTask()
     {

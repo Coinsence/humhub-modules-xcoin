@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\models;
 
+use humhub\components\Event;
 use Yii;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
@@ -27,6 +28,14 @@ class Transaction extends \yii\db\ActiveRecord
     const TRANSACTION_TYPE_TRANSFER = 1;
     const TRANSACTION_TYPE_ISSUE = 2;
     const TRANSACTION_TYPE_TASK_PAYMENT = 3;
+
+    /** @var Event this event is dispatched a transaction with TRANSACTION_TYPE_ISSUE is triggered
+     */
+    const EVENT_TRANSACTION_TYPE_ISSUE = 'transactionTypeIssue';
+
+    /** @var Event this event is dispatched a transaction with TRANSACTION_TYPE_ISSUE is triggered
+     */
+    const EVENT_TRANSACTION_TYPE_TRANSFER = 'transactionTypeTransfer';
 
     /**
      * @inheritdoc

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\components\Event;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\content\components\ContentContainerController;
@@ -62,6 +63,9 @@ class AssetController extends ContentContainerController
         unset($accounts[$issueAccount->id]);
 
         if ($transaction->load(Yii::$app->request->post()) && $transaction->save()) {
+
+            Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $transaction]));
+
             $this->view->saved();
             return $this->htmlRedirect(['/xcoin/overview', 'container' => $this->contentContainer]);
         }

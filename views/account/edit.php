@@ -6,6 +6,7 @@ use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
 use humhub\modules\user\widgets\UserPickerField;
+
 ?>
 
 <?php ModalDialog::begin(['header' => 'Create/Edit Account', 'closable' => false]) ?>
@@ -20,12 +21,13 @@ use humhub\modules\user\widgets\UserPickerField;
         ]);
         ?>
     <?php endif; ?>
+
+    <?= Html::error($account, 'ethereum_address', ['class' => 'error-block', 'style' => 'color:red']); ?>
 </div>
 
 <div class="modal-footer">
     <?= ModalButton::submitModal(null, 'Save'); ?>
     <?= ModalButton::cancel(); ?>
 </div>
-
 <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>
