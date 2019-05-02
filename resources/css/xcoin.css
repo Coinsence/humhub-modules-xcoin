@@ -1,0 +1,15 @@
+.ether-btn {
+    padding: 4px 16px;
+}
+i.ether-icon {
+    display: inline-block;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    background-image: url('../images/ethereum-brands.svg');
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 14px;
+    height: 23px;
+}

@@ -5,13 +5,10 @@ namespace humhub\modules\xcoin\grids;
 use yii\bootstrap\Html;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
-use humhub\modules\xcoin\helpers\TransactionHelper;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
-use humhub\modules\xcoin\grids\AccountColumn;
 use humhub\modules\xcoin\helpers\AccountHelper;
-use humhub\libs\ActionColumn;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 
@@ -89,7 +86,7 @@ class AccountsGridView extends GridView
                                 ]
                             );
                     }
-                    return Html::encode($model->title);
+                    return Html::encode($model->title).'<i class="fa fa-users>"></i>';
                 }
             ],
             [
@@ -106,16 +103,23 @@ class AccountsGridView extends GridView
             ],
             [
                 'format' => 'raw',
-                'options' => ['style' => 'width:120px;text-align:right'],
+                'options' => ['style' => 'width:220px;text-align:right'],
                 'contentOptions' => ['style' => 'text-align:right'],
                 'value' => function ($model) {
 
-                    $transferButton = '';
+                    $transferButton = $etherButton = '';
+
                     if (AccountHelper::canManageAccount($model) && Account::TYPE_TASK != $model->account_type) {
                         $transferButton = Html::a('<i class="fa fa-exchange" aria-hidden="true"></i>', ['/xcoin/transaction/transfer', 'accountId' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']) . '&nbsp;';
                     }
 
-                    return $transferButton . Html::a('<i class="fa fa-search" aria-hidden="true"></i>', ['/xcoin/account', 'id' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default']);
+                    if($model->ethereum_address) {
+                        $etherButton = Html::a('<i class="ether-icon" aria-hidden="true"></i>', "https://rinkeby.etherscan.io/address/$model->ethereum_address", ['class' => 'btn btn-default ether-btn', 'target' => '_blank']). '&nbsp;';
+                    }
+
+                    $overviewButton = Html::a('<i class="fa fa-search" aria-hidden="true"></i>', ['/xcoin/account', 'id' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default']);
+
+                    return $etherButton. $transferButton . $overviewButton ;
                 }
             ],
         ];
