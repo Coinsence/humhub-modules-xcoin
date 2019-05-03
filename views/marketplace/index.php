@@ -19,7 +19,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
             <?php if (count($products) === 0): ?>
                 <div class="panel">
                     <div class="panel-heading">
-                        <?= Yii::t('XcoinModule.base', 'Marketplace'); ?>
+                        <?= Yii::t('XcoinModule.base', '<strong>Marketplace</strong>'); ?>
                     </div>
                     <div class="panel-body">
                         <div class="alert alert-warning">
@@ -133,13 +133,13 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 
 <style>
 
-    .fundingPanels .panel {
+    .fundingPanels .row .panel {
         border-radius: 8px;
         position: relative;
         transition: transform 0.3s ease-in-out;
     }
 
-    .fundingPanels .panel::after {
+    .fundingPanels .row .panel::after {
 
         content: '';
         position: absolute;
@@ -157,25 +157,25 @@ use humhub\modules\space\widgets\Image as SpaceImage;
         transition: opacity 0.3s ease-in-out;
     }
 
-    .fundingPanels .panel:hover {
+    .fundingPanels .row .panel:hover {
         transform: translate(0, -5px);
     }
 
 
-    .fundingPanels .panel:hover::after {
+    .fundingPanels .row .panel:hover::after {
         opacity: 1;
     }
 
-    .fundingPanels .panel:hover::after {
+    .fundingPanels .row .panel:hover::after {
         opacity: 1;
     }
 
-    .fundingPanels .panel-heading {
+    .fundingPanels .row .panel-heading {
         padding: 0;
         position: relative;
     }
 
-    .fundingPanels .panel-heading > .bg {
+    .fundingPanels .row .panel-heading > .bg {
         position: absolute;
         height: 100%;
         width: 100%;
@@ -184,7 +184,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
         border-top-left-radius: 4px;
     }
 
-    .fundingPanels .panel-heading > img {
+    .fundingPanels .row .panel-heading > img {
         position: relative;
         width: 100%;
         border-top-right-radius: 4px;
@@ -193,7 +193,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
         object-position: center;
     }
 
-    .fundingPanels .panel-heading .project-owner {
+    .fundingPanels .row .panel-heading .project-owner {
         position: absolute;
         bottom: -34px;
         left: 0;
@@ -201,69 +201,69 @@ use humhub\modules\space\widgets\Image as SpaceImage;
         text-align: center;
     }
 
-    .fundingPanels .panel-heading .project-owner div.space-acronym {
+    .fundingPanels .row .panel-heading .project-owner div.space-acronym {
         display: block;
         margin: 0 auto;
         border: white 2px solid;
     }
 
-    .fundingPanels .panel-heading .project-owner img.profile-user-photo {
+    .fundingPanels .row .panel-heading .project-owner img.profile-user-photo {
         border: white 2px solid;
     }
 
-    .fundingPanels .panel-heading .project-owner span img {
+    .fundingPanels .row .panel-heading .project-owner span img {
         border: white 2px solid;
     }
 
-    .fundingPanels .panel-heading .project-owner span {
+    .fundingPanels .row .panel-heading .project-owner span {
         display: block;
         width: 100%;
         text-align: center;
         font-size: 12px;
     }
 
-    .fundingPanels .panel-heading .project-owner strong {
+    .fundingPanels .row .panel-heading .project-owner strong {
         font-weight: 600;
     }
 
-    .fundingPanels .panel-body {
+    .fundingPanels .row .panel-body {
         margin-top: 38px;
         height: 100px;
     }
 
-    .fundingPanels .panel-body .funding-title {
+    .fundingPanels .row .panel-body .funding-title {
         text-align: center;
         font-weight: bold;
         font-size: 14px;
         margin: 0;
     }
 
-    .fundingPanels .panel-body .media {
+    .fundingPanels .row .panel-body .media {
         margin-top: 6px;
     }
 
-    .fundingPanels .panel-body .media h4.media-heading {
+    .fundingPanels .row .panel-body .media h4.media-heading {
         font-size: 12px;
         line-height: 16px;
         text-align: center;
     }
 
-    .fundingPanels .panel-footer {
+    .fundingPanels .row .panel-footer {
         background-color: white;
         border: none;
         padding: 0;
     }
 
-    .fundingPanels .panel-footer .funding-progress {
+    .fundingPanels .row .panel-footer .funding-progress {
         padding: 0 15px;
     }
 
-    .fundingPanels .panel-footer .funding-progress > div:not(.progress) {
+    .fundingPanels .row .panel-footer .funding-progress > div:not(.progress) {
         display: inline-block;
         font-size: 10px;
     }
 
-    .fundingPanels .panel-footer .funding-progress .clock::before {
+    .fundingPanels .row .panel-footer .funding-progress .clock::before {
         content: 'L';
         color: white;
         text-align: center;
@@ -273,7 +273,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
         font-size: 10px;
     }
 
-    .fundingPanels .panel-footer .funding-progress .clock {
+    .fundingPanels .row .panel-footer .funding-progress .clock {
         display: inline-block;
         vertical-align: middle;
         width: 18px;
@@ -283,45 +283,45 @@ use humhub\modules\space\widgets\Image as SpaceImage;
         margin-right: 4px;
     }
 
-    .fundingPanels .panel-footer .funding-progress .clock.red {
+    .fundingPanels .row .panel-footer .funding-progress .clock.red {
         background: red;
     }
 
-    .fundingPanels .panel-footer .funding-progress .days {
+    .fundingPanels .row .panel-footer .funding-progress .days {
         display: inline-block;
         vertical-align: middle;
     }
 
-    .fundingPanels .panel-footer .funding-progress .clock.red + .days {
+    .fundingPanels .row .panel-footer .funding-progress .clock.red + .days {
         color: red;
     }
 
-    .fundingPanels .panel-footer .funding-progress .progress {
+    .fundingPanels .row .panel-footer .funding-progress .progress {
         width: 100%;
         height: 6px;
         margin-top: 3px;
         background: #e4e8eb;
     }
 
-    .fundingPanels .panel-footer .funding-progress .progress-bar {
+    .fundingPanels .row .panel-footer .funding-progress .progress-bar {
         background-color: #28aa69;
     }
 
-    .fundingPanels .panel-footer .funding-details {
+    .fundingPanels .row .panel-footer .funding-details {
         padding: 10px 15px;
         border-top: 1px solid #f0f5f8;
     }
 
-    .fundingPanels .panel-footer .funding-details .col-md-6 {
+    .fundingPanels .row .panel-footer .funding-details .col-md-6 {
         padding: 12px 2px 12px 15px;
         font-size: 12px;
     }
 
-    .fundingPanels .panel-footer .funding-details .col-md-6:first-of-type {
+    .fundingPanels .row .panel-footer .funding-details .col-md-6:first-of-type {
         border-right: 1px solid #f0f5f8;
     }
 
-    .fundingPanels .panel-footer .funding-details .col-md-6 span {
+    .fundingPanels .row .panel-footer .funding-details .col-md-6 span {
         vertical-align: middle;
         margin-right: 2px;
     }
