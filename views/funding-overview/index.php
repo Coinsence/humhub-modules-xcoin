@@ -6,14 +6,12 @@ use yii\bootstrap\Progress;
 
 ?>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 fundingPanels">
-
+    <div class="container">
+        <div class="row">
             <?php if ( count( $fundings ) === 0 ): ?>
-                <div class="panel">
+                <div class="panel panel-default">
                     <div class="panel-heading">
-                        <?= Yii::t( 'XcoinModule.base', 'Crowd Funding' ); ?>
+                        <?= Yii::t('XcoinModule.base', '<strong>Crowd</strong> Funding'); ?>
                     </div>
                     <div class="panel-body">
                         <div class="alert alert-warning">
