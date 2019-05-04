@@ -17,7 +17,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
         </div>
         <div class="col-md-12 fundingPanels">
             <?php if (count($products) === 0): ?>
-                <div class="panel">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <?= Yii::t('XcoinModule.base', '<strong>Marketplace</strong>'); ?>
                     </div>
