@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin;
 
+use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Funding;
 use humhub\widgets\TopMenu;
@@ -74,7 +75,7 @@ class Events
                 'label' => Yii::t('XcoinModule.base', 'Accounts'),
                 'url' => $space->createUrl('/xcoin/overview'),
                 'icon' => '<i class="fa fa-money"></i>',
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && !in_array(Yii::$app->controller->id, ['funding', 'product'])),
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && !in_array(Yii::$app->controller->id, ['funding', 'product', 'ethereum'])),
             ]);
 
             $event->sender->addItem([
@@ -84,6 +85,21 @@ class Events
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'product'),
                 'sortOrder' => 20000,
             ]);
+
+            if ($space->dao_address) {
+
+                // used to include ether-icon since it's not present in fontawesome 4.7.0 icons
+                Assets::register(Yii::$app->view);
+
+                $event->sender->addItem([
+                    'label' => Yii::t('XcoinModule.base', 'Ethereum'),
+                    'htmlOptions' => ['class' => 'pt-3'],
+                    'url' => $space->createUrl('/xcoin/ethereum'),
+                    'icon' => '<i class="ether-icon-menu"></i>',
+                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'ethereum'),
+                    'sortOrder' => 30000,
+                ]);
+            }
         }
     }
 

@@ -1,8 +1,11 @@
 <?php
 
+use humhub\modules\xcoin\models\Transaction;
 use yii\bootstrap\Html;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
+
+/** @var Transaction $transaction */
 ?>
 <?php ModalDialog::begin(['header' => '<strong>Transfer</strong> details', 'closable' => true]) ?>
 <div class="modal-body">
@@ -12,6 +15,12 @@ use humhub\widgets\ModalDialog;
             <td>Transaction ID</td>
             <td><?= $transaction->id; ?></td>
         </tr>
+        <?php if ($transaction->eth_hash) :?>
+            <tr>
+                <td>Ethereum transaction Hash</td>
+                <td><?= $transaction->eth_hash; ?></td>
+            </tr>
+        <?php endif; ?>
         <tr>
             <td>Date</td>
             <td><?= $transaction->created_at; ?></td>
