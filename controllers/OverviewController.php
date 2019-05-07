@@ -24,12 +24,14 @@ class OverviewController extends ContentContainerController
         AssetHelper::initContentContainer($this->contentContainer);
         AccountHelper::initContentContainer($this->contentContainer);
 
-        Event::trigger(OverviewController::class, OverviewController::EVENT_SPACE_INDEX, new Event(['sender' => $this->contentContainer]));
-
         if ($this->contentContainer instanceof Space) {
+            $space = $this->contentContainer;
+            if (!$space->coin_address) {
+                Event::trigger(OverviewController::class, OverviewController::EVENT_SPACE_INDEX, new Event(['sender' => $space]));
+            }
 
             return $this->render('index_space', [
-                'asset' => AssetHelper::getSpaceAsset($this->contentContainer)
+                'asset' => AssetHelper::getSpaceAsset($space)
             ]);
         } else {
             return $this->render('index_profile', [
