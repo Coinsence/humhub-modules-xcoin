@@ -17,6 +17,7 @@ use humhub\modules\xcoin\helpers\AssetHelper;
  * @property integer $from_account_id
  * @property integer $amount
  * @property string $comment
+ * @property string $eth_hash
  *
  * @property Asset $asset
  * @property Account $fromAccount

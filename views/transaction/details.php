@@ -18,7 +18,7 @@ use humhub\widgets\ModalDialog;
         <?php if ($transaction->eth_hash) :?>
             <tr>
                 <td>Ethereum transaction Hash</td>
-                <td><?= $transaction->eth_hash; ?></td>
+                <td><?= Html::a("$transaction->eth_hash", " https://rinkeby.etherscan.io/tx/$transaction->eth_hash", ['target' => '_blank'] )?></td>
             </tr>
         <?php endif; ?>
         <tr>
