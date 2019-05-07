@@ -61,6 +61,9 @@ class Events
         $space = $event->sender->space;
         if ($space->isModuleEnabled('xcoin')) {
 
+            // used to include ether-icon since it's not present in fontawesome 4.7.0 icons
+            Assets::register(Yii::$app->view);
+
             if (AssetHelper::canManageAssets($space) || Funding::find()->where(['space_id' => $space->id])->andWhere(['>', 'available_amount', 0])->count() > 0) {
                 $event->sender->addItem([
                     'label' => Yii::t('XcoinModule.base', 'Crowd Funding'),
@@ -87,9 +90,6 @@ class Events
             ]);
 
             if ($space->dao_address && $space->coin_address) {
-
-                // used to include ether-icon since it's not present in fontawesome 4.7.0 icons
-                Assets::register(Yii::$app->view);
 
                 $event->sender->addItem([
                     'label' => Yii::t('XcoinModule.base', 'Ethereum'),
