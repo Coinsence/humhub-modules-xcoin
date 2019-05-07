@@ -24,8 +24,14 @@ use yii\bootstrap\Html; ?>
             </tr>
             <tr>
                 <td><strong>Dao Address</strong></td>
-                <td style="vertical-align: middle;"">
-                <?= Html::a("$space->dao_address", "https://rinkeby.etherscan.io/address/$space->dao_address", ['target' => '_blank'] )?>
+                <td style="vertical-align: middle;">
+                    <?= Html::a("$space->dao_address", "https://rinkeby.etherscan.io/address/$space->dao_address", ['target' => '_blank']) ?>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Coin Address</strong></td>
+                <td style="vertical-align: middle;">
+                    <?= Html::a("$space->coin_address", "https://rinkeby.etherscan.io/address/$space->coin_address", ['target' => '_blank']) ?>
                 </td>
             </tr>
         </table>

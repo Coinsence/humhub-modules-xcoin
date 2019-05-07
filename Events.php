@@ -86,7 +86,7 @@ class Events
                 'sortOrder' => 20000,
             ]);
 
-            if ($space->dao_address) {
+            if ($space->dao_address && $space->coin_address) {
 
                 // used to include ether-icon since it's not present in fontawesome 4.7.0 icons
                 Assets::register(Yii::$app->view);
