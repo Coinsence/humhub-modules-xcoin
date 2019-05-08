@@ -1,0 +1,35 @@
+.ether-btn {
+    padding: 4px 16px;
+}
+
+i.ether-icon {
+    display: inline-block;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    background-image: url('../images/ethereum-brands.svg');
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 14px;
+    height: 23px;
+}
+
+i.ether-icon-menu {
+    display: inline-block;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    background-image: url('../images/ethereum-brands-menu.svg');
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 13px;
+    height: 20px;
+    margin-right: 4px;
+    vertical-align: bottom;
+}
+
+.pt-3{
+    padding-top: 3px;
+}

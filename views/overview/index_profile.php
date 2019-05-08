@@ -4,6 +4,7 @@ use yii\bootstrap\Html;
 use humhub\modules\xcoin\grids\LatestTransactionsGridView;
 use humhub\modules\xcoin\grids\AccountsGridView;
 use humhub\modules\xcoin\helpers\AccountHelper;
+
 ?>
 
 <div class="panel panel-default">

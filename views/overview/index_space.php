@@ -5,6 +5,7 @@ use humhub\modules\xcoin\grids\AccountsGridView;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\widgets\AssetDistribution;
+
 ?>
 
 <div class="panel panel-default">

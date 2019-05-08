@@ -6,6 +6,10 @@ use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\grids\TransactionsGridView;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
+
+/**
+ * @var Account $account
+ */
 ?>
 
 <div class="panel panel-default">
@@ -30,6 +34,14 @@ use humhub\modules\user\widgets\Image as UserImage;
             <tr>
                 <td colspan="2"><strong><?= Yii::t('XcoinModule.base', 'Account summary'); ?></strong></td>
             </tr>
+            <?php if ($account->ethereum_address) :?>
+            <tr>
+                <td><strong>Ethereum Address</strong></td>
+                <td style="vertical-align: middle;"">
+                    <?= Html::a("$account->ethereum_address", "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank'] )?>
+                </td>
+            </tr>
+            <?php endif; ?>
             <?php if ($account->space): ?>
                 <tr>
                     <td><strong><?= Yii::t('XcoinModule.base', 'Owner'); ?></strong></td>
