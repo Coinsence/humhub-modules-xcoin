@@ -31,7 +31,7 @@ class ProductController extends ContentContainerController
             ]);
         } else {
             $products = Product::find()->where([
-                'created_by' => Yii::$app->user->id,
+                'created_by' => $this->contentContainer->id,
                 'product_type' => Product::TYPE_PERSONAL
             ])->all();
 
