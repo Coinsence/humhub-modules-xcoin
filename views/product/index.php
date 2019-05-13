@@ -1,14 +1,12 @@
 <?php
 
-
-use Yii;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Product;
 use yii\bootstrap\Html;
 
-Assets::register(Yii::$app->view);
+Assets::register($this);
 
 /** @var $products Product[] */
 ?>
