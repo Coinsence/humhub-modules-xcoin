@@ -1,11 +1,15 @@
 <?php
 
+use Yii;
+use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Funding;
 use yii\bootstrap\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use yii\bootstrap\Progress;
+
+Assets::register(Yii::$app->view);
 
 /**
  * @var $funding Funding
@@ -14,7 +18,7 @@ use yii\bootstrap\Progress;
 
 <div class="container">
     <div class="row">
-        <div class="col-md-9 fundingPanels">
+        <div class="col-md-9 fundingPanel">
             <div class="row">
                 <?php
                 $cover = $funding->getCover();
@@ -176,219 +180,4 @@ use yii\bootstrap\Progress;
             </div>
         </div>
     </div>
-
-    <style>
-
-        .fundingPanels .panel.cover {
-            overflow: hidden;
-        }
-
-        .fundingPanels .panel.cover .panel-heading {
-            padding: 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            border-radius: 0;
-        }
-
-        .fundingPanels .panel.cover .panel-heading .img-container {
-            position: relative;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        /*.fundingPanels .panel.cover .panel-heading .img-container .bg {*/
-            /*position: absolute;*/
-            /*top: -10%;*/
-            /*left: -10%;*/
-            /*height: 120%;*/
-            /*width: 120%;*/
-            /*filter: blur(20px);*/
-            /*!*opacity: 0.125;*!*/
-            /*z-index: -1;*/
-            /*background-repeat: no-repeat;*/
-            /*background-size: cover;*/
-        /*}*/
-
-        .fundingPanels .panel.cover .panel-heading .img-container .bg {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            z-index: -1;
-            background-size: 1px 1px;
-        }
-
-        .fundingPanels .panel.cover .panel-heading .img-container img {
-            max-height: 400px;
-            object-fit: contain;
-        }
-
-        .fundingPanels .panel.cover .panel-heading .invest-btn {
-            /*position: absolute;*/
-            /*bottom: 0;*/
-            /*left: 0;*/
-            width: 100%;
-            /*height: 0;*/
-            /*-webkit-transition: height .25s ease-in-out;*/
-            /*-moz-transition: height .25s ease-in-out;*/
-            /*-ms-transition: height .25s ease-in-out;*/
-            /*-o-transition: height .25s ease-in-out;*/
-            /*transition: height .25s ease-in-out;*/
-        }
-
-        .fundingPanels .panel.cover .panel-heading .invest-btn a {
-            -webkit-border-radius: 0;
-            -moz-border-radius: 0;
-            border-radius: 0;
-            width: 100%;
-            background: #28aa69;
-            text-transform: uppercase;
-            color: #fff;
-            display: inline-block;
-            padding: 26px 20px;
-            font-size: 17px;
-            font-weight: bold;
-        }
-
-        .fundingPanels .panel.cover .panel-heading .invest-btn a:hover {
-            background: #25a264;
-        }
-
-        .fundingPanels .panel.cover .panel-heading .invest-btn.disabled {
-            cursor: not-allowed;
-        }
-
-        .fundingPanels .panel.cover .panel-heading .invest-btn.disabled a {
-            pointer-events: none;
-            display: inline-block;
-            opacity: 0.5;
-        }
-
-        .fundingPanels .panel.cover .panel-heading .edit-btn {
-            position: absolute;
-            top: 18px;
-            left: 18px;
-            color: black;
-            background: white;
-            border-radius: 20px;
-            font-size: 14px;
-            padding: 4px 12px;
-            font-weight: bold;
-        }
-
-        .fundingPanels .panel.cover .panel-heading .edit-btn:hover {
-            background: #cecece;
-        }
-
-        .fundingPanels .panel.cover .panel-heading .edit-btn i {
-            margin-right: 6px;
-        }
-
-        .fundingPanels .panel.cover .panel-body {
-            padding: 24px;
-        }
-
-        .fundingPanels .panel.cover .panel-body .funding-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #000;
-        }
-
-        .fundingPanels .panel.cover .panel-body .funding-details {
-            border: #eaf1f6 solid 1px;
-            box-shadow: 0 1px 0px 0 #c5c5c5;
-            -webkit-box-shadow: 0 2px 2px 0 #c5c5c5;
-            -moz-box-shadow: 0 1px 0px 0 #c5c5c5;
-            padding: 10px 18px;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        .fundingPanels .panel.cover .panel-body .funding-details .col-md-6:first-of-type {
-            border-right: #eaf1f6 solid 1px;
-        }
-
-        .fundingPanels .panel.cover .panel-body .funding-details .col-md-6 {
-            padding: 8px 0;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .fundingPanels .panel.cover .panel-body .funding-details .col-md-6 a {
-            margin-left: 8px;
-        }
-
-        .fundingPanels .panel.cover .panel-footer {
-            background: none;
-            border: none;
-        }
-
-        .fundingPanels .panel.cover .panel-footer .funding-progress {
-            padding: 0 15px;
-        }
-
-        .fundingPanels .panel.cover .panel-footer .funding-progress > div:not(.progress) {
-            display: inline-block;
-            font-size: 12px;
-        }
-
-        .fundingPanels .panel.cover .panel-footer .funding-progress .clock::before {
-            content: 'L';
-            color: white;
-            text-align: center;
-            width: 100%;
-            display: block;
-            margin-left: 1px;
-            font-size: 10px;
-        }
-
-        .fundingPanels .panel.cover .panel-footer .funding-progress .clock {
-            display: inline-block;
-            vertical-align: middle;
-            width: 18px;
-            height: 18px;
-            border-radius: 18px;
-            background: gray;
-            margin-right: 4px;
-        }
-
-        .fundingPanels .panel.cover .panel-footer .funding-progress .clock.red {
-            background: red;
-        }
-
-        .fundingPanels .panel.cover .panel-footer .funding-progress .days {
-            display: inline-block;
-            vertical-align: middle;
-            color: gray;
-        }
-
-        .fundingPanels .panel.cover .panel-footer .funding-progress .clock.red + .days {
-            color: red;
-        }
-
-        .fundingPanels .panel.cover .panel-footer .funding-progress .progress {
-            width: 100%;
-            height: 8px;
-            margin-top: 3px;
-            background: #e4e8eb;
-        }
-
-        .fundingPanels .panel.cover .panel-footer .funding-progress .progress-bar {
-            background-color: #28aa69;
-        }
-
-        .fundingPanels .panel.content .panel-heading {
-            padding: 20px 10px;
-        }
-
-        .fundingPanels .panel.content .panel-heading .col-md-4 {
-            text-align: center;
-        }
-
-        .fundingPanels .panel.content .panel-heading img {
-            border-radius: 6px;
-        }
-
-
-    </style>
+</div>
