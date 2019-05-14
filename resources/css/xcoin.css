@@ -175,9 +175,8 @@
     border-top: 1px solid #f0f5f8;
 }
 
-.layout-content-container .crowd-funding .panel-footer .funding-details {
+.layout-content-container .crowd-funding .panel-footer .funding-details.large {
     padding: 10px 15px;
-    border-top: 1px solid #f0f5f8;
 }
 
 .layout-content-container .crowd-funding .panel-footer .funding-details .col-md-6 {
@@ -574,6 +573,10 @@
 .fundingPanels .row .panel-footer .funding-details {
     padding: 0 15px;
     border-top: 1px solid #f0f5f8;
+}
+
+.fundingPanels .row .panel-footer .funding-details.large {
+    padding: 10px 15px;
 }
 
 .fundingPanels .row .panel-footer .funding-details .col-md-6 {

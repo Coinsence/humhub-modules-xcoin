@@ -102,7 +102,7 @@ Assets::register($this);
                                     </div>
                                 </div>
                                 <div class="panel-footer">
-                                    <div class="funding-details row">
+                                    <div class="funding-details large row">
                                         <div class="col-md-12">
                                             <!-- product pricing & discount start -->
                                             <div class="pull-left">
