@@ -1,9 +1,12 @@
 <?php
 
+use humhub\modules\xcoin\assets\Assets;
 use yii\bootstrap\Html;
 use humhub\modules\xcoin\grids\LatestTransactionsGridView;
 use humhub\modules\xcoin\grids\AccountsGridView;
 use humhub\modules\xcoin\helpers\AccountHelper;
+
+Assets::register($this);
 
 ?>
 
