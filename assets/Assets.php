@@ -22,4 +22,8 @@ class Assets extends AssetBundle
     public $css = [
         'css/xcoin.css',
     ];
+
+    public $js = [
+        'js/xcoin.js',
+    ];
 }

@@ -59,6 +59,7 @@ class Events
     public static function onSpaceMenuInit($event)
     {
         $space = $event->sender->space;
+
         if ($space->isModuleEnabled('xcoin')) {
 
             // used to include ether-icon since it's not present in fontawesome 4.7.0 icons
@@ -89,17 +90,14 @@ class Events
                 'sortOrder' => 20000,
             ]);
 
-            if ($space->dao_address && $space->coin_address) {
-
-                $event->sender->addItem([
-                    'label' => Yii::t('XcoinModule.base', 'Ethereum'),
-                    'htmlOptions' => ['class' => 'pt-3'],
-                    'url' => $space->createUrl('/xcoin/ethereum'),
-                    'icon' => '<i class="ether-icon-menu"></i>',
-                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'ethereum'),
-                    'sortOrder' => 30000,
-                ]);
-            }
+            $event->sender->addItem([
+                'label' => Yii::t('XcoinModule.base', 'Ethereum'),
+                'htmlOptions' => ['class' => 'pt-3'],
+                'url' => $space->createUrl('/xcoin/ethereum'),
+                'icon' => '<i class="ether-icon-menu"></i>',
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'ethereum'),
+                'sortOrder' => 30000,
+            ]);
         }
     }
 
