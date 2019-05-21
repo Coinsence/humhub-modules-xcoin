@@ -67,9 +67,11 @@ class TransactionController extends ContentContainerController
         $transaction->from_account_id = $fromAccount->id;
         $transaction->asset_id = array_keys($accountAssetList)[0];
 
-        if ($transaction->load(Yii::$app->request->post()) && $transaction->save()) {
+        if ($transaction->load(Yii::$app->request->post())) {
 
             Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_TRANSFER, new Event(['sender' => $transaction]));
+
+            $transaction->save();
 
             $this->view->saved();
 
