@@ -38,6 +38,7 @@ class AssetController extends ContentContainerController
 
         if ($asset->load(Yii::$app->request->post()) && $asset->save()) {
             $this->view->saved();
+
             return $this->htmlRedirect(['/xcoin/overview', 'container' => $this->contentContainer]);
         }
 
@@ -62,11 +63,14 @@ class AssetController extends ContentContainerController
         $accounts = AccountHelper::getAccountsDropDown($this->contentContainer);
         unset($accounts[$issueAccount->id]);
 
-        if ($transaction->load(Yii::$app->request->post()) && $transaction->save()) {
+        if ($transaction->load(Yii::$app->request->post())) {
 
             Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $transaction]));
 
+            $transaction->save();
+
             $this->view->saved();
+
             return $this->htmlRedirect(['/xcoin/overview', 'container' => $this->contentContainer]);
         }
 
