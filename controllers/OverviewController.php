@@ -17,7 +17,6 @@ use humhub\modules\xcoin\helpers\AssetHelper;
  */
 class OverviewController extends ContentContainerController
 {
-    const EVENT_SPACE_INDEX = 'spaceIndex';
 
     public function actionIndex()
     {
@@ -25,13 +24,8 @@ class OverviewController extends ContentContainerController
         AccountHelper::initContentContainer($this->contentContainer);
 
         if ($this->contentContainer instanceof Space) {
-            $space = $this->contentContainer;
-            if (!$space->coin_address) {
-                Event::trigger(OverviewController::class, OverviewController::EVENT_SPACE_INDEX, new Event(['sender' => $space]));
-            }
-
             return $this->render('index_space', [
-                'asset' => AssetHelper::getSpaceAsset($space)
+                'asset' => AssetHelper::getSpaceAsset($this->contentContainer)
             ]);
         } else {
             return $this->render('index_profile', [
