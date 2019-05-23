@@ -110,12 +110,25 @@ class FundingController extends ContentContainerController
 
         // Step 1: Wanted Asset Selection
         if ($model->isFirstStep()) {
+
+            // Get Coinsence Community Coin asset to be used as default selected asset
+            $cccSpace = Space::findOne(['name' => 'Coinsence Community Coin']);
+            if ($cccSpace)
+                $cccAsset = AssetHelper::getSpaceAsset($cccSpace);
+
+            if(isset($cccAsset)) {
+                if (!$cccAsset->getIssuedAmount())
+                    $cccAsset = null;
+            }else {
+                $cccAsset = null;
+            }
+
             $assetList = [];
             foreach (Asset::find()->andWhere(['!=', 'id', AssetHelper::getSpaceAsset($this->contentContainer)->id])->all() as $asset) {
                 $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
             }
 
-            return $this->renderAjax('create', ['model' => $model, 'assetList' => $assetList]);
+            return $this->renderAjax('create', ['model' => $model, 'assetList' => $assetList, 'cccAsset' => $cccAsset]);
         }
 
         // Try Save Step 2
