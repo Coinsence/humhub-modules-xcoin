@@ -12,7 +12,7 @@ use yii\web\JsExpression;
 use kartik\widgets\Select2;
 
 /** @var $assetList array */
-/** @var $cccAsset Asset */
+/** @var $defaultAsset Asset */
 
 Select2BootstrapAsset::register($this);
 ?>
@@ -24,7 +24,7 @@ Select2BootstrapAsset::register($this);
     <?=
     $form->field($model, 'asset_id')->widget(Select2::classname(), [
         'data' => $assetList,
-        'options' => ['placeholder' => '- Select asset - ', 'value' => ($cccAsset) ? $cccAsset->id : []],
+        'options' => ['placeholder' => '- Select asset - ', 'value' => ($defaultAsset) ? $defaultAsset->id : []],
         'theme' => Select2::THEME_BOOTSTRAP,
         'hideSearch' => true,
         'pluginOptions' => [

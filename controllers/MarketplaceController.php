@@ -28,16 +28,20 @@ class MarketplaceController extends Controller
         $model->scenario = Product::SCENARIO_CREATE;
         $model->product_type = Product::TYPE_PERSONAL;
 
-        // Get Coinsence Community Coin asset to be used as default selected asset
-        $cccSpace = Space::findOne(['name' => 'Coinsence Community Coin']);
-        if ($cccSpace)
-            $cccAsset = AssetHelper::getSpaceAsset($cccSpace);
+        // Get default Asset that will be preselected
+        $defaultAsset = null;
 
-        if(isset($cccAsset)) {
-            if (!$cccAsset->getIssuedAmount())
-                $cccAsset = null;
-        }else {
-            $cccAsset = null;
+        /* "defaultAssetName" parameter contains the default asset name that must be preselected
+        This parameter should be introduced in the file humhub/protected/config/common.php*/
+        if (array_key_exists('defaultAssetName', Yii::$app->params)) {
+            $defaultAssetName = Yii::$app->params['defaultAssetName'];
+            $defaultAssetSpace = Space::findOne(['name' => $defaultAssetName]);
+
+            if ($defaultAssetSpace) {
+                $defaultAsset = AssetHelper::getSpaceAsset($defaultAssetSpace);
+                if (!$defaultAsset->getIssuedAmount())
+                    $defaultAsset = null;
+            }
         }
 
         $assetList = [];
@@ -55,6 +59,6 @@ class MarketplaceController extends Controller
             return $this->htmlRedirect(['/xcoin/marketplace']);
         }
 
-        return $this->renderAjax('sell', ['model' => $model, 'assetList' => $assetList, 'cccAsset' => $cccAsset]);
+        return $this->renderAjax('sell', ['model' => $model, 'assetList' => $assetList, 'defaultAsset' => $defaultAsset]);
     }
 }

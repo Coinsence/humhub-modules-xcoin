@@ -14,7 +14,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 
 /** @var $assetList array */
 /** @var $model Product */
-/** @var $cccAsset Asset */
+/** @var $defaultAsset Asset */
 
 Select2BootstrapAsset::register($this);
 $upload = Upload::forModel($model, $model->pictureFile);
@@ -68,7 +68,7 @@ $upload = Upload::forModel($model, $model->pictureFile);
 
             $form->field($model, 'asset_id')->widget(Select2::class, [
                 'data' => $assetList,
-                'options' => ['placeholder' => '- Select asset - ', 'value' => ($cccAsset) ? $cccAsset->id : []],
+                'options' => ['placeholder' => '- Select asset - ', 'value' => ($defaultAsset) ? $defaultAsset->id : []],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [
