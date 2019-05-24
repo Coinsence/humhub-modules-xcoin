@@ -14,7 +14,7 @@ Assets::register($this);
 <div class="container">
     <div class="row">
         <div class="pull-right sell-button">
-            <?= Html::a('Sell Product', [
+            <?= Html::a(Yii::t('XcoinModule.marketplace', 'Sell Product'), [
                 '/xcoin/marketplace/sell',
             ], ['class' => 'btn btn-success btn-lg', 'data-target' => '#globalModal']); ?>
         </div>
