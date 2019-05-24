@@ -3,7 +3,7 @@
   "name": "xCoin",
   "description": "Collaborative currency system",
   "keywords": ["tcoin"],
-  "version": "0.2.3",
+  "version": "0.2.6",
   "humhub": {
     "minVersion": "1.3"
   },
