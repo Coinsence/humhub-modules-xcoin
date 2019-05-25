@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\xcoin\models\Asset;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
 use humhub\widgets\ModalButton;
@@ -9,6 +10,9 @@ use humhub\modules\user\widgets\UserPickerField;
 use humhub\assets\Select2BootstrapAsset;
 use yii\web\JsExpression;
 use kartik\widgets\Select2;
+
+/** @var $assetList array */
+/** @var $defaultAsset Asset */
 
 Select2BootstrapAsset::register($this);
 ?>
@@ -20,7 +24,7 @@ Select2BootstrapAsset::register($this);
     <?=
     $form->field($model, 'asset_id')->widget(Select2::classname(), [
         'data' => $assetList,
-        'options' => ['placeholder' => '- Select asset - '],
+        'options' => ['placeholder' => '- Select asset - ', 'value' => ($defaultAsset) ? $defaultAsset->id : []],
         'theme' => Select2::THEME_BOOTSTRAP,
         'hideSearch' => true,
         'pluginOptions' => [

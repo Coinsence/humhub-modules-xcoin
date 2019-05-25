@@ -2,6 +2,7 @@
 
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\widgets\Upload;
+use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Product;
 use kartik\widgets\Select2;
 use humhub\widgets\ModalButton;
@@ -9,12 +10,15 @@ use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
 use humhub\assets\Select2BootstrapAsset;
 use yii\web\JsExpression;
+use humhub\modules\space\widgets\Image as SpaceImage;
 
 /** @var $assetList array */
 /** @var $model Product */
+/** @var $defaultAsset Asset */
 
 Select2BootstrapAsset::register($this);
 $upload = Upload::forModel($model, $model->pictureFile);
+
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.base', 'Sell Product'), 'closable' => false]) ?>
@@ -61,9 +65,10 @@ $upload = Upload::forModel($model, $model->pictureFile);
         </div>
         <div class="col-md-6">
             <?=
+
             $form->field($model, 'asset_id')->widget(Select2::class, [
                 'data' => $assetList,
-                'options' => ['placeholder' => '- Select asset - '],
+                'options' => ['placeholder' => '- Select asset - ', 'value' => ($defaultAsset) ? $defaultAsset->id : []],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [

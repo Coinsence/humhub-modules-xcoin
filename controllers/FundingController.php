@@ -110,12 +110,29 @@ class FundingController extends ContentContainerController
 
         // Step 1: Wanted Asset Selection
         if ($model->isFirstStep()) {
+
+            // Get default Asset that will be preselected
+            $defaultAsset = null;
+
+            /* "defaultAssetName" parameter contains the default asset name that must be preselected
+            This parameter should be introduced in the file humhub/protected/config/common.php*/
+            if (array_key_exists('defaultAssetName', Yii::$app->params)) {
+                $defaultAssetName = Yii::$app->params['defaultAssetName'];
+                $defaultAssetSpace = Space::findOne(['name' => $defaultAssetName]);
+
+                if ($defaultAssetSpace) {
+                    $defaultAsset = AssetHelper::getSpaceAsset($defaultAssetSpace);
+                    if (!$defaultAsset->getIssuedAmount())
+                        $defaultAsset = null;
+                }
+            }
+
             $assetList = [];
             foreach (Asset::find()->andWhere(['!=', 'id', AssetHelper::getSpaceAsset($this->contentContainer)->id])->all() as $asset) {
                 $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
             }
 
-            return $this->renderAjax('create', ['model' => $model, 'assetList' => $assetList]);
+            return $this->renderAjax('create', ['model' => $model, 'assetList' => $assetList, 'defaultAsset' => $defaultAsset]);
         }
 
         // Try Save Step 2
