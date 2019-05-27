@@ -107,19 +107,15 @@ class AccountsGridView extends GridView
                 'contentOptions' => ['style' => 'text-align:right'],
                 'value' => function ($model) {
 
-                    $transferButton = $etherButton = '';
+                    $transferButton = '';
 
                     if (AccountHelper::canManageAccount($model) && Account::TYPE_TASK != $model->account_type) {
                         $transferButton = Html::a('<i class="fa fa-exchange" aria-hidden="true"></i>', ['/xcoin/transaction/transfer', 'accountId' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']) . '&nbsp;';
                     }
 
-                    if($model->ethereum_address) {
-                        $etherButton = Html::a('<i class="ether-icon" aria-hidden="true"></i>', "https://rinkeby.etherscan.io/address/$model->ethereum_address", ['class' => 'btn btn-default ether-btn', 'target' => '_blank']). '&nbsp;';
-                    }
-
                     $overviewButton = Html::a('<i class="fa fa-search" aria-hidden="true"></i>', ['/xcoin/account', 'id' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default']);
 
-                    return $etherButton. $transferButton . $overviewButton ;
+                    return $transferButton . $overviewButton ;
                 }
             ],
         ];
