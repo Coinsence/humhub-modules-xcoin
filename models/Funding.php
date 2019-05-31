@@ -101,20 +101,20 @@ class Funding extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'space_id' => 'Space ID',
-            'asset_id' => 'Requested asset',
-            'exchange_rate' => 'Exchange rate',
-            'total_amount' => 'Total Amount',
-            'available_amount' => 'Amount',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'amount' => 'Offered asset',
-            'amountConverted' => 'Wanted',
-            'title' => 'Title',
-            'description' => 'Description',
-            'content' => 'Needs & Commitments',
-            'deadline' => 'Deadline',
+            'id' => Yii::t('XcoinModule.base', 'ID'),
+            'space_id' => Yii::t('XcoinModule.base', 'Space ID'),
+            'asset_id' => Yii::t('XcoinModule.base', 'Requested asset'),
+            'exchange_rate' => Yii::t('XcoinModule.base', 'Exchange rate'),
+            'total_amount' => Yii::t('XcoinModule.base', 'Total Amount'),
+            'available_amount' => Yii::t('XcoinModule.base', 'Amount'),
+            'created_at' => Yii::t('XcoinModule.base', 'Created At'),
+            'created_by' => Yii::t('XcoinModule.base', 'Created By'),
+            'amount' => Yii::t('XcoinModule.base', 'Offered asset'),
+            'amountConverted' => Yii::t('XcoinModule.base', 'Wanted'),
+            'title' => Yii::t('XcoinModule.base', 'Title'),
+            'description' => Yii::t('XcoinModule.base', 'Description'),
+            'content' => Yii::t('XcoinModule.base', 'Needs & Commitments'),
+            'deadline' => Yii::t('XcoinModule.base', 'Deadline'),
         ];
     }
 

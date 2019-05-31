@@ -34,7 +34,7 @@ use yii\bootstrap\Html; ?>
                 <td colspan="2"><strong><?= Yii::t('XcoinModule.base', 'Ethereum summary'); ?></strong></td>
             </tr>
             <tr>
-                <td><strong>Dao Address</strong></td>
+                <td><strong><?= Yii::t('XcoinModule.base', 'Dao Address'); ?></strong></td>
                 <td id="dao-address-container" style="vertical-align: middle;">
                     <?php if ($space->dao_address) : ?>
                         <?= Html::a("$space->dao_address", "https://rinkeby.etherscan.io/address/$space->dao_address", ['target' => '_blank']) ?>
@@ -44,7 +44,7 @@ use yii\bootstrap\Html; ?>
                 </td>
             </tr>
             <tr>
-                <td><strong>Coin Address</strong></td>
+                <td><strong><?= Yii::t('XcoinModule.base', 'Coin Address'); ?></strong></td>
                 <td id="coin-address-container" style="vertical-align: middle;">
                     <?php if ($space->coin_address) : ?>
                         <?= Html::a("$space->coin_address", "https://rinkeby.etherscan.io/token/$space->coin_address", ['target' => '_blank']) ?>

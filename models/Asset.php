@@ -48,9 +48,9 @@ class Asset extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'space_id' => 'Space ID',
-            'title' => 'Title',
+            'id' => Yii::t('XcoinModule.base', 'ID'),
+            'space_id' => Yii::t('XcoinModule.base', 'Space ID'),
+            'title' => Yii::t('XcoinModule.base', 'Title'),
         ];
     }
 

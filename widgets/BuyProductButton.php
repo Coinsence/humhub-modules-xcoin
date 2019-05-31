@@ -45,6 +45,6 @@ class BuyProductButton extends Widget
 
     public function getLabel()
     {
-        return Yii::t('MailModule.widgets_views_newMessageButton', 'Buy this Product');
+        return Yii::t('XcoinModule.base', 'Buy this Product');
     }
 }

@@ -23,7 +23,7 @@ use humhub\modules\user\widgets\Image as UserImage;
                 <?= Html::a(Yii::t('XcoinModule.base', 'Transfer'), ['/xcoin/transaction/transfer', 'accountId' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-success', 'data-target' => '#globalModal']); ?>
             <?php endif; ?>
         </div>
-        <?= Yii::t('XcoinModule.base', '<strong>Account overview:</strong> ' . $account->title); ?>
+        <?= Yii::t('XcoinModule.base', '<strong>Account overview:</strong>') . ' ' . $account->title; ?>
     </div>
 
     <div class="panel-body">
@@ -36,7 +36,7 @@ use humhub\modules\user\widgets\Image as UserImage;
             </tr>
             <?php if ($account->ethereum_address) :?>
             <tr>
-                <td><strong>Ethereum Address</strong></td>
+                <td><strong><?= Yii::t('XcoinModule.base', 'Ethereum Address'); ?></strong></td>
                 <td style="vertical-align: middle;"">
                     <?= Html::a("$account->ethereum_address", "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank'] )?>
                 </td>

@@ -9,7 +9,7 @@ use humhub\modules\user\widgets\UserPickerField;
 
 ?>
 
-<?php ModalDialog::begin(['header' => 'Create/Edit Account', 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.account', 'Create/Edit Account'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 
 <div class="modal-body">

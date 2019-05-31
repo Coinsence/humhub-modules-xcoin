@@ -85,7 +85,7 @@ Assets::register($this);
                                 </div>
                                 <div class="text-center">
                                     <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
-                                        Price : <b><?= $product->price ?></b>
+                                        <?= Yii::t('XcoinModule.base', 'Price'); ?> : <b><?= $product->price ?></b>
                                         <small> <?= $product->getPaymentType() ?> </small>
                                     <?php else : ?>
                                         <?= $product->discount ?> % Discount

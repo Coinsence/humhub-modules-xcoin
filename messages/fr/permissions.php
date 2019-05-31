@@ -17,5 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Sell Product' => '@@@@',
+    'Allows the user to create an own account' => '@@@@',
+    'Create account' => '@@@@',
 ];
