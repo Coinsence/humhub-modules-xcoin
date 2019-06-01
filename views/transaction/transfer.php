@@ -13,11 +13,11 @@ use yii\web\JsExpression;
 
 Select2BootstrapAsset::register($this);
 ?>
-<?php ModalDialog::begin(['header' => '<strong>Transfer</strong> asset', 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.transaction', '<strong>Transfer</strong> asset'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'asset-form']); ?>
 <div class="modal-body">
     <div class="form-group">
-        <label class="control-label">Sender account</label>
+        <label class="control-label"><?= Yii::t('XcoinModule.transaction', 'Sender account') ?></label>
         <div class="form-control" style="padding-top:4px;">
             <?php if ($fromAccount->space !== null): ?>
                 <?= SpaceImage::widget(['space' => $fromAccount->space, 'width' => 24]); ?>
@@ -38,7 +38,7 @@ Select2BootstrapAsset::register($this);
             <?=
             $form->field($transaction, 'asset_id')->widget(Select2::class, [
                 'data' => $accountAssetList,
-                'options' => ['placeholder' => '- Select asset - '],
+                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.transaction', 'Select asset') . ' - '],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [

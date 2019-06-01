@@ -13,14 +13,14 @@ use kartik\widgets\Select2;
 Select2BootstrapAsset::register($this);
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.base', 'Select wanted asset'), 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Select wanted asset'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 <?= Html::hiddenInput('step', '1'); ?>
 <div class="modal-body">
     <?=
     $form->field($model, 'asset_id')->widget(Select2::classname(), [
         'data' => $assetList,
-        'options' => ['placeholder' => '- Select asset - '],
+        'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Select asset') . ' - '],
         'theme' => Select2::THEME_BOOTSTRAP,
         'hideSearch' => true,
         'pluginOptions' => [
@@ -32,7 +32,7 @@ Select2BootstrapAsset::register($this);
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('base', 'Next')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Next')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 

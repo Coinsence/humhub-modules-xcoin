@@ -26,7 +26,7 @@ use humhub\modules\user\widgets\UserPickerField;
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, 'Save'); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.account', 'Save')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 <?php ActiveForm::end(); ?>

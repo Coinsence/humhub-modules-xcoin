@@ -17,6 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allows the user to create an own account' => '',
-    'Create account' => '',
+    '<strong>Select</strong> sender account' => '',
+    '<strong>Transfer</strong> asset' => '',
+    '<strong>Transfer</strong> details' => '',
+    'Amount' => '',
+    'Comment' => '',
+    'Date' => '',
+    'Ethereum transaction Hash' => '',
+    'Select asset' => '',
+    'Sender account' => '',
+    'Target account' => '',
+    'Transaction ID' => '',
 ];

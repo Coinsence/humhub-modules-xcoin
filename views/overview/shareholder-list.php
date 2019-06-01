@@ -10,10 +10,10 @@ use humhub\modules\user\models\User;
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="pull-right">
-            <?= Html::a(Yii::t('XcoinModule.base', 'Back to overview'), ['/xcoin/overview', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
+            <?= Html::a(Yii::t('XcoinModule.overview', 'Back to overview'), ['/xcoin/overview', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
         </div>
 
-        <?= Yii::t('XcoinModule.base', '<strong>Shareholder</strong> listing'); ?>
+        <?= Yii::t('XcoinModule.overview', '<strong>Shareholder</strong> listing') ?>
     </div>
 
     <div class="panel-body">

@@ -10,14 +10,14 @@ use humhub\modules\xcoin\widgets\SenderAccountField;
 
 Select2BootstrapAsset::register($this);
 ?>
-<?php ModalDialog::begin(['header' => '<strong>Exchange</strong> asset', 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.exchange', '<strong>Exchange</strong> asset'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'asset-form']); ?>
 <div class="modal-body">
     <?= SenderAccountField::widget(['backRoute' => ['/xcoin/exchange/buy', 'exchangeId' => $exchange->id], 'senderAccount' => $fromAccount]); ?>
     <br />
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'amountBuy')->widget(AmountField::class, ['asset' => $exchange->asset])->label('Buy'); ?>
+            <?= $form->field($model, 'amountBuy')->widget(AmountField::class, ['asset' => $exchange->asset])->label(Yii::t('XcoinModule.exchange', 'Buy')); ?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'amountPay')->widget(AmountField::class, ['asset' => $exchange->wantedAsset, 'readonly' => true]); ?>

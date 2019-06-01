@@ -51,7 +51,7 @@ Assets::register($this);
                             <!-- product edit button start -->
 
                             <?php if (AssetHelper::canManageAssets($this->context->contentContainer) || $product->isOwner(Yii::$app->user->identity)): ?>
-                                <?= Html::a(Yii::t('XcoinModule.base', '<i class="fa fa-pencil"></i>Edit'), ['/xcoin/product/edit', 'id' => $product->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
+                                <?= Html::a('<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.product', 'Edit'), ['/xcoin/product/edit', 'id' => $product->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
                             <?php endif; ?>
                             <!-- product edit button end -->
 
@@ -80,10 +80,10 @@ Assets::register($this);
                                         ]); ?>
                                         <div class="text-center">
                                             <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
-                                                <?= Yii::t('XcoinModule.base', 'Price'); ?> : <b><?= $product->price ?></b>
+                                                <?= Yii::t('XcoinModule.product', 'Price') ?> : <b><?= $product->price ?></b>
                                                 <small> <?= $product->getPaymentType() ?> </small>
                                             <?php else : ?>
-                                                <?= $product->discount ?> % Discount
+                                                <?= $product->discount ?> % <?= Yii::t('XcoinModule.product', 'Discount') ?>
                                             <?php endif; ?>
                                         </div>
                                         <!-- product pricing & discount end -->

@@ -9,13 +9,13 @@ use humhub\modules\user\models\User;
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="pull-right">
-            <?= Html::a(Yii::t('XcoinModule.base', 'Back to overview'), ['/xcoin/overview', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
+            <?= Html::a(Yii::t('XcoinModule.overview', 'Back to overview'), ['/xcoin/overview', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
         </div>
 
         <?php if ($this->context->contentContainer instanceof User): ?>
-            <?= Yii::t('XcoinModule.base', '<strong>Latest transactions</strong> of all user accounts'); ?>
+            <?= Yii::t('XcoinModule.overview', '<strong>Latest transactions</strong> of all user accounts') ?>
         <?php elseif ($this->context->contentContainer instanceof Space): ?>
-            <?= Yii::t('XcoinModule.base', '<strong>Latest transactions</strong> of all space owned accounts'); ?>
+            <?= Yii::t('XcoinModule.overview', '<strong>Latest transactions</strong> of all space owned accounts') ?>
         <?php endif; ?>
     </div>
 

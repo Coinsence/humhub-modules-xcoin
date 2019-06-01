@@ -6,7 +6,7 @@ use humhub\modules\user\widgets\Image as UserImage;
 ?>
 
 <div class="form-group">
-    <label class="control-label"><?= Yii::t('XcoinModule.base', 'Sender account'); ?></label>
+    <label class="control-label"><?= Yii::t('XcoinModule.base', 'Sender account') ?></label>
     <div class="form-control" style="padding-top:4px;">
         <?php if ($senderAccount->space !== null): ?>
             <?= SpaceImage::widget(['space' => $senderAccount->space, 'width' => 24]); ?>

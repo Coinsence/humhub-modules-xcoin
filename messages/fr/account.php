@@ -17,5 +17,17 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Create/Edit Account' => '@@@@',
+    'Account managed by the actual Space owner' => '',
+    'Account overview:' => '',
+    'Account summary' => '',
+    'Back to overview' => '',
+    'Balance' => '',
+    'Create/Edit Account' => '',
+    'Edit' => '',
+    'Ethereum Address' => '',
+    'Manager' => '',
+    'No assets available' => '',
+    'Owner' => '',
+    'Save' => '',
+    'Transfer' => '',
 ];

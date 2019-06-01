@@ -17,5 +17,22 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Currently there are no products available!' => '',
+    'Discount' => '',
+    'Marketplace' => '',
+    'Picture' => '',
+    'Please choose the payment type for your product' => '',
+    'Please choose the type of coin you are accepting' => '',
+    'Please choose the type of you offer' => '',
+    'Please enter a detailed description for your product' => '',
+    'Please enter a price for your product' => '',
+    'Please enter a short description for your product' => '',
+    'Please enter the discount in percentage' => '',
+    'Please enter your product name' => '',
+    'Price' => '',
+    'Save' => '',
+    'Select asset' => '',
+    'Select offer type' => '',
+    'Select payment type' => '',
     'Sell Product' => '',
 ];

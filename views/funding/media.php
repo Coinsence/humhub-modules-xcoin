@@ -10,7 +10,7 @@ $upload = Upload::withName();
 
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.base', 'Gallery'), 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Gallery'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 
 <?= Html::hiddenInput('step', '4'); ?>
@@ -50,18 +50,18 @@ $upload = Upload::withName();
             <br>
             <?= $upload->progress() ?>
             <p class="help-block">
-                Please note that first picture will be used as cover for your crowdfunding campaign.
+                <?= Yii::t('XcoinModule.funding', 'Please note that first picture will be used as cover for your crowdfunding campaign.') ?>
             </p>
         </div>
     </div>
 
     <?php if (!$model->isNewRecord): ?>
-        <?= Html::a(Yii::t('XcoinModule.base', 'Delete this exchange request'), ['delete', 'id' => $model->id, 'container' => $this->context->contentContainer], ['class' => 'pull-right colorDanger']); ?>
+        <?= Html::a(Yii::t('XcoinModule.funding', 'Delete this exchange request'), ['delete', 'id' => $model->id, 'container' => $this->context->contentContainer], ['class' => 'pull-right colorDanger']); ?>
     <?php endif; ?>
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('base', 'Save')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Save')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 

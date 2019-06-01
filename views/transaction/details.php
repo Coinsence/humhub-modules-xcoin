@@ -8,17 +8,17 @@ use yii\helpers\StringHelper;
 
 /** @var Transaction $transaction */
 ?>
-<?php ModalDialog::begin(['header' => '<strong>Transfer</strong> details', 'closable' => true]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.transaction', '<strong>Transfer</strong> details'), 'closable' => true]) ?>
 <div class="modal-body">
 
     <table class="table table-condensed">
         <tr>
-            <td>Transaction ID</td>
+            <td><?= Yii::t('XcoinModule.transaction', 'Transaction ID') ?></td>
             <td><?= $transaction->id; ?></td>
         </tr>
         <?php if ($transaction->eth_hash) : ?>
             <tr>
-                <td>Ethereum transaction Hash</td>
+                <td><?= Yii::t('XcoinModule.transaction', 'Ethereum transaction Hash') ?></td>
                 <td>
                     <?= Html::a(
                         StringHelper::truncate($transaction->eth_hash, 30, '...'),
@@ -32,23 +32,23 @@ use yii\helpers\StringHelper;
             </tr>
         <?php endif; ?>
         <tr>
-            <td>Date</td>
+            <td><?= Yii::t('XcoinModule.transaction', 'Date') ?></td>
             <td><?= $transaction->created_at; ?></td>
         </tr>
         <tr>
-            <td>Amount</td>
+            <td><?= Yii::t('XcoinModule.transaction', 'Amount') ?></td>
             <td><?= $transaction->amount; ?></td>
         </tr>
         <tr>
-            <td>Comment</td>
+            <td><?= Yii::t('XcoinModule.transaction', 'Comment') ?></td>
             <td><?= Html::encode($transaction->comment); ?></td>
         </tr>
         <tr>
-            <td>Sender account</td>
+            <td><?= Yii::t('XcoinModule.transaction', 'Sender account') ?></td>
             <td><?= Html::encode($transaction->from_account_id); ?></td>
         </tr>
         <tr>
-            <td>Target account</td>
+            <td><?= Yii::t('XcoinModule.transaction', 'Target account') ?></td>
             <td><?= Html::encode($transaction->to_account_id); ?></td>
         </tr>
     </table>

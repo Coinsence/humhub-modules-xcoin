@@ -9,7 +9,7 @@ use humhub\modules\ui\form\widgets\DatePicker;
 
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.base', 'Provide details'), 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Provide details'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 
 <?= Html::hiddenInput('step', '3'); ?>
@@ -24,29 +24,29 @@ use humhub\modules\ui\form\widgets\DatePicker;
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($model, 'title')->textInput()
-                ->hint('Please enter your campaign title') ?>
+                ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign title')) ?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'deadline')->widget(DatePicker::class, [
                 'dateFormat' => Yii::$app->params['formatter']['defaultDateFormat'],
                 'clientOptions' => ['minDate' => '+1d'],
                 'options' => ['class' => 'form-control', 'autocomplete' => "off"]])
-                ->hint('Please enter your campaign deadline') ?>
+                ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign deadline')) ?>
         </div>
 
         <div class="col-md-12">
             <?= $form->field($model, 'description')->textarea(['maxlength'=>255])
-                ->hint('Please enter your campaign description') ?>
+                ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign description')) ?>
         </div>
         <div class="col-md-12">
             <?= $form->field($model, 'content')->widget(RichTextField::class, ['preset' => 'full'])
-                ->hint('Please enter your campaign needs & commitments') ?>
+                ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign needs & commitments')) ?>
         </div>
     </div>
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('base', 'Next')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Next')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 
