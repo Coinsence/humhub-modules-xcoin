@@ -222,15 +222,10 @@ class Funding extends ActiveRecord
 
     public function isFirstStep()
     {
-        return empty($this->asset_id);
+        return empty($this->asset_id) || empty($this->available_amount) || empty($this->exchange_rate);
     }
 
     public function isSecondStep()
-    {
-        return empty($this->available_amount) || empty($this->exchange_rate);
-    }
-
-    public function isThirdStep()
     {
         return empty($this->title) || empty($this->description) || empty($this->content) || empty($this->deadline) || strlen($this->description) > 255 ;
     }
