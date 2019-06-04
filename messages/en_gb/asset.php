@@ -17,15 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Select</strong> sender account' => '',
-    '<strong>Transfer</strong> asset' => '',
-    '<strong>Transfer</strong> details' => '',
-    'Amount' => '',
-    'Comment' => '',
-    'Date' => '',
-    'Ethereum transaction Hash' => '',
-    'Select asset' => '',
-    'Sender account' => '',
-    'Target account' => '',
-    'Transaction ID' => '',
+    'Create/Edit Asset' => 'Create/Edit coins',
+    'Issue new' => 'Create new coins',
+    'Save' => 'Create',
 ];
