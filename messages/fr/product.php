@@ -33,6 +33,7 @@ return [
     'Price' => '',
     'Products' => '',
     'Save' => '',
+    'Select offer type' => '',
     'Sell Product' => '',
     'Sell product' => '',
     'This is the list of space products.' => '',
