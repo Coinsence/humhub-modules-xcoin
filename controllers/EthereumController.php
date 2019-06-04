@@ -34,7 +34,9 @@ class EthereumController extends ContentContainerController
     {
         $space = Space::findOne(['id' => $this->contentContainer->id]);
 
-        Event::trigger(self::class, self::EVENT_ENABLE_ETHEREUM, new Event(['sender' => $space]));
+        if (!$space->dao_address) {
+            Event::trigger(self::class, self::EVENT_ENABLE_ETHEREUM, new Event(['sender' => $space]));
+        }
 
         $space->refresh();
 
