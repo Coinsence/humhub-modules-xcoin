@@ -47,8 +47,8 @@ class ExchangeBuy extends Model
     public function attributeLabels()
     {
         return [
-            'amountBuy' => 'Receive',
-            'amountPay' => 'Pay',
+            'amountBuy' => Yii::t('XcoinModule.base', 'Receive'),
+            'amountPay' => Yii::t('XcoinModule.base', 'Pay'),
         ];
     }
 
@@ -58,8 +58,8 @@ class ExchangeBuy extends Model
     public function attributeHints()
     {
         return [
-            'amountBuy' => 'Maximum: ' . $this->getMaxBuyAmount(),
-            'amountPay' => 'Maximum: '. $this->getMaxPayAmount(),
+            'amountBuy' => Yii::t('XcoinModule.base', 'Maximum:') . ' ' . $this->getMaxBuyAmount(),
+            'amountPay' => Yii::t('XcoinModule.base', 'Maximum:') . ' ' . $this->getMaxPayAmount(),
         ];
     }
 
@@ -144,10 +144,10 @@ class ExchangeBuy extends Model
         $transaction->to_account_id = $this->fromAccount->id;
         $transaction->from_account_id = $this->exchange->account_id;
         $transaction->amount = $this->getBuyAmount();
-        $transaction->comment = 'Asset Exchange';
+        $transaction->comment = Yii::t('XcoinModule.base', 'Asset Exchange');
         if (!$transaction->save()) {
-            Yii::error('Buy transaction failed: ' . print_r($transaction->getErrors(), 1). ' amount: '. $this->getBuyAmount(). ' asset Id'. $this->getBuyAsset()->id. ' from acc: '. $this->exchange->account_id, 'xcoin.exchange');
-            throw new HttpException('Transaction failed!');
+            Yii::error(Yii::t('Buy transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', print_r($transaction->getErrors(), 1), $this->getBuyAmount(), $this->getBuyAsset()->id, $this->exchange->account_id), 'xcoin.base');
+            throw new HttpException(Yii::t('XcoinModule.base', 'Transaction failed!'));
         }
 
         // Pay
@@ -157,10 +157,10 @@ class ExchangeBuy extends Model
         $transaction->to_account_id = $this->exchange->account_id;
         $transaction->from_account_id = $this->fromAccount->id;
         $transaction->amount = $this->getPayAmount();
-        $transaction->comment = 'Asset Exchange';
+        $transaction->comment = Yii::t('XcoinModule.base', 'Asset Exchange');
         if (!$transaction->save()) {
-            Yii::error('Pay transaction failed: ' . print_r($transaction->getErrors(), 1). ' amount: '. $this->getPayAmount(). ' asset Id'. $this->getPayAsset()->id. ' from acc: '. $this->fromAccount->id, 'xcoin.exchange');
-            throw new HttpException('Transaction failed!');
+            Yii::error(Yii::t('Pay transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', print_r($transaction->getErrors(), 1), $this->getPayAmount(), $this->getPayAsset()->id, $this->fromAccount->id), 'xcoin.base');
+            throw new HttpException(Yii::t('XcoinModule.base', 'Transaction failed!'));
         }
 
         $newAvailable = $this->exchange->available_amount - $this->getBuyAmount();

@@ -38,7 +38,7 @@ $upload = Upload::forModel($model, $model->pictureFile);
             <?=
             $form->field($model, 'offer_type')->widget(Select2::class, [
                 'data' => Product::getOfferTypes(),
-                'options' => ['placeholder' => '- Select offer type - '],
+                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.product', 'Select offer type') . ' - '],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [
