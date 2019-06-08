@@ -18,19 +18,19 @@ use kartik\widgets\Select2;
 Select2BootstrapAsset::register($this);
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.base', 'Select wanted asset and define exchange rate'), 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Select wanted asset and define exchange rate'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 <?= Html::hiddenInput('step', '1'); ?>
 <div class="modal-body">
-    <?= $form->field($model, 'available_amount')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.base', 'Maximum offered amount')); ?>
+    <?= $form->field($model, 'available_amount')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.funding', 'Maximum offered amount')); ?>
     <p class='alert alert-info'>
         The current balance of the funding account is: <strong><?= $fundingAccountBalance; ?></strong>
     </p>
     <hr/>
-    <p><?= Yii::t('XcoinModule.base', 'Determine the exchange rate for which you are willing to trade assets.'); ?></p>
+    <p><?= Yii::t('XcoinModule.funding', 'Determine the exchange rate for which you are willing to trade assets.'); ?></p>
     <div class="row">
         <div class="col-md-5">
-            <?= $form->field($model, 'exchange_rate')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.base', 'Provided asset')); ?>
+            <?= $form->field($model, 'exchange_rate')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.funding', 'Provided asset')); ?>
         </div>
         <div class="col-md-2 text-center">
             <i class="fa fa-exchange colorSuccess" style="font-size:28px;padding-top:24px" aria-hidden="true"></i>
@@ -39,14 +39,14 @@ Select2BootstrapAsset::register($this);
             <?=
             $form->field($model, 'asset_id')->widget(Select2::classname(), [
                 'data' => $assetList,
-                'options' => ['placeholder' => '- Select asset - ', 'value' => ($defaultAsset) ? $defaultAsset->id : []],
+                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Select asset') . ' - ', 'value' => ($defaultAsset) ? $defaultAsset->id : []],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ],
-            ])->label(Yii::t('XcoinModule.base', '(1) Requested asset'));
+            ])->label(Yii::t('XcoinModule.funding', 'Requested asset'));
             ?>
         </div>
     </div>
