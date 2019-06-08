@@ -108,7 +108,7 @@ class FundingController extends ContentContainerController
         $model->scenario = Funding::SCENARIO_EDIT;
         $model->load(Yii::$app->request->post());
 
-        // Step 1: Wanted Asset Selection
+        // Step 1: Wanted Asset Selection and Exchange Rate
         if ($model->isFirstStep()) {
 
             // Get default Asset that will be preselected
@@ -132,25 +132,25 @@ class FundingController extends ContentContainerController
                 $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
             }
 
-            return $this->renderAjax('create', ['model' => $model, 'assetList' => $assetList, 'defaultAsset' => $defaultAsset]);
+            return $this->renderAjax('create',
+                [
+                    'model' => $model,
+                    'assetList' => $assetList,
+                    'defaultAsset' => $defaultAsset,
+                    'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
+                    'fundingAccountBalance' => AccountHelper::getFundingAccountBalance($this->contentContainer)
+                ]);
         }
 
         // Try Save Step 2
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
 
-            // Step 3: Details
-            return $this->renderAjax('details', ['model' => $model]);
-        }
-
-        // Try Save Step 3
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3') {
-
-            // Step 4: Gallery
+            // Step 3: Gallery
             return $this->renderAjax('media', ['model' => $model]);
         }
 
-        // Try Save Step 4
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '4' && $model->save()) {
+        // Try Save Step 3
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
             $this->view->saved();
@@ -158,17 +158,13 @@ class FundingController extends ContentContainerController
         }
 
         // Check validation
-        if ($model->hasErrors() && $model->isThirdStep()) {
+        if ($model->hasErrors() && $model->isSecondStep()) {
 
             return $this->renderAjax('details', ['model' => $model]);
         }
 
-        // Step 2: Exchange Rate
-        return $this->renderAjax('edit', [
-            'model' => $model,
-            'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
-            'fundingAccountBalance' => AccountHelper::getFundingAccountBalance($this->contentContainer),
-        ]);
+        // Step 2: Details
+        return $this->renderAjax('details', ['model' => $model]);
     }
 
     public function actionDelete($id)

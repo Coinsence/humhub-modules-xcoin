@@ -13,7 +13,7 @@ $upload = Upload::withName();
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.base', 'Gallery'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 
-<?= Html::hiddenInput('step', '4'); ?>
+<?= Html::hiddenInput('step', '3'); ?>
 
 <?= $form->field($model, 'asset_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'available_amount', ['enableError' => false])->hiddenInput()->label(false)->hint(false) ?>

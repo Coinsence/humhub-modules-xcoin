@@ -12,7 +12,7 @@ use humhub\modules\ui\form\widgets\DatePicker;
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.base', 'Provide details'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 
-<?= Html::hiddenInput('step', '3'); ?>
+<?= Html::hiddenInput('step', '2'); ?>
 
 <?= $form->field($model, 'asset_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'available_amount', ['enableError' => false])->hiddenInput()->label(false)->hint(false) ?>
