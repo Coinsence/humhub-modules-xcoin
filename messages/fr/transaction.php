@@ -17,15 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Select</strong> sender account' => '',
-    '<strong>Transfer</strong> asset' => '',
-    '<strong>Transfer</strong> details' => '',
-    'Amount' => '',
-    'Comment' => '',
+    '<strong>Select</strong> sender account' => '<strong>Selectionner</strong> compte expéditeur',
+    '<strong>Transfer</strong> asset' => '<strong> send </strong> coin',
+    '<strong>Transfer</strong> details' => '<strong >Transaction</strong> details',
+    'Amount' => 'Monatnt',
+    'Comment' => 'Comment',
     'Date' => '',
-    'Ethereum transaction Hash' => '',
-    'Select asset' => '',
-    'Sender account' => '',
-    'Target account' => '',
-    'Transaction ID' => '',
+    'Ethereum transaction Hash' => 'Ethereum transaction Hash',
+    'Select asset' => 'Sélectionner coin',
+    'Sender account' => 'Compte expéditeur',
+    'Target account' => 'Receiver account',
+    'Transaction ID' => 'ID de transaction',
 ];

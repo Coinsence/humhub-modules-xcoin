@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Create/Edit Asset' => '',
-    'Issue new' => '',
-    'Save' => '',
+    'Create/Edit Asset' => 'Créer/ Modifier Asset',
+    'Issue new' => 'Nouveau probléme',
+    'Save' => 'Enregistrer',
 ];
