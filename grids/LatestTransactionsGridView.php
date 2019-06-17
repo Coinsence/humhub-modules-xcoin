@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\grids;
 
+use Yii;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
 use humhub\modules\xcoin\helpers\TransactionHelper;
@@ -59,12 +60,12 @@ class LatestTransactionsGridView extends GridView
              */
             [
                 'attribute' => 'created_at',
-                'label' => 'Date',
+                'label' => Yii::t('XcoinModule.base', 'Date'),
                 'options' => ['style' => 'width:180px']
             ],
             [
                 'attribute' => 'amount',
-                'label' => 'Amount',
+                'label' => Yii::t('XcoinModule.base', 'Amount'),
                 'format' => 'raw',
                 'options' => ['style' => 'width:120px'],
                 'value' => function($model) {
@@ -81,7 +82,7 @@ class LatestTransactionsGridView extends GridView
             [
                 'class' => AccountColumn::class,
                 'accountAttribute' => 'fromAccount',
-                'label' => 'Sender',
+                'label' => Yii::t('XcoinModule.base', 'Sender'),
                 'showIssueWhenEmpty' => true
             ],
             /*
@@ -99,7 +100,7 @@ class LatestTransactionsGridView extends GridView
             [
                 'class' => AccountColumn::class,
                 'accountAttribute' => 'toAccount',
-                'label' => 'Recipient'
+                'label' => Yii::t('XcoinModule.base', 'Recipient')
             ],
             [
                 'class' => ActionColumn::class,

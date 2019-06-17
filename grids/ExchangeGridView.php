@@ -38,7 +38,7 @@ class ExchangeGridView extends GridView
 #            ],
             [
                 'attribute' => 'asset_id',
-                'label' => 'Offer',
+                'label' => Yii::t('XcoinModule.base', 'Offer'),
                 'format' => 'raw',
                 'options' => ['style' => 'width:50px'],
                 'value' => function ($model) {
@@ -47,7 +47,7 @@ class ExchangeGridView extends GridView
             ],
             [
                 'attribute' => 'wanted_asset_id',
-                'label' => 'Request',
+                'label' => Yii::t('XcoinModule.base', 'Request'),
                 'format' => 'raw',
                 'options' => ['style' => 'width:50px'],
                 'value' => function ($model) {
@@ -55,7 +55,7 @@ class ExchangeGridView extends GridView
                 }
             ],
             [
-                'label' => 'Price per unit',
+                'label' => Yii::t('XcoinModule.base', 'Price per unit'),
                 'options' => ['style' => 'width:120px'],
                 'attribute' => 'exchange_rate',
                 /*
@@ -66,7 +66,7 @@ class ExchangeGridView extends GridView
             ],
             [
                 'attribute' => 'available_amount',
-                'label' => 'Available',
+                'label' => Yii::t('XcoinModule.base', 'Available'),
                 'options' => ['style' => 'width:120px'],
                 'value' => function ($model) {
                     return $model->getAvailableAmountValidated();
@@ -75,7 +75,7 @@ class ExchangeGridView extends GridView
             [
                 'class' => AccountColumn::class,
                 'accountAttribute' => 'account',
-                'label' => 'Offer Account'
+                'label' => Yii::t('XcoinModule.base', 'Offer Account')
             ],
             [
                 'options' => ['style' => 'width:100px'],

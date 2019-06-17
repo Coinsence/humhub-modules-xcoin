@@ -49,9 +49,9 @@ Assets::register($this);
                                 <div class="invest-btn">
                                     <?php endif; ?>
                                     <?php if (Yii::$app->user->isGuest): ?>
-                                        <?= Html::a(Yii::t('XcoinModule.base', 'Invest in this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+                                        <?= Html::a(Yii::t('XcoinModule.funding', 'Invest in this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                                     <?php else: ?>
-                                        <?= Html::a(Yii::t('XcoinModule.base', 'Invest in this project'), [
+                                        <?= Html::a(Yii::t('XcoinModule.funding', 'Invest in this project'), [
                                             'invest',
                                             'fundingId' => $funding->id,
                                             'container' => $this->context->contentContainer
@@ -62,7 +62,7 @@ Assets::register($this);
                                 <!-- campaign invest action end -->
                                 <!-- campaign edit button start -->
                                 <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
-                                    <?= Html::a(Yii::t('XcoinModule.base', '<i class="fa fa-pencil"></i>Edit'), ['/xcoin/funding/edit', 'id' => $funding->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
+                                    <?= Html::a('<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.funding', 'Edit'), ['/xcoin/funding/edit', 'id' => $funding->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
                                 <?php endif; ?>
                                 <!-- campaign edit button end -->
 
@@ -84,7 +84,7 @@ Assets::register($this);
 
                                         <div class="col-md-12 funding-details">
                                             <!-- campaign requesting start -->
-                                            Requesting :
+                                            <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
                                             <strong><?= $funding->getRequestedAmount() ?></strong>
                                             <?= SpaceImage::widget([
                                                 'space' => $funding->asset->space,
@@ -96,7 +96,7 @@ Assets::register($this);
                                         </div>
                                         <div class="col-md-12 funding-details">
                                             <!-- campaign offering start -->
-                                            Offering :
+                                            <?= Yii::t('XcoinModule.funding', 'Offering:') ?>
                                             <strong><?= $funding->getOfferedAmountPercentage() ?></strong>%
                                             <?= SpaceImage::widget([
                                                 'space' => $funding->space,
@@ -119,7 +119,7 @@ Assets::register($this);
 
                                     <div>
                                         <!-- campaign raised start -->
-                                        Raised: <strong><?= $funding->getRaisedAmount() ?></strong>
+                                        <?= Yii::t('XcoinModule.funding', 'Raised:') ?> <strong><?= $funding->getRaisedAmount() ?></strong>
                                         (<strong><?= $funding->getRaisedPercentage() ?>%</strong>)
                                         <!-- campaign raised end -->
                                     </div>
@@ -134,10 +134,9 @@ Assets::register($this);
                                         <?php endif; ?>
                                         <div class="days">
                                             <?php if ($funding->getRemainingDays() > 0) : ?>
-                                                <strong><?= $funding->getRemainingDays() ?></strong> <?= $funding->getRemainingDays() > 1 ? 'Days' : 'Day' ?>
-                                                left
+                                                <strong><?= $funding->getRemainingDays() ?></strong> <?= $funding->getRemainingDays() > 1 ? Yii::t('XcoinModule.funding', 'Days left') : Yii::t('XcoinModule.funding', 'Day left') ?>
                                             <?php else : ?>
-                                                <strong>Closed</strong>
+                                                <strong><?= Yii::t('XcoinModule.funding', 'Closed') ?></strong>
                                             <?php endif; ?>
                                         </div>
                                         <!-- campaign remaining days end -->

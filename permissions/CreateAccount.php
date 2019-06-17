@@ -46,12 +46,12 @@ class CreateAccount extends \humhub\libs\BasePermission
 
     public function getTitle()
     {
-        return Yii::t('XcoinModule.permissions', 'Create account');
+        return Yii::t('XcoinModule.base', 'Create account');
     }
 
     public function getDescription()
     {
-        return Yii::t('XcoinModule.permissions', 'Allows the user to create an own account');
+        return Yii::t('XcoinModule.base', 'Allows the user to create an own account');
     }
 
 }

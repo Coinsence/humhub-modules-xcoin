@@ -122,18 +122,18 @@ class Product extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'asset_id' => 'Requested Coin',
-            'price' => 'Price',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'name' => 'Name',
-            'description' => 'Description',
-            'content' => 'Detailed Description',
-            'offer_type' => 'Offer Type',
-            'status' => 'Status',
-            'discount' => 'Discount in %',
-            'payment_type' => 'Payment Type'
+            'id' => Yii::t('XcoinModule.base', 'ID'),
+            'asset_id' => Yii::t('XcoinModule.base', 'Requested Coin'),
+            'price' => Yii::t('XcoinModule.base', 'Price'),
+            'created_at' => Yii::t('XcoinModule.base', 'Created At'),
+            'created_by' => Yii::t('XcoinModule.base', 'Created By'),
+            'name' => Yii::t('XcoinModule.base', 'Name'),
+            'description' => Yii::t('XcoinModule.base', 'Description'),
+            'content' => Yii::t('XcoinModule.base', 'Detailed Description'),
+            'offer_type' => Yii::t('XcoinModule.base', 'Offer Type'),
+            'status' => Yii::t('XcoinModule.base', 'Status'),
+            'discount' => Yii::t('XcoinModule.base', 'Discount in %'),
+            'payment_type' => Yii::t('XcoinModule.base', 'Payment Type')
         ];
     }
 
@@ -188,26 +188,26 @@ class Product extends ActiveRecord
     public static function getOfferTypes()
     {
         return [
-            self::OFFER_DISCOUNT_FOR_COINS => 'Discount for coins',
-            self::OFFER_TOTAL_PRICE_IN_COINS => 'Total price in coins',
+            self::OFFER_DISCOUNT_FOR_COINS => Yii::t('XcoinModule.base', 'Discount for coins'),
+            self::OFFER_TOTAL_PRICE_IN_COINS => Yii::t('XcoinModule.base', 'Total price in coins'),
         ];
     }
 
     public static function getStatuses()
     {
         return [
-            self::STATUS_AVAILABLE => 'Available',
-            self::STATUS_UNAVAILABLE => 'Unavailable',
+            self::STATUS_AVAILABLE => Yii::t('XcoinModule.base', 'Available'),
+            self::STATUS_UNAVAILABLE => Yii::t('XcoinModule.base', 'Unavailable'),
         ];
     }
 
     public static function getPaymentTypes()
     {
         return [
-            self::PAYMENT_PER_UNIT => 'Per Unit',
-            self::PAYMENT_PER_HOUR => 'Per Hour',
-            self::PAYMENT_PER_DAY => 'Per Day',
-            self::PAYMENT_PER_SERVICE => 'Per Service'
+            self::PAYMENT_PER_UNIT => Yii::t('XcoinModule.base', 'Per Unit'),
+            self::PAYMENT_PER_HOUR => Yii::t('XcoinModule.base', 'Per Hour'),
+            self::PAYMENT_PER_DAY => Yii::t('XcoinModule.base', 'Per Day'),
+            self::PAYMENT_PER_SERVICE => Yii::t('XcoinModule.base', 'Per Service')
         ];
     }
 

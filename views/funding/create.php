@@ -24,7 +24,7 @@ Select2BootstrapAsset::register($this);
 <div class="modal-body">
     <?= $form->field($model, 'available_amount')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.funding', 'Maximum offered amount')); ?>
     <p class='alert alert-info'>
-        The current balance of the funding account is: <strong><?= $fundingAccountBalance; ?></strong>
+        <?= Yii::t('XcoinModule.funding', 'The current balance of the funding account is:'); ?> <strong><?= $fundingAccountBalance; ?></strong>
     </p>
     <hr/>
     <p><?= Yii::t('XcoinModule.funding', 'Determine the exchange rate for which you are willing to trade assets.'); ?></p>
@@ -53,7 +53,7 @@ Select2BootstrapAsset::register($this);
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('base', 'Next')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Next')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 

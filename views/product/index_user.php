@@ -14,21 +14,21 @@ Assets::register($this);
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="pull-right">
-            <?= Html::a(Yii::t('XcoinModule.base', 'Sell product'), [
+            <?= Html::a(Yii::t('XcoinModule.product', 'Sell product'), [
                 '/xcoin/marketplace/sell',
                 'container' => $this->context->contentContainer
             ], ['class' => 'btn btn-success btn-sm', 'data-target' => '#globalModal']); ?>
         </div>
-        <?= Yii::t('XcoinModule.base', '<strong>Your products</strong>'); ?>
+        <strong><?= Yii::t('XcoinModule.product', 'Your products') ?></strong>
     </div>
 
     <div class="panel-body">
-        <p><?= Yii::t('XcoinModule.base', 'This is the list of your products.'); ?></p>
+        <p><?= Yii::t('XcoinModule.product', 'This is the list of your products.') ?></p>
 
         <?php if (count($products) === 0): ?>
             <br/>
             <p class="alert alert-warning">
-                <?= Yii::t('XcoinModule.base', 'Currently there are no products.'); ?>
+                <?= Yii::t('XcoinModule.product', 'Currently there are no products.') ?>
             </p>
         <?php endif; ?>
     </div>
@@ -85,10 +85,10 @@ Assets::register($this);
                                 </div>
                                 <div class="text-center">
                                     <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
-                                        Price : <b><?= $product->price ?></b>
+                                        <?= Yii::t('XcoinModule.product', 'Price') ?> : <b><?= $product->price ?></b>
                                         <small> <?= $product->getPaymentType() ?> </small>
                                     <?php else : ?>
-                                        <?= $product->discount ?> % Discount
+                                        <?= $product->discount ?> % <?= Yii::t('XcoinModule.product', 'Discount') ?>
                                     <?php endif; ?>
                                 </div>
                                 <!-- product pricing & discount end -->

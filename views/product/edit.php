@@ -17,28 +17,28 @@ Select2BootstrapAsset::register($this);
 $upload = Upload::forModel($model, $model->pictureFile);
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.base', 'Sell Product'), 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.product', 'Sell Product'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'product-form']); ?>
 
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12">
             <?= $form->field($model, 'name')->textInput()
-                ->hint('Please enter your product name') ?>
+                ->hint(Yii::t('XcoinModule.product', 'Please enter your product name')) ?>
         </div>
         <div class="col-md-12">
             <?= $form->field($model, 'description')->textInput()
-                ->hint('Please enter a short description for your product') ?>
+                ->hint(Yii::t('XcoinModule.product', 'Please enter a short description for your product')) ?>
         </div>
         <div class="col-md-12">
             <?= $form->field($model, 'content')->widget(RichTextField::class, ['preset' => 'full'])
-                ->hint('Please enter a detailed description for your product') ?>
+                ->hint(Yii::t('XcoinModule.product', 'Please enter a detailed description for your product')) ?>
         </div>
         <div class="col-md-6">
             <?=
             $form->field($model, 'offer_type')->widget(Select2::class, [
                 'data' => Product::getOfferTypes(),
-                'options' => ['placeholder' => '- Select offer type - '],
+                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.product', 'Select offer type') . ' - '],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [
@@ -57,7 +57,7 @@ $upload = Upload::forModel($model, $model->pictureFile);
                         $('#product-discount').hide();
                      }
                 }"),]
-            ])->hint('Please choose the type of you offer'); ?>
+            ])->hint(Yii::t('XcoinModule.product', 'Please choose the type of you offer')); ?>
         </div>
         <div class="col-md-6">
             <?=
@@ -70,15 +70,15 @@ $upload = Upload::forModel($model, $model->pictureFile);
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ]
-            ])->hint('Please choose the type of coin you are accepting'); ?>
+            ])->hint(Yii::t('XcoinModule.product', 'Please choose the type of coin you are accepting')); ?>
         </div>
         <div class="col-md-6" id="product-price" style="display: <?= $model->hasErrors('price') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" :  "none"; ?>">
             <?= $form->field($model, 'price')->input('number', ['min' => 0.01])
-                ->hint('Please enter a price for your product') ?>
+                ->hint(Yii::t('XcoinModule.product', 'Please enter a price for your product')) ?>
         </div>
         <div class="col-md-12" id="product-discount" style="display: <?= $model->hasErrors('discount') || $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS ? "block" :  "none"; ?>">
             <?= $form->field($model, 'discount')->input('number', ['min' => 0.01, 'max' => 100])
-                ->hint('Please enter the discount in percentage') ?>
+                ->hint(Yii::t('XcoinModule.product', 'Please enter the discount in percentage')) ?>
         </div>
         <div class="col-md-6" id="product-payment-type" style="display: <?= $model->hasErrors('payment_type') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" :  "none"; ?>">
             <?=
@@ -90,7 +90,7 @@ $upload = Upload::forModel($model, $model->pictureFile);
                 'pluginOptions' => [
                     'allowClear' => false,
                 ]
-            ])->hint('Please choose the payment type for your product'); ?>
+            ])->hint(Yii::t('XcoinModule.product', 'Please choose the payment type for your product')); ?>
         </div>
         <div class="col-md-12">
             <?=
@@ -103,10 +103,10 @@ $upload = Upload::forModel($model, $model->pictureFile);
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ],
-            ])->hint('Please choose your product status'); ?>
+            ])->hint(Yii::t('XcoinModule.product', 'Please choose your product status')); ?>
         </div>
         <div class="col-md-12">
-            <label class="control-label" for="product-price">Picture</label><br>
+            <label class="control-label" for="product-price"><?= Yii::t('XcoinModule.product', 'Picture') ?></label><br>
             <div class="col-md-6">
                 <?= $upload->button([
                     'label' => true,
@@ -124,7 +124,7 @@ $upload = Upload::forModel($model, $model->pictureFile);
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('base', 'Save')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.product', 'Save')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 

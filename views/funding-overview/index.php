@@ -16,11 +16,11 @@ Assets::register($this);
             <?php if ( count( $fundings ) === 0 ): ?>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <?= Yii::t('XcoinModule.base', '<strong>Crowd</strong> Funding'); ?>
+                        <?= Yii::t('XcoinModule.funding', '<strong>Crowd</strong> Funding') ?>
                     </div>
                     <div class="panel-body">
                         <div class="alert alert-warning">
-                            <?= Yii::t( 'XcoinModule.base', 'Currently there are no running crowd fundings!' ); ?>
+                            <?= Yii::t( 'XcoinModule.funding', 'Currently there are no running crowd fundings!' ) ?>
                         </div>
                     </div>
                     <br/>
@@ -64,7 +64,7 @@ Assets::register($this);
                                             <!-- space image end -->
 
                                             <!-- campaign title start -->
-                                            <span><?= "Project by <strong>" . Html::encode( $space->name ) . "</strong>"; ?></span>
+                                            <span><?= Yii::t('XcoinModule.funding', 'Project by') . " <strong>" . Html::encode( $space->name ) . "</strong>"; ?></span>
                                             <!-- campaign title end -->
 
                                         </div>
@@ -87,7 +87,7 @@ Assets::register($this);
 
                                             <div>
                                                 <!-- campaign raised start -->
-                                                Raised: <strong><?= $funding->getRaisedAmount() ?></strong>
+                                                <?= Yii::t('XcoinModule.funding', 'Raised:') ?><strong><?= $funding->getRaisedAmount() ?></strong>
                                                 (<strong><?= $funding->getRaisedPercentage() ?>%</strong>)
                                                 <!-- campaign raised end -->
                                             </div>
@@ -101,8 +101,7 @@ Assets::register($this);
                                                     <div class="clock red"></div>
                                                 <?php endif; ?>
                                                 <div class="days">
-                                                    <strong><?= $funding->getRemainingDays() ?></strong> <?= $funding->getRemainingDays() > 1 ? 'Days' : 'Day' ?>
-                                                    left
+                                                    <strong><?= $funding->getRemainingDays() ?></strong> <?= $funding->getRemainingDays() > 1 ? Yii::t('XcoinModule.funding', 'Days left') : Yii::t('XcoinModule.funding', 'Day left') ?>
                                                 </div>
                                                 <!-- campaign remaining days end -->
 
@@ -118,9 +117,9 @@ Assets::register($this);
                                             <div class="col-md-6">
                                                 <!-- campaign requesting start -->
                                                 <span>
-                                      Requesting:
-                                        <strong><?= $funding->getRequestedAmount() ?></strong>
-                                    </span>
+                                                    <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
+                                                    <strong><?= $funding->getRequestedAmount() ?></strong>
+                                                </span>
                                                 <?= SpaceImage::widget( [
                                                         'space'       => $funding->asset->space,
                                                         'width'       => 16,
@@ -132,9 +131,9 @@ Assets::register($this);
                                             <div class="col-md-6">
                                                 <!-- campaign offering start -->
                                                 <span>
-                                      Offering:
-                                        <strong><?= $funding->getOfferedAmountPercentage() ?>%</strong>
-                                    </span>
+                                                    <?= Yii::t('XcoinModule.funding', 'Offering:') ?>
+                                                    <strong><?= $funding->getOfferedAmountPercentage() ?>%</strong>
+                                                </span>
                                                 <?= SpaceImage::widget( [
                                                         'space'       => $funding->space,
                                                         'width'       => 16,

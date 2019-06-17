@@ -8,7 +8,7 @@ use humhub\modules\user\models\User;
 <div>
 
     <?php if (count($distributions) === 0): ?>
-        <?= Yii::t('XcoinModule.base', 'No assets issued yet.'); ?>
+        <?= Yii::t('XcoinModule.base', 'No assets issued yet.') ?>
     <?php endif; ?>
 
     <?php foreach ($distributions as $info): ?>
