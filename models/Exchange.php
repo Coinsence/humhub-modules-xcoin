@@ -70,20 +70,20 @@ class Exchange extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'account_id' => 'Account ID',
-            'asset_id' => 'Asset',
-            'available_amount' => 'Amount',
-            'minimum_amount' => 'Min.',
-            'wanted_asset_id' => 'Requested Asset',
-            'created_at' => 'Created At',
+            'id' => Yii::t('XcoinModule.base', 'ID'),
+            'account_id' => Yii::t('XcoinModule.base', 'Account ID'),
+            'asset_id' => Yii::t('XcoinModule.base', 'Asset'),
+            'available_amount' => Yii::t('XcoinModule.base', 'Amount'),
+            'minimum_amount' => Yii::t('XcoinModule.base', 'Min.'),
+            'wanted_asset_id' => Yii::t('XcoinModule.base', 'Requested Asset'),
+            'created_at' => Yii::t('XcoinModule.base', 'Created At'),
         ];
     }
 
     public function attributeHints()
     {
         return [
-            'available_amount' => 'The amount of assets to be exchanged.',
+            'available_amount' => Yii::t('XcoinModule.base', 'The amount of assets to be exchanged.'),
         ];
     }
 

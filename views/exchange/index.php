@@ -10,9 +10,9 @@ use yii\bootstrap\Html;
             <div class="panel">
                 <div class="panel-heading">
                     <?php if (!Yii::$app->user->isGuest): ?>
-                        <?= Html::a('Add new offer', ['/xcoin/exchange/offer'], ['class' => 'btn btn-success pull-right', 'data-target' => '#globalModal']); ?>
+                        <?= Html::a(Yii::t('XcoinModule.exchange', 'Add new offer'), ['/xcoin/exchange/offer'], ['class' => 'btn btn-success pull-right', 'data-target' => '#globalModal']); ?>
                     <?php endif; ?>
-                    Asset Exchange
+                    <?= Yii::t('XcoinModule.exchange', 'Asset Exchange') ?>
                 </div>
                 <div class="panel-body">
                     <?= ExchangeGridView::widget(['query' => $query]); ?>

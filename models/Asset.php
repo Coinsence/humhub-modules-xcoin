@@ -37,7 +37,7 @@ class Asset extends ActiveRecord
             [['space_id', 'title'], 'required'],
             [['space_id'], 'integer'],
             [['title'], 'string', 'max' => 20],
-            [['space_id', 'title'], 'unique', 'targetAttribute' => ['space_id', 'title'], 'message' => 'The combination of Space ID and Title has already been taken.'],
+            [['space_id', 'title'], 'unique', 'targetAttribute' => ['space_id', 'title'], 'message' => Yii::t('XcoinModule.base', 'The combination of Space ID and Title has already been taken.')],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::className(), 'targetAttribute' => ['space_id' => 'id']],
         ];
     }
@@ -48,9 +48,9 @@ class Asset extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'space_id' => 'Space ID',
-            'title' => 'Title',
+            'id' => Yii::t('XcoinModule.base', 'ID'),
+            'space_id' => Yii::t('XcoinModule.base', 'Space ID'),
+            'title' => Yii::t('XcoinModule.base', 'Title'),
         ];
     }
 

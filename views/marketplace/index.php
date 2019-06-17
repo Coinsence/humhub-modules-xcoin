@@ -14,7 +14,7 @@ Assets::register($this);
 <div class="container">
     <div class="row">
         <div class="pull-right sell-button">
-            <?= Html::a('Sell Product', [
+            <?= Html::a(Yii::t('XcoinModule.marketplace', 'Sell Product'), [
                 '/xcoin/marketplace/sell',
             ], ['class' => 'btn btn-success btn-lg', 'data-target' => '#globalModal']); ?>
         </div>
@@ -22,11 +22,11 @@ Assets::register($this);
             <?php if (count($products) === 0): ?>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <?= Yii::t('XcoinModule.base', '<strong>Marketplace</strong>'); ?>
+                        <strong><?= Yii::t('XcoinModule.marketplace', 'Marketplace') ?></strong>
                     </div>
                     <div class="panel-body">
                         <div class="alert alert-warning">
-                            <?= Yii::t('XcoinModule.base', 'Currently there are no products available!'); ?>
+                            <?= Yii::t('XcoinModule.marketplace', 'Currently there are no products available!') ?>
                         </div>
                     </div>
                     <br/>
@@ -115,10 +115,10 @@ Assets::register($this);
                                             </div>
                                             <div class="text-center">
                                                 <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
-                                                    Price : <b><?= $product->price ?></b>
+                                                    <?= Yii::t('XcoinModule.marketplace', 'Price') ?> : <b><?= $product->price ?></b>
                                                     <small> <?= $product->getPaymentType() ?> </small>
                                                 <?php else : ?>
-                                                    <?= $product->discount ?> % Discount
+                                                    <?= $product->discount ?> % <?= Yii::t('XcoinModule.marketplace', 'Discount') ?>
                                                 <?php endif; ?>
                                             </div>
                                             <!-- product pricing & discount end -->

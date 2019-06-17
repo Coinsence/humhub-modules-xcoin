@@ -14,22 +14,22 @@ Assets::register($this);
     <div class="panel-heading">
         <div class="pull-right">
             <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
-                <?= Html::a(Yii::t('XcoinModule.base', 'Add asset offer'), [
+                <?= Html::a(Yii::t('XcoinModule.funding', 'Add asset offer'), [
                     '/xcoin/funding/edit',
                     'container' => $this->context->contentContainer
                 ], ['class' => 'btn btn-success btn-sm', 'data-target' => '#globalModal']); ?>
             <?php endif; ?>
         </div>
-        <?= Yii::t('XcoinModule.base', '<strong>Crowd</strong> funding'); ?>
+        <?= Yii::t('XcoinModule.funding', '<strong>Crowd</strong> funding') ?>
     </div>
 
     <div class="panel-body">
-        <p><?= Yii::t('XcoinModule.base', 'The assets listed below are currently wanted as crowd funding investment.'); ?></p>
+        <p><?= Yii::t('XcoinModule.funding', 'The assets listed below are currently wanted as crowd funding investment.') ?></p>
 
         <?php if (count($activeFundings) === 0): ?>
             <br/>
             <p class="alert alert-warning">
-                <?= Yii::t('XcoinModule.base', 'Currently there are no open funding requests.'); ?>
+                <?= Yii::t('XcoinModule.funding', 'Currently there are no open funding requests.') ?>
             </p>
         <?php endif; ?>
     </div>
@@ -88,7 +88,7 @@ Assets::register($this);
                         <div class="funding-progress">
                             <div>
                                 <!-- campaign raised start -->
-                                Raised: <strong><?= $funding->getRaisedAmount() ?></strong>
+                                <?= Yii::t('XcoinModule.funding', 'Raised:') ?> <strong><?= $funding->getRaisedAmount() ?></strong>
                                 (<strong><?= $funding->getRaisedPercentage() ?>%</strong>)
                                 <!-- campaign raised end -->
                             </div>
@@ -101,10 +101,9 @@ Assets::register($this);
                                 <?php endif; ?>
                                 <div class="days">
                                     <?php if ($funding->getRemainingDays() > 0) : ?>
-                                        <strong><?= $funding->getRemainingDays() ?></strong> <?= $funding->getRemainingDays() > 1 ? 'Days' : 'Day' ?>
-                                        left
+                                        <strong><?= $funding->getRemainingDays() ?></strong> <?= $funding->getRemainingDays() > 1 ? Yii::t('XcoinModule.funding', 'Days left') : Yii::t('XcoinModule.funding', 'Day left') ?>
                                     <?php else : ?>
-                                        <strong>Closed</strong>
+                                        <strong><?= Yii::t('XcoinModule.funding', 'Closed') ?></strong>
                                     <?php endif; ?>
                                 </div>
                                 <!-- campaign remaining days end -->
@@ -118,7 +117,7 @@ Assets::register($this);
                             <div class="col-md-6">
                                 <!-- campaign requesting start -->
                                 <span>
-                                    Requesting:
+                                    <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
                                     <strong><?= $funding->getRequestedAmount() ?></strong>
                                 </span>
                                 <?= SpaceImage::widget([
@@ -132,7 +131,7 @@ Assets::register($this);
                             <div class="col-md-6">
                                 <!-- campaign offering start -->
                                 <span>
-                                    Offering:
+                                    <?= Yii::t('XcoinModule.funding', 'Offering:') ?>
                                     <strong><?= $funding->getOfferedAmountPercentage() ?>%</strong>
                                 </span>
                                 <?= SpaceImage::widget([

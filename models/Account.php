@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\models;
 
+use Yii;
 use humhub\components\behaviors\GUID;
 use humhub\components\Event;
 use humhub\modules\tasks\models\account\TaskAccount;
@@ -82,11 +83,11 @@ class Account extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'space_id' => 'Space ID',
-            'title' => 'Title',
-            'editFieldManager' => 'Manager'
+            'id' => Yii::t('XcoinModule.base', 'ID'),
+            'user_id' => Yii::t('XcoinModule.base', 'User ID'),
+            'space_id' => Yii::t('XcoinModule.base', 'Space ID'),
+            'title' => Yii::t('XcoinModule.base', 'Title'),
+            'editFieldManager' => Yii::t('XcoinModule.base', 'Manager')
         ];
     }
 

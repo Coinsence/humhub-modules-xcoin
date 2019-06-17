@@ -13,11 +13,11 @@ use yii\web\JsExpression;
 
 Select2BootstrapAsset::register($this);
 ?>
-<?php ModalDialog::begin(['header' => '<strong>Exchange</strong> asset', 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.exchange', '<strong>Exchange</strong> asset'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'asset-form']); ?>
 <div class="modal-body">
     <div class="form-group">
-        <label class="control-label">Sender account</label>
+        <label class="control-label"><?= Yii::t('XcoinModule.exchange', 'Sender account') ?></label>
         <div class="form-control" style="padding-top:4px;">
             <?php if ($fromAccount->space !== null): ?>
                 <?= SpaceImage::widget(['space' => $fromAccount->space, 'width' => 24]); ?>
@@ -26,7 +26,7 @@ Select2BootstrapAsset::register($this);
                 <?= UserImage::widget(['user' => $fromAccount->user, 'width' => 24]); ?>
             <?php endif; ?>
             <?= $fromAccount->title; ?>
-            <?= Html::a('Change', ['/xcoin/exchange/offer'], ['class' => 'btn btn-sm btn-default pull-right', 'style' => 'margin-top:-2px;margin-right:-10px', 'data-target' => '#globalModal', 'data-ui-loader' => '']); ?>
+            <?= Html::a(Yii::t('XcoinModule.exchange', 'Change'), ['/xcoin/exchange/offer'], ['class' => 'btn btn-sm btn-default pull-right', 'style' => 'margin-top:-2px;margin-right:-10px', 'data-target' => '#globalModal', 'data-ui-loader' => '']); ?>
         </div>
     </div>
 
@@ -35,7 +35,7 @@ Select2BootstrapAsset::register($this);
         <div class="col-md-6"><?=
             $form->field($exchange, 'asset_id')->widget(Select2::class, [
                 'data' => $accountAssetList,
-                'options' => ['placeholder' => '- Select asset - '],
+                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.exchange', 'Select asset') . ' - '],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [
@@ -44,7 +44,7 @@ Select2BootstrapAsset::register($this);
                 ],
             ]);
             ?></div>
-        <div class="col-md-6"><?= $form->field($exchange, 'available_amount')->label('Total amount'); ?></div>
+        <div class="col-md-6"><?= $form->field($exchange, 'available_amount')->label(Yii::t('XcoinModule.exchange', 'Total amount')); ?></div>
     </div>
 
     <div class="row blockDefineExchangeRate">
@@ -52,7 +52,7 @@ Select2BootstrapAsset::register($this);
             <?=
             $form->field($exchange, 'wanted_asset_id')->widget(Select2::classname(), [
                 'data' => $assetList,
-                'options' => ['placeholder' => '- Select asset - '],
+                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.exchange', 'Select asset') . ' - '],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [
@@ -63,7 +63,7 @@ Select2BootstrapAsset::register($this);
             ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($exchange, 'exchange_rate')->textInput()->label('Price per unit'); ?>
+            <?= $form->field($exchange, 'exchange_rate')->textInput()->label(Yii::t('XcoinModule.exchange', 'Price per unit')); ?>
         </div>
     </div>
 

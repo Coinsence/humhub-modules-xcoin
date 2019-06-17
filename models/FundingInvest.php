@@ -63,8 +63,8 @@ class FundingInvest extends Model
     public function attributeLabels()
     {
         return [
-            'amountBuy' => 'Quantity',
-            'amountPay' => 'Invest',
+            'amountBuy' => Yii::t('XcoinModule.base', 'Quantity'),
+            'amountPay' => Yii::t('XcoinModule.base', 'Invest'),
         ];
     }
 
@@ -76,8 +76,8 @@ class FundingInvest extends Model
         $max = $this->getMaxBuyAmount();
 
         return [
-            'amountBuy' => 'Received amount. (Maximum: ' . $max . ')',
-            'amountPay' => Yii::t('XcoinModule.base', 'Rate: 1 to ') . $this->funding->exchange_rate,
+            'amountBuy' => Yii::t('XcoinModule.base', 'Received amount. (Maximum: {0})', $max),
+            'amountPay' => Yii::t('XcoinModule.base', 'Rate: 1 to {0}', $this->funding->exchange_rate),
         ];
     }
 
@@ -133,10 +133,10 @@ class FundingInvest extends Model
         $transaction->to_account_id = $this->fromAccount->id;
         $transaction->from_account_id = $fundingAccount->id;
         $transaction->amount = $this->getBuyAmount();
-        $transaction->comment = 'Funding Invest';
+        $transaction->comment = Yii::t('XcoinModule.base', 'Funding Invest');
         if (!$transaction->save()) {
-            Yii::error('Buy transaction failed: ' . print_r($transaction->getErrors(), 1). ' amount: '. $this->getBuyAmount(). ' asset Id'. $this->getBuyAsset()->id. ' from acc: '. $this->fromAccount->id, 'xcoin.funding');
-            throw new HttpException('Transaction failed!');
+            Yii::error(Yii::t('Buy transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', print_r($transaction->getErrors(), 1), $this->getBuyAmount(), $this->getBuyAsset()->id, $this->fromAccount->id), 'xcoin.base');
+            throw new HttpException(Yii::t('XcoinModule.base', 'Transaction failed!'));
         }
 
         // Pay Transaction
@@ -146,10 +146,10 @@ class FundingInvest extends Model
         $transaction->to_account_id = $fundingAccount->id;
         $transaction->from_account_id = $this->fromAccount->id;
         $transaction->amount = $this->amountPay;
-        $transaction->comment = 'Funding Invest';
+        $transaction->comment = Yii::t('XcoinModule.base', 'Funding Invest');
         if (!$transaction->save()) {
-            Yii::error('Pay transaction failed: ' . print_r($transaction->getErrors(), 1). ' amount: '. $this->amountpay. ' asset Id'. $this->getPayAsset()->id. ' from acc: '. $fundingAccount->id, 'xcoin.funding');
-            throw new HttpException('Transaction failed!');
+            Yii::error(Yii::t('Pay transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', print_r($transaction->getErrors(), 1), $this->amountpay, $this->getPayAsset()->id, $fundingAccount->id), 'xcoin.base');
+            throw new HttpException(Yii::t('XcoinModule.base', 'Transaction failed!'));
         }
 
         // Update

@@ -66,7 +66,7 @@ class ShareholderGridView extends GridView
             ],
             [
                 'format' => 'raw',
-                'label' => 'Shares',
+                'label' => Yii::t('XcoinModule.base', 'Shares'),
                 'attribute' => 'balance',
                 'options' => ['style' => 'width:160px'],
                 'value' => function($model) {
@@ -75,7 +75,7 @@ class ShareholderGridView extends GridView
             ],
             [
                 'format' => 'raw',
-                'label' => 'Percentage',
+                'label' => Yii::t('XcoinModule.base', 'Percentage'),
                 'options' => ['style' => 'width:160px'],
                 'attribute' => 'percent',
                 'value' => function($model) {

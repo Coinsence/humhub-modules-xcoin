@@ -10,7 +10,7 @@ use humhub\modules\xcoin\widgets\SenderAccountField;
 
 Select2BootstrapAsset::register($this);
 ?>
-<?php ModalDialog::begin(['header' => '<strong>Funding</strong> Invest', 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', '<strong>Funding</strong> Invest'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'asset-form']); ?>
 <div class="modal-body">
     <?= SenderAccountField::widget(['backRoute' => ['/xcoin/funding/invest', 'fundingId' => $funding->id, 'container' => $this->context->contentContainer], 'senderAccount' => $fromAccount]); ?>
@@ -27,7 +27,7 @@ Select2BootstrapAsset::register($this);
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, 'Pay now'); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Pay now')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 

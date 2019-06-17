@@ -84,7 +84,7 @@ class TransactionsGridView extends GridView
             ],
             [
                 'attribute' => 'amount',
-                'label' => 'Amount',
+                'label' => Yii::t('XcoinModule.base', 'Amount'),
                 'format' => 'raw',
                 'options' => ['style' => 'width:80px'],
                 'value' => function($model) {

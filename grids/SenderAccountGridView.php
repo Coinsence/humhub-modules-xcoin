@@ -53,7 +53,7 @@ class SenderAccountGridView extends GridView
             ],
             [
                 'attribute' => 'space_id',
-                'label' => 'Owner',
+                'label' => Yii::t('XcoinModule.base', 'Owner'),
                 'format' => 'raw',
                 'options' => ['style' => 'width:35px'],
                 'value' => function($model) {
@@ -66,7 +66,7 @@ class SenderAccountGridView extends GridView
             ],
             [
                 'attribute' => 'user_id',
-                'label' => 'Manager',
+                'label' => Yii::t('XcoinModule.base', 'Manager'),
                 'format' => 'raw',
                 'options' => ['style' => 'width:35px'],
                 'value' => function($model) {
@@ -82,7 +82,7 @@ class SenderAccountGridView extends GridView
                 'attribute' => 'title',
             ],
             [
-                'label' => 'Asset(s) balance',
+                'label' => Yii::t('XcoinModule.base', 'Asset(s) balance'),
                 'format' => 'raw',
                 'value' => function($model) {
                     $list = [];

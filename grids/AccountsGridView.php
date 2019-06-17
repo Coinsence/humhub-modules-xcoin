@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\grids;
 
+use Yii;
 use yii\bootstrap\Html;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
@@ -37,7 +38,7 @@ class AccountsGridView extends GridView
         $this->columns = [
             [
                 'attribute' => 'space_id',
-                'label' => 'Owner',
+                'label' => Yii::t('XcoinModule.base', 'Owner'),
                 'format' => 'raw',
                 'options' => ['style' => 'width:35px'],
                 'visible' => (!$this->contentContainer instanceof Space),
@@ -51,7 +52,7 @@ class AccountsGridView extends GridView
             ],
             [
                 'attribute' => 'user_id',
-                'label' => 'Manager',
+                'label' => Yii::t('XcoinModule.base', 'Manager'),
                 'format' => 'raw',
                 'options' => ['style' => 'width:80px'],
                 'visible' => (!$this->contentContainer instanceof User),
@@ -90,7 +91,7 @@ class AccountsGridView extends GridView
                 }
             ],
             [
-                'label' => 'Asset(s) balance',
+                'label' => Yii::t('XcoinModule.base', 'Asset(s) balance'),
                 'format' => 'raw',
                 'value' => function($model) {
                     $list = [];

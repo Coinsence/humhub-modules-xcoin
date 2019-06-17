@@ -68,13 +68,13 @@ class Transaction extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'asset_id' => 'Asset',
-            'transaction_type' => 'Transaction Type',
-            'to_account_id' => 'Recipient',
-            'from_account_id' => 'From Account ID',
-            'amount' => 'Amount',
-            'comment' => 'Comment',
+            'id' => Yii::t('XcoinModule.base', 'ID'),
+            'asset_id' => Yii::t('XcoinModule.base', 'Asset'),
+            'transaction_type' => Yii::t('XcoinModule.base', 'Transaction Type'),
+            'to_account_id' => Yii::t('XcoinModule.base', 'Recipient'),
+            'from_account_id' => Yii::t('XcoinModule.base', 'From Account ID'),
+            'amount' => Yii::t('XcoinModule.base', 'Amount'),
+            'comment' => Yii::t('XcoinModule.base', 'Comment'),
         ];
     }
 
