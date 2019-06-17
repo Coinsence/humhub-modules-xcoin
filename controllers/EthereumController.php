@@ -13,7 +13,6 @@ use humhub\components\Event;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 
-
 class EthereumController extends ContentContainerController
 {
     const EVENT_ENABLE_ETHEREUM = 'enableEthereum';
@@ -34,7 +33,11 @@ class EthereumController extends ContentContainerController
     {
         $space = Space::findOne(['id' => $this->contentContainer->id]);
 
-        Event::trigger(self::class, self::EVENT_ENABLE_ETHEREUM, new Event(['sender' => $space]));
+        if ($space->eth_status == Space::ETHEREUM_STATUS_DISABLED) {
+            $space->updateAttributes(['eth_status' => Space::ETHEREUM_STATUS_IN_PROGRESS]);
+            
+            Event::trigger(self::class, self::EVENT_ENABLE_ETHEREUM, new Event(['sender' => $space]));
+        }
 
         $space->refresh();
 

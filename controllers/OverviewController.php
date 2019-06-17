@@ -20,9 +20,6 @@ class OverviewController extends ContentContainerController
 
     public function actionIndex()
     {
-        AssetHelper::initContentContainer($this->contentContainer);
-        AccountHelper::initContentContainer($this->contentContainer);
-
         if ($this->contentContainer instanceof Space) {
             return $this->render('index_space', [
                 'asset' => AssetHelper::getSpaceAsset($this->contentContainer)
