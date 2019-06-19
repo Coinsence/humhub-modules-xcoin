@@ -76,8 +76,8 @@ class FundingInvest extends Model
         $max = $this->getMaxBuyAmount();
 
         return [
-            'amountBuy' => Yii::t('XcoinModule.base', 'Received amount. (Maximum: {0})', $max),
-            'amountPay' => Yii::t('XcoinModule.base', 'Rate: 1 to {0}', $this->funding->exchange_rate),
+            'amountBuy' => Yii::t('XcoinModule.base', 'Received amount. (Maximum: {0})', [$max]),
+            'amountPay' => Yii::t('XcoinModule.base', 'Rate: 1 to {0}', [$this->funding->exchange_rate]),
         ];
     }
 
@@ -135,7 +135,12 @@ class FundingInvest extends Model
         $transaction->amount = $this->getBuyAmount();
         $transaction->comment = Yii::t('XcoinModule.base', 'Funding Invest');
         if (!$transaction->save()) {
-            Yii::error(Yii::t('Buy transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', print_r($transaction->getErrors(), 1), $this->getBuyAmount(), $this->getBuyAsset()->id, $this->fromAccount->id), 'xcoin.base');
+            Yii::error(Yii::t('XcoinModule.base','Buy transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', [
+                print_r($transaction->getErrors(), 1),
+                $this->getBuyAmount(),
+                $this->getBuyAsset()->id,
+                $this->fromAccount->id
+            ]), 'xcoin.base');
             throw new HttpException(Yii::t('XcoinModule.base', 'Transaction failed!'));
         }
 
@@ -148,7 +153,12 @@ class FundingInvest extends Model
         $transaction->amount = $this->amountPay;
         $transaction->comment = Yii::t('XcoinModule.base', 'Funding Invest');
         if (!$transaction->save()) {
-            Yii::error(Yii::t('Pay transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', print_r($transaction->getErrors(), 1), $this->amountpay, $this->getPayAsset()->id, $fundingAccount->id), 'xcoin.base');
+            Yii::error(Yii::t('XcoinModule.base','Pay transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', [
+                print_r($transaction->getErrors(), 1),
+                $this->amountpay,
+                $this->getPayAsset()->id,
+                $fundingAccount->id
+            ]), 'xcoin.base');
             throw new HttpException(Yii::t('XcoinModule.base', 'Transaction failed!'));
         }
 
