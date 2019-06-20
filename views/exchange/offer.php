@@ -44,7 +44,7 @@ Select2BootstrapAsset::register($this);
                 ],
             ]);
             ?></div>
-        <div class="col-md-6"><?= $form->field($exchange, 'available_amount')->label(Yii::t('XcoinModule.exchange', 'Total amount')); ?></div>
+        <div class="col-md-6"><?= $form->field($exchange, 'amount')->label(Yii::t('XcoinModule.exchange', 'Amount')); ?></div>
     </div>
 
     <div class="row blockDefineExchangeRate">

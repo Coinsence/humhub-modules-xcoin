@@ -11,7 +11,7 @@ class FundingOverviewController extends Controller
     public function actionIndex()
     {
         $query = Funding::find();
-        $query->where(['>', 'xcoin_funding.available_amount', 0]);
+        $query->where(['>', 'xcoin_funding.amount', 0]);
         $query->andWhere(['IS NOT', 'xcoin_funding.id', new \yii\db\Expression('NULL')]);
         
         return $this->render('index', ['fundings' => $query->all()]);

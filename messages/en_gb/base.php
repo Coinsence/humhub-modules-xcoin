@@ -51,7 +51,7 @@ return [
     'Manager' => 'Account manager',
     'Marketplace' => 'Store',
     'Maximum 4 decimal places.' => '',
-    'Maximum amount that can be exchanged with the asset at the specified rate. The available amount will also be automatically adjusted if the funds in the funding account are not sufficient. If set to 0 this exchange option is disabled.' => 'Maximum amount that can be exchanged with the coin at the specified rate. The available amount will also be automatically adjusted if the funds in the funding account are not sufficient. If set to 0 this exchange option is disabled.',
+    'If set to 0 this exchange option is disabled.' => 'If set to 0 this exchange option is disabled.',
     'Maximum offered amount' => '',
     'Maximum:' => '',
     'Min.' => '',

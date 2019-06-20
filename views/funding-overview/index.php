@@ -1,19 +1,21 @@
 <?php
 
 use humhub\modules\xcoin\assets\Assets;
+use humhub\modules\xcoin\models\Funding;
 use yii\bootstrap\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use yii\bootstrap\Progress;
 
-Assets::register($this);
+/** @var $fundings Funding[] */
 
+Assets::register($this);
 ?>
 
 <div class="container">
     <div class="row">
         <div class="col-md-12 fundingPanels">
 
-            <?php if ( count( $fundings ) === 0 ): ?>
+            <?php if ( count( $fundings ) == 0 ): ?>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <?= Yii::t('XcoinModule.funding', '<strong>Crowd</strong> Funding') ?>
@@ -29,7 +31,7 @@ Assets::register($this);
 
             <div class="row">
                 <?php foreach ( $fundings as $funding ): ?>
-                    <?php if ( $funding->getBaseMaximumAmount() > 0 && $funding->getRemainingDays() > 0 ): ?>
+                    <?php if ( $funding->getRemainingDays() > 0 ): ?>
                         <?php
                         $space = $funding->getSpace()->one();
                         $cover = $funding->getCover();
@@ -87,7 +89,7 @@ Assets::register($this);
 
                                             <div>
                                                 <!-- campaign raised start -->
-                                                <?= Yii::t('XcoinModule.funding', 'Raised:') ?><strong><?= $funding->getRaisedAmount() ?></strong>
+                                                <?= Yii::t('XcoinModule.funding', 'Raised:') ?> <strong><?= $funding->getRaisedAmount() ?> </strong>
                                                 (<strong><?= $funding->getRaisedPercentage() ?>%</strong>)
                                                 <!-- campaign raised end -->
                                             </div>

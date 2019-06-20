@@ -86,7 +86,7 @@ class FundingInvest extends Model
      */
     protected function getMaxBuyAmount()
     {
-        $left = $this->funding->getBaseMaximumAmount();
+        $left = $this->funding->getAvailableAmount();
 
         // Check max amount of current account
         $accountLeft = $this->fromAccount->getAssetBalance($this->funding->asset);
@@ -161,10 +161,6 @@ class FundingInvest extends Model
             ]), 'xcoin.base');
             throw new HttpException(Yii::t('XcoinModule.base', 'Transaction failed!'));
         }
-
-        // Update
-        $newAvail = $this->funding->available_amount - $this->getBuyAmount();
-        $this->funding->updateAttributes(['available_amount' => $newAvail]);
 
         return true;
     }

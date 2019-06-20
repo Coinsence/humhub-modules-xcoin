@@ -14,6 +14,7 @@ use kartik\widgets\Select2;
 
 /** @var $assetList array */
 /** @var $defaultAsset Asset */
+/** @var $myAsset Asset */
 
 Select2BootstrapAsset::register($this);
 ?>
@@ -22,11 +23,7 @@ Select2BootstrapAsset::register($this);
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 <?= Html::hiddenInput('step', '1'); ?>
 <div class="modal-body">
-    <?= $form->field($model, 'available_amount')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.funding', 'Maximum offered amount')); ?>
-    <p class='alert alert-info'>
-        <?= Yii::t('XcoinModule.funding', 'The current balance of the funding account is:'); ?> <strong><?= $fundingAccountBalance; ?></strong>
-    </p>
-    <hr/>
+    <?= $form->field($model, 'amount')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.funding', 'Offered amount')); ?>
     <p><?= Yii::t('XcoinModule.funding', 'Determine the exchange rate for which you are willing to trade assets.'); ?></p>
     <div class="row">
         <div class="col-md-5">

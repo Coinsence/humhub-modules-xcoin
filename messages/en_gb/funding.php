@@ -51,4 +51,5 @@ return [
     'Select wanted asset' => 'Select wanted coins',
     'The assets listed below are currently wanted as crowd funding investment.' => 'The coins listed below are currently wanted investment.',
     'The current balance of the funding account is:' => '',
+    'Deleted Campaign' => 'Deleted',
 ];

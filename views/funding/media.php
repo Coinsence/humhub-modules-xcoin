@@ -16,9 +16,8 @@ $upload = Upload::withName();
 <?= Html::hiddenInput('step', '3'); ?>
 
 <?= $form->field($model, 'asset_id')->hiddenInput()->label(false) ?>
-<?= $form->field($model, 'available_amount', ['enableError' => false])->hiddenInput()->label(false)->hint(false) ?>
+<?= $form->field($model, 'amount', ['enableError' => false])->hiddenInput()->label(false)->hint(false) ?>
 <?= $form->field($model, 'exchange_rate', ['enableError' => false])->hiddenInput()->label(false) ?>
-<?= $form->field($model, 'amount')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'title')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'description')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'content')->hiddenInput()->label(false) ?>

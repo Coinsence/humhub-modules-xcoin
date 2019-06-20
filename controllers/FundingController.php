@@ -33,12 +33,10 @@ class FundingController extends ContentContainerController
         AccountHelper::initContentContainer($this->contentContainer);
 
         $fundings = Funding::find()->where(['space_id' => $this->contentContainer->id])->all();
-        $activeFundings = Funding::find()->where(['space_id' => $this->contentContainer->id])->andWhere(['>', 'available_amount', 0])->all();
 
         return $this->render('index', [
             'fundings' => $fundings,
             'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
-            'activeFundings' => $activeFundings,
         ]);
     }
 
@@ -132,14 +130,13 @@ class FundingController extends ContentContainerController
                 $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
             }
 
-            return $this->renderAjax('create',
-                [
+            return $this->renderAjax('create', [
                     'model' => $model,
                     'assetList' => $assetList,
                     'defaultAsset' => $defaultAsset,
                     'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
-                    'fundingAccountBalance' => AccountHelper::getFundingAccountBalance($this->contentContainer)
-                ]);
+                ]
+            );
         }
 
         // Try Save Step 2
@@ -154,7 +151,11 @@ class FundingController extends ContentContainerController
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
             $this->view->saved();
-            return $this->htmlRedirect(['/xcoin/funding', 'container' => $this->contentContainer]);
+
+            return $this->redirect($this->contentContainer->createUrl('/xcoin/funding/overview', [
+                'container' => $this->contentContainer,
+                'fundingId' => $model->id
+            ]));
         }
 
         // Check validation

@@ -23,11 +23,13 @@ use yii\db\Expression;
  * @property string $title
  * @property string $guid
  * @property string $ethereum_address
+ * @property integer $funding_id
  *
  * @property Space $space
  * @property User $user
  * @preperty TaskAccount $account
  * @property Task $task
+ * @property Task $funding
  */
 class Account extends ActiveRecord
 {
@@ -214,4 +216,11 @@ class Account extends ActiveRecord
         return $this->hasOne(Task::class, ['id' => 'task_id'])->via('taskAccount');
     }
 
+    /**
+     * @return ActiveQuery
+     */
+    public function getFunding()
+    {
+        return $this->hasOne(Funding::class, ['id' => 'funding_id']);
+    }
 }

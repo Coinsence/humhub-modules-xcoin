@@ -51,4 +51,5 @@ return [
     'Select wanted asset' => 'Sélectionnez les piéces recherchées',
     'The assets listed below are currently wanted as crowd funding investment.' => 'Les piéces énumérées ci-dessous sont actuellement des investissements souhaités.',
     'The current balance of the funding account is:' => 'Le solde actuel du compte de financement est:',
+    'Deleted Campaign' => 'Deleted',
 ];

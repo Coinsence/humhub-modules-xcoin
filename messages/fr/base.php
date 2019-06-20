@@ -51,7 +51,7 @@ return [
     'Manager' => 'Manager',
     'Marketplace' => '',
     'Maximum 4 decimal places.' => 'Maximum 4 place décimales',
-    'Maximum amount that can be exchanged with the asset at the specified rate. The available amount will also be automatically adjusted if the funds in the funding account are not sufficient. If set to 0 this exchange option is disabled.' => 'MOntant maximal pouvant etre échangé avec l\'actif au taux spécifié. Le montant disponible sera également ajusté automatiquement si les fonds du compte de financement ne sont pas suffisants. Si cette option est définie su 0, cette option d\'échange est désactivée.',
+    'If set to 0 this exchange option is disabled.' => 'Si cette option est définie sur 0, cette option d\'échange est désactivée.',
     'Maximum offered amount' => 'Monatant maximum offert',
     'Maximum:' => '',
     'Min.' => '',

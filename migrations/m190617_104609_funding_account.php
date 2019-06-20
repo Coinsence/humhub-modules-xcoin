@@ -12,7 +12,7 @@ class m190617_104609_funding_account extends Migration
      */
     public function safeUp()
     {
-
+        $this->addColumn('xcoin_account','funding_id', $this->integer());
     }
 
     /**
@@ -20,23 +20,6 @@ class m190617_104609_funding_account extends Migration
      */
     public function safeDown()
     {
-        echo "m190617_104609_funding_account cannot be reverted.\n";
-
-        return false;
+       $this->dropTable('funding_account');
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m190617_104609_funding_account cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }
