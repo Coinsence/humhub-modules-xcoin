@@ -55,7 +55,6 @@ class Funding extends ActiveRecord
                 [
                     'space_id',
                     'asset_id',
-                    'exchange_rate',
                     'created_by',
                     'amount',
                     'title',
@@ -67,7 +66,6 @@ class Funding extends ActiveRecord
             ],
             [['space_id', 'asset_id', 'amount', 'created_by'], 'integer'],
             [['amount'], 'number', 'min' => '0'],
-            [['exchange_rate'], 'number', 'min' => '0.001'],
             [['created_at'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
@@ -83,12 +81,12 @@ class Funding extends ActiveRecord
         return [
             self::SCENARIO_EDIT => [
                 'asset_id',
-                'exchange_rate',
                 'amount',
                 'title',
                 'description',
                 'content',
-                'deadline'
+                'deadline',
+                'space_id'
             ],
         ];
     }
@@ -125,6 +123,10 @@ class Funding extends ActiveRecord
      */
     public function beforeSave($insert)
     {
+        if($this->isNewRecord){
+            $this->exchange_rate = 1;
+        }
+
         return parent::beforeSave($insert);
     }
 
@@ -205,7 +207,11 @@ class Funding extends ActiveRecord
 
     public function getOfferedAmountPercentage()
     {
-        return round(($this->amount / AssetHelper::getSpaceAsset($this->space)->getIssuedAmount()) * 100);
+        if (AssetHelper::getSpaceAsset($this->space)->getIssuedAmount()) {
+            return round(($this->amount / AssetHelper::getSpaceAsset($this->space)->getIssuedAmount()) * 100);
+        }
+
+        return 100;
     }
 
     /**
@@ -225,7 +231,7 @@ class Funding extends ActiveRecord
 
     public function isFirstStep()
     {
-        return empty($this->asset_id) || empty($this->amount) || empty($this->exchange_rate);
+        return empty($this->asset_id) || empty($this->amount);
     }
 
     public function isSecondStep()
@@ -266,6 +272,17 @@ class Funding extends ActiveRecord
     public function canInvest()
     {
         return $this->getAvailableAmount() > 0 && $this->getRemainingDays() > 0;
+    }
+
+    public function isNameUnique()
+    {
+        if ($this->space->space_type == Space::SPACE_TYPE_FUNDING &&
+            Space::findOne(['name' => $this->title])) {
+            $this->addError('title' , Yii::t('XcoinModule.funding', 'Title already used'));
+            return false;
+        }
+
+        return true;
     }
 
     public function getCover()

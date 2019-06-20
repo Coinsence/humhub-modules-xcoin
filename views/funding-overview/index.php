@@ -13,6 +13,11 @@ Assets::register($this);
 
 <div class="container">
     <div class="row">
+        <div class="pull-right sell-button">
+            <?= Html::a(Yii::t('XcoinModule.funding', 'Add Your Project'), [
+                '/xcoin/funding-overview/new',
+            ], ['class' => 'btn btn-success btn-lg', 'data-target' => '#globalModal']); ?>
+        </div>
         <div class="col-md-12 fundingPanels">
 
             <?php if ( count( $fundings ) == 0 ): ?>

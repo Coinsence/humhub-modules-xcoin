@@ -22,6 +22,7 @@ $upload = Upload::withName();
 <?= $form->field($model, 'description')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'content')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'deadline')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
 
 <div class="modal-body">
     <div class="row">
@@ -53,10 +54,6 @@ $upload = Upload::withName();
             </p>
         </div>
     </div>
-
-    <?php if (!$model->isNewRecord): ?>
-        <?= Html::a(Yii::t('XcoinModule.funding', 'Delete this exchange request'), ['delete', 'id' => $model->id, 'container' => $this->context->contentContainer], ['class' => 'pull-right colorDanger']); ?>
-    <?php endif; ?>
 </div>
 
 <div class="modal-footer">

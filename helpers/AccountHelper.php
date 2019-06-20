@@ -13,7 +13,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\xcoin\models\Account;
 use yii\base\Exception;
-use yii\redis\ActiveQuery;
 use yii\web\HttpException;
 
 /**
@@ -50,14 +49,37 @@ class AccountHelper
 
     /**
      * @param ContentContainerActiveRecord $container
-     * @return ActiveQuery
+     * @param Asset|null $asset
+     * @return \yii\db\ActiveQuery
      */
-    public static function getAccountsQuery(ContentContainerActiveRecord $container)
+    public static function getAccountsQuery(ContentContainerActiveRecord $container, Asset $asset = null)
     {
         if ($container instanceof Space) {
-            return Account::find()->andWhere(['space_id' => $container->id]);
+            $query = Account::find()->andWhere(['space_id' => $container->id]);
+
+            if ($asset) {
+                $query
+                    ->leftJoin('xcoin_transaction',
+                        'xcoin_transaction.to_account_id = xcoin_account.id or ' .
+                        'xcoin_transaction.from_account_id = xcoin_account.id'
+                    )
+                    ->andWhere("xcoin_transaction.asset_id = {$asset->id}");
+            }
+
+            return $query;
         } elseif ($container instanceof User) {
-            return Account::find()->andWhere(['user_id' => $container->id]);
+            $query = Account::find()->andWhere(['user_id' => $container->id]);
+
+            if ($asset) {
+                $query
+                    ->leftJoin('xcoin_transaction',
+                        'xcoin_transaction.to_account_id = xcoin_account.id or ' .
+                        'xcoin_transaction.from_account_id = xcoin_account.id'
+                    )
+                    ->andWhere("xcoin_transaction.asset_id = {$asset->id}");
+            }
+
+            return $query;
         }
     }
 

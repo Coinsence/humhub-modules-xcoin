@@ -52,4 +52,10 @@ return [
     'The assets listed below are currently wanted as crowd funding investment.' => 'The coins listed below are currently wanted investment.',
     'The current balance of the funding account is:' => '',
     'Deleted Campaign' => 'Deleted',
+    'Add Your Project' => 'Add Your Project',
+    'Select from which space you want to create your campaign' => 'Select from which space you want to create your campaign',
+    'Select space' => 'Select space',
+    'Create new space' => 'Create new space',
+    'Leave empty if you want to create automatically a new space for this campaign' => 'Leave empty if you want to create automatically a new space for this campaign',
+    'Title already used' => 'Title already used'
 ];

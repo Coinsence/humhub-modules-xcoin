@@ -3,7 +3,6 @@
 use humhub\widgets\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
-use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\assets\Select2BootstrapAsset;
 use humhub\modules\xcoin\widgets\AmountField;
 use humhub\modules\xcoin\widgets\SenderAccountField;

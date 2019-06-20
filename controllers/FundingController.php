@@ -57,19 +57,20 @@ class FundingController extends ContentContainerController
      * @param $fundingId
      * @return string
      * @throws \Throwable
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function actionInvest($fundingId)
     {
         $funding = Funding::findOne(['id' => $fundingId, 'space_id' => $this->contentContainer->id]);
         if ($funding === null) {
-            throw new \yii\web\HttpException(404, 'Funding not found!');
+            throw new HttpException(404, 'Funding not found!');
         }
 
         $fromAccount = Account::findOne(['id' => Yii::$app->request->get('accountId')]);
         if ($fromAccount === null) {
             return $this->renderAjax('@xcoin/views/transaction/select-account', [
                 'contentContainer' => Yii::$app->user->getIdentity(),
+                'requireAsset' => $funding->getAsset()->one(),
                 'nextRoute' => ['/xcoin/funding/invest', 'fundingId' => $funding->id, 'container' => $this->contentContainer],
             ]);
         }
@@ -89,11 +90,10 @@ class FundingController extends ContentContainerController
         ]);
     }
 
-
     public function actionEdit()
     {
         if (!AssetHelper::canManageAssets($this->contentContainer)) {
-            throw new \yii\web\HttpException(401);
+            throw new HttpException(401);
         }
 
         $model = Funding::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $this->contentContainer->id]);
@@ -171,7 +171,7 @@ class FundingController extends ContentContainerController
     public function actionDelete($id)
     {
         if (!AssetHelper::canManageAssets($this->contentContainer)) {
-            throw new \yii\web\HttpException(401);
+            throw new HttpException(401);
         }
 
         $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
@@ -179,10 +179,4 @@ class FundingController extends ContentContainerController
 
         return $this->htmlRedirect(['index', 'container' => $this->contentContainer]);
     }
-
-    public function actionTest()
-    {
-        print "hello";
-    }
-
 }
