@@ -163,6 +163,11 @@ class Events
     {
         // Get new account transaction parameters
         $module = Yii::$app->getModule('xcoin');
+
+        if(!$module->settings->space()){
+            return;
+        }
+
         $accountTitle = $module->settings->space()->get('accountTitle');
         $transactionAmount = $module->settings->space()->get('transactionAmount');
         $transactionComment = $module->settings->space()->get('transactionComment');
