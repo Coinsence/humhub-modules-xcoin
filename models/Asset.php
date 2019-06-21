@@ -4,6 +4,7 @@ namespace humhub\modules\xcoin\models;
 
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\space\models\Space;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 

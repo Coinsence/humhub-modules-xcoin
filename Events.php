@@ -3,12 +3,16 @@
 namespace humhub\modules\xcoin;
 
 use humhub\modules\xcoin\assets\Assets;
+use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\models\Transaction;
 use humhub\widgets\TopMenu;
 use Yii;
 use yii\base\Event;
 use yii\helpers\Url;
+use yii\web\HttpException;
 
 class Events
 {
@@ -150,6 +154,65 @@ class Events
                 'sortOrder' => 220,
             ]);
         }
+    }
+    /*
+     * When a members joins a space an account is created and credited by an amount specified by the admin
+     * @param Event
+     * */
+    public static function onSpaceMemberAdd($event)
+    {
+        // Get new account transaction parameters
+        $module = Yii::$app->getModule('xcoin');
+        $accountTitle = $module->settings->space()->get('accountTitle');
+        $transactionAmount = $module->settings->space()->get('transactionAmount');
+        $transactionComment = $module->settings->space()->get('transactionComment');
+
+        //Prepare accounts
+        $space = $event->space;
+        $user = $event->user;
+
+        $spaceIssueAccount = AccountHelper::getIssueAccount($space);
+        $spaceDefaultAccount = Account::findOne(['space_id' => $space->id, 'account_type' => Account::TYPE_DEFAULT]);
+
+        //Exit if module settings are not set or space default account or issue account are not set
+        if (!$accountTitle || !$transactionAmount || !$transactionComment || !$spaceIssueAccount || !$spaceDefaultAccount)
+            return;
+
+        $memberAccount = Account::find()->where(['user_id' => $user->id])->andWhere(['not', ['space_id' => null]])->one();
+        if (!$memberAccount) {
+            $memberAccount = new Account();
+            $memberAccount->space_id = $space->id;
+            $memberAccount->user_id = $user->id;
+            $memberAccount->title = $accountTitle;
+            $memberAccount->account_type = Account::TYPE_STANDARD;
+            if (!$memberAccount->save())
+                throw new Exception('Could not create member account!');
+        }
+
+        //Issue transaction amount to default account
+        $issueTransaction = new Transaction();
+        $issueTransaction->amount = $transactionAmount;
+        $issueTransaction->from_account_id = $spaceIssueAccount->id;
+        $issueTransaction->to_account_id = $spaceDefaultAccount->id;
+        $issueTransaction->asset_id = AssetHelper::getSpaceAsset($space)->id;
+        $issueTransaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
+        $issueTransaction->comment = "Issue transaction Amount to default Account";
+        if (!$issueTransaction->save())
+            throw new HttpException(500, "can't issue this Amount !");
+
+        //New member account transaction
+        $transferTransaction = new Transaction();
+        $transferTransaction->amount = $transactionAmount;
+        $transferTransaction->from_account_id = $spaceDefaultAccount->id;
+        $transferTransaction->to_account_id = $memberAccount->id;
+        $transferTransaction->asset_id = AssetHelper::getSpaceAsset($space)->id;
+        $transferTransaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
+        $transferTransaction->comment = $transactionComment;
+        if (!$transferTransaction->save()) {
+            throw new HttpException(500, "Can't transfer transaction amount to member account");
+        }
+
+
     }
 
 }

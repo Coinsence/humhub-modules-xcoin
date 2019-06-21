@@ -53,4 +53,10 @@ class Module extends ContentContainerModule
         return [];
     }
 
+    public function getContentContainerConfigUrl(ContentContainerActiveRecord $container)
+    {
+        if ($container instanceof Space)
+            return $container->createUrl('/xcoin/config/index');
+    }
+
 }
