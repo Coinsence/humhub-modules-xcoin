@@ -19,12 +19,12 @@ use kartik\widgets\Select2;
 Select2BootstrapAsset::register($this);
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Select wanted asset and define exchange rate'), 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Set funding request'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 <?= Html::hiddenInput('step', '1'); ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
 <div class="modal-body">
-    <?= $form->field($model, 'amount')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.funding', 'Offered amount')); ?>
+    <?= $form->field($model, 'amount')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.funding', 'Requested amount')); ?>
     <div class="row">
         <div class="col-md-12">
             <?=

@@ -57,5 +57,8 @@ return [
     'Select space' => '',
     'Create new space' => '',
     'Leave empty if you want to create automatically a new space for this campaign' => '',
-    'Title already used' => ''
+    'Title already used' => '',
+    'Set funding request' => '',
+    'Requested amount' => 'Requested amount',
+    'Title' => '',
 ];

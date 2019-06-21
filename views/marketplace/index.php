@@ -18,6 +18,8 @@ Assets::register($this);
                 '/xcoin/marketplace/sell',
             ], ['class' => 'btn btn-success btn-lg', 'data-target' => '#globalModal']); ?>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-12 fundingPanels">
             <?php if (count($products) === 0): ?>
                 <div class="panel panel-default">

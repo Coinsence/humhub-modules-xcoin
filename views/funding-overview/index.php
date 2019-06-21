@@ -18,16 +18,18 @@ Assets::register($this);
                 '/xcoin/funding-overview/new',
             ], ['class' => 'btn btn-success btn-lg', 'data-target' => '#globalModal']); ?>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-12 fundingPanels">
 
-            <?php if ( count( $fundings ) == 0 ): ?>
+            <?php if (count($fundings) == 0): ?>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <?= Yii::t('XcoinModule.funding', '<strong>Crowd</strong> Funding') ?>
                     </div>
                     <div class="panel-body">
                         <div class="alert alert-warning">
-                            <?= Yii::t( 'XcoinModule.funding', 'Currently there are no running crowd fundings!' ) ?>
+                            <?= Yii::t('XcoinModule.funding', 'Currently there are no running crowd fundings!') ?>
                         </div>
                     </div>
                     <br/>
@@ -35,8 +37,8 @@ Assets::register($this);
             <?php endif; ?>
 
             <div class="row">
-                <?php foreach ( $fundings as $funding ): ?>
-                    <?php if ( $funding->getRemainingDays() > 0 ): ?>
+                <?php foreach ($fundings as $funding): ?>
+                    <?php if ($funding->getRemainingDays() > 0): ?>
                         <?php
                         $space = $funding->getSpace()->one();
                         $cover = $funding->getCover();
@@ -50,40 +52,43 @@ Assets::register($this);
                                     <div class="panel-heading">
 
                                         <!-- campaign cover start -->
-                                        <?php if ( $cover ) : ?>
-                                            <div class="bg" style="background-image: url('<?= $cover->getUrl() ?>')"></div>
-                                            <?= Html::img( $cover->getUrl(), [ 'height' => '140' ] ) ?>
+                                        <?php if ($cover) : ?>
+                                            <div class="bg"
+                                                 style="background-image: url('<?= $cover->getUrl() ?>')"></div>
+                                            <?= Html::img($cover->getUrl(), ['height' => '140']) ?>
                                         <?php else : ?>
-                                            <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
-                                            <img src="<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>" height="140"/>
+                                            <div class="bg"
+                                                 style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
+                                            <img src="<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>"
+                                                 height="140"/>
                                         <?php endif ?>
                                         <!-- campaign cover end -->
 
                                         <div class="project-owner">
 
                                             <!-- space image start -->
-                                            <?= SpaceImage::widget( [
-                                                    'space'       => $space,
-                                                    'width'       => 34,
-                                                    'showTooltip' => true,
-                                                    'link'        => false
-                                            ] ); ?>
+                                            <?= SpaceImage::widget([
+                                                'space' => $space,
+                                                'width' => 34,
+                                                'showTooltip' => true,
+                                                'link' => false
+                                            ]); ?>
                                             <!-- space image end -->
 
                                             <!-- campaign title start -->
-                                            <span><?= Yii::t('XcoinModule.funding', 'Project by') . " <strong>" . Html::encode( $space->name ) . "</strong>"; ?></span>
+                                            <span><?= Yii::t('XcoinModule.funding', 'Project by') . " <strong>" . Html::encode($space->name) . "</strong>"; ?></span>
                                             <!-- campaign title end -->
 
                                         </div>
                                     </div>
                                     <div class="panel-body">
-                                        <h4 class="funding-title"><?= Html::encode( $funding->title ); ?></h4>
+                                        <h4 class="funding-title"><?= Html::encode($funding->title); ?></h4>
                                         <div class="media">
                                             <div class="media-left media-middle">
                                             </div>
                                             <div class="media-body">
                                                 <!-- campaign description start -->
-                                                <h4 class="media-heading"><?= Html::encode( $funding->shortenDescription() ); ?></h4>
+                                                <h4 class="media-heading"><?= Html::encode($funding->shortenDescription()); ?></h4>
                                                 <!-- campaign description end -->
                                             </div>
                                         </div>
@@ -94,7 +99,8 @@ Assets::register($this);
 
                                             <div>
                                                 <!-- campaign raised start -->
-                                                <?= Yii::t('XcoinModule.funding', 'Raised:') ?> <strong><?= $funding->getRaisedAmount() ?> </strong>
+                                                <?= Yii::t('XcoinModule.funding', 'Raised:') ?>
+                                                <strong><?= $funding->getRaisedAmount() ?> </strong>
                                                 (<strong><?= $funding->getRaisedPercentage() ?>%</strong>)
                                                 <!-- campaign raised end -->
                                             </div>
@@ -115,9 +121,9 @@ Assets::register($this);
                                             </div>
 
                                             <!-- campaign raised start -->
-                                            <?php echo Progress::widget( [
-                                                    'percent' => $funding->getRaisedPercentage(),
-                                            ] ); ?>
+                                            <?php echo Progress::widget([
+                                                'percent' => $funding->getRaisedPercentage(),
+                                            ]); ?>
                                         </div>
                                         <div class="funding-details row">
 
@@ -127,12 +133,12 @@ Assets::register($this);
                                                     <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
                                                     <strong><?= $funding->getRequestedAmount() ?></strong>
                                                 </span>
-                                                <?= SpaceImage::widget( [
-                                                        'space'       => $funding->asset->space,
-                                                        'width'       => 16,
-                                                        'showTooltip' => true,
-                                                        'link'        => false
-                                                ] ); ?>
+                                                <?= SpaceImage::widget([
+                                                    'space' => $funding->asset->space,
+                                                    'width' => 16,
+                                                    'showTooltip' => true,
+                                                    'link' => false
+                                                ]); ?>
                                                 <!-- campaign requesting end -->
                                             </div>
                                             <div class="col-md-6">
@@ -141,12 +147,12 @@ Assets::register($this);
                                                     <?= Yii::t('XcoinModule.funding', 'Offering:') ?>
                                                     <strong><?= $funding->getOfferedAmountPercentage() ?>%</strong>
                                                 </span>
-                                                <?= SpaceImage::widget( [
-                                                        'space'       => $funding->space,
-                                                        'width'       => 16,
-                                                        'showTooltip' => true,
-                                                        'link'        => false
-                                                ] ); ?>
+                                                <?= SpaceImage::widget([
+                                                    'space' => $funding->space,
+                                                    'width' => 16,
+                                                    'showTooltip' => true,
+                                                    'link' => false
+                                                ]); ?>
                                                 <!-- campaign offering end -->
                                             </div>
 

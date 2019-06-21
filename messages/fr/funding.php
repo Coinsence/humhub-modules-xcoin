@@ -57,5 +57,8 @@ return [
     'Select space' => 'Choisissez l\'espace',
     'Create new space' => 'Créez un nouveau espace',
     'Leave empty if you want to create automatically a new space for this campaign' => 'Laissez vide si vous souhaitez créer automatiquement un nouvel espace pour cette campagne',
-    'Title already used' => 'Titre déjà utilisé'
+    'Title already used' => 'Titre déjà utilisé',
+    'Set funding request' => 'Définir la demande de financement',
+    'Requested amount' => 'Montant demandé',
+    'Title' => 'Titre de votre campagne',
 ];

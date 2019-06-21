@@ -104,7 +104,7 @@ class Funding extends ActiveRecord
             'amount' => Yii::t('XcoinModule.base', 'Amount'),
             'created_at' => Yii::t('XcoinModule.base', 'Created At'),
             'created_by' => Yii::t('XcoinModule.base', 'Created By'),
-            'title' => Yii::t('XcoinModule.base', 'Title'),
+            'title' => Yii::t('XcoinModule.funding', 'Title'),
             'description' => Yii::t('XcoinModule.base', 'Description'),
             'content' => Yii::t('XcoinModule.base', 'Needs & Commitments'),
             'deadline' => Yii::t('XcoinModule.base', 'Deadline'),
