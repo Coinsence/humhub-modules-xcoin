@@ -183,7 +183,12 @@ class Events
         if (!$accountTitle || !$transactionAmount || !$transactionComment || !$spaceIssueAccount || !$spaceDefaultAccount)
             return;
 
-        $memberAccount = Account::find()->where(['user_id' => $user->id])->andWhere(['not', ['space_id' => null]])->one();
+        $memberAccount = Account::findOne(
+        [
+            'user_id' => $user->id,
+            'space_id' => $space->id
+        ]
+        );
         if (!$memberAccount) {
             $memberAccount = new Account();
             $memberAccount->space_id = $space->id;
