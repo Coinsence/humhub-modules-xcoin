@@ -10,6 +10,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
 
+use humhub\modules\xcoin\helpers\AssetHelper;
 use Yii;
 
 /**
@@ -19,8 +20,7 @@ use Yii;
  * @property integer $space_id
  * @property integer $asset_id
  * @property integer $exchange_rate
- * @property integer $total_amount
- * @property integer $available_amount
+ * @property integer $amount
  * @property string $created_at
  * @property integer $created_by
  * @property string $title
@@ -37,8 +37,6 @@ class Funding extends ActiveRecord
 
     const SCENARIO_EDIT = 'sedit';
 
-    public $amount = 1;
-
     /**
      * @inheritdoc
      */
@@ -53,23 +51,21 @@ class Funding extends ActiveRecord
     public function rules()
     {
         return [
-            //  'total_amount', 'available_amount',
             [
                 [
                     'space_id',
                     'asset_id',
-                    'exchange_rate',
                     'created_by',
-                    'available_amount',
+                    'amount',
                     'title',
                     'description',
                     'deadline',
                     'content'
-                ], 'required'
+                ],
+                'required'
             ],
-            [['space_id', 'asset_id', 'total_amount', 'created_by'], 'integer'],
-            [['available_amount'], 'number', 'min' => '0'],
-            [['exchange_rate'], 'number', 'min' => '0.001'],
+            [['space_id', 'asset_id', 'amount', 'created_by'], 'integer'],
+            [['amount'], 'number', 'min' => '0'],
             [['created_at'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
@@ -85,12 +81,12 @@ class Funding extends ActiveRecord
         return [
             self::SCENARIO_EDIT => [
                 'asset_id',
-                'exchange_rate',
-                'available_amount',
+                'amount',
                 'title',
                 'description',
                 'content',
-                'deadline'
+                'deadline',
+                'space_id'
             ],
         ];
     }
@@ -105,13 +101,10 @@ class Funding extends ActiveRecord
             'space_id' => Yii::t('XcoinModule.base', 'Space ID'),
             'asset_id' => Yii::t('XcoinModule.base', 'Requested asset'),
             'exchange_rate' => Yii::t('XcoinModule.base', 'Exchange rate'),
-            'total_amount' => Yii::t('XcoinModule.base', 'Total Amount'),
-            'available_amount' => Yii::t('XcoinModule.base', 'Amount'),
+            'amount' => Yii::t('XcoinModule.base', 'Amount'),
             'created_at' => Yii::t('XcoinModule.base', 'Created At'),
             'created_by' => Yii::t('XcoinModule.base', 'Created By'),
-            'amount' => Yii::t('XcoinModule.base', 'Offered asset'),
-            'amountConverted' => Yii::t('XcoinModule.base', 'Wanted'),
-            'title' => Yii::t('XcoinModule.base', 'Title'),
+            'title' => Yii::t('XcoinModule.funding', 'Title'),
             'description' => Yii::t('XcoinModule.base', 'Description'),
             'content' => Yii::t('XcoinModule.base', 'Needs & Commitments'),
             'deadline' => Yii::t('XcoinModule.base', 'Deadline'),
@@ -121,8 +114,32 @@ class Funding extends ActiveRecord
     public function attributeHints()
     {
         return [
-            'available_amount' => Yii::t('XcoinModule.base', 'Maximum amount that can be exchanged with the asset at the specified rate. The available amount will also be automatically adjusted if the funds in the funding account are not sufficient. If set to 0 this exchange option is disabled.')
+            'amount' => Yii::t('XcoinModule.base', 'If set to 0 this exchange option is disabled.')
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if($this->isNewRecord){
+            $this->exchange_rate = 1;
+        }
+
+        return parent::beforeSave($insert);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeDelete()
+    {
+        // not deleting the funding account to keep balances coherent
+        $fundingAccount = $this->getFundingAccount();
+        $fundingAccount->updateAttributes(['funding_id' => null]);
+
+        return parent::beforeDelete();
     }
 
     /**
@@ -157,7 +174,7 @@ class Funding extends ActiveRecord
 
     public function getRequestedAmount()
     {
-        return round($this->total_amount / $this->exchange_rate);
+        return round($this->amount / $this->exchange_rate);
     }
 
     /**
@@ -165,10 +182,9 @@ class Funding extends ActiveRecord
      *
      * @return float
      */
-
     public function getRaisedAmount()
     {
-        return $this->getFundingAccount()->getAssetBalance($this->asset);
+        return AccountHelper::getFundingAccountBalance($this);
     }
 
     /**
@@ -179,11 +195,7 @@ class Funding extends ActiveRecord
 
     public function getRaisedPercentage()
     {
-        if ($this->getRequestedAmount()) {
-            return round(($this->getRaisedAmount() / $this->getRequestedAmount()) * 100);
-        }
-
-        return 0;
+        return $this->getRequestedAmount() ? round(($this->getRaisedAmount() / $this->getRequestedAmount()) * 100) : 0;
     }
 
 
@@ -195,39 +207,36 @@ class Funding extends ActiveRecord
 
     public function getOfferedAmountPercentage()
     {
-        return round(($this->total_amount / Asset::findOne(['space_id' => $this->space_id])->getIssuedAmount()) * 100);
+        if (AssetHelper::getSpaceAsset($this->space)->getIssuedAmount()) {
+            return round(($this->amount / AssetHelper::getSpaceAsset($this->space)->getIssuedAmount()) * 100);
+        }
+
+        return 100;
     }
 
     /**
-     * Returns the available funding space assets based on funding account balance and available amount
+     * Gets the available amount in the space asset
      *
-     * @return int
+     * @return float
      */
-    public function getBaseMaximumAmount()
+    public function getAvailableAmount()
     {
-        // Funding Account Balance
-        $balance = AccountHelper::getFundingAccountBalance($this->space);
-
-        if ($balance < $this->available_amount) {
-            return $balance;
-        }
-
-        return $this->available_amount;
+        return AccountHelper::getFundingAccountBalance($this, false);
     }
 
     public function getFundingAccount()
     {
-        return AccountHelper::getFundingAccount($this->space);
+        return AccountHelper::getFundingAccount($this);
     }
 
     public function isFirstStep()
     {
-        return empty($this->asset_id) || empty($this->available_amount) || empty($this->exchange_rate);
+        return empty($this->asset_id) || empty($this->amount);
     }
 
     public function isSecondStep()
     {
-        return empty($this->title) || empty($this->description) || empty($this->content) || empty($this->deadline) || strlen($this->description) > 255 ;
+        return empty($this->title) || empty($this->description) || empty($this->content) || empty($this->deadline) || strlen($this->description) > 255;
     }
 
     public function canDeleteFile()
@@ -255,18 +264,6 @@ class Funding extends ActiveRecord
         return intval($remainingDays);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function beforeSave($insert)
-    {
-        if ($this->isNewRecord) {
-            $this->total_amount = $this->available_amount;
-        }
-
-        return parent::beforeSave($insert);
-    }
-
     public function shortenDescription()
     {
         return (strlen($this->description) > 100) ? substr($this->description, 0, 97) . '...' : $this->description;
@@ -274,7 +271,18 @@ class Funding extends ActiveRecord
 
     public function canInvest()
     {
-        return $this->getBaseMaximumAmount() > 0 && $this->getRemainingDays() > 0;
+        return $this->getAvailableAmount() > 0 && $this->getRemainingDays() > 0;
+    }
+
+    public function isNameUnique()
+    {
+        if ($this->space->space_type == Space::SPACE_TYPE_FUNDING &&
+            Space::findOne(['name' => $this->title])) {
+            $this->addError('title' , Yii::t('XcoinModule.funding', 'Title already used'));
+            return false;
+        }
+
+        return true;
     }
 
     public function getCover()

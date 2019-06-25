@@ -3,17 +3,23 @@
 namespace humhub\modules\xcoin\helpers;
 
 use humhub\components\Event;
+use humhub\modules\xcoin\models\Asset;
+use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\models\Transaction;
+use humhub\modules\xcoin\permissions\CreateAccount;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\xcoin\models\Account;
-use yii\redis\ActiveQuery;
+use yii\base\Exception;
+use yii\web\HttpException;
 
 /**
  * Description of AccountHelper
  *
  * @author Luke
+ * @contributer Daly Ghaith <daly.ghaith@gmail.com>
  */
 class AccountHelper
 {
@@ -43,14 +49,37 @@ class AccountHelper
 
     /**
      * @param ContentContainerActiveRecord $container
-     * @return ActiveQuery
+     * @param Asset|null $asset
+     * @return \yii\db\ActiveQuery
      */
-    public static function getAccountsQuery(ContentContainerActiveRecord $container)
+    public static function getAccountsQuery(ContentContainerActiveRecord $container, Asset $asset = null)
     {
         if ($container instanceof Space) {
-            return Account::find()->andWhere(['space_id' => $container->id]);
+            $query = Account::find()->andWhere(['space_id' => $container->id]);
+
+            if ($asset) {
+                $query
+                    ->leftJoin('xcoin_transaction',
+                        'xcoin_transaction.to_account_id = xcoin_account.id or ' .
+                        'xcoin_transaction.from_account_id = xcoin_account.id'
+                    )
+                    ->andWhere("xcoin_transaction.asset_id = {$asset->id}");
+            }
+
+            return $query;
         } elseif ($container instanceof User) {
-            return Account::find()->andWhere(['user_id' => $container->id]);
+            $query = Account::find()->andWhere(['user_id' => $container->id]);
+
+            if ($asset) {
+                $query
+                    ->leftJoin('xcoin_transaction',
+                        'xcoin_transaction.to_account_id = xcoin_account.id or ' .
+                        'xcoin_transaction.from_account_id = xcoin_account.id'
+                    )
+                    ->andWhere("xcoin_transaction.asset_id = {$asset->id}");
+            }
+
+            return $query;
         }
     }
 
@@ -74,16 +103,37 @@ class AccountHelper
         return $accounts;
     }
 
-    public static function getFundingAccount(Space $space)
+    public static function getFundingAccount(Funding $funding)
     {
-        $account = Account::findOne(['space_id' => $space->id, 'account_type' => Account::TYPE_FUNDING]);
+        $account = Account::findOne(['funding_id' => $funding->id]);
+
         if ($account === null) {
             $account = new Account();
-            $account->space_id = $space->id;
-            $account->title = 'Funding';
+            $account->space_id = $funding->space->id;
+            $account->title = "Campaign # $funding->id";
             $account->account_type = Account::TYPE_FUNDING;
+            $account->funding_id = $funding->id;
+
             if (!$account->save()) {
                 throw new Exception('Could not create funding account!');
+            }
+
+            $asset = AssetHelper::getSpaceAsset($funding->space);
+            if ($asset === null) {
+                throw new HttpException(404);
+            }
+
+            $issueAccount = AccountHelper::getIssueAccount($funding->space);
+
+            $transaction = new Transaction();
+            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
+            $transaction->asset_id = $asset->id;
+            $transaction->from_account_id = $issueAccount->id;
+            $transaction->to_account_id = $account->id;
+            $transaction->amount = $funding->amount;
+
+            if (!$transaction->save()) {
+                throw new Exception('Could not create issue transaction for funding account');
             }
         }
 
@@ -145,23 +195,18 @@ class AccountHelper
 
     public static function canCreateAccount(ContentContainerActiveRecord $container)
     {
-        return $container->permissionManager->can(new \humhub\modules\xcoin\permissions\CreateAccount());
-
-        /*
-          if ($container instanceof User && $container->id != Yii::$app->user->id) {
-          return false;
-          }
-
-          return true;
-         *
-         */
+        return $container->permissionManager->can(new CreateAccount());
     }
 
-    public static function getFundingAccountBalance($space)
+    public static function getFundingAccountBalance(Funding $funding, $requested = true)
     {
-        $asset = AssetHelper::getSpaceAsset($space);
+        if ($requested) {
+            $asset = Asset::findOne(['id' => $funding->asset_id]);
+        } else {
+            $asset = AssetHelper::getSpaceAsset($funding->space);
+        }
 
-        return AccountHelper::getFundingAccount($space)->getAssetBalance($asset);
+        return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
     }
 
 }

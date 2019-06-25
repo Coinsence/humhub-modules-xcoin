@@ -33,12 +33,10 @@ class FundingController extends ContentContainerController
         AccountHelper::initContentContainer($this->contentContainer);
 
         $fundings = Funding::find()->where(['space_id' => $this->contentContainer->id])->all();
-        $activeFundings = Funding::find()->where(['space_id' => $this->contentContainer->id])->andWhere(['>', 'available_amount', 0])->all();
 
         return $this->render('index', [
             'fundings' => $fundings,
             'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
-            'activeFundings' => $activeFundings,
         ]);
     }
 
@@ -59,19 +57,20 @@ class FundingController extends ContentContainerController
      * @param $fundingId
      * @return string
      * @throws \Throwable
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function actionInvest($fundingId)
     {
         $funding = Funding::findOne(['id' => $fundingId, 'space_id' => $this->contentContainer->id]);
         if ($funding === null) {
-            throw new \yii\web\HttpException(404, 'Funding not found!');
+            throw new HttpException(404, 'Funding not found!');
         }
 
         $fromAccount = Account::findOne(['id' => Yii::$app->request->get('accountId')]);
         if ($fromAccount === null) {
             return $this->renderAjax('@xcoin/views/transaction/select-account', [
                 'contentContainer' => Yii::$app->user->getIdentity(),
+                'requireAsset' => $funding->getAsset()->one(),
                 'nextRoute' => ['/xcoin/funding/invest', 'fundingId' => $funding->id, 'container' => $this->contentContainer],
             ]);
         }
@@ -91,11 +90,10 @@ class FundingController extends ContentContainerController
         ]);
     }
 
-
     public function actionEdit()
     {
         if (!AssetHelper::canManageAssets($this->contentContainer)) {
-            throw new \yii\web\HttpException(401);
+            throw new HttpException(401);
         }
 
         $model = Funding::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $this->contentContainer->id]);
@@ -132,14 +130,13 @@ class FundingController extends ContentContainerController
                 $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
             }
 
-            return $this->renderAjax('create',
-                [
+            return $this->renderAjax('create', [
                     'model' => $model,
                     'assetList' => $assetList,
                     'defaultAsset' => $defaultAsset,
                     'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
-                    'fundingAccountBalance' => AccountHelper::getFundingAccountBalance($this->contentContainer)
-                ]);
+                ]
+            );
         }
 
         // Try Save Step 2
@@ -154,7 +151,11 @@ class FundingController extends ContentContainerController
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
             $this->view->saved();
-            return $this->htmlRedirect(['/xcoin/funding', 'container' => $this->contentContainer]);
+
+            return $this->redirect($this->contentContainer->createUrl('/xcoin/funding/overview', [
+                'container' => $this->contentContainer,
+                'fundingId' => $model->id
+            ]));
         }
 
         // Check validation
@@ -170,7 +171,7 @@ class FundingController extends ContentContainerController
     public function actionDelete($id)
     {
         if (!AssetHelper::canManageAssets($this->contentContainer)) {
-            throw new \yii\web\HttpException(401);
+            throw new HttpException(401);
         }
 
         $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
@@ -178,10 +179,4 @@ class FundingController extends ContentContainerController
 
         return $this->htmlRedirect(['index', 'container' => $this->contentContainer]);
     }
-
-    public function actionTest()
-    {
-        print "hello";
-    }
-
 }

@@ -13,6 +13,7 @@ use humhub\modules\xcoin\models\Asset;
  * Description of AccountHelper
  *
  * @author Luke
+ * @contributer Daly Ghaith <daly.ghaith@gmail.com>
  */
 class AssetHelper
 {
@@ -30,8 +31,13 @@ class AssetHelper
         }
     }
 
-    public static function getSpaceAsset(Space $space) {
-        return Asset::find()->andWhere(['space_id' => $space->id])->one();
+    /**
+     * @param Space|ContentContainerActiveRecord $space
+     * @return Asset|null
+     */
+    public static function getSpaceAsset(Space $space)
+    {
+        return Asset::findOne(['space_id' => $space->id]);
     }
 
 
@@ -42,6 +48,7 @@ class AssetHelper
             foreach (Asset::find()->andWhere(['space_id' => $container->id])->all() as $asset) {
                 $assets[$asset->id] = $asset->title;
             }
+
             return $assets;
         }
 

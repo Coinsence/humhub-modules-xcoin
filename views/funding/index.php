@@ -3,11 +3,13 @@
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\modules\xcoin\models\Funding;
 use yii\bootstrap\Html;
 use yii\bootstrap\Progress;
 
-Assets::register($this);
+/** @var $fundings Funding[] */
 
+Assets::register($this);
 ?>
 
 <div class="panel panel-default">
@@ -24,14 +26,15 @@ Assets::register($this);
     </div>
 
     <div class="panel-body">
-        <p><?= Yii::t('XcoinModule.funding', 'The assets listed below are currently wanted as crowd funding investment.') ?></p>
-
-        <?php if (count($activeFundings) === 0): ?>
+        <?php if (count($fundings) == 0): ?>
             <br/>
             <p class="alert alert-warning">
                 <?= Yii::t('XcoinModule.funding', 'Currently there are no open funding requests.') ?>
             </p>
+        <?php else : ?>
+            <p><?= Yii::t('XcoinModule.funding', 'The assets listed below are currently wanted as crowd funding investment.') ?></p>
         <?php endif; ?>
+
     </div>
 </div>
 

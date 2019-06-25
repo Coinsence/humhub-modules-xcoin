@@ -42,7 +42,7 @@ class AccountsGridView extends GridView
                 'format' => 'raw',
                 'options' => ['style' => 'width:35px'],
                 'visible' => (!$this->contentContainer instanceof Space),
-                'value' => function($model) {
+                'value' => function ($model) {
                     if ($model->space !== null) {
                         return SpaceImage::widget(['space' => $model->space, 'width' => 26]);
                     }
@@ -56,28 +56,40 @@ class AccountsGridView extends GridView
                 'format' => 'raw',
                 'options' => ['style' => 'width:80px'],
                 'visible' => (!$this->contentContainer instanceof User),
-                'value' => function($model) {
+                'value' => function ($model) {
                     if ($model->user === null) {
                         return '-';
                     }
+
                     return UserImage::widget(['user' => $model->user, 'width' => 26]);
                 }
             ],
             [
                 'attribute' => 'title',
                 'format' => 'raw',
-                'value' => function($model) {
+                'value' => function ($model) {
                     if ($model->account_type == Account::TYPE_ISSUE) {
                         return '<span class="label label-info">ISSUES</span>';
                     }
                     if ($model->account_type == Account::TYPE_FUNDING) {
-                        return '<span class="label label-info">FUNDINGS</span>';
+                        return $model->funding ?
+                            '<span class="label label-info">FUNDINGS</span> ' .
+                            Html::a(
+                                Html::encode($model->title),
+                                [
+                                    '/xcoin/funding/overview',
+                                    'fundingId' => $model->funding->id,
+                                    'container' => $this->contentContainer
+                                ]
+                            ) :
+                            '<span class="label label-danger">FUNDINGS</span> ' .
+                            Html::encode($model->title) . ' ('. Yii::t('XcoinModule.funding', 'Deleted Campaign'). ' )';
                     }
                     if ($model->account_type == Account::TYPE_DEFAULT) {
                         return '<span class="label label-info">DEFAULT</span>';
                     }
                     if ($model->account_type == Account::TYPE_TASK) {
-                        return '<span class="label label-info">TASK</span> '.
+                        return '<span class="label label-info">TASK</span> ' .
                             Html::a(
                                 Html::encode($model->title),
                                 [
@@ -87,18 +99,20 @@ class AccountsGridView extends GridView
                                 ]
                             );
                     }
-                    return Html::encode($model->title).'<i class="fa fa-users>"></i>';
+
+                    return Html::encode($model->title) . '<i class="fa fa-users>"></i>';
                 }
             ],
             [
                 'label' => Yii::t('XcoinModule.base', 'Asset(s) balance'),
                 'format' => 'raw',
-                'value' => function($model) {
+                'value' => function ($model) {
                     $list = [];
                     foreach ($model->getAssets() as $asset) {
                         $list[] = '<strong>' . $model->getAssetBalance($asset) . '</strong>&nbsp; ' .
-                                SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) . '</span>';
+                            SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) . '</span>';
                     }
+
                     return implode('&nbsp;&nbsp;&middot;&nbsp;&nbsp;', $list);
                 }
             ],
@@ -116,7 +130,7 @@ class AccountsGridView extends GridView
 
                     $overviewButton = Html::a('<i class="fa fa-search" aria-hidden="true"></i>', ['/xcoin/account', 'id' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default']);
 
-                    return $transferButton . $overviewButton ;
+                    return $transferButton . $overviewButton;
                 }
             ],
         ];

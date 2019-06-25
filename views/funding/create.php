@@ -14,28 +14,19 @@ use kartik\widgets\Select2;
 
 /** @var $assetList array */
 /** @var $defaultAsset Asset */
+/** @var $myAsset Asset */
 
 Select2BootstrapAsset::register($this);
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Select wanted asset and define exchange rate'), 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Set funding request'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 <?= Html::hiddenInput('step', '1'); ?>
+<?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
 <div class="modal-body">
-    <?= $form->field($model, 'available_amount')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.funding', 'Maximum offered amount')); ?>
-    <p class='alert alert-info'>
-        <?= Yii::t('XcoinModule.funding', 'The current balance of the funding account is:'); ?> <strong><?= $fundingAccountBalance; ?></strong>
-    </p>
-    <hr/>
-    <p><?= Yii::t('XcoinModule.funding', 'Determine the exchange rate for which you are willing to trade assets.'); ?></p>
+    <?= $form->field($model, 'amount')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.funding', 'Requested amount')); ?>
     <div class="row">
-        <div class="col-md-5">
-            <?= $form->field($model, 'exchange_rate')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.funding', 'Provided asset')); ?>
-        </div>
-        <div class="col-md-2 text-center">
-            <i class="fa fa-exchange colorSuccess" style="font-size:28px;padding-top:24px" aria-hidden="true"></i>
-        </div>
-        <div class="col-md-5">
+        <div class="col-md-12">
             <?=
             $form->field($model, 'asset_id')->widget(Select2::classname(), [
                 'data' => $assetList,
