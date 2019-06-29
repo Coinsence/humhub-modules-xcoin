@@ -125,7 +125,22 @@ class AccountsGridView extends GridView
                     $transferButton = '';
 
                     if (AccountHelper::canManageAccount($model) && Account::TYPE_TASK != $model->account_type) {
-                        $transferButton = Html::a('<i class="fa fa-exchange" aria-hidden="true"></i>', ['/xcoin/transaction/transfer', 'accountId' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']) . '&nbsp;';
+                        $accountAssetsList = AccountHelper::getAssetsList($model);
+                        if (!empty($accountAssetsList))
+                            $transferButton = Html::a('<i class="fa fa-exchange" aria-hidden="true"></i>', ['/xcoin/transaction/transfer', 'accountId' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']) . '&nbsp;';
+                        else
+                            $transferButton = Html::a(
+                                '<i class="fa fa-exchange" aria-hidden="true"></i>',
+                                ['javascript:;'],
+                                    [
+                                        'class' => 'btn btn-default',
+                                        'disabled' => true,
+                                        'data-toggle' => 'tooltip',
+                                        'data-placement' => 'right',
+                                        'title' => 'No assets available on this account!',
+                                        'onclick' => 'return false;'
+                                    ]
+                                ) . '&nbsp;';
                     }
 
                     $overviewButton = Html::a('<i class="fa fa-search" aria-hidden="true"></i>', ['/xcoin/account', 'id' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default']);
