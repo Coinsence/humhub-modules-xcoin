@@ -14,6 +14,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\xcoin\models\Account;
 use yii\base\Exception;
 use yii\web\HttpException;
+use humhub\modules\space\widgets\Image as SpaceImage;
 
 /**
  * Description of AccountHelper
@@ -207,6 +208,24 @@ class AccountHelper
         }
 
         return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
+    }
+
+    public static function getAssetsList(Account $account)
+    {
+        $accountAssetList = [];
+        foreach ($account->getAssets() as $asset) {
+            $max = $account->getAssetBalance($asset);
+            if (!empty($max)) {
+                $accountAssetList[$asset->id] = SpaceImage::widget([
+                        'space' => $asset->space,
+                        'width' => 16,
+                        'showTooltip' => true,
+                        'link' => true])
+                    . ' ' . $asset->space->name . '<small class="pull-rightx"> - max. ' . $max . '</small>';
+            }
+        }
+
+        return $accountAssetList;
     }
 
 }
