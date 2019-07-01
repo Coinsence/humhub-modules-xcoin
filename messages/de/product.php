@@ -20,6 +20,7 @@ return [
     'Currently there are no products.' => '',
     'Discount' => '',
     'Edit' => '',
+    'Delete' => '',
     'Picture' => '',
     'Please choose the payment type for your product' => '',
     'Please choose the type of coin you are accepting' => '',

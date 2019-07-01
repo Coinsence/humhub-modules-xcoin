@@ -296,11 +296,31 @@
     font-weight: bold;
 }
 
+.fundingPanel .panel.cover .panel-heading .delete-btn {
+    position: absolute;
+    top: 18px;
+    left: 130px;
+    color: white;
+    background: red;
+    border-radius: 20px;
+    font-size: 14px;
+    padding: 4px 12px;
+    font-weight: bold;
+}
+
 .fundingPanel .panel.cover .panel-heading .edit-btn:hover {
     background: #cecece;
 }
 
+.fundingPanel .panel.cover .panel-heading .delete-btn:hover {
+    background: #e40000;
+}
+
 .fundingPanel .panel.cover .panel-heading .edit-btn i {
+    margin-right: 6px;
+}
+
+.fundingPanel .panel.cover .panel-heading .delete-btn i {
     margin-right: 6px;
 }
 
