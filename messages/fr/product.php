@@ -20,6 +20,7 @@ return [
     'Currently there are no products.' => 'actuellement il n ya pas des produits',
     'Discount' => 'Remise',
     'Edit' => 'Modifier',
+    'Delete' => 'Supprimer',
     'Picture' => 'Image',
     'Please choose the payment type for your product' => 'Veuillez choisir le type de paimenet pour votre produit',
     'Please choose the type of coin you are accepting' => 'Veuillez choisir le type de piéce que vous acceptez',

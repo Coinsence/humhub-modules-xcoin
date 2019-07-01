@@ -52,6 +52,7 @@ Assets::register($this);
 
                             <?php if (AssetHelper::canManageAssets($this->context->contentContainer) || $product->isOwner(Yii::$app->user->identity)): ?>
                                 <?= Html::a('<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.product', 'Edit'), ['/xcoin/product/edit', 'id' => $product->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
+                                <?= Html::a('<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.product', 'Delete'), ['/xcoin/product/delete', 'id' => $product->id, 'container' => $this->context->contentContainer], ['class' => 'delete-btn']) ?>
                             <?php endif; ?>
                             <!-- product edit button end -->
 

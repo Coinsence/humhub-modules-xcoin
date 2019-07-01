@@ -304,6 +304,26 @@
     margin-right: 6px;
 }
 
+.fundingPanel .panel.cover .panel-heading .delete-btn {
+    position: absolute;
+    top: 18px;
+    left: 130px;
+    color: white;
+    background: red;
+    border-radius: 20px;
+    font-size: 14px;
+    padding: 4px 12px;
+    font-weight: bold;
+}
+
+.fundingPanel .panel.cover .panel-heading .delete-btn:hover {
+    background: #d60000;
+}
+
+.fundingPanel .panel.cover .panel-heading .delete-btn i {
+    margin-right: 6px;
+}
+
 .fundingPanel .panel.cover .panel-body {
     padding: 24px;
 }

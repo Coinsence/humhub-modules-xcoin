@@ -10,6 +10,7 @@ use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Product;
+use Throwable;
 use Yii;
 use yii\web\HttpException;
 
@@ -147,5 +148,34 @@ class ProductController extends ContentContainerController
         }
 
         return $this->renderAjax('edit', ['model' => $model, 'assetList' => $assetList]);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function actionDelete()
+    {
+        if ($this->contentContainer instanceof Space) {
+            if (!AssetHelper::canManageAssets($this->contentContainer)) {
+                throw new HttpException(401);
+            }
+
+            $model = Product::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $this->contentContainer->id]);
+        } else {
+            $model = Product::findOne(['id' => Yii::$app->request->get('id')]);
+            if ($model && !$model->isOwner(Yii::$app->user->identity)) {
+                throw new HttpException(401);
+            }
+        }
+
+        if ($model === null) {
+            throw new HttpException(404);
+        }
+
+        $model->delete();
+
+        $this->view->saved();
+
+        return $this->htmlRedirect(['/xcoin/product', 'container' => $this->contentContainer]);
     }
 }
