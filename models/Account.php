@@ -116,6 +116,14 @@ class Account extends ActiveRecord
         return parent::beforeSave($insert);
     }
 
+    public function beforeDelete()
+    {
+        Transaction::deleteAll(['to_account_id' => $this->id]);
+        Transaction::deleteAll(['from_account_id' => $this->id]);
+
+        return parent::beforeDelete();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

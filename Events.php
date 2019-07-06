@@ -69,7 +69,7 @@ class Events
             // used to include ether-icon since it's not present in fontawesome 4.7.0 icons
             Assets::register(Yii::$app->view);
 
-            if (AssetHelper::canManageAssets($space) || Funding::find()->where(['space_id' => $space->id])->andWhere(['>', 'amount', 0])->count() > 0) {
+            if (AssetHelper::canManageAssets($space) || Funding::find()->count() > 0) {
                 $event->sender->addItem([
                     'label' => Yii::t('XcoinModule.base', 'Crowd Funding'),
                     'url' => $space->createUrl('/xcoin/funding'),
