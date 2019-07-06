@@ -23,4 +23,5 @@ return [
     'Ethereum' => '',
     'Ethereum summary' => '',
     'unavailable' => '',
+    'Space Ethereum migration is in progress ! This could take some minutes.' => ''
 ];

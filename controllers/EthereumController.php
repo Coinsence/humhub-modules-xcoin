@@ -39,14 +39,8 @@ class EthereumController extends ContentContainerController
             Event::trigger(self::class, self::EVENT_ENABLE_ETHEREUM, new Event(['sender' => $space]));
         }
 
-        $space->refresh();
-
         return $this->asJson([
             'success' => true,
-            'item' => [
-                'daoAddress' => $space->dao_address,
-                'coinAddress' => $space->coin_address,
-            ]
         ]);
     }
 }
