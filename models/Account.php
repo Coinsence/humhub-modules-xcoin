@@ -118,7 +118,8 @@ class Account extends ActiveRecord
 
     public function beforeDelete()
     {
-        Transaction::deleteAll(['OR', 'to_account_id' => $this->id, 'from_account_id' => $this->id]);
+        Transaction::deleteAll(['to_account_id' => $this->id]);
+        Transaction::deleteAll(['from_account_id' => $this->id]);
 
         return parent::beforeDelete();
     }
