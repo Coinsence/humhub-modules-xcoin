@@ -11,6 +11,7 @@ use humhub\modules\xcoin\models\Transaction;
 use humhub\widgets\TopMenu;
 use Yii;
 use yii\base\Event;
+use yii\base\Exception;
 use yii\helpers\Url;
 use yii\web\HttpException;
 
@@ -155,16 +156,21 @@ class Events
             ]);
         }
     }
-    /*
-     * When a members joins a space an account is created and credited by an amount specified by the admin
+
+    /**
+     * When a members joins a space for the first time an account TYPE_COMMUNITY_INVESTOR
+     * is created and credited by an amount specified by the admin.
+     *
      * @param Event
-     * */
+     * @throws HttpException
+     * @throws Exception
+     */
     public static function onSpaceMemberAdd($event)
     {
         // Get new account transaction parameters
         $module = Yii::$app->getModule('xcoin');
 
-        if(!$module->settings->space()){
+        if (!$module->settings->space()) {
             return;
         }
 
@@ -180,23 +186,30 @@ class Events
         $spaceDefaultAccount = Account::findOne(['space_id' => $space->id, 'account_type' => Account::TYPE_DEFAULT]);
 
         //Exit if module settings are not set or space default account or issue account are not set
-        if (!$accountTitle || !$transactionAmount || !$transactionComment || !$spaceIssueAccount || !$spaceDefaultAccount)
+        if (!$accountTitle || !$transactionAmount || !$transactionComment || !$spaceIssueAccount || !$spaceDefaultAccount) {
             return;
+        }
 
-        $memberAccount = Account::findOne(
-        [
-            'user_id' => $user->id,
-            'space_id' => $space->id
-        ]
-        );
-        if (!$memberAccount) {
-            $memberAccount = new Account();
-            $memberAccount->space_id = $space->id;
-            $memberAccount->user_id = $user->id;
-            $memberAccount->title = $accountTitle;
-            $memberAccount->account_type = Account::TYPE_STANDARD;
-            if (!$memberAccount->save())
-                throw new Exception('Could not create member account!');
+        $memberAccount = Account::findOne([
+            'investor_id' => $user->id,
+            'space_id' => $space->id,
+            'account_type' => Account::TYPE_COMMUNITY_INVESTOR
+        ]);
+
+        if ($memberAccount) {
+            $memberAccount->updateAttributes(['user_id' => $user->id]);
+
+            return;
+        }
+
+        $memberAccount = new Account();
+        $memberAccount->space_id = $space->id;
+        $memberAccount->user_id = $user->id;
+        $memberAccount->title = $accountTitle;
+        $memberAccount->account_type = Account::TYPE_COMMUNITY_INVESTOR;
+        $memberAccount->investor_id = $user->id;
+        if (!$memberAccount->save()) {
+            throw new Exception('Could not create member account!');
         }
 
         //Issue transaction amount to default account
@@ -207,8 +220,9 @@ class Events
         $issueTransaction->asset_id = AssetHelper::getSpaceAsset($space)->id;
         $issueTransaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
         $issueTransaction->comment = "Issue transaction Amount to default Account";
-        if (!$issueTransaction->save())
+        if (!$issueTransaction->save()) {
             throw new HttpException(500, "can't issue this Amount !");
+        }
 
         //New member account transaction
         $transferTransaction = new Transaction();
@@ -221,8 +235,29 @@ class Events
         if (!$transferTransaction->save()) {
             throw new HttpException(500, "Can't transfer transaction amount to member account");
         }
-
-
     }
 
+    /**
+     * When a members leaves leaving an TYPE_COMMUNITY_INVESTOR account , he will be
+     * removed from managing this account.
+     *
+     * @param Event
+     */
+    public static function onSpaceMemberRemove($event)
+    {
+        $space = $event->space;
+        $user = $event->user;
+
+        $memberAccount = Account::findOne([
+            'investor_id' => $user->id,
+            'space_id' => $space->id,
+            'account_type' => Account::TYPE_COMMUNITY_INVESTOR
+        ]);
+
+        if (!$memberAccount) {
+            return;
+        }
+
+        $memberAccount->updateAttributes(['user_id' => null]);
+    }
 }

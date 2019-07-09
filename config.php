@@ -16,6 +16,7 @@ return [
         ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => ['humhub\modules\xcoin\Events', 'onTopMenuInit']],
         ['class' => AccountTopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => ['humhub\modules\xcoin\Events', 'onAccountTopMenuInit']],
         ['class' => Membership::class, 'event' => 'memberAdded', 'callback' => ['humhub\modules\xcoin\Events', 'onSpaceMemberAdd']],
+        ['class' => Membership::class, 'event' => 'memberRemoved', 'callback' => ['humhub\modules\xcoin\Events', 'onSpaceMemberRemove']],
     ],
 ];
 
