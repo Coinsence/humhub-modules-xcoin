@@ -141,20 +141,6 @@ Assets::register($this);
                                                 ]); ?>
                                                 <!-- campaign requesting end -->
                                             </div>
-                                            <div class="col-md-6">
-                                                <!-- campaign offering start -->
-                                                <span>
-                                                    <?= Yii::t('XcoinModule.funding', 'Offering:') ?>
-                                                    <strong><?= $funding->getOfferedAmountPercentage() ?>%</strong>
-                                                </span>
-                                                <?= SpaceImage::widget([
-                                                    'space' => $funding->space,
-                                                    'width' => 16,
-                                                    'showTooltip' => true,
-                                                    'link' => false
-                                                ]); ?>
-                                                <!-- campaign offering end -->
-                                            </div>
 
                                         </div>
 
