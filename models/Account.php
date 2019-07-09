@@ -24,12 +24,14 @@ use yii\db\Expression;
  * @property string $guid
  * @property string $ethereum_address
  * @property integer $funding_id
+ * @property integer $investor_id
  *
  * @property Space $space
  * @property User $user
  * @preperty TaskAccount $account
  * @property Task $task
  * @property Task $funding
+ * @property User $investor
  */
 class Account extends ActiveRecord
 {
@@ -39,6 +41,7 @@ class Account extends ActiveRecord
     const TYPE_FUNDING = 3;
     const TYPE_DEFAULT = 4;
     const TYPE_TASK = 5;
+    const TYPE_COMMUNITY_INVESTOR = 6;
 
     /** @var Event this event is dispatched when account with
      * TYPE_DEFAULT is created for space in order to create ethereum DAO
@@ -230,5 +233,13 @@ class Account extends ActiveRecord
     public function getFunding()
     {
         return $this->hasOne(Funding::class, ['id' => 'funding_id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getInvestor()
+    {
+        return $this->hasOne(User::class, ['id' => 'investor_id']);
     }
 }
