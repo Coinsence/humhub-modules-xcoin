@@ -28,6 +28,10 @@ class AccountsGridView extends GridView
      */
     public function init()
     {
+        // Module settings allowDirectCoinTransfer parameter value
+        $module = Yii::$app->getModule('xcoin');
+        $allowDirectCoinTransfer = $module->settings->space()->get('allowDirectCoinTransfer');
+
         $this->dataProvider = new ActiveDataProvider([
             'query' => AccountHelper::getAccountsQuery($this->contentContainer),
             'pagination' => [
@@ -120,28 +124,43 @@ class AccountsGridView extends GridView
                 'format' => 'raw',
                 'options' => ['style' => 'width:220px;text-align:right'],
                 'contentOptions' => ['style' => 'text-align:right'],
-                'value' => function ($model) {
+                'value' => function ($model) use($allowDirectCoinTransfer) {
 
                     $transferButton = '';
-
                     if (AccountHelper::canManageAccount($model) && Account::TYPE_TASK != $model->account_type) {
-                        $accountAssetsList = AccountHelper::getAssetsList($model);
-                        if (!empty($accountAssetsList))
-                            $transferButton = Html::a('<i class="fa fa-exchange" aria-hidden="true"></i>', ['/xcoin/transaction/transfer', 'accountId' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']) . '&nbsp;';
-                        else
+                        if(!isset($allowDirectCoinTransfer) || $allowDirectCoinTransfer) {
+                            $accountAssetsList = AccountHelper::getAssetsList($model);
+
+                            if (!empty($accountAssetsList))
+                                $transferButton = Html::a('<i class="fa fa-exchange" aria-hidden="true"></i>', ['/xcoin/transaction/transfer', 'accountId' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']) . '&nbsp;';
+                            else
+                                $transferButton = Html::a(
+                                        '<i class="fa fa-exchange" aria-hidden="true"></i>',
+                                        ['javascript:;'],
+                                        [
+                                            'class' => 'btn btn-default',
+                                            'disabled' => true,
+                                            'data-toggle' => 'tooltip',
+                                            'data-placement' => 'right',
+                                            'title' => 'No assets available on this account!',
+                                            'onclick' => 'return false;'
+                                        ]
+                                    ) . '&nbsp;';
+                        }else
                             $transferButton = Html::a(
                                 '<i class="fa fa-exchange" aria-hidden="true"></i>',
                                 ['javascript:;'],
-                                    [
-                                        'class' => 'btn btn-default',
-                                        'disabled' => true,
-                                        'data-toggle' => 'tooltip',
-                                        'data-placement' => 'right',
-                                        'title' => 'No assets available on this account!',
-                                        'onclick' => 'return false;'
-                                    ]
-                                ) . '&nbsp;';
+                                [
+                                    'class' => 'btn btn-default',
+                                    'disabled' => true,
+                                    'data-toggle' => 'tooltip',
+                                    'data-placement' => 'right',
+                                    'title' => Yii::t('XcoinModule.base', 'Direct coin transfer disabled by the space admin'),
+                                    'onclick' => 'return false;'
+                                ]
+                            ) . '&nbsp;';
                     }
+
 
                     $overviewButton = Html::a('<i class="fa fa-search" aria-hidden="true"></i>', ['/xcoin/account', 'id' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default']);
 
