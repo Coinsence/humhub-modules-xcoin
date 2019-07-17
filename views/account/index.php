@@ -9,6 +9,7 @@ use humhub\modules\user\widgets\Image as UserImage;
 
 /**
  * @var Account $account
+ * @var $allowDirectCoinTransfer
  */
 ?>
 
@@ -20,7 +21,21 @@ use humhub\modules\user\widgets\Image as UserImage;
                 <?php if ($account->account_type == Account::TYPE_STANDARD): ?>
                     <?= Html::a(Yii::t('XcoinModule.account', 'Edit'), ['/xcoin/account/edit', 'id' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']); ?>
                 <?php endif; ?>
-                <?= Html::a(Yii::t('XcoinModule.account', 'Transfer'), ['/xcoin/transaction/transfer', 'accountId' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-success', 'data-target' => '#globalModal']); ?>
+                <?php if (!isset($allowDirectCoinTransfer) || $allowDirectCoinTransfer): ?>
+                    <?= Html::a(Yii::t('XcoinModule.account', 'Transfer'), ['/xcoin/transaction/transfer', 'accountId' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-success', 'data-target' => '#globalModal']); ?>
+                <?php else:?>
+                    <?= Html::a(
+                            Yii::t('XcoinModule.account', 'Transfer'),
+                            ['/xcoin/transaction/transfer',
+                                'accountId' => $account->id,
+                                'container' => $this->context->contentContainer],
+                            ['class' => 'btn btn-success',
+                                'disabled' => 'disabled',
+                                'onclick' => 'return false;',
+                                'data-toggle' => 'tooltip',
+                                'data-placement' => 'right',
+                                'title' => Yii::t('XcoinModule.base', 'Direct coin transfer disabled by the space admin')]); ?>
+                <?php endif?>
             <?php endif; ?>
         </div>
         <?= '<strong>' . Yii::t('XcoinModule.account', 'Account overview:') . '</strong> ' . $account->title; ?>

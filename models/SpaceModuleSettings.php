@@ -25,12 +25,22 @@ class SpaceModuleSettings extends Model
      */
     public $transactionComment;
 
+    /**
+     * @var boolean
+     */
+    public $allowDirectCoinTransfer;
+
     public function init()
     {
         $module = Yii::$app->getModule('xcoin');
         $this->accountTitle = $module->settings->space()->get('accountTitle');
         $this->transactionAmount = $module->settings->space()->get('transactionAmount');
         $this->transactionComment = $module->settings->space()->get('transactionComment');
+
+        if (null !== $allowDirectCoinTransfer = $module->settings->space()->get('allowDirectCoinTransfer'))
+            $this->allowDirectCoinTransfer = $allowDirectCoinTransfer;
+        else
+            $this->allowDirectCoinTransfer = 1;
     }
 
     public function showAccountTitle()
@@ -46,6 +56,11 @@ class SpaceModuleSettings extends Model
     public function showTransactionComment()
     {
         return $this->transactionComment;
+    }
+
+    public function showAllowDirectCoinTransfer()
+    {
+        return $this->allowDirectCoinTransfer;
     }
 
     /**
@@ -65,6 +80,7 @@ class SpaceModuleSettings extends Model
         return [
             [['accountTitle', 'transactionComment'], 'required'],
             ['transactionAmount', 'number', 'min' => 1],
+            ['allowDirectCoinTransfer', 'boolean']
         ];
     }
 
@@ -77,6 +93,7 @@ class SpaceModuleSettings extends Model
             'accountTitle' => Yii::t('XcoinModule.base', 'Account title'),
             'transactionAmount' => Yii::t('XcoinModule.base', 'Transaction amount'),
             'transactionComment' => Yii::t('XcoinModule.base', 'Transaction comment'),
+            'allowDirectCoinTransfer' => Yii::t('XcoinModule.base', 'Allow direct coin transfer'),
         ];
     }
 
@@ -89,6 +106,7 @@ class SpaceModuleSettings extends Model
         $module->settings->space()->set('accountTitle', $this->accountTitle);
         $module->settings->space()->set('transactionAmount', $this->transactionAmount);
         $module->settings->space()->set('transactionComment', $this->transactionComment);
+        $module->settings->space()->set('allowDirectCoinTransfer', $this->allowDirectCoinTransfer);
         return true;
 
     }

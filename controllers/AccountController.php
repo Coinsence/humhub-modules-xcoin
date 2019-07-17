@@ -31,7 +31,11 @@ class AccountController extends ContentContainerController
             throw new HttpException(404);
         }
 
-        return $this->render('index', ['account' => $account]);
+        // Module settings allowDirectCoinTransfer parameter value
+        $module = Yii::$app->getModule('xcoin');
+        $allowDirectCoinTransfer = $module->settings->space()->get('allowDirectCoinTransfer');
+
+        return $this->render('index', ['account' => $account, 'allowDirectCoinTransfer' => $allowDirectCoinTransfer]);
     }
 
     public function actionEdit()
