@@ -36,4 +36,5 @@ return [
     'Latest transactions' => '',
     'Shareholder list' => '',
     'Your accounts' => '',
+    'Total Issued Amount' => '',
 ];

@@ -4,9 +4,8 @@ namespace humhub\modules\xcoin\controllers;
 
 use humhub\components\Event;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\content\models\ContentContainer;
+use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
-use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Transaction;
@@ -68,6 +67,13 @@ class TransactionController extends ContentContainerController
         $transaction->asset_id = array_keys($accountAssetList)[0];
 
         if ($transaction->load(Yii::$app->request->post())) {
+
+            // disable transfer to ISSUE ACCOUNT
+            if ($this->contentContainer instanceof Space) {
+                if (AccountHelper::getIssueAccount($this->contentContainer)->id == Account::findOne(['id' => $transaction->to_account_id])->id) {
+                    throw new HttpException(401, 'Can\'t transfer back coins to ISSUE ACCOUNT');
+                }
+            }
 
             Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_TRANSFER, new Event(['sender' => $transaction]));
 
