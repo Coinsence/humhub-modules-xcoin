@@ -1,14 +1,16 @@
 <?php
 
 use humhub\modules\xcoin\assets\Assets;
+use humhub\modules\xcoin\models\Asset;
 use yii\bootstrap\Html;
 use humhub\modules\xcoin\grids\AccountsGridView;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\widgets\AssetDistribution;
 
-Assets::register($this);
+/** @var Asset $asset */
 
+Assets::register($this);
 ?>
 
 <div class="panel panel-default">
@@ -24,6 +26,14 @@ Assets::register($this);
     </div>
 
     <div class="panel-body">
+        <div class="pull-right">
+            <h1 style="color: #bac2c7">
+                <b>
+                    <?= Yii::t('XcoinModule.overview', 'Total Issued Amount') ?> :
+                    <?= $asset->getIssuedAmount() ?>
+                </b>
+            </h1>
+        </div>
         <?= AccountsGridView::widget(['contentContainer' => $this->context->contentContainer]) ?>
         <small><?= Yii::t('XcoinModule.overview', 'If no manager is specified this account is manged by the owner or it\'s representatives.') ?></small>
     </div>

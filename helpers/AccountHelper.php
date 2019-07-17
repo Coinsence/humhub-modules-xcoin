@@ -56,7 +56,9 @@ class AccountHelper
     public static function getAccountsQuery(ContentContainerActiveRecord $container, Asset $asset = null)
     {
         if ($container instanceof Space) {
-            $query = Account::find()->andWhere(['space_id' => $container->id]);
+            $query = Account::find()
+                ->andWhere(['space_id' => $container->id])
+                ->andWhere(['!=', 'account_type', Account::TYPE_ISSUE]);
 
             if ($asset) {
                 $query

@@ -36,4 +36,5 @@ return [
     'Latest transactions' => 'Derniéres transactions',
     'Shareholder list' => 'liste des actionnaires',
     'Your accounts' => 'Vos comptes',
+    'Total Issued Amount' => 'Total montant émis',
 ];
