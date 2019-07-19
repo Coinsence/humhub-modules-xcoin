@@ -27,6 +27,7 @@ use Yii;
  * @property string $description
  * @property string $deadline
  * @property string $content
+ * @property integer $review_status
  *
  * @property Asset $asset
  * @property User $createdBy
@@ -36,6 +37,10 @@ class Funding extends ActiveRecord
 {
 
     const SCENARIO_EDIT = 'sedit';
+
+    // Funding review status
+    const FUNDING_NOT_REVIEWED = 0;
+    const FUNDING_REVIEWED = 1;
 
     /**
      * @inheritdoc

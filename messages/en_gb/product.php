@@ -40,4 +40,8 @@ return [
     'This is the list of space products.' => '',
     'This is the list of your products.' => '',
     'Your products' => '',
+    'Trusted' => '',
+    'Untrusted' => '',
+    'Under review' => '',
+    'Verified' => '',
 ];

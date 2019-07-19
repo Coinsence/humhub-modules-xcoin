@@ -103,5 +103,8 @@ return [
     'User' => 'Utilisateur',
     'User ID' => 'ID utilisateur',
     'Wanted' => 'Voulait',
-    'You cannot transfer this type of asset.' => 'vous ne pouvez pas transférer ce type de piéces'
+    'You cannot transfer this type of asset.' => 'vous ne pouvez pas transférer ce type de piéces',
+    'Review Public Offers' => 'Examiner les offres publiques',
+    'Allows the user to review Crowdfunding campaigns & Products' => 'Permet à l\'utilisateur de passer en revue les campagnes de financement participatif et les produits',
+    'Filter' => 'Filtre',
 ];

@@ -26,6 +26,7 @@ use yii\db\ActiveQuery;
  * @property integer $status
  * @property float $discount
  * @property integer $payment_type
+ * @property integer $review_status
  *
  * @property Asset $asset
  * @property User $owner
@@ -53,6 +54,10 @@ class Product extends ActiveRecord
     const PAYMENT_PER_HOUR = 2;
     const PAYMENT_PER_DAY = 3;
     const PAYMENT_PER_SERVICE = 4;
+
+    // Product review status
+    const PRODUCT_NOT_REVIEWED = 0;
+    const PRODUCT_REVIEWED = 1;
 
     public $pictureFile;
 

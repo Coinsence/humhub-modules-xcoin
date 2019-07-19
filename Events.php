@@ -7,6 +7,7 @@ use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\models\Product;
 use humhub\modules\xcoin\models\Transaction;
 use humhub\widgets\TopMenu;
 use Yii;
@@ -22,7 +23,7 @@ class Events
     {
         $event->sender->addItem([
             'label' => Yii::t('XcoinModule.base', 'Crowd Funding'),
-            'url' => Url::to(['/xcoin/funding-overview']),
+            'url' => Url::to(['/xcoin/funding-overview', 'verified' => Funding::FUNDING_REVIEWED]),
             'icon' => '<i class="fa fa-leaf"></i>',
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'funding-overview'),
             'sortOrder' => 900,
@@ -30,7 +31,7 @@ class Events
 
         $event->sender->addItem([
             'label' => Yii::t('XcoinModule.base', 'Marketplace'),
-            'url' => Url::to(['/xcoin/marketplace']),
+            'url' => Url::to(['/xcoin/marketplace', 'verified' => Product::PRODUCT_REVIEWED]),
             'icon' => '<i class="fa fa-shopping-basket"></i>',
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'marketplace'),
             'sortOrder' => 900,

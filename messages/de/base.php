@@ -104,4 +104,7 @@ return [
     'User ID' => '',
     'Wanted' => '',
     'You cannot transfer this type of asset.' => '',
+    'Review Public Offers' => '',
+    'Allows the user to review Crowdfunding campaigns & Products' => '',
+    'Filter' => '',
 ];

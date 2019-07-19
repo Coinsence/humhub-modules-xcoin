@@ -2,6 +2,8 @@
 
 namespace humhub\modules\xcoin;
 
+use humhub\modules\xcoin\permissions\CreateAccount;
+use humhub\modules\xcoin\permissions\ReviewPublicOffers;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -45,18 +47,20 @@ class Module extends ContentContainerModule
      */
     public function getPermissions($contentContainer = null)
     {
+        $permissions [] = new permissions\ReviewPublicOffers();
+
         if ($contentContainer !== null) {
-            return [
-                new permissions\CreateAccount(),
-            ];
+            $permissions [] = new permissions\CreateAccount();
         }
-        return [];
+
+        return $permissions;
     }
 
     public function getContentContainerConfigUrl(ContentContainerActiveRecord $container)
     {
-        if ($container instanceof Space)
+        if ($container instanceof Space) {
             return $container->createUrl('/xcoin/config/index');
+        }
     }
 
 }

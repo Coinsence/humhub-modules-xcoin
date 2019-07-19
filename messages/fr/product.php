@@ -40,4 +40,8 @@ return [
     'This is the list of space products.' => 'Ceci est la liste des produits de l\'espace',
     'This is the list of your products.' => 'Ceci est la liste de vos produits',
     'Your products' => 'Vos produits',
+    'Trusted' => 'Fiable',
+    'Untrusted' => 'Non fiable',
+    'Under review' => 'Vérification en cours',
+    'Verified' => 'Vérfié',
 ];

@@ -3,7 +3,7 @@
 namespace humhub\modules\xcoin\helpers;
 
 /**
- * Description of SpaceHelper
+ * SpaceHelper
  *
  * @author Daly Ghaith <daly.ghaith@gmail.com>
  */

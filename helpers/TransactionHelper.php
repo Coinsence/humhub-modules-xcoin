@@ -11,7 +11,7 @@ use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Transaction;
 
 /**
- * Description of AccountHelper
+ * AccountHelper
  *
  * @author Luke
  */

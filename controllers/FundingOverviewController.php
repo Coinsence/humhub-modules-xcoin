@@ -20,12 +20,16 @@ use yii\web\HttpException;
 class FundingOverviewController extends Controller
 {
 
-    public function actionIndex()
+    public function actionIndex($verified = false)
     {
         $query = Funding::find();
         $query->where(['>', 'xcoin_funding.amount', 0]);
         $query->andWhere(['IS NOT', 'xcoin_funding.id', new Expression('NULL')]);
         $query->orderBy(['created_at' => SORT_DESC]);
+
+        if ($verified == Funding::FUNDING_REVIEWED) {
+            $query->andWhere(['review_status' => Funding::FUNDING_REVIEWED]);
+        }
 
         return $this->render('index', ['fundings' => $query->all()]);
     }

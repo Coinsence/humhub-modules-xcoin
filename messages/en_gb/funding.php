@@ -23,7 +23,7 @@ return [
     'Add asset offer' => 'Start funding campaign',
     'Closed' => '',
     'Currently there are no open funding requests.' => '',
-    'Currently there are no running crowd fundings!' => '',
+    'Currently there are no running crowd fundings campaigns!' => '',
     'Day left' => '',
     'Days left' => '',
     'Define exchange rate and maximum' => '',
@@ -61,4 +61,8 @@ return [
     'Set funding request' => 'Set funding request',
     'Requested amount' => 'Requested amount',
     'Title' => 'Campaign title',
+    'Trusted' => '',
+    'Untrusted' => '',
+    'Under review' => '',
+    'Verified' => '',
 ];

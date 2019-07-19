@@ -17,7 +17,7 @@ use yii\web\HttpException;
 use humhub\modules\space\widgets\Image as SpaceImage;
 
 /**
- * Description of AccountHelper
+ * AccountHelper
  *
  * @author Luke
  * @contributer Daly Ghaith <daly.ghaith@gmail.com>

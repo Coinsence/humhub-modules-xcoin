@@ -5,6 +5,7 @@ use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\xcoin\models\Product;
 use yii\bootstrap\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
+use yii\helpers\Url;
 
 Assets::register($this);
 
@@ -12,6 +13,14 @@ Assets::register($this);
 ?>
 
 <div class="container">
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> <?= Yii::t('XcoinModule.base', 'Filter') ?>
+            <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="<?= Url::to(['/xcoin/marketplace', 'verified' => Product::PRODUCT_REVIEWED]) ?>"><?= Yii::t('XcoinModule.product', 'Verified') ?></a></li>
+            <li><a href="<?= Url::to(['/xcoin/marketplace']) ?>"><?= Yii::t('XcoinModule.product', 'Under review') ?></a></li>
+        </ul>
+    </div>
     <div class="row">
         <div class="pull-right sell-button">
             <?= Html::a(Yii::t('XcoinModule.marketplace', 'Sell Product'), [
@@ -87,6 +96,15 @@ Assets::register($this);
                                             <?= $product->isSpaceProduct() ?
                                                 "<strong>" . Html::encode($space->name) . "</strong>" :
                                                 "<strong>" . Html::encode($userProfile->firstname) . " " . Html::encode($userProfile->lastname) . "</strong>"; ?>
+                                            <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
+                                                <div style="color: orange; display: inline">
+                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.product', 'Under review') ?>"></i>
+                                                </div>
+                                            <?php else: ?>
+                                                <div style="color: dodgerblue; display: inline">
+                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.product', 'Verified') ?>"></i>
+                                                </div>
+                                            <?php endif; ?>
                                         </span>
                                         <!-- product name end -->
                                     </div>
