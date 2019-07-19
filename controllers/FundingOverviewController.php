@@ -29,6 +29,8 @@ class FundingOverviewController extends Controller
 
         if ($verified == Funding::FUNDING_REVIEWED) {
             $query->andWhere(['review_status' => Funding::FUNDING_REVIEWED]);
+        } else {
+            $query->andWhere(['review_status' => Funding::FUNDING_NOT_REVIEWED]);
         }
 
         return $this->render('index', ['fundings' => $query->all()]);
