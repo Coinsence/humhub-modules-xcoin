@@ -3,6 +3,7 @@
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\models\Funding;
 use yii\bootstrap\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
@@ -34,7 +35,8 @@ Assets::register($this);
                                     <div class="bg" style="background-image: url('<?= $cover->getUrl() ?>')"></div>
                                     <?= Html::img($cover->getUrl(), ['width' => '100%']) ?>
                                 <?php else : ?>
-                                    <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
+                                    <div class="bg"
+                                         style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
                                     <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
                                         'width' => '100%'
                                     ]) ?>
@@ -66,11 +68,36 @@ Assets::register($this);
                                 <?php endif; ?>
                                 <!-- campaign edit button end -->
 
+                                <!-- campaign review button start -->
+                                <?php if (PublicOffersHelper::canReviewPublicOffers()): ?>
+                                    <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
+                                        <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Trusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted pull-right']) ?>
+                                    <?php else : ?>
+                                        <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('XcoinModule.funding', 'Untrusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <!-- campaign review button end -->
+
                             </div>
                             <div class="panel-body">
 
                                 <!-- campaign title start -->
-                                <h4 class="funding-title"><?= Html::encode($funding->title); ?></h4>
+                                <h4 class="funding-title">
+                                    <?= Html::encode($funding->title); ?>
+                                    <!-- campaign review status start -->
+                                    <small>
+                                        <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
+                                            <div style="color: orange; display: inline">
+                                                ( <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Under review') ?> )
+                                            </div>
+                                        <?php else: ?>
+                                            <div style="color: dodgerblue; display: inline">
+                                                ( <i class="fa fa-check-circle-o" aria-hidden="true"></i>  <?= Yii::t('XcoinModule.funding', 'Verified') ?> )
+                                            </div>
+                                        <?php endif; ?>
+                                    </small>
+                                    <!-- campaign review status end -->
+                                </h4>
                                 <!-- campaign title end -->
 
                                 <div class="row">
@@ -119,7 +146,8 @@ Assets::register($this);
 
                                     <div>
                                         <!-- campaign raised start -->
-                                        <?= Yii::t('XcoinModule.funding', 'Raised:') ?> <strong><?= $funding->getRaisedAmount() ?></strong>
+                                        <?= Yii::t('XcoinModule.funding', 'Raised:') ?>
+                                        <strong><?= $funding->getRaisedAmount() ?></strong>
                                         (<strong><?= $funding->getRaisedPercentage() ?>%</strong>)
                                         <!-- campaign raised end -->
                                     </div>
@@ -147,6 +175,7 @@ Assets::register($this);
                                     <?php echo Progress::widget([
                                         'percent' => $funding->getRaisedPercentage(),
                                     ]); ?>
+                                    <!-- campaign raised end -->
                                 </div>
 
                             </div>

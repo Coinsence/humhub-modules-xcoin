@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\xcoin\helpers\AccountHelper;
@@ -178,5 +179,26 @@ class FundingController extends ContentContainerController
         $model->delete();
 
         return $this->htmlRedirect(['index', 'container' => $this->contentContainer]);
+    }
+
+
+    public function actionReview($id, $status)
+    {
+        if(!PublicOffersHelper::canReviewPublicOffers()){
+            throw new HttpException(401);
+        }
+
+        $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
+        $model->scenario = Funding::SCENARIO_EDIT;
+        $model->review_status = $status;
+
+        $model->save();
+
+        $this->view->saved();
+
+        return $this->redirect($this->contentContainer->createUrl('/xcoin/funding/overview', [
+            'container' => $this->contentContainer,
+            'fundingId' => $model->id
+        ]));
     }
 }

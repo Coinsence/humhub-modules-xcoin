@@ -10,7 +10,7 @@ use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Asset;
 
 /**
- * Description of AccountHelper
+ * AccountHelper
  *
  * @author Luke
  * @contributer Daly Ghaith <daly.ghaith@gmail.com>

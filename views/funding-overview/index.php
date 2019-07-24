@@ -5,6 +5,7 @@ use humhub\modules\xcoin\models\Funding;
 use yii\bootstrap\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use yii\bootstrap\Progress;
+use yii\helpers\Url;
 
 /** @var $fundings Funding[] */
 
@@ -12,6 +13,14 @@ Assets::register($this);
 ?>
 
 <div class="container">
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> <?= Yii::t('XcoinModule.base', 'Filter') ?>
+            <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="<?= Url::to(['/xcoin/funding-overview', 'verified' => Funding::FUNDING_REVIEWED]) ?>"><?= Yii::t('XcoinModule.funding', 'Verified') ?></a></li>
+            <li><a href="<?= Url::to(['/xcoin/funding-overview']) ?>"><?= Yii::t('XcoinModule.funding', 'Under review') ?></a></li>
+        </ul>
+    </div>
     <div class="row">
         <div class="pull-right sell-button">
             <?= Html::a(Yii::t('XcoinModule.funding', 'Add Your Project'), [
@@ -29,7 +38,7 @@ Assets::register($this);
                     </div>
                     <div class="panel-body">
                         <div class="alert alert-warning">
-                            <?= Yii::t('XcoinModule.funding', 'Currently there are no running crowd fundings!') ?>
+                            <?= Yii::t('XcoinModule.funding', 'Currently there are no running crowd fundings campaigns!') ?>
                         </div>
                     </div>
                     <br/>
@@ -82,7 +91,18 @@ Assets::register($this);
                                         </div>
                                     </div>
                                     <div class="panel-body">
-                                        <h4 class="funding-title"><?= Html::encode($funding->title); ?></h4>
+                                        <h4 class="funding-title">
+                                            <?= Html::encode($funding->title); ?>
+                                            <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
+                                                <div style="color: orange; display: inline">
+                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.funding', 'Under review') ?>"></i>
+                                                </div>
+                                            <?php else: ?>
+                                                <div style="color: dodgerblue; display: inline">
+                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.funding', 'Verified') ?>"></i>
+                                                </div>
+                                            <?php endif; ?>
+                                        </h4>
                                         <div class="media">
                                             <div class="media-left media-middle">
                                             </div>

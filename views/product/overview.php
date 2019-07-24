@@ -3,6 +3,8 @@
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\helpers\PublicOffersHelper;
+use humhub\modules\xcoin\models\Funding;
 use humhub\modules\xcoin\models\Product;
 use humhub\modules\xcoin\widgets\BuyProductButton;
 use humhub\widgets\TimeAgo;
@@ -56,11 +58,36 @@ Assets::register($this);
                             <?php endif; ?>
                             <!-- product edit button end -->
 
+                            <!-- product review button start -->
+                            <?php if (PublicOffersHelper::canReviewPublicOffers()): ?>
+                                <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
+                                    <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.product', 'Trusted'), ['/xcoin/product/review', 'id' => $product->id, 'status' => Product::PRODUCT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted pull-right']) ?>
+                                <?php else : ?>
+                                    <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('XcoinModule.product', 'Untrusted'), ['/xcoin/product/review', 'id' => $product->id, 'status' => Product::PRODUCT_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                            <!-- product review button end -->
+
                         </div>
                         <div class="panel-body">
 
                             <!-- product name start -->
-                            <h4 class="funding-title"><?= Html::encode($product->name); ?></h4>
+                            <h4 class="funding-title">
+                                <?= Html::encode($product->name); ?>
+                                <!-- product review status start -->
+                                <small>
+                                    <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
+                                        <div style="color: orange; display: inline">
+                                            ( <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?= Yii::t('XcoinModule.product', 'Under review') ?> )
+                                        </div>
+                                    <?php else: ?>
+                                        <div style="color: dodgerblue; display: inline">
+                                            ( <i class="fa fa-check-circle-o" aria-hidden="true"></i>  <?= Yii::t('XcoinModule.product', 'Verified') ?> )
+                                        </div>
+                                    <?php endif; ?>
+                                </small>
+                                <!-- product review status end -->
+                            </h4>
                             <!-- product name end -->
 
                             <div class="row">

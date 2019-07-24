@@ -77,7 +77,18 @@ Assets::register($this);
                         </div>
                     </div>
                     <div class="panel-body">
-                        <h4 class="funding-title"><?= Html::encode($funding->title); ?></h4>
+                        <h4 class="funding-title">
+                            <?= Html::encode($funding->title); ?>
+                            <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
+                                <div style="color: orange; display: inline">
+                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.funding', 'Under review') ?>"></i>
+                                </div>
+                            <?php else: ?>
+                                <div style="color: dodgerblue; display: inline">
+                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.funding', 'Verified') ?>"></i>
+                                </div>
+                            <?php endif; ?>
+                        </h4>
                         <div class="media">
                             <div class="media-left media-middle"></div>
                             <div class="media-body">

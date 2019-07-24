@@ -13,9 +13,12 @@ use Yii;
 class MarketplaceController extends Controller
 {
 
-    public function actionIndex()
+    public function actionIndex($verified = false)
     {
-        $products = Product::find()->where(['status' => Product::STATUS_AVAILABLE ])->all();
+        $products = Product::find()->where([
+                'status' => Product::STATUS_AVAILABLE,
+                'review_status' => $verified == Product::PRODUCT_REVIEWED ? Product::PRODUCT_REVIEWED : Product::PRODUCT_NOT_REVIEWED
+            ])->all();
 
         return $this->render('index', [
             'products' => $products,

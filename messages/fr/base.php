@@ -113,4 +113,7 @@ return [
     'When a member joins a space coins allocation transaction is created for his account.' => "Quand un membre rejoint un espace une transaction d'allocation des coins est crée pour son compte.",
     '<strong>Xcoin</strong> module configuration' => 'Configuration du module <strong>Xcoin</strong>',
     'You cannot transfer this type of asset.' => 'vous ne pouvez pas transférer ce type de piéces'
+    'Review Public Offers' => 'Examiner les offres publiques',
+    'Allows the user to review Crowdfunding campaigns & Products' => 'Permet à l\'utilisateur de passer en revue les campagnes de financement participatif et les produits',
+    'Filter' => 'Filtre',
 ];

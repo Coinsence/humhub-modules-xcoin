@@ -8,6 +8,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Product;
 use Throwable;
@@ -177,5 +178,25 @@ class ProductController extends ContentContainerController
         $this->view->saved();
 
         return $this->htmlRedirect(['/xcoin/product', 'container' => $this->contentContainer]);
+    }
+
+    public function actionReview($id, $status)
+    {
+        if(!PublicOffersHelper::canReviewPublicOffers()){
+            throw new HttpException(401);
+        }
+
+        $model = Product::findOne(['id' => $id]);
+        $model->scenario = Product::SCENARIO_EDIT;
+        $model->review_status = $status;
+
+        $model->save();
+
+        $this->view->saved();
+
+        return $this->redirect($this->contentContainer->createUrl('/xcoin/product/overview', [
+            'container' => $this->contentContainer,
+            'productId' => $model->id
+        ]));
     }
 }

@@ -23,7 +23,7 @@ return [
     'Add asset offer' => 'Lancer la campagne de financement',
     'Closed' => 'Fermé',
     'Currently there are no open funding requests.' => 'Actuellement, il n ya pas de demandes de financement ouvertes',
-    'Currently there are no running crowd fundings!' => 'Actuellement, il n ya pas de financement de la foule en cours!',
+    'Currently there are no running crowd fundings campaigns!' => 'Actuellement, il n ya pas de campagnes de financement participatif en cours!',
     'Day left' => 'jour restant',
     'Days left' => 'jours restants',
     'Define exchange rate and maximum' => 'Définir taux de change et maximum',
@@ -61,4 +61,8 @@ return [
     'Set funding request' => 'Définir la demande de financement',
     'Requested amount' => 'Montant demandé',
     'Title' => 'Titre de votre campagne',
+    'Trusted' => 'Fiable',
+    'Untrusted' => 'Non fiable',
+    'Under review' => 'Vérification en cours',
+    'Verified' => 'Vérfiée',
 ];
