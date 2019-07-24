@@ -34,7 +34,16 @@ use \yii\helpers\Html;
 
         <hr>
 
-        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
+        <h4>
+            <?= Yii::t('XcoinModule.base', 'Coin transfer settings'); ?>
+        </h4>
+        <?= $form->field($model, 'allowDirectCoinTransfer')->checkbox([
+                'label' => Yii::t('XcoinModule.base', 'Allow direct coin transfer'),
+                'uncheck' => 0,
+                'checked' => 1,
+        ]) ?>
+
+        <?= Html::submitButton('Save', ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
         <?php ActiveForm::end(); ?>
     </div>
 </div>
