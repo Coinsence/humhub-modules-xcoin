@@ -2,6 +2,9 @@
 
 namespace humhub\modules\xcoin\grids;
 
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\models\ContentContainerSetting;
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use Yii;
 use yii\bootstrap\Html;
 use humhub\widgets\GridView;
@@ -29,8 +32,12 @@ class AccountsGridView extends GridView
     public function init()
     {
         // Module settings allowDirectCoinTransfer parameter value
-        $module = Yii::$app->getModule('xcoin');
-        $allowDirectCoinTransfer = $module->settings->space()->get('allowDirectCoinTransfer');
+//        $allowDirectCoinTransfer = null;
+//        if ($this->contentContainer instanceof Space) {
+//            $module = Yii::$app->getModule('xcoin');
+//            $allowDirectCoinTransfer = $module->settings->space()->get('allowDirectCoinTransfer');
+//        }
+
 
         $this->dataProvider = new ActiveDataProvider([
             'query' => AccountHelper::getAccountsQuery($this->contentContainer),
@@ -124,10 +131,14 @@ class AccountsGridView extends GridView
                 'format' => 'raw',
                 'options' => ['style' => 'width:220px;text-align:right'],
                 'contentOptions' => ['style' => 'text-align:right'],
-                'value' => function ($model) use($allowDirectCoinTransfer) {
+                'value' => function ($model) {
 
                     $transferButton = '';
                     if (AccountHelper::canManageAccount($model) && Account::TYPE_TASK != $model->account_type) {
+
+                        // Module settings allowDirectCoinTransfer parameter value
+                        $allowDirectCoinTransfer = SpaceHelper::allowDirectCoinTransfer($model);
+
                         if(!isset($allowDirectCoinTransfer) || $allowDirectCoinTransfer) {
                             $accountAssetsList = AccountHelper::getAssetsList($model);
 
