@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\xcoin\models\Account;
@@ -32,8 +33,7 @@ class AccountController extends ContentContainerController
         }
 
         // Module settings allowDirectCoinTransfer parameter value
-        $module = Yii::$app->getModule('xcoin');
-        $allowDirectCoinTransfer = $module->settings->space()->get('allowDirectCoinTransfer');
+        $allowDirectCoinTransfer = SpaceHelper::allowDirectCoinTransfer($account);
 
         return $this->render('index', ['account' => $account, 'allowDirectCoinTransfer' => $allowDirectCoinTransfer]);
     }
