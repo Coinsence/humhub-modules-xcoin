@@ -53,7 +53,9 @@ use humhub\modules\user\widgets\Image as UserImage;
                 <tr>
                     <td><strong><?= Yii::t('XcoinModule.account', 'Ethereum Address') ?></strong></td>
                     <td style="vertical-align: middle; text-align: center;">
-                        <?= Html::a(Html::img("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl={$account->ethereum_address}&choe=UTF-8", ['alt' => 'ethereum address', 'style' => 'width: 100%; max-width: 250px']), "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank']) ?>
+                        <?= Html::a(Html::img("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=ethereum:{$account->ethereum_address}&choe=UTF-8", ['alt' => 'ethereum address', 'style' => 'width: 100%; max-width: 250px']), "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank']) ?>
+                        <br>
+                        <?= Html::a($account->ethereum_address, "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank']) ?>
                     </td>
                 </tr>
             <?php endif; ?>
