@@ -23,19 +23,19 @@ use humhub\modules\user\widgets\Image as UserImage;
                 <?php endif; ?>
                 <?php if (!isset($allowDirectCoinTransfer) || $allowDirectCoinTransfer): ?>
                     <?= Html::a(Yii::t('XcoinModule.account', 'Transfer'), ['/xcoin/transaction/transfer', 'accountId' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-success', 'data-target' => '#globalModal']); ?>
-                <?php else:?>
+                <?php else: ?>
                     <?= Html::a(
-                            Yii::t('XcoinModule.account', 'Transfer'),
-                            ['/xcoin/transaction/transfer',
-                                'accountId' => $account->id,
-                                'container' => $this->context->contentContainer],
-                            ['class' => 'btn btn-success',
-                                'disabled' => 'disabled',
-                                'onclick' => 'return false;',
-                                'data-toggle' => 'tooltip',
-                                'data-placement' => 'right',
-                                'title' => Yii::t('XcoinModule.base', 'Direct coin transfer disabled by the space admin')]); ?>
-                <?php endif?>
+                        Yii::t('XcoinModule.account', 'Transfer'),
+                        ['/xcoin/transaction/transfer',
+                            'accountId' => $account->id,
+                            'container' => $this->context->contentContainer],
+                        ['class' => 'btn btn-success',
+                            'disabled' => 'disabled',
+                            'onclick' => 'return false;',
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'right',
+                            'title' => Yii::t('XcoinModule.base', 'Direct coin transfer disabled by the space admin')]); ?>
+                <?php endif ?>
             <?php endif; ?>
         </div>
         <?= '<strong>' . Yii::t('XcoinModule.account', 'Account overview:') . '</strong> ' . $account->title; ?>
@@ -43,19 +43,19 @@ use humhub\modules\user\widgets\Image as UserImage;
 
     <div class="panel-body">
 
-        <br />
-        <br />
+        <br/>
+        <br/>
         <table class="table">
             <tr>
                 <td colspan="2"><strong><?= Yii::t('XcoinModule.account', 'Account summary') ?></strong></td>
             </tr>
-            <?php if ($account->ethereum_address) :?>
-            <tr>
-                <td><strong><?= Yii::t('XcoinModule.account', 'Ethereum Address') ?></strong></td>
-                <td style="vertical-align: middle;"">
-                    <?= Html::a("$account->ethereum_address", "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank'] )?>
-                </td>
-            </tr>
+            <?php if ($account->ethereum_address) : ?>
+                <tr>
+                    <td><strong><?= Yii::t('XcoinModule.account', 'Ethereum Address') ?></strong></td>
+                    <td style="vertical-align: middle; text-align: center;">
+                        <?= Html::a(Html::img("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl={$account->ethereum_address}&choe=UTF-8", ['alt' => 'ethereum address', 'style' => 'width: 100%; max-width: 250px']), "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank']) ?>
+                    </td>
+                </tr>
             <?php endif; ?>
             <?php if ($account->space): ?>
                 <tr>
@@ -84,7 +84,7 @@ use humhub\modules\user\widgets\Image as UserImage;
                     $list = [];
                     foreach ($account->getAssets() as $asset) {
                         $list[] = '<strong>' . $account->getAssetBalance($asset) . '</strong>&nbsp; ' .
-                                SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) . '</span>';
+                            SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) . '</span>';
                     }
                     if (empty($list)) {
                         echo Yii::t('XcoinModule.account', 'No assets available');
@@ -100,7 +100,7 @@ use humhub\modules\user\widgets\Image as UserImage;
         <span style="color:red">TODO: Show asset summary</span><br />
         <span style="color:red">TODO: Show Manager / Owner</span><br />
         -->
-        <br />
+        <br/>
 
 
         <?= TransactionsGridView::widget(['account' => $account, 'contentContainer' => $this->context->contentContainer]) ?>
