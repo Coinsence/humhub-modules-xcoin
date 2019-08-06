@@ -75,8 +75,6 @@ class TransactionController extends ContentContainerController
                 }
             }
 
-            Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_TRANSFER, new Event(['sender' => $transaction]));
-
             $transaction->save();
 
             $this->view->saved();
