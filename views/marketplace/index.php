@@ -25,7 +25,7 @@ Assets::register($this);
         <div class="pull-right sell-button">
             <?= Html::a(Yii::t('XcoinModule.marketplace', 'Sell Product'), [
                 '/xcoin/marketplace/sell',
-            ], ['class' => 'btn btn-success btn-lg', 'data-target' => '#globalModal']); ?>
+            ], ['class' => 'btn btn-gradient-1 btn-lg', 'data-target' => '#globalModal']); ?>
         </div>
     </div>
     <div class="row">
@@ -36,7 +36,7 @@ Assets::register($this);
                         <strong><?= Yii::t('XcoinModule.marketplace', 'Marketplace') ?></strong>
                     </div>
                     <div class="panel-body">
-                        <div class="alert alert-warning">
+                        <div class="alert alert-default">
                             <?= Yii::t('XcoinModule.marketplace', 'Currently there are no products available!') ?>
                         </div>
                     </div>

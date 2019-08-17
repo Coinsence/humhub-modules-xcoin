@@ -25,7 +25,7 @@ Assets::register($this);
         <div class="pull-right sell-button">
             <?= Html::a(Yii::t('XcoinModule.funding', 'Add Your Project'), [
                 '/xcoin/funding-overview/new',
-            ], ['class' => 'btn btn-success btn-lg', 'data-target' => '#globalModal']); ?>
+            ], ['class' => 'btn btn-gradient-1 btn-lg', 'data-target' => '#globalModal']); ?>
         </div>
     </div>
     <div class="row">
@@ -37,7 +37,7 @@ Assets::register($this);
                         <?= Yii::t('XcoinModule.funding', '<strong>Crowd</strong> Funding') ?>
                     </div>
                     <div class="panel-body">
-                        <div class="alert alert-warning">
+                        <div class="alert alert-default">
                             <?= Yii::t('XcoinModule.funding', 'Currently there are no running crowd fundings campaigns!') ?>
                         </div>
                     </div>
