@@ -254,7 +254,7 @@
     -moz-border-radius: 0;
     border-radius: 0;
     width: 100%;
-    background: #28aa69;
+    background: linear-gradient(to right, #3CBEEF, #28AA69);
     text-transform: uppercase;
     color: #fff;
     display: inline-block;
@@ -270,7 +270,7 @@
 
 .fundingPanel .panel.cover .panel-heading .invest-btn a:hover,
 .fundingPanel .panel.cover .panel-heading .invest-btn button:hover {
-    background: #25a264;
+    background: linear-gradient(to right, #24b6ed, #23955c);
 }
 
 .fundingPanel .panel.cover .panel-heading .invest-btn.disabled {
