@@ -44,12 +44,6 @@ class SenderAccountGridView extends GridView
 
         $this->columns = [
             [
-                'attribute' => 'id',
-                'options' => [
-                    'style' => 'width:50px',
-                ]
-            ],
-            [
                 'attribute' => 'space_id',
                 'label' => Yii::t('XcoinModule.base', 'Owner'),
                 'format' => 'raw',
@@ -60,20 +54,6 @@ class SenderAccountGridView extends GridView
                     }
 
                     return '-';
-                }
-            ],
-            [
-                'attribute' => 'user_id',
-                'label' => Yii::t('XcoinModule.base', 'Manager'),
-                'format' => 'raw',
-                'options' => ['style' => 'width:35px'],
-                'value' => function ($model) {
-
-                    if ($model->user === null) {
-                        return '';
-                    }
-
-                    return UserImage::widget(['user' => $model->user, 'width' => 26]);
                 }
             ],
             [
