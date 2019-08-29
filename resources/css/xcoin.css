@@ -722,13 +722,17 @@
 
 /* miscs */
 
+.container > .row > .col-md-12:not(.fundingPanels) {
+    margin: 30px 0 0;
+}
+
 .status {
     line-height: 4;
 }
 
 .status a {
     text-transform: uppercase;
-    color: #6b6b6b;
+    color: #9a9a9a;
     margin-right: 20px;
 }
 
