@@ -261,4 +261,16 @@ class Events
 
         $memberAccount->updateAttributes(['user_id' => null]);
     }
+
+    /**
+     * Creating account type DEFAULT for new registered user
+     *
+     * @param Event
+     */
+    public static function onUserRegistration($event)
+    {
+        $user = $event->identity;
+
+        AccountHelper::initContentContainer($user);
+    }
 }

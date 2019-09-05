@@ -30,8 +30,6 @@ class FundingController extends ContentContainerController
 
     public function actionIndex()
     {
-        AssetHelper::initContentContainer($this->contentContainer);
-        AccountHelper::initContentContainer($this->contentContainer);
 
         $fundings = Funding::find()->where(['space_id' => $this->contentContainer->id])->all();
 
