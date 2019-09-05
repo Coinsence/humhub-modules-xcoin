@@ -22,9 +22,6 @@ class ProductController extends ContentContainerController
      */
     public function actionIndex()
     {
-        AssetHelper::initContentContainer($this->contentContainer);
-        AccountHelper::initContentContainer($this->contentContainer);
-
         if ($this->contentContainer instanceof Space) {
             $products = Product::find()->where(['space_id' => $this->contentContainer->id])->all();
 
