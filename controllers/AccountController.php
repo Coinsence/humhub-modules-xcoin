@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\SpaceHelper;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
@@ -40,6 +41,10 @@ class AccountController extends ContentContainerController
 
     public function actionEdit()
     {
+        if($this->contentContainer instanceof User){
+            $this->redirect($this->contentContainer->createUrl('/xcoin/overview'),302);
+        }
+
         $account = Account::findOne(['id' => Yii::$app->request->get('id')]);
         if ($account === null) {
             if (!AccountHelper::canCreateAccount($this->contentContainer)) {
