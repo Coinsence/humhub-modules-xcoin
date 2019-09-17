@@ -10,6 +10,7 @@ namespace humhub\modules\xcoin\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Asset;
 use Yii;
@@ -48,10 +49,12 @@ class AssetAmount extends Widget
             'name' => $this->holder
         ]);
 
+        $user = User::findIdentity(Yii::$app->user->identity->id);
+
         if ($space === null)
             return;
 
-        return $this->render('assetAmount', ['holder' => $this->holder, 'amount' => $this->getAssetAmount(), 'space' => $space]);
+        return $this->render('assetAmount', ['holder' => $this->holder, 'amount' => $this->getAssetAmount(), 'space' => $space, 'user' => $user]);
     }
 
     public function getAssetAmount() {

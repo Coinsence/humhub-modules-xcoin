@@ -5,7 +5,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
 ?>
 
-<div class="amount">
+<a class="amount" href="<?= $user->createUrl('/xcoin/overview') ?>">
     <strong><?= $amount ?></strong>
-    <?= SpaceImage::widget(['space' => $space, 'width' => 20, 'link' => true]) ?>
-</div>
+    <?= SpaceImage::widget(['space' => $space, 'width' => 20, 'link' => false]) ?>
+</a>
