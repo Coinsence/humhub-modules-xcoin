@@ -12,13 +12,6 @@ Assets::register($this);
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div class="pull-right">
-            <!--<?= Html::a(Yii::t('XcoinModule.overview', 'Latest transactions'), ['/xcoin/overview/latest-transactions', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>-->
-            <?php if (AccountHelper::canCreateAccount($this->context->contentContainer)) : ?>
-                <?= Html::a(Yii::t('XcoinModule.overview', 'Create account'), ['/xcoin/account/edit', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']); ?>
-            <?php endif; ?>
-        </div>
-
         <?php if ($isOwner): ?>
             <strong><?= Yii::t('XcoinModule.overview', 'Your accounts') ?></strong>
         <?php else: ?>
