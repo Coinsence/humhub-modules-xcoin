@@ -812,6 +812,15 @@ i.ether-icon-menu {
     left: 20px;
 }
 
+.table .eth-qr-code {
+    width: 100%;
+    max-width: 250px;
+}
+
+.table .eth-address {
+    font-size: 14px;
+}
+
 
 /* media queries*/
 
@@ -866,5 +875,13 @@ i.ether-icon-menu {
         font-size: 18px;
         padding: 7px 16px 11px;
         border-radius: calc(36px/2);
+    }
+
+    .table .eth-qr-code {
+        max-width: 180px;
+    }
+
+    .table .eth-address {
+        font-size: 10px;
     }
 }

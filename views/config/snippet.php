@@ -43,7 +43,7 @@ use \yii\helpers\Html;
                 'checked' => 1,
         ]) ?>
 
-        <?= Html::submitButton('Save', ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
+        <?= Html::submitButton('Save', ['class' => 'btn btn-default', 'data-ui-loader' => '']) ?>
         <?php ActiveForm::end(); ?>
     </div>
 </div>
