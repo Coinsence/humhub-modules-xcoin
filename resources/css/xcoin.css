@@ -821,6 +821,15 @@ i.ether-icon-menu {
     font-size: 14px;
 }
 
+.table .asset-balance {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.table .asset-balance strong {
+    margin-right: 4px;
+}
+
 
 /* media queries*/
 
