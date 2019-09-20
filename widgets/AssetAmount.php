@@ -49,7 +49,12 @@ class AssetAmount extends Widget
             'name' => $this->holder
         ]);
 
-        $user = User::findIdentity(Yii::$app->user->identity->id);
+        $identity = Yii::$app->user->identity;
+
+        if ($identity === null)
+            return;
+
+        $user = User::findIdentity($identity->id);
 
         if ($space === null)
             return;
