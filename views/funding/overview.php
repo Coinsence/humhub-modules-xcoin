@@ -26,6 +26,21 @@ Assets::register($this);
 
                 $carouselItems = [];
 
+                $coverItemUrl = '';
+
+                if ($cover):
+                    $coverItemUrl = $cover->getUrl();
+                else:
+                    $coverItemUrl = Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png';
+                endif;
+
+                $coverItem = "<div class=\"carousel-item\">";
+                $coverItem .= "<div class=\"bg\" style=\"background-image: url('{$coverItemUrl}')\"></div>";
+                $coverItem .= Html::img($coverItemUrl, ['width' => '100%']);
+                $coverItem .= "</div>";
+
+                $carouselItems[] = $coverItem;
+
                 foreach ($gallery as $item):
 
                     $carouselItem = "<div class=\"carousel-item\">";
