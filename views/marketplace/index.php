@@ -130,7 +130,14 @@ Assets::register($this);
                                                             ]); ?>
                                                             <small> <?= $product->getPaymentType() ?> </small>
                                                         <?php else : ?>
-                                                            <?= $product->discount ?> % <?= Yii::t('XcoinModule.marketplace', 'Discount') ?>
+                                                            <b><?= $product->discount ?>%</b>
+                                                            <?= SpaceImage::widget([
+                                                                'space' => $product->asset->space,
+                                                                'width' => 24,
+                                                                'showTooltip' => true,
+                                                                'link' => false
+                                                            ]); ?>
+                                                            <?= Yii::t('XcoinModule.marketplace', 'Discount') ?>
                                                         <?php endif; ?>
                                                     </div>
                                                     <!-- product pricing & discount end -->
