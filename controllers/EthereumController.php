@@ -16,6 +16,7 @@ use humhub\modules\space\models\Space;
 class EthereumController extends ContentContainerController
 {
     const EVENT_ENABLE_ETHEREUM = 'enableEthereum';
+    const EVENT_MIGRATE_MISSING_TRANSACTIONS = 'migrateMissingTransactions';
 
     /**
      * @inheritdoc
@@ -37,6 +38,19 @@ class EthereumController extends ContentContainerController
             $space->updateAttributes(['eth_status' => Space::ETHEREUM_STATUS_IN_PROGRESS]);
             
             Event::trigger(self::class, self::EVENT_ENABLE_ETHEREUM, new Event(['sender' => $space]));
+        }
+
+        return $this->asJson([
+            'success' => true,
+        ]);
+    }
+
+    public function actionMigrateTransactions()
+    {
+        $space = Space::findOne(['id' => $this->contentContainer->id]);
+
+        if ($space->eth_status == Space::ETHEREUM_STATUS_ENABLED) {
+            Event::trigger(self::class, self::EVENT_MIGRATE_MISSING_TRANSACTIONS, new Event(['sender' => $space]));
         }
 
         return $this->asJson([
