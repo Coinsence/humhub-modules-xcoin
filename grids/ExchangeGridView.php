@@ -83,11 +83,11 @@ class ExchangeGridView extends GridView
                 'value' => function ($model) {
 
                     if (Yii::$app->user->isGuest) {
-                        return Html::a('Buy', Yii::$app->user->loginUrl, ['class' => 'btn btn-success btn-sm', 'data-target' => '#globalModal']);
+                        return Html::a('Buy', Yii::$app->user->loginUrl, ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']);
                     }
 
                     $o = '';
-                    $o .= Html::a('Buy', ['/xcoin/exchange/buy', 'exchangeId' => $model->id], ['class' => 'btn btn-success btn-sm', 'data-target' => '#globalModal']);
+                    $o .= Html::a('Buy', ['/xcoin/exchange/buy', 'exchangeId' => $model->id], ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']);
                     if (Yii::$app->user->id == $model->created_by) {
                         $o .= "&nbsp;" . Html::a('Delete', ['/xcoin/exchange/delete', 'exchangeId' => $model->id], ['class' => 'btn btn-danger btn-sm']);
                     }

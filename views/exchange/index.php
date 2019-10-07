@@ -10,7 +10,7 @@ use yii\bootstrap\Html;
             <div class="panel">
                 <div class="panel-heading">
                     <?php if (!Yii::$app->user->isGuest): ?>
-                        <?= Html::a(Yii::t('XcoinModule.exchange', 'Add new offer'), ['/xcoin/exchange/offer'], ['class' => 'btn btn-success pull-right', 'data-target' => '#globalModal']); ?>
+                        <?= Html::a(Yii::t('XcoinModule.exchange', 'Add new offer'), ['/xcoin/exchange/offer'], ['class' => 'btn btn-default pull-right', 'data-target' => '#globalModal']); ?>
                     <?php endif; ?>
                     <?= Yii::t('XcoinModule.exchange', 'Asset Exchange') ?>
                 </div>

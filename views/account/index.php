@@ -22,14 +22,14 @@ use humhub\modules\user\widgets\Image as UserImage;
                     <?= Html::a(Yii::t('XcoinModule.account', 'Edit'), ['/xcoin/account/edit', 'id' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']); ?>
                 <?php endif; ?>
                 <?php if (!isset($allowDirectCoinTransfer) || $allowDirectCoinTransfer): ?>
-                    <?= Html::a(Yii::t('XcoinModule.account', 'Transfer'), ['/xcoin/transaction/transfer', 'accountId' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-success', 'data-target' => '#globalModal']); ?>
+                    <?= Html::a(Yii::t('XcoinModule.account', 'Transfer'), ['/xcoin/transaction/transfer', 'accountId' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']); ?>
                 <?php else: ?>
                     <?= Html::a(
                         Yii::t('XcoinModule.account', 'Transfer'),
                         ['/xcoin/transaction/transfer',
                             'accountId' => $account->id,
                             'container' => $this->context->contentContainer],
-                        ['class' => 'btn btn-success',
+                        ['class' => 'btn btn-default',
                             'disabled' => 'disabled',
                             'onclick' => 'return false;',
                             'data-toggle' => 'tooltip',
@@ -53,9 +53,9 @@ use humhub\modules\user\widgets\Image as UserImage;
                 <tr>
                     <td><strong><?= Yii::t('XcoinModule.account', 'Ethereum Address') ?></strong></td>
                     <td style="vertical-align: middle; text-align: center;">
-                        <?= Html::a(Html::img("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=ethereum:{$account->ethereum_address}&choe=UTF-8", ['alt' => 'ethereum address', 'style' => 'width: 100%; max-width: 250px']), "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank']) ?>
+                        <?= Html::a(Html::img("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=ethereum:{$account->ethereum_address}&choe=UTF-8", ['alt' => 'ethereum address', 'style' => 'width: 100%; max-width: 180px']), "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank', 'class' => 'eth-qr-code']) ?>
                         <br>
-                        <?= Html::a($account->ethereum_address, "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank']) ?>
+                        <?= Html::a($account->ethereum_address, "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank', 'style' => 'font-size: 10px;', 'class' => 'eth-address']) ?>
                     </td>
                 </tr>
             <?php endif; ?>
