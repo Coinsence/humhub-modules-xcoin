@@ -120,11 +120,11 @@ class AccountsGridView extends GridView
                 'value' => function ($model) {
                     $list = [];
                     foreach ($model->getAssets() as $asset) {
-                        $list[] = '<strong>' . $model->getAssetBalance($asset) . '</strong>&nbsp; ' .
-                            SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) . '</span>';
+                        $list[] = '<div class="asset-balance"><strong>' . $model->getAssetBalance($asset) . '</strong>' .
+                            SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) . '</div>';
                     }
 
-                    return implode('&nbsp;&nbsp;&middot;&nbsp;&nbsp;', $list);
+                    return implode('', $list);
                 }
             ],
             [

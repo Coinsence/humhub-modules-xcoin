@@ -20,7 +20,7 @@ use yii\bootstrap\Html; ?>
             <?php if (AssetHelper::canManageAssets($this->context->contentContainer) && $space->eth_status == Space::ETHEREUM_STATUS_DISABLED ): ?>
                 <?= Html::button(Yii::t('XcoinModule.ethereum', 'Enable ethereum'), [
                     'id' => 'ether-enable-btn',
-                    'class' => 'btn btn-success btn-sm',
+                    'class' => 'btn btn-default btn-sm',
                     'data-target-url' => "{$space->getUrl()}xcoin/ethereum/enable"
                 ]);
                 ?>

@@ -1,6 +1,12 @@
 /* space funding-overview page */
 /* space product-overview page */
 
+.layout-content-container .col-md-12 .content {
+    background-color: white;
+    display: inline-block;
+    padding: 30px 0 10px;
+}
+
 .layout-content-container .crowd-funding .panel {
     border-radius: 8px;
     position: relative;
@@ -169,7 +175,7 @@
 }
 
 .layout-content-container .crowd-funding .panel-footer .funding-progress .progress-bar {
-    background-color: #28aa69;
+    background-color: #9cd192;
 }
 
 .layout-content-container .crowd-funding .panel-footer .funding-details {
@@ -182,21 +188,22 @@
     padding: 10px 0;
 }
 
-.layout-content-container .crowd-funding .panel-footer .funding-details .col-md-6 {
-    height: 42px;
-    padding: 12px 2px 12px 15px;
-    font-size: 12px;
-}
-
 .layout-content-container .crowd-funding .panel-footer .funding-details .col-md-12 {
-    height: 30px;
+    height: 42px;
+    padding: 12px 15px;
+    font-size: 12px;
+    text-align: center;
 }
 
-.layout-content-container .crowd-funding .panel-footer .funding-details .col-md-6:first-of-type {
-    border-right: 1px solid #f0f5f8;
-}
+/*.layout-content-container .crowd-funding .panel-footer .funding-details .col-md-12 {*/
+/*    height: 30px;*/
+/*}*/
 
-.layout-content-container .crowd-funding .panel-footer .funding-details .col-md-6 span {
+/*.layout-content-container .crowd-funding .panel-footer .funding-details .col-md-6:first-of-type {*/
+/*    border-right: 1px solid #f0f5f8;*/
+/*}*/
+
+.layout-content-container .crowd-funding .panel-footer .funding-details .col-md-12 span {
     vertical-align: middle;
     margin-right: 2px;
 }
@@ -210,7 +217,6 @@
 
 .fundingPanel .panel.cover .panel-heading {
     padding: 0;
-    text-align: center;
     position: relative;
     overflow: hidden;
     border-radius: 0;
@@ -233,55 +239,6 @@
 .fundingPanel .panel.cover .panel-heading .img-container img {
     max-height: 400px;
     object-fit: contain;
-}
-
-.fundingPanel .panel.cover .panel-heading .invest-btn {
-    /*position: absolute;*/
-    /*bottom: 0;*/
-    /*left: 0;*/
-    width: 100%;
-    /*height: 0;*/
-    /*-webkit-transition: height .25s ease-in-out;*/
-    /*-moz-transition: height .25s ease-in-out;*/
-    /*-ms-transition: height .25s ease-in-out;*/
-    /*-o-transition: height .25s ease-in-out;*/
-    /*transition: height .25s ease-in-out;*/
-}
-
-.fundingPanel .panel.cover .panel-heading .invest-btn a,
-.fundingPanel .panel.cover .panel-heading .invest-btn button {
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-    width: 100%;
-    background: #28aa69;
-    text-transform: uppercase;
-    color: #fff;
-    display: inline-block;
-    padding: 26px 20px;
-    font-size: 17px;
-    font-weight: bold;
-}
-
-.fundingPanel .panel.cover .panel-heading .invest-btn button {
-    outline: none;
-    border: none;
-}
-
-.fundingPanel .panel.cover .panel-heading .invest-btn a:hover,
-.fundingPanel .panel.cover .panel-heading .invest-btn button:hover {
-    background: #25a264;
-}
-
-.fundingPanel .panel.cover .panel-heading .invest-btn.disabled {
-    cursor: not-allowed;
-}
-
-.fundingPanel .panel.cover .panel-heading .invest-btn.disabled a,
-.fundingPanel .panel.cover .panel-heading .invest-btn.disabled button {
-    pointer-events: none;
-    display: inline-block;
-    opacity: 0.5;
 }
 
 .fundingPanel .panel.cover .panel-heading .edit-btn {
@@ -362,91 +319,185 @@
 .fundingPanel .panel.cover .panel-body .funding-title {
     font-size: 16px;
     font-weight: bold;
-    color: #000;
+    color: #202020;
 }
 
-.fundingPanel .panel.cover .panel-body .funding-details {
-    border: #eaf1f6 solid 1px;
-    box-shadow: 0 1px 0 0 #c5c5c5;
-    -webkit-box-shadow: 0 2px 2px 0 #c5c5c5;
-    -moz-box-shadow: 0 1px 0 0 #c5c5c5;
-    padding: 10px 18px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    text-align: center;
+.fundingPanel .panel.cover .panel-body .value {
+    text-transform: uppercase;
+    color: #202020;
 }
 
-.fundingPanel .panel.cover .panel-body .funding-details .col-md-6:first-of-type {
-    border-right: #eaf1f6 solid 1px;
+.fundingPanel .panel.cover .panel-body .description {
+
 }
 
-.fundingPanel .panel.cover .panel-body .funding-details .col-md-6 {
-    padding: 8px 0;
-    text-align: center;
-    font-size: 14px;
+/*.fundingPanel .panel.cover .panel-body .funding-details {*/
+/*    border: #eaf1f6 solid 1px;*/
+/*    box-shadow: 0 1px 0 0 #c5c5c5;*/
+/*    -webkit-box-shadow: 0 2px 2px 0 #c5c5c5;*/
+/*    -moz-box-shadow: 0 1px 0 0 #c5c5c5;*/
+/*    padding: 10px 18px;*/
+/*    border-radius: 8px;*/
+/*    margin-bottom: 12px;*/
+/*    text-align: center;*/
+/*}*/
+
+/*.fundingPanel .panel.cover .panel-body .funding-details .col-md-6:first-of-type {*/
+/*    border-right: #eaf1f6 solid 1px;*/
+/*}*/
+
+/*.fundingPanel .panel.cover .panel-body .funding-details .col-md-6 {*/
+/*    padding: 8px 0;*/
+/*    text-align: center;*/
+/*    font-size: 14px;*/
+/*}*/
+
+/*.fundingPanel .panel.cover .panel-body .funding-details .col-md-6 a {*/
+/*    margin-left: 8px;*/
+/*}*/
+
+.fundingPanel .panel.cover .panel-body .description p {
+    color: #202020;
+    margin: 10px 0 40px;
 }
 
-.fundingPanel .panel.cover .panel-body .funding-details .col-md-6 a {
-    margin-left: 8px;
+.fundingPanel .panel.cover .panel-body .progress-info i.fa {
+    font-size: 34px;
+    color: #202020;
+    margin-right: 6px;
+    opacity: .25;
 }
 
-.fundingPanel .panel.cover .panel-footer {
-    background: none;
-    border: none;
+.fundingPanel .panel.cover .panel-body .progress-info i.fa + div strong {
+    font-size: 12px;
 }
 
-.fundingPanel .panel.cover .panel-footer .funding-progress {
-    padding: 0 15px;
+.fundingPanel .panel.cover .panel-body .progress-info i.fa + div h6 {
+    font-size: 10px;
 }
 
-.fundingPanel .panel.cover .panel-footer .funding-progress > div:not(.progress) {
+.fundingPanel .panel.cover .panel-body .progress-info > div > * {
+    display: inline-block;
+}
+
+.fundingPanel .panel.cover .panel-body .progress-info > div {
+    color: #202020;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.fundingPanel .panel.cover .panel-body .progress-info h6 {
+    margin: 0;
+}
+
+.fundingPanel .panel.cover .panel-body .funding-progress {
+    /*padding: 0 15px;*/
+}
+
+.fundingPanel .panel.cover .panel-body .funding-progress > div:not(.progress) {
     display: inline-block;
     font-size: 12px;
 }
 
-.fundingPanel .panel.cover .panel-footer .funding-progress .clock::before {
-    content: 'L';
-    color: white;
-    text-align: center;
-    width: 100%;
-    display: block;
-    margin-left: 1px;
-    font-size: 10px;
-}
+/*.fundingPanel .panel.cover .panel-body .funding-progress .clock::before {*/
+/*    content: 'L';*/
+/*    color: white;*/
+/*    text-align: center;*/
+/*    width: 100%;*/
+/*    display: block;*/
+/*    margin-left: 1px;*/
+/*    font-size: 10px;*/
+/*}*/
 
-.fundingPanel .panel.cover .panel-footer .funding-progress .clock {
-    display: inline-block;
-    vertical-align: middle;
-    width: 18px;
-    height: 18px;
-    border-radius: 18px;
-    background: gray;
-    margin-right: 4px;
-}
+/*.fundingPanel .panel.cover .panel-body .funding-progress .clock {*/
+/*    display: inline-block;*/
+/*    vertical-align: middle;*/
+/*    width: 18px;*/
+/*    height: 18px;*/
+/*    border-radius: 18px;*/
+/*    background: gray;*/
+/*    margin-right: 4px;*/
+/*}*/
 
-.fundingPanel .panel.cover .panel-footer .funding-progress .clock.red {
-    background: red;
-}
+/*.fundingPanel .panel.cover .panel-body .funding-progress .clock.red {*/
+/*    background: red;*/
+/*}*/
 
-.fundingPanel .panel.cover .panel-footer .funding-progress .days {
-    display: inline-block;
-    vertical-align: middle;
-    color: gray;
-}
+/*.fundingPanel .panel.cover .panel-body .funding-progress .days {*/
+/*    display: inline-block;*/
+/*    vertical-align: middle;*/
+/*    color: gray;*/
+/*}*/
 
-.fundingPanel .panel.cover .panel-footer .funding-progress .clock.red + .days {
-    color: red;
-}
+/*.fundingPanel .panel.cover .panel-body .funding-progress .clock.red + .days {*/
+/*    color: red;*/
+/*}*/
 
-.fundingPanel .panel.cover .panel-footer .funding-progress .progress {
+.fundingPanel .panel.cover .panel-body .funding-progress .progress {
     width: 100%;
     height: 8px;
     margin-top: 3px;
     background: #e4e8eb;
 }
 
-.fundingPanel .panel.cover .panel-footer .funding-progress .progress-bar {
-    background-color: #28aa69;
+.fundingPanel .panel.cover .panel-body .funding-progress .progress-bar {
+    background-color: #9cd192;
+}
+
+.fundingPanel .panel.cover .panel-footer {
+    background: none;
+    border: none;
+    padding: 0;
+    text-align: center;
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn {
+    /*position: absolute;*/
+    /*bottom: 0;*/
+    /*left: 0;*/
+    width: 100%;
+    /*height: 0;*/
+    /*-webkit-transition: height .25s ease-in-out;*/
+    /*-moz-transition: height .25s ease-in-out;*/
+    /*-ms-transition: height .25s ease-in-out;*/
+    /*-o-transition: height .25s ease-in-out;*/
+    /*transition: height .25s ease-in-out;*/
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn a,
+.fundingPanel .panel.cover .panel-footer .invest-btn button {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    width: 100%;
+    background: linear-gradient(to right, #3CBEEF, #28AA69);
+    text-transform: uppercase;
+    color: #fff;
+    display: inline-block;
+    padding: 26px 20px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn button {
+    outline: none;
+    border: none;
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn a:hover,
+.fundingPanel .panel.cover .panel-footer .invest-btn button:hover {
+    background: linear-gradient(to right, #24b6ed, #23955c);
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn.disabled {
+    cursor: not-allowed;
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn.disabled a,
+.fundingPanel .panel.cover .panel-footer .invest-btn.disabled button {
+    pointer-events: none;
+    display: inline-block;
+    opacity: 0.5;
 }
 
 .fundingPanel .panel.content .panel-heading {
@@ -463,6 +514,11 @@
 
 /* global funding-overview page */
 /* global marketplace page */
+
+.fundingPanels > .panel > .panel-heading,
+.fundingPanels > .panel > .panel-body {
+    padding: 24px;
+}
 
 .fundingPanels .row .panel {
     border-radius: 8px;
@@ -641,21 +697,22 @@
     padding: 10px 0;
 }
 
-.fundingPanels .row .panel-footer .funding-details .col-md-6 {
+.fundingPanels .row .panel-footer .funding-details .col-md-12{
     height: 42px;
-    padding: 12px 2px 12px 15px;
+    padding: 12px 15px;
     font-size: 12px;
+    text-align: center;
 }
 
-.fundingPanels .row .panel-footer .funding-details .col-md-12 {
-    height: 30px;
-}
+/*.fundingPanels .row .panel-footer .funding-details .col-md-12 {*/
+/*    height: 30px;*/
+/*}*/
 
-.fundingPanels .row .panel-footer .funding-details .col-md-6:first-of-type {
-    border-right: 1px solid #f0f5f8;
-}
+/*.fundingPanels .row .panel-footer .funding-details .col-md-6:first-of-type {*/
+/*    border-right: 1px solid #f0f5f8;*/
+/*}*/
 
-.fundingPanels .row .panel-footer .funding-details .col-md-6 span {
+.fundingPanels .row .panel-footer .funding-details .col-md-12 span {
     vertical-align: middle;
     margin-right: 2px;
 }
@@ -664,6 +721,26 @@
 
 
 /* miscs */
+
+.container > .row > .col-md-12:not(.fundingPanels) {
+    margin: 30px 0 0;
+}
+
+.status {
+    line-height: 4;
+}
+
+.status a {
+    text-transform: uppercase;
+    color: #9a9a9a;
+    margin-right: 20px;
+}
+
+.status a.active,
+.status a:hover,
+.status a:focus {
+    color: #202020;
+}
 
 .sell-button {
     margin-bottom: 15px;
@@ -702,6 +779,118 @@ i.ether-icon-menu {
     vertical-align: bottom;
 }
 
-.pt-3{
+.pt-3 {
     padding-top: 3px;
+}
+
+.carousel-control {
+    width: auto;
+    bottom: unset;
+    top: calc(50% - 70px/2);
+    font-size: 36px;
+    line-height: 1;
+    padding: 15px 30px 19px;
+    border-radius: calc(70px/2);
+    opacity: 1;
+    color: #202020;
+}
+
+.carousel-control:focus,
+.carousel-control:hover {
+    color: #202020;
+}
+
+.carousel-control.right {
+    background: white;
+    right: 20px;
+    left: auto;
+}
+
+.carousel-control.left {
+    background: white;
+    right: auto;
+    left: 20px;
+}
+
+.table .eth-qr-code {
+    width: 100%;
+    max-width: 250px;
+}
+
+.table .eth-address {
+    font-size: 14px;
+}
+
+.table .asset-balance {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.table .asset-balance strong {
+    margin-right: 4px;
+}
+
+
+/* media queries*/
+
+@media (max-width: 767px) {
+
+    .fundingPanel .panel.cover .panel-heading .edit-btn {
+        top: 16px;
+        left: 16px;
+        border-radius: 14px;
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+
+    .carousel-control {
+        top: calc(50% - 50px/2);
+        font-size: 24px;
+        padding: 11px 22px 14px;
+        border-radius: calc(50px/2);
+    }
+}
+
+@media (max-width: 559px) {
+
+    .fundingPanel .panel.cover .panel-heading .edit-btn {
+        top: 14px;
+        left: 14px;
+        border-radius: 12px;
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+
+    .fundingPanel .panel.cover .panel-body .progress-info i.fa {
+        font-size: 26px;
+        margin-right: 2px;
+    }
+
+    .fundingPanel .panel.cover .panel-body .progress-info i.fa + div strong {
+        font-size: 10px;
+    }
+
+    .fundingPanel .panel.cover .panel-body .progress-info i.fa + div h6 {
+        font-size: 8px;
+    }
+
+    .fundingPanel .panel.cover .panel-footer .invest-btn a,
+    .fundingPanel .panel.cover .panel-footer .invest-btn button {
+        font-size: 14px;
+    }
+
+    .carousel-control {
+        top: calc(50% - 36px/2);
+        font-size: 18px;
+        padding: 7px 16px 11px;
+        border-radius: calc(36px/2);
+    }
+
+    .table .eth-qr-code {
+        max-width: 180px;
+    }
+
+    .table .eth-address {
+        font-size: 10px;
+    }
 }

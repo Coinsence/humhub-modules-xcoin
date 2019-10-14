@@ -45,11 +45,6 @@ Assets::register($this);
 
                             </div>
                             <!-- product image end -->
-                            <!-- product buy action start -->
-                            <div class="invest-btn">
-                                <?= BuyProductButton::widget(['guid' => $product->getCreatedBy()->one()->guid])?>
-                            </div>
-                            <!-- product buy action end -->
                             <!-- product edit button start -->
 
                             <?php if (AssetHelper::canManageAssets($this->context->contentContainer) || $product->isOwner(Yii::$app->user->identity)): ?>
@@ -90,48 +85,44 @@ Assets::register($this);
                             </h4>
                             <!-- product name end -->
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <!-- product description start -->
-                                    <p class="media-heading"><?= Html::encode($product->description); ?></p>
-                                    <!-- product description end -->
-                                </div>
-                                <div class="col-md-3"></div>
-                                <div class="col-md-3">
-                                    <div class="col-md-12 funding-details">
-                                        <!-- product pricing & discount start -->
+                            <!-- product pricing & discount start -->
+                            <div class="value row">
+                                <div class="col-md-12">
+                                    <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
+                                        <?= Yii::t('XcoinModule.product', 'Price') ?> : <b><?= $product->price ?></b>
                                         <?= SpaceImage::widget([
                                             'space' => $product->asset->space,
-                                            'width' => 30,
+                                            'width' => 24,
                                             'showTooltip' => true,
                                             'link' => false
                                         ]); ?>
-                                        <div class="text-center">
-                                            <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
-                                                <?= Yii::t('XcoinModule.product', 'Price') ?> : <b><?= $product->price ?></b>
-                                                <small> <?= $product->getPaymentType() ?> </small>
-                                            <?php else : ?>
-                                                <?= $product->discount ?> % <?= Yii::t('XcoinModule.product', 'Discount') ?>
-                                            <?php endif; ?>
-                                        </div>
-                                        <!-- product pricing & discount end -->
-                                    </div>
+                                        <small> <?= $product->getPaymentType() ?> </small>
+                                    <?php else : ?>
+                                        <?= $product->discount ?> % <?= Yii::t('XcoinModule.product', 'Discount') ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
+                            <!-- product pricing & discount end -->
+
+                            <div class="description row">
+                                <div class="col-md-12">
+                                    <!-- product description start -->
+                                    <h5><?= Html::encode($product->description); ?></h5>
+                                    <!-- product description end -->
+
+                                    <!-- product content start -->
+                                    <?= RichText::output($product->content); ?>
+                                    <!-- product content end -->
+                                </div>
+                            </div>
+
                         </div>
                         <div class="panel-footer">
-                            <?= $product->status ? 'Available' : 'Unavailable' ?> |
-                            <?= Html::icon('time') ?>
-                            <?= TimeAgo::widget(['timestamp' => $product->created_at]); ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="panel content">
-                        <div class="panel-body">
-                            <!-- product content start -->
-                            <?= RichText::output($product->content); ?>
-                            <!-- product content end -->
+                            <!-- product buy action start -->
+                            <div class="invest-btn">
+                                <?= BuyProductButton::widget(['guid' => $product->getCreatedBy()->one()->guid])?>
+                            </div>
+                            <!-- product buy action end -->
                         </div>
                     </div>
                 </div>

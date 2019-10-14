@@ -34,7 +34,7 @@ return [
     'Latest account transactions' => '',
     'Latest asset transactions' => 'Latest coin transactions',
     'Latest transactions' => '',
-    'Shareholder list' => 'Contributor list',
+    'Shareholder list' => 'Contribution list',
     'Your accounts' => '',
     'Total Issued Amount' => '',
 ];
