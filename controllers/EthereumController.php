@@ -17,6 +17,7 @@ class EthereumController extends ContentContainerController
 {
     const EVENT_ENABLE_ETHEREUM = 'enableEthereum';
     const EVENT_MIGRATE_MISSING_TRANSACTIONS = 'migrateMissingTransactions';
+    const EVENT_SYNCHRONIZE_BALANCES = 'synchronizeBalances';
 
     /**
      * @inheritdoc
@@ -51,6 +52,19 @@ class EthereumController extends ContentContainerController
 
         if ($space->eth_status == Space::ETHEREUM_STATUS_ENABLED) {
             Event::trigger(self::class, self::EVENT_MIGRATE_MISSING_TRANSACTIONS, new Event(['sender' => $space]));
+        }
+
+        return $this->asJson([
+            'success' => true,
+        ]);
+    }
+
+    public function actionSynchronizeBalances()
+    {
+        $space = Space::findOne(['id' => $this->contentContainer->id]);
+
+        if ($space->eth_status == Space::ETHEREUM_STATUS_ENABLED) {
+            Event::trigger(self::class, self::EVENT_SYNCHRONIZE_BALANCES, new Event(['sender' => $space]));
         }
 
         return $this->asJson([

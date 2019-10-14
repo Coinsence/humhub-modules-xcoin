@@ -33,6 +33,12 @@ use yii\bootstrap\Html; ?>
                         'data-target-url' => "{$space->getUrl()}xcoin/ethereum/migrate-transactions"
                     ]);
                     ?>
+                    <?= Html::button(Yii::t('XcoinModule.ethereum', 'Synchronize Balances'), [
+                        'id' => 'ether-enable-btn',
+                        'class' => 'btn btn-success btn-sm',
+                        'data-target-url' => "{$space->getUrl()}xcoin/ethereum/synchronize-balances"
+                    ]);
+                    ?>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
