@@ -17,18 +17,35 @@ use yii\bootstrap\Html; ?>
     <div class="panel-heading">
         <strong><?= Yii::t('XcoinModule.ethereum', 'Ethereum') ?></strong>
         <div class="pull-right">
-            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) && $space->eth_status == Space::ETHEREUM_STATUS_DISABLED ): ?>
-                <?= Html::button(Yii::t('XcoinModule.ethereum', 'Enable ethereum'), [
-                    'id' => 'ether-enable-btn',
-                    'class' => 'btn btn-default btn-sm',
-                    'data-target-url' => "{$space->getUrl()}xcoin/ethereum/enable"
-                ]);
-                ?>
+            <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
+                <?php if ($space->eth_status == Space::ETHEREUM_STATUS_DISABLED) : ?>
+                    <?= Html::button(Yii::t('XcoinModule.ethereum', 'Enable ethereum'), [
+                        'id' => 'ether-enable-btn',
+                        'class' => 'btn btn-success btn-sm',
+                        'data-target-url' => "{$space->getUrl()}xcoin/ethereum/enable"
+                    ]);
+                    ?>
+                <?php endif; ?>
+                <?php if ($space->eth_status == Space::ETHEREUM_STATUS_ENABLED) : ?>
+                    <?= Html::button(Yii::t('XcoinModule.ethereum', 'Migrate missing transactions'), [
+                        'id' => 'ether-enable-btn',
+                        'class' => 'btn btn-success btn-sm',
+                        'data-target-url' => "{$space->getUrl()}xcoin/ethereum/migrate-transactions"
+                    ]);
+                    ?>
+                    <?= Html::button(Yii::t('XcoinModule.ethereum', 'Synchronize Balances'), [
+                        'id' => 'ether-enable-btn',
+                        'class' => 'btn btn-success btn-sm',
+                        'data-target-url' => "{$space->getUrl()}xcoin/ethereum/synchronize-balances"
+                    ]);
+                    ?>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
     <div class="panel-body">
-        <div class="alert alert-info" id="ethereum-loader" <?php if ($space->dao_address && $space->coin_address || $space->eth_status != Space::ETHEREUM_STATUS_IN_PROGRESS) :?> style="display: none" <?php endif; ?>>
+        <div class="alert alert-info"
+             id="ethereum-loader" <?php if ($space->dao_address && $space->coin_address || $space->eth_status != Space::ETHEREUM_STATUS_IN_PROGRESS) : ?> style="display: none" <?php endif; ?>>
             <?= Yii::t('XcoinModule.ethereum', 'Space Ethereum migration is in progress ! This could take some minutes.') ?>
             <div class="loader humhub-ui-loader pull-right" style="padding: 0">
                 <div class="sk-spinner sk-spinner-three-bounce">
