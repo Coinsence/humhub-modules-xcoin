@@ -27,13 +27,19 @@ use yii\widgets\ActiveForm;
         </div>
 
         <?= $form->field($model, 'transactionPeriod')->dropDownList([
+                -1 => 'None',
                 0 => 'Weekly',
                 1 => 'Monthly'
         ]) ?>
 
         <hr>
 
-    <?= Html::submitButton('Save', ['class' => 'btn btn-default', 'data-ui-loader' => '']) ?>
+        <div class="alert alert-info">
+            <?= Yii::t('XcoinModule.config', 'Your next coin allocation run is in: '); ?>
+            <?= $model->showNextScheduledRun() ?>
+        </div>
+
+        <?= Html::submitButton('Save', ['class' => 'btn btn-default', 'data-ui-loader' => '']) ?>
 
     <?php ActiveForm::end(); ?>
 
