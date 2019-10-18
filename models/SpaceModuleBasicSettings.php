@@ -10,7 +10,7 @@ namespace humhub\modules\xcoin\models;
 use Yii;
 use yii\base\Model;
 
-class SpaceModuleSettings extends Model
+class SpaceModuleBasicSettings extends Model
 {
     /**
      * @var string Title of the new member account
@@ -90,10 +90,10 @@ class SpaceModuleSettings extends Model
     public function attributeLabels()
     {
         return [
-            'accountTitle' => Yii::t('XcoinModule.base', 'Account title'),
-            'transactionAmount' => Yii::t('XcoinModule.base', 'Transaction amount'),
-            'transactionComment' => Yii::t('XcoinModule.base', 'Transaction comment'),
-            'allowDirectCoinTransfer' => Yii::t('XcoinModule.base', 'Allow direct coin transfer'),
+            'accountTitle' => Yii::t('XcoinModule.config', 'Account title'),
+            'transactionAmount' => Yii::t('XcoinModule.config', 'Transaction amount'),
+            'transactionComment' => Yii::t('XcoinModule.config', 'Transaction comment'),
+            'allowDirectCoinTransfer' => Yii::t('XcoinModule.config', 'Allow direct coin transfer'),
         ];
     }
 
