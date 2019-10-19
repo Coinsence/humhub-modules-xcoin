@@ -7,6 +7,7 @@
 namespace humhub\modules\xcoin\models;
 
 
+use humhub\modules\xcoin\component\Utils;
 use humhub\modules\xcoin\jobs\IssueScheduledTransactions;
 use Yii;
 use yii\base\Model;
@@ -61,14 +62,14 @@ class SpaceModuleScheduleSettings extends Model
         $due = '';
 
         switch ($this->transactionPeriod) {
-            case self::TRANSACTION_PERIOD_NONE:
+            case Utils::TRANSACTION_PERIOD_NONE:
                 $due = 'Never';
                 break;
-            case self::TRANSACTION_PERIOD_WEEKLY:
-                $due = date('Y/m/d H:i:s', $this->scheduleJobPushedDate + self::SCHEDULE_DELAY_WEEKLY);
+            case Utils::TRANSACTION_PERIOD_WEEKLY:
+                $due = date('Y/m/d H:i:s', $this->scheduleJobPushedDate + Utils::SCHEDULE_DELAY_WEEKLY);
                 break;
-            case self::TRANSACTION_PERIOD_MONTHLY:
-                $due = date('Y/m/d H:i:s', $this->scheduleJobPushedDate + self::SCHEDULE_DELAY_MONTHLY);
+            case Utils::TRANSACTION_PERIOD_MONTHLY:
+                $due = date('Y/m/d H:i:s', $this->scheduleJobPushedDate + Utils::SCHEDULE_DELAY_MONTHLY);
                 break;
             default:
                 break;
@@ -112,17 +113,15 @@ class SpaceModuleScheduleSettings extends Model
             return false;
         }
 
-        $module = Yii::$app->getModule('xcoin');
-
         switch ($this->transactionPeriod) {
-            case self::TRANSACTION_PERIOD_NONE:
+            case Utils::TRANSACTION_PERIOD_NONE:
                 $this->removeScheduleJob();
                 break;
-            case self::TRANSACTION_PERIOD_WEEKLY:
-                $this->runScheduleJob(self::SCHEDULE_DELAY_WEEKLY);
+            case Utils::TRANSACTION_PERIOD_WEEKLY:
+                $this->runScheduleJob(Utils::SCHEDULE_DELAY_WEEKLY);
                 break;
-            case self::TRANSACTION_PERIOD_MONTHLY:
-                $this->runScheduleJob(self::SCHEDULE_DELAY_MONTHLY);
+            case Utils::TRANSACTION_PERIOD_MONTHLY:
+                $this->runScheduleJob(Utils::SCHEDULE_DELAY_MONTHLY);
                 break;
             default:
                 break;
