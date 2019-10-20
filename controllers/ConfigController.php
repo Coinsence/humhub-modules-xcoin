@@ -9,7 +9,8 @@ namespace humhub\modules\xcoin\controllers;
 
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
-use humhub\modules\xcoin\models\SpaceModuleSettings;
+use humhub\modules\xcoin\models\SpaceModuleBasicSettings;
+use humhub\modules\xcoin\models\SpaceModuleScheduleSettings;
 use Yii;
 
 class ConfigController extends ContentContainerController
@@ -22,12 +23,31 @@ class ConfigController extends ContentContainerController
 
     public function actionIndex()
     {
-        $model = new SpaceModuleSettings();
+        $model = new SpaceModuleBasicSettings();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->view->saved();
         }
-        return $this->render('snippet', [
-            'model' => $model
+
+        $space = $this->getSpace();
+
+        return $this->render('index', [
+            'model' => $model,
+            'space' => $space
+        ]);
+    }
+
+    public function actionSchedule()
+    {
+        $space = $this->getSpace();
+
+        $model = new SpaceModuleScheduleSettings(['space' => $space]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->view->saved();
+        }
+
+        return $this->render('schedule', [
+            'model' => $model,
+            'space' => $space
         ]);
     }
 }
