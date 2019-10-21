@@ -43,11 +43,6 @@ class SpaceModuleScheduleSettings extends Model
         $this->scheduleJobPushedDate = $module->settings->space()->get('scheduleJobPushedDate');
     }
 
-    public function showTransactionPeriod()
-    {
-        return $this->transactionPeriod;
-    }
-
     public function showNextScheduledRun()
     {
         if (!$this->scheduleJobPushedDate)
