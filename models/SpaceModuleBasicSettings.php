@@ -16,10 +16,12 @@ class SpaceModuleBasicSettings extends Model
      * @var string Title of the new member account
      */
     public $accountTitle;
+
     /**
      * @var float Amount of the transaction to new account joining the space
      */
     public $transactionAmount;
+
     /**
      * @var string Comment of the transaction to new account joining the space
      */

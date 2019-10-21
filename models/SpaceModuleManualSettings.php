@@ -1,43 +1,97 @@
 <?php
 /**
- * @link https://coinsence.org/
- * @copyright Copyright (c) 2018 Coinsence
- * @license https://www.humhub.com/licences
- *
- * @author Mortadha Ghanmi <mortadba.ghanmi56@gmail.com>
+ * Created by Mortadha Ghanmi.
+ * Email: mortadha.ghanmi56@gmail.com
  */
 
-namespace humhub\modules\xcoin\jobs;
+namespace humhub\modules\xcoin\models;
 
 
-use humhub\modules\queue\ActiveJob;
-use humhub\modules\xcoin\helpers\Utils;
+use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
-use humhub\modules\xcoin\models\Account;
-use humhub\modules\xcoin\models\Transaction;
+use humhub\modules\xcoin\helpers\Utils;
+use humhub\modules\xcoin\jobs\IssueScheduledTransactions;
 use Yii;
+use yii\base\Model;
 
-class IssueScheduledTransactions extends ActiveJob
+class SpaceModuleManualSettings extends Model
 {
+    /**
+     * @var boolean
+     */
+    public $selecAllMembers;
+
+    /**
+     * @var array Array of selected space members
+     */
+    public $selectedMembers;
 
     /**
      * @var \humhub\modules\space\models\Space Space on which these settings are for
      */
     public $space;
 
-    /**
-     * This will make the job re-executed again in the future like a cron
-     */
-    private function cron($seconds) {
-
-        $module = Yii::$app->getModule('xcoin');
-        $scheduleJobId = Yii::$app->queue->delay($seconds)->push(new IssueScheduledTransactions(['space' => $this->space]));
-        $module->settings->contentContainer($this->space)->set('scheduleJobId', $scheduleJobId);
+    public function init() {
 
     }
 
-    private function issueCoins() {
+    /**
+     * Static initializer
+     * @return \self
+     */
+    public static function instantiate()
+    {
+        return new self;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function rules()
+    {
+        return [
+            [['selecAllMembers'], 'boolean'],
+            [['selectedMembers'], 'required', 'when' => function ($model) {
+                return $model->selecAllMembers == false;
+            }, 'whenClient' => "function (attribute, value) {
+                console.log($('#spacemodulemanualsettings-selecallmembers').val());
+                return $('#spacemodulemanualsettings-selecallmembers').val() == 0;
+            }"],
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'selecAllMembers' => Yii::t('XcoinModule.config', 'Select all members'),
+        ];
+    }
+
+    public function save()
+    {
+        if (!$this->validate()) {
+            return false;
+        }
+
+        $this->manualAllocation();
+
+
+        return true;
+
+    }
+
+    private function manualAllocation() {
+
+        if ($this->selecAllMembers) {
+            $userIds = array_map(function ($membership) { return $membership->getUser()->one()->id; }, $this->space->getMemberships()->all());
+        }
+        else {
+            $userIds = array_map(function ($guid) { return User::findOne(['guid' => $guid])->id; }, $this->selectedMembers);
+        }
 
         $module = Yii::$app->getModule('xcoin');
 
@@ -52,10 +106,13 @@ class IssueScheduledTransactions extends ActiveJob
             return;
         }
 
-        $memberAccounts = Account::findAll([
-            'space_id' => $this->space->id,
-            'account_type' => Account::TYPE_COMMUNITY_INVESTOR
-        ]);
+        $memberAccounts = array_map(function ($id) {
+            return Account::findOne([
+                'user_id' => $id,
+                'space_id' => $this->space->id,
+                'account_type' => Account::TYPE_COMMUNITY_INVESTOR
+            ]);
+        }, $userIds);
 
         foreach ($memberAccounts as $memberAccount) {
 
@@ -93,29 +150,4 @@ class IssueScheduledTransactions extends ActiveJob
 
     }
 
-    /**
-     * Issue the scheduled space transaction each set period of time
-     */
-    public function run()
-    {
-
-        $module = Yii::$app->getModule('xcoin');
-
-        // The coin allocation logic
-        $this->issueCoins();
-
-        $transactionPeriod = $module->settings->contentContainer($this->space)->get('transactionPeriod');
-        switch ($transactionPeriod) {
-            case Utils::TRANSACTION_PERIOD_NONE:
-                break;
-            case Utils::TRANSACTION_PERIOD_WEEKLY:
-                $this->cron(Utils::SCHEDULE_DELAY_WEEKLY);
-                break;
-            case Utils::TRANSACTION_PERIOD_MONTHLY:
-                $this->cron(Utils::SCHEDULE_DELAY_MONTHLY);
-                break;
-            default:
-                break;
-        }
-    }
 }

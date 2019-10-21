@@ -7,19 +7,13 @@
 namespace humhub\modules\xcoin\models;
 
 
-use humhub\modules\xcoin\component\Utils;
+use humhub\modules\xcoin\helpers\Utils;
 use humhub\modules\xcoin\jobs\IssueScheduledTransactions;
 use Yii;
 use yii\base\Model;
 
 class SpaceModuleScheduleSettings extends Model
 {
-    const TRANSACTION_PERIOD_NONE = -1;
-    const TRANSACTION_PERIOD_WEEKLY = 0;
-    const TRANSACTION_PERIOD_MONTHLY = 1;
-
-    const SCHEDULE_DELAY_WEEKLY = 3600 * 24 * 7;
-    const SCHEDULE_DELAY_MONTHLY = 3600 * 24 * 7 * 4;
 
     /**
      * @var int Transaction Schedule Period
@@ -47,11 +41,6 @@ class SpaceModuleScheduleSettings extends Model
         $this->transactionPeriod = $module->settings->space()->get('transactionPeriod');
         $this->scheduleJobId = $module->settings->space()->get('scheduleJobId');
         $this->scheduleJobPushedDate = $module->settings->space()->get('scheduleJobPushedDate');
-    }
-
-    public function showTransactionPeriod()
-    {
-        return $this->transactionPeriod;
     }
 
     public function showNextScheduledRun()

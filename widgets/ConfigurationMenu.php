@@ -44,6 +44,13 @@ class ConfigurationMenu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'schedule'),
         ]);
 
+        $this->addItem([
+            'label' => Yii::t('XcoinModule.config', 'Manual'),
+            'url' => $this->space->createUrl('/xcoin/config/manual'),
+            'sortOrder' => 100,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'manual'),
+        ]);
+
 
 
         parent::init();

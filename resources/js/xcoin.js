@@ -17,5 +17,13 @@ humhub.module('xcoin', function (module, require, $) {
 
         client.ajax($(this).data('target-url'), {type: 'GET'}).catch(function (e) {module.log.error(e, true);});
     });
+
+    $("body").on('change', '#spacemodulemanualsettings-selecallmembers',function () {
+        if (this.checked)
+            $('.field-spacemodulemanualsettings-selectedmembers').hide();
+        else
+            $('.field-spacemodulemanualsettings-selectedmembers').show();
+    });
+
 });
 
