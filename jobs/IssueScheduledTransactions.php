@@ -11,7 +11,7 @@ namespace humhub\modules\xcoin\jobs;
 
 
 use humhub\modules\queue\ActiveJob;
-use humhub\modules\xcoin\component\Utils;
+use humhub\modules\xcoin\helpers\Utils;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Account;
@@ -20,13 +20,6 @@ use Yii;
 
 class IssueScheduledTransactions extends ActiveJob
 {
-
-    const TRANSACTION_PERIOD_NONE = -1;
-    const TRANSACTION_PERIOD_WEEKLY = 0;
-    const TRANSACTION_PERIOD_MONTHLY = 1;
-
-    const SCHEDULE_DELAY_WEEKLY = 3600 * 24 * 7;
-    const SCHEDULE_DELAY_MONTHLY = 3600 * 24 * 7 * 4;
 
     /**
      * @var \humhub\modules\space\models\Space Space on which these settings are for

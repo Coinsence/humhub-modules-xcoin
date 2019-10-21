@@ -7,7 +7,7 @@
  * @author Mortadha Ghanmi <mortadha.ghanmi56@gmail.com>
  */
 
-namespace humhub\modules\xcoin\component;
+namespace humhub\modules\xcoin\helpers;
 
 
 /**
