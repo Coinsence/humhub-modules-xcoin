@@ -19,11 +19,12 @@
 return [
     '<strong>Exchange</strong> asset' => '',
     'Add new offer' => '',
+    'Amount' => '',
     'Asset Exchange' => '',
     'Buy' => '',
     'Change' => '',
     'Price per unit' => '',
     'Select asset' => '',
     'Sender account' => '',
-    'Total amount' => '',
+    'Total amount' => '@@@@',
 ];

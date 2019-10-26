@@ -33,8 +33,8 @@ return [
     'Issue new assets' => '',
     'Latest account transactions' => '',
     'Latest asset transactions' => '',
-    'Latest transactions' => '',
     'Shareholder list' => '',
-    'Your accounts' => '',
     'Total Issued Amount' => '',
+    'Your accounts' => '',
+    'Latest transactions' => '@@@@',
 ];

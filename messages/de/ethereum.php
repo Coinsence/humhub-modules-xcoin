@@ -22,6 +22,8 @@ return [
     'Enable ethereum' => '',
     'Ethereum' => '',
     'Ethereum summary' => '',
+    'Migrate missing transactions' => '',
+    'Space Ethereum migration is in progress ! This could take some minutes.' => '',
+    'Synchronize Balances' => '',
     'unavailable' => '',
-    'Space Ethereum migration is in progress ! This could take some minutes.' => ''
 ];

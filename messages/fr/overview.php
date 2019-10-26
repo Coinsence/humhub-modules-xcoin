@@ -17,12 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Latest transactions' => '@@Derniéres transactions@@',
     '<strong>Asset</strong> distribution' => '<strong>Asset</strong> distribution',
     '<strong>Latest transactions</strong> of all space owned accounts' => '<strong>derniéres transactions</strong> de tous les comptes appartenant à l\'espace',
     '<strong>Latest transactions</strong> of all user accounts' => '<strong>Dernières transactions</strong> de tous les comptes d\'utilisateurs',
-    '<strong>Latest transactions</strong> of space assets' =>'<strong>Dernières transactions</strong> des ressources spatiales',
-    '<strong>Latest</strong> transactions' =>'<strong>Dernières</strong> transactions',
-    '<strong>Latest</strong> transactions in your accounts' =>'<strong>Dernières</strong> transactions dans vos comptes',
+    '<strong>Latest transactions</strong> of space assets' => '<strong>Dernières transactions</strong> des ressources spatiales',
+    '<strong>Latest</strong> transactions' => '<strong>Dernières</strong> transactions',
+    '<strong>Latest</strong> transactions in your accounts' => '<strong>Dernières</strong> transactions dans vos comptes',
     '<strong>Shareholder</strong> listing' => '<strong>Actionnaire</strong> annonce',
     'Accounts of this space' => 'Comptes de cet espace',
     'Accounts of this user' => 'Compte de cet utilisateurs',
@@ -33,8 +34,7 @@ return [
     'Issue new assets' => 'Emettre de nouveaux actifs',
     'Latest account transactions' => 'Derniéres transactions sur le compte',
     'Latest asset transactions' => 'Derniéres transactions sur actifs',
-    'Latest transactions' => 'Derniéres transactions',
     'Shareholder list' => 'liste des actionnaires',
-    'Your accounts' => 'Vos comptes',
     'Total Issued Amount' => 'Total montant émis',
+    'Your accounts' => 'Vos comptes',
 ];
