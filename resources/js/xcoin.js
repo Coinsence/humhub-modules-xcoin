@@ -18,7 +18,7 @@ humhub.module('xcoin', function (module, require, $) {
         client.ajax($(this).data('target-url'), {type: 'GET'}).catch(function (e) {module.log.error(e, true);});
     });
 
-    $("body").on('change', '#spacemodulemanualsettings-selecallmembers',function () {
+    $("body").on('change', '#spacemodulemanualsettings-selectallmembers',function () {
         if (this.checked)
             $('.field-spacemodulemanualsettings-selectedmembers').hide();
         else

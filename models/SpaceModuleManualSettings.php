@@ -7,20 +7,18 @@
 namespace humhub\modules\xcoin\models;
 
 
+use Yii;
+use yii\base\Model;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
-use humhub\modules\xcoin\helpers\Utils;
-use humhub\modules\xcoin\jobs\IssueScheduledTransactions;
-use Yii;
-use yii\base\Model;
 
 class SpaceModuleManualSettings extends Model
 {
     /**
      * @var boolean
      */
-    public $selecAllMembers;
+    public $selectAllMembers;
 
     /**
      * @var array Array of selected space members
@@ -51,12 +49,11 @@ class SpaceModuleManualSettings extends Model
     public function rules()
     {
         return [
-            [['selecAllMembers'], 'boolean'],
+            [['selectAllMembers'], 'boolean'],
             [['selectedMembers'], 'required', 'when' => function ($model) {
-                return $model->selecAllMembers == false;
+                return $model->selectAllMembers == false;
             }, 'whenClient' => "function (attribute, value) {
-                console.log($('#spacemodulemanualsettings-selecallmembers').val());
-                return $('#spacemodulemanualsettings-selecallmembers').val() == 0;
+                return $('#spacemodulemanualsettings-selectAllMembers').val() == 0;
             }"],
         ];
     }
@@ -67,7 +64,7 @@ class SpaceModuleManualSettings extends Model
     public function attributeLabels()
     {
         return [
-            'selecAllMembers' => Yii::t('XcoinModule.config', 'Select all members'),
+            'selectAllMembers' => Yii::t('XcoinModule.config', 'Select all members'),
         ];
     }
 
@@ -86,13 +83,6 @@ class SpaceModuleManualSettings extends Model
 
     private function manualAllocation() {
 
-        if ($this->selecAllMembers) {
-            $userIds = array_map(function ($membership) { return $membership->getUser()->one()->id; }, $this->space->getMemberships()->all());
-        }
-        else {
-            $userIds = array_map(function ($guid) { return User::findOne(['guid' => $guid])->id; }, $this->selectedMembers);
-        }
-
         $module = Yii::$app->getModule('xcoin');
 
         $transactionAmount = $module->settings->contentContainer($this->space)->get('transactionAmount');
@@ -106,13 +96,23 @@ class SpaceModuleManualSettings extends Model
             return;
         }
 
-        $memberAccounts = array_map(function ($id) {
-            return Account::findOne([
-                'user_id' => $id,
+        if ($this->selectAllMembers) {
+            $memberAccounts = Account::findAll([
                 'space_id' => $this->space->id,
                 'account_type' => Account::TYPE_COMMUNITY_INVESTOR
             ]);
-        }, $userIds);
+        }
+        else {
+            $userIds = array_map(function ($guid) { return User::findOne(['guid' => $guid])->id; }, $this->selectedMembers);
+
+            $memberAccounts = array_map(function ($id) {
+                return Account::findOne([
+                    'user_id' => $id,
+                    'space_id' => $this->space->id,
+                    'account_type' => Account::TYPE_COMMUNITY_INVESTOR
+                ]);
+            }, $userIds);
+        }
 
         foreach ($memberAccounts as $memberAccount) {
 
