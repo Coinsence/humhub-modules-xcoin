@@ -16,5 +16,7 @@ class MemberPickerField extends UserPickerField
 
         $this->defaultRoute = $this->space->createUrl('/xcoin/member-search/json');
 
+        $this->itemClass = User::class;
+
     }
 }

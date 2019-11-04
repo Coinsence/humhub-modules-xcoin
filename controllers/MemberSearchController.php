@@ -4,7 +4,7 @@
 namespace humhub\modules\xcoin\controllers;
 
 use Yii;
-use humhub\components\Controller;
+use humhub\modules\xcoin\models\Account;
 use humhub\modules\content\components\ContentContainerController;
 
 /**
@@ -41,7 +41,7 @@ class MemberSearchController extends ContentContainerController
 
         $space = $this->getSpace();
 
-        $filtered = \humhub\modules\user\widgets\UserPicker::filter([
+        $filtered_users = \humhub\modules\user\widgets\UserPicker::filter([
             'keyword' => Yii::$app->request->get('keyword'),
             'fillUser' => true,
             'disableFillUser' => false
@@ -49,9 +49,18 @@ class MemberSearchController extends ContentContainerController
 
         $result = [];
 
-        foreach ($filtered as $user) {
-            if ($space->isMember($user['id']))
+        foreach ($filtered_users as $user) {
+
+            $memberAccount = Account::findOne([
+                'user_id' => $user['id'],
+                'space_id' => $space->id,
+                'account_type' => Account::TYPE_COMMUNITY_INVESTOR
+            ]);
+
+            if ($memberAccount != null) {
                 $result[] = $user;
+            }
+
         }
 
 

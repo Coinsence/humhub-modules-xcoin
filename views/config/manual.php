@@ -7,9 +7,9 @@
  * @var $model \humhub\modules\xcoin\models\SpaceModuleScheduleSettings
  */
 
-use \humhub\modules\xcoin\widgets\MemberPickerField;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use \humhub\modules\xcoin\widgets\MemberPickerField;
 
 ?>
 
@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
             <?= Yii::t('XcoinModule.config', 'Each period of time, a transaction is created to a memeber\'s account.') ?>
         </div>
 
-        <?= $form->field($model, 'selecAllMembers')->checkbox([
+        <?= $form->field($model, 'selectAllMembers')->checkbox([
             'uncheck' => 0,
             'checked' => 1,
         ]) ?>

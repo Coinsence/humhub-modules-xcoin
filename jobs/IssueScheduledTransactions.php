@@ -10,13 +10,13 @@
 namespace humhub\modules\xcoin\jobs;
 
 
+use Yii;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\xcoin\helpers\Utils;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Transaction;
-use Yii;
 
 class IssueScheduledTransactions extends ActiveJob
 {
