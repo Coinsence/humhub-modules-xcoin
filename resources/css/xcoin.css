@@ -830,6 +830,10 @@ i.ether-icon-menu {
     margin-right: 4px;
 }
 
+.wallet-pkey {
+    overflow-wrap: break-word;
+}
+
 
 /* media queries*/
 
