@@ -199,4 +199,16 @@ class FundingController extends ContentContainerController
             'fundingId' => $model->id
         ]));
     }
+
+    public function actionAccept($id)
+    {
+        if (!AssetHelper::canManageAssets($this->contentContainer)) {
+            throw new HttpException(401);
+        }
+
+        $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
+        $model->updateAttributes(['status' => Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED]);
+
+        return $this->htmlRedirect(['index', 'container' => $this->contentContainer]);
+    }
 }
