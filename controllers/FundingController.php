@@ -167,7 +167,7 @@ class FundingController extends ContentContainerController
         return $this->renderAjax('details', ['model' => $model]);
     }
 
-    public function actionDelete($id)
+    public function actionCancel($id)
     {
         if (!AssetHelper::canManageAssets($this->contentContainer)) {
             throw new HttpException(401);

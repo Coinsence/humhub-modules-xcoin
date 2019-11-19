@@ -140,9 +140,13 @@ class Funding extends ActiveRecord
      */
     public function beforeDelete()
     {
-        // not deleting the funding account to keep balances coherent
         $fundingAccount = $this->getFundingAccount();
-        $fundingAccount->updateAttributes(['funding_id' => null]);
+
+        foreach (Transaction::findAll(['to_account_id' => $fundingAccount->id]) as $transaction){
+            $transaction->delete();
+        }
+
+        $fundingAccount->delete();
 
         return parent::beforeDelete();
     }
