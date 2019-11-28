@@ -35,7 +35,6 @@ Assets::register($this);
             </h1>
         </div>
         <?= AccountsGridView::widget(['contentContainer' => $this->context->contentContainer]) ?>
-        <small><?= Yii::t('XcoinModule.overview', 'If no manager is specified this account is manged by the owner or it\'s representatives.') ?></small>
     </div>
 </div>
 
