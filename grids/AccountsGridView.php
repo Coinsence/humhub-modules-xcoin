@@ -50,7 +50,7 @@ class AccountsGridView extends GridView
                         return SpaceImage::widget(['space' => $model->space, 'width' => 26]);
                     }
 
-                    return '-';
+                    return UserImage::widget(['user' => $model->user, 'width' => 26]);
                 }
             ],
             [
@@ -61,7 +61,7 @@ class AccountsGridView extends GridView
                 'visible' => (!$this->contentContainer instanceof User),
                 'value' => function ($model) {
                     if ($model->user === null) {
-                        return '-';
+                        return SpaceImage::widget(['space' => $model->space, 'width' => 26]);
                     }
 
                     return UserImage::widget(['user' => $model->user, 'width' => 26]);

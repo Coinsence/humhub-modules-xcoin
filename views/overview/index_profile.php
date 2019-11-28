@@ -21,7 +21,6 @@ Assets::register($this);
 
     <div class="panel-body">
         <?= AccountsGridView::widget(['contentContainer' => $this->context->contentContainer]) ?>
-        <small><?= Yii::t('XcoinModule.overview', 'If no owner is specified, it is a personal account.') ?></small>
     </div>
 </div>
 
