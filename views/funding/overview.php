@@ -172,6 +172,10 @@ Assets::register($this);
                                     <!-- campaign raised end -->
                                 </div>
 
+                                <!-- campaign content start -->
+                                <?= RichText::output($funding->content); ?>
+                                <!-- campaign content end -->
+
 
                             </div>
                             <div class="panel-footer">
