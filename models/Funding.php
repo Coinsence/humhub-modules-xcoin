@@ -148,11 +148,7 @@ class Funding extends ActiveRecord
     {
         $fundingAccount = $this->getFundingAccount();
 
-        foreach (Transaction::findAll(['to_account_id' => $fundingAccount->id]) as $transaction){
-            $transaction->delete();
-        }
-
-        $fundingAccount->delete();
+        $fundingAccount->revertTransactions();
 
         return parent::beforeDelete();
     }

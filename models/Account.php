@@ -119,14 +119,6 @@ class Account extends ActiveRecord
         return parent::beforeSave($insert);
     }
 
-    public function beforeDelete()
-    {
-        Transaction::deleteAll(['to_account_id' => $this->id]);
-        Transaction::deleteAll(['from_account_id' => $this->id]);
-
-        return parent::beforeDelete();
-    }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -241,5 +233,33 @@ class Account extends ActiveRecord
     public function getInvestor()
     {
         return $this->hasOne(User::class, ['id' => 'investor_id']);
+    }
+
+    public function revertTransactions()
+    {
+        // revert all transactions
+        foreach (
+            Transaction::find()
+                ->where(['to_account_id' => $this->id])
+                ->orWhere(['from_account_id' => $this->id])->all()
+            as $transaction
+        ) {
+            $revertTransaction = new Transaction();
+
+            $revertTransaction->asset_id = $transaction->asset_id;
+            $revertTransaction->transaction_type = $transaction->transaction_type;
+            $revertTransaction->amount = $transaction->amount;
+            $revertTransaction->comment = $transaction->comment ? "$transaction->comment - Transaction Reverted" : "Campaign issue transaction reverted";
+            $revertTransaction->to_account_id = $transaction->from_account_id;
+            $revertTransaction->from_account_id = $transaction->to_account_id;
+
+            $revertTransaction->save();
+        }
+    }
+
+    public function disable()
+    {
+        $this->revertTransactions();
+        // TODO disable account
     }
 }
