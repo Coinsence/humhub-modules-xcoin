@@ -24,11 +24,11 @@ use humhub\modules\ui\form\widgets\DatePicker;
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'amount')->widget(AmountField::class, ['asset' => $model->asset])->label(Yii::t('XcoinModule.funding', 'Requested amount')); ?>
+            <?= $form->field($model, 'amount')->widget(AmountField::class, ['asset' => $model->asset, 'readonly' => $model->isNewRecord? false : true])->label(Yii::t('XcoinModule.funding', 'Requested amount')); ?>
         </div>
         <div class="row col-md-12">
             <div class="col-md-5">
-                <?= $form->field($model, 'exchange_rate')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.base', 'Provided Coins')); ?>
+                <?= $form->field($model, 'exchange_rate')->widget(AmountField::class, ['asset' => $myAsset, 'readonly' => $model->isNewRecord? false : true])->label(Yii::t('XcoinModule.base', 'Provided Coins')); ?>
             </div>
             <div class="col-md-2 text-center">
                 <i class="fa fa-exchange colorSuccess" style="font-size:28px;padding-top:24px" aria-hidden="true"></i>
