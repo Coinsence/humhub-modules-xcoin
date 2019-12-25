@@ -133,7 +133,7 @@ class AccountHelper
             $transaction->asset_id = $asset->id;
             $transaction->from_account_id = $issueAccount->id;
             $transaction->to_account_id = $account->id;
-            $transaction->amount = $funding->amount;
+            $transaction->amount = $funding->amount * $funding->exchange_rate;
 
             if (!$transaction->save()) {
                 throw new Exception('Could not create issue transaction for funding account');
