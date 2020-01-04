@@ -131,7 +131,7 @@ class Funding extends ActiveRecord
     {
         return [
             'amount' => Yii::t('XcoinModule.base', 'If set to 0 this exchange option is disabled.'),
-            'exchange_rate' => Yii::t('XcoinModule.base', 'Determine the exchange rate for which you are willing to trade coins.')
+            'exchange_rate' => Yii::t('XcoinModule.base', 'How many space coins are you offering per requested coin.')
         ];
     }
 
