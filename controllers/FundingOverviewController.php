@@ -65,28 +65,6 @@ class FundingOverviewController extends Controller
         $model->scenario = Funding::SCENARIO_EDIT;
         $model->load(Yii::$app->request->post());
 
-
-        if (!$model->space_id) {
-
-            /* @var Module $module */
-            $module = Yii::$app->getModule('space');
-
-            // init space model
-            $space = new Space();
-            $space->scenario = Space::SCENARIO_CREATE;
-            $space->visibility = $module->settings->get('defaultVisibility', Space::VISIBILITY_REGISTERED_ONLY);
-            $space->join_policy = $module->settings->get('defaultJoinPolicy', Space::JOIN_POLICY_APPLICATION);
-            $space->color = RandomColor::one(['luminosity' => 'dark']);
-            $space->space_type = Space::SPACE_TYPE_FUNDING;
-            $space->name = SpaceHelper::generateRandomSpaceName();
-
-            if (!$space->save()) {
-                throw new HttpException(400);
-            }
-
-            $model->space_id = $space->id;
-        }
-
         // Step 1: Wanted Asset Selection and Exchange Rate
         if ($model->isFirstStep()) {
 
@@ -107,7 +85,7 @@ class FundingOverviewController extends Controller
             }
 
             $assetList = [];
-            foreach (Asset::find()->andWhere(['!=', 'id', AssetHelper::getSpaceAsset($model->space)->id])->all() as $asset) {
+            foreach (Asset::find()->all() as $asset) {
                 $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
             }
 
@@ -135,16 +113,6 @@ class FundingOverviewController extends Controller
         ) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
-            // update space name & description if automatically created
-            if ($model->space->space_type == Space::SPACE_TYPE_FUNDING) {
-
-                $model->space->updateAttributes([
-                    'name' => $model->title,
-                    'description' => $model->description,
-                    'url' => UrlValidator::autogenerateUniqueSpaceUrl($model->title)
-                ]);
-            }
-
             $this->view->saved();
 
             return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
@@ -158,14 +126,14 @@ class FundingOverviewController extends Controller
 
             return $this->renderAjax('../funding/details', [
                 'model' => $model,
-                'myAsset' => AssetHelper::getSpaceAsset($model->space)
+                'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null
             ]);
         }
 
         // Step 2: Details
         return $this->renderAjax('../funding/details', [
             'model' => $model,
-            'myAsset' => AssetHelper::getSpaceAsset($model->space)
+            'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null
         ]);
     }
 }

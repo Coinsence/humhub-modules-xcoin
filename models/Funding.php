@@ -2,17 +2,24 @@
 
 namespace humhub\modules\xcoin\models;
 
+use Colors\RandomColor;
 use DateTime;
+use Exception;
 use humhub\components\ActiveRecord;
 use humhub\libs\DbDateValidator;
 use humhub\modules\file\models\File;
+use humhub\modules\space\components\UrlValidator;
+use humhub\modules\space\Module;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
 
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\helpers\Utils;
 use Yii;
+use yii\db\ActiveQuery;
+use yii\web\HttpException;
 
 /**
  * This is the model class for table "xcoin_funding".
@@ -67,7 +74,6 @@ class Funding extends ActiveRecord
         return [
             [
                 [
-                    'space_id',
                     'asset_id',
                     'created_by',
                     'amount',
@@ -79,7 +85,7 @@ class Funding extends ActiveRecord
                 'required'
             ],
             [['space_id', 'asset_id', 'amount', 'created_by'], 'integer'],
-            [['amount'], 'number', 'min' => '0'],
+            [['amount'], 'number', 'min' => '1'],
             [['exchange_rate'], 'number', 'min' => '0.1'],
             [['created_at'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
@@ -117,7 +123,7 @@ class Funding extends ActiveRecord
             'space_id' => Yii::t('XcoinModule.base', 'Space ID'),
             'asset_id' => Yii::t('XcoinModule.base', 'Requested asset'),
             'exchange_rate' => Yii::t('XcoinModule.base', 'Exchange rate'),
-            'amount' => Yii::t('XcoinModule.base', 'Amount'),
+            'amount' => Yii::t('XcoinModule.base', 'Requested Amount'),
             'created_at' => Yii::t('XcoinModule.base', 'Created At'),
             'created_by' => Yii::t('XcoinModule.base', 'Created By'),
             'title' => Yii::t('XcoinModule.funding', 'Title'),
@@ -130,7 +136,6 @@ class Funding extends ActiveRecord
     public function attributeHints()
     {
         return [
-            'amount' => Yii::t('XcoinModule.base', 'If set to 0 this exchange option is disabled.'),
             'exchange_rate' => Yii::t('XcoinModule.base', 'How many space coins are you offering per requested coin.')
         ];
     }
@@ -147,6 +152,8 @@ class Funding extends ActiveRecord
     /**
      * @inheritdoc
      *
+     * @throws HttpException
+     * @throws \yii\base\Exception
      */
     public function beforeSave($insert)
     {
@@ -155,6 +162,10 @@ class Funding extends ActiveRecord
 
             //create funding account
             AccountHelper::getFundingAccount($this);
+
+            if (!$this->space_id) {
+                $this->AttachSpace();
+            }
         }
 
         return parent::beforeSave($insert);
@@ -173,7 +184,7 @@ class Funding extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getAsset()
     {
@@ -181,7 +192,7 @@ class Funding extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCreatedBy()
     {
@@ -189,7 +200,7 @@ class Funding extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getSpace()
     {
@@ -291,7 +302,7 @@ class Funding extends ActiveRecord
      * Calculate remaining days to deadline , current day is not omitted
      *
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     public function getRemainingDays()
     {
@@ -314,8 +325,7 @@ class Funding extends ActiveRecord
 
     public function isNameUnique()
     {
-        if ($this->space->space_type == Space::SPACE_TYPE_FUNDING &&
-            Space::findOne(['name' => $this->title])) {
+        if (Space::findOne(['name' => $this->title])) {
             $this->addError('title', Yii::t('XcoinModule.funding', 'Title already used'));
 
             return false;
@@ -345,5 +355,28 @@ class Funding extends ActiveRecord
         array_shift($gallery);
 
         return $gallery;
+    }
+
+    private function AttachSpace()
+    {
+        /* @var Module $module */
+        $module = Yii::$app->getModule('space');
+
+        // init space model
+        $space = new Space();
+        $space->scenario = Space::SCENARIO_CREATE;
+        $space->visibility = $module->settings->get('defaultVisibility', Space::VISIBILITY_REGISTERED_ONLY);
+        $space->join_policy = $module->settings->get('defaultJoinPolicy', Space::JOIN_POLICY_APPLICATION);
+        $space->color = RandomColor::one(['luminosity' => 'dark']);
+        $space->space_type = Space::SPACE_TYPE_FUNDING;
+        $space->name = $this->title;
+        $space->description = $this->description;
+        $space->url = UrlValidator::autogenerateUniqueSpaceUrl($this->title);
+
+        if (!$space->save()) {
+            throw new HttpException(400);
+        }
+
+        $this->space_id = $space->id;
     }
 }
