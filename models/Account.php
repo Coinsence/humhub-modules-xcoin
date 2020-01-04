@@ -244,14 +244,28 @@ class Account extends ActiveRecord
                 ->orWhere(['from_account_id' => $this->id])->all()
             as $transaction
         ) {
+
+
             $revertTransaction = new Transaction();
 
             $revertTransaction->asset_id = $transaction->asset_id;
             $revertTransaction->transaction_type = $transaction->transaction_type;
             $revertTransaction->amount = $transaction->amount;
             $revertTransaction->comment = $transaction->comment ? "$transaction->comment - Transaction Reverted" : "Campaign issue transaction reverted";
-            $revertTransaction->to_account_id = $transaction->from_account_id;
             $revertTransaction->from_account_id = $transaction->to_account_id;
+
+            if($transaction->transaction_type == Transaction::TRANSACTION_TYPE_ISSUE){
+                // send coin to default account rather than issue account
+                $defaultAccount = Account::findOne([
+                    'space_id' => $this->getSpace()->one()->id,
+                    'account_type' => Account::TYPE_DEFAULT
+                ]);
+
+                $revertTransaction->to_account_id = $defaultAccount->id;
+
+            } else {
+                $revertTransaction->to_account_id = $transaction->from_account_id;
+            }
 
             $revertTransaction->save();
         }
