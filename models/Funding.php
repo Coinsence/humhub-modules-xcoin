@@ -146,11 +146,15 @@ class Funding extends ActiveRecord
 
     /**
      * @inheritdoc
+     *
      */
     public function beforeSave($insert)
     {
         if ($this->isNewRecord) {
             $this->status = self::FUNDING_STATUS_IN_PROGRESS;
+
+            //create funding account
+            AccountHelper::getFundingAccount($this);
         }
 
         return parent::beforeSave($insert);

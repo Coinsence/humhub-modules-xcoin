@@ -244,8 +244,6 @@ class Account extends ActiveRecord
                 ->orWhere(['from_account_id' => $this->id])->all()
             as $transaction
         ) {
-
-
             $revertTransaction = new Transaction();
 
             $revertTransaction->asset_id = $transaction->asset_id;
