@@ -111,33 +111,7 @@ class AccountHelper
         $account = Account::findOne(['funding_id' => $funding->id]);
 
         if ($account === null) {
-            $account = new Account();
-            $account->space_id = $funding->space->id;
-            $account->title = "Campaign # $funding->id";
-            $account->account_type = Account::TYPE_FUNDING;
-            $account->funding_id = $funding->id;
-
-            if (!$account->save()) {
-                throw new Exception('Could not create funding account!');
-            }
-
-            $asset = AssetHelper::getSpaceAsset($funding->space);
-            if ($asset === null) {
-                throw new HttpException(404);
-            }
-
-            $issueAccount = AccountHelper::getIssueAccount($funding->space);
-
-            $transaction = new Transaction();
-            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
-            $transaction->asset_id = $asset->id;
-            $transaction->from_account_id = $issueAccount->id;
-            $transaction->to_account_id = $account->id;
-            $transaction->amount = $funding->amount * $funding->exchange_rate;
-
-            if (!$transaction->save()) {
-                throw new Exception('Could not create issue transaction for funding account');
-            }
+            throw new HttpException(404);
         }
 
         return $account;

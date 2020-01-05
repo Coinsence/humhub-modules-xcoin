@@ -171,6 +171,13 @@ class Funding extends ActiveRecord
         return parent::beforeSave($insert);
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        $this->createFundingAccount();
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
     /**
      * @inheritdoc
      */
@@ -378,5 +385,36 @@ class Funding extends ActiveRecord
         }
 
         $this->space_id = $space->id;
+    }
+
+    private function createFundingAccount()
+    {
+        $account = new Account();
+        $account->space_id = $this->space->id;
+        $account->title = "Campaign # $this->id";
+        $account->account_type = Account::TYPE_FUNDING;
+        $account->funding_id = $this->id;
+
+        if (!$account->save()) {
+            throw new \yii\base\Exception('Could not create funding account!');
+        }
+
+        $asset = AssetHelper::getSpaceAsset($this->space);
+        if ($asset === null) {
+            throw new HttpException(404);
+        }
+
+        $issueAccount = AccountHelper::getIssueAccount($this->space);
+
+        $transaction = new Transaction();
+        $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
+        $transaction->asset_id = $asset->id;
+        $transaction->from_account_id = $issueAccount->id;
+        $transaction->to_account_id = $account->id;
+        $transaction->amount = $this->amount * $this->exchange_rate;
+
+        if (!$transaction->save()) {
+            throw new Exception('Could not create issue transaction for funding account');
+        }
     }
 }
