@@ -85,7 +85,9 @@ class FundingOverviewController extends Controller
             }
 
             $assetList = [];
-            foreach (Asset::find()->all() as $asset) {
+            $assets = $model->space ? Asset::find()->andWhere(['!=', 'id', AssetHelper::getSpaceAsset($model->space)->id]) : Asset::find();
+
+            foreach ($assets->all() as $asset) {
                 $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
             }
 
