@@ -28,6 +28,7 @@ use Yii;
  * @property string $deadline
  * @property string $content
  * @property integer $review_status
+ * @property integer $status
  *
  * @property Asset $asset
  * @property User $createdBy
@@ -41,6 +42,10 @@ class Funding extends ActiveRecord
     // Funding review status
     const FUNDING_NOT_REVIEWED = 0;
     const FUNDING_REVIEWED = 1;
+
+    // Funding status
+    const FUNDING_STATUS_IN_PROGRESS = 0;
+    const FUNDING_STATUS_INVESTMENT_ACCEPTED = 1;
 
     /**
      * @inheritdoc
@@ -130,6 +135,7 @@ class Funding extends ActiveRecord
     {
         if($this->isNewRecord){
             $this->exchange_rate = 1;
+            $this->status = self::FUNDING_STATUS_IN_PROGRESS;
         }
 
         return parent::beforeSave($insert);
@@ -140,9 +146,9 @@ class Funding extends ActiveRecord
      */
     public function beforeDelete()
     {
-        // not deleting the funding account to keep balances coherent
         $fundingAccount = $this->getFundingAccount();
-        $fundingAccount->updateAttributes(['funding_id' => null]);
+
+        $fundingAccount->revertTransactions();
 
         return parent::beforeDelete();
     }

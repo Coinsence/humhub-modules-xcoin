@@ -55,7 +55,7 @@ $upload = Upload::withName();
         </div>
     </div>
 </div>
-
+<hr>
 <div class="modal-footer">
     <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Save')); ?>
     <?= ModalButton::cancel(); ?>

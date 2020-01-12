@@ -34,16 +34,26 @@ use humhub\modules\ui\form\widgets\DatePicker;
         </div>
 
         <div class="col-md-12">
-            <?= $form->field($model, 'description')->textarea(['maxlength'=>255])
+            <?= $form->field($model, 'description')->textarea(['maxlength' => 255])
                 ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign description')) ?>
         </div>
         <div class="col-md-12">
             <?= $form->field($model, 'content')->widget(RichTextField::class, ['preset' => 'full'])
                 ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign needs & commitments')) ?>
         </div>
+        <?php if (!$model->isNewRecord): ?>
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <?= Html::a(Yii::t('XcoinModule.base', 'Accept investment'), ['accept', 'id' => $model->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-success', 'style' => 'margin-bottom: 10px;', 'data-modal-close' => '']); ?>
+            </div>
+            <div class="col-md-6 text-center">
+                <?= Html::a(Yii::t('XcoinModule.base', 'Cancel this campaign'), ['cancel', 'id' => $model->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-danger', 'data-modal-close' => '']); ?>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
-
+<hr>
 <div class="modal-footer">
     <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Next')); ?>
     <?= ModalButton::cancel(); ?>

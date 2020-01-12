@@ -48,8 +48,7 @@ Assets::register($this);
                     $carouselItem .= Html::img($item->getUrl(), ['width' => '100%']);
                     $carouselItem .= "</div>";
 
-                    $carouselItems[] = $carouselItem;
-                    ;
+                    $carouselItems[] = $carouselItem;;
                 endforeach;
 
                 ?>
@@ -62,7 +61,7 @@ Assets::register($this);
 
                                 <?php if ($cover) : ?>
                                     <?= \yii\bootstrap\Carousel::widget([
-                                            'items' => $carouselItems,
+                                        'items' => $carouselItems,
                                     ]) ?>
                                 <?php else : ?>
                                     <div class="bg"
@@ -75,129 +74,140 @@ Assets::register($this);
                             </div>
                             <!-- campaign cover end -->
 
-                                <!-- campaign edit button start -->
-                                <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
-                                    <?= Html::a('<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.funding', 'Edit'), ['/xcoin/funding/edit', 'id' => $funding->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
-                                <?php endif; ?>
-                                <!-- campaign edit button end -->
+                            <!-- campaign edit button start -->
+                            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) && $funding->status == Funding::FUNDING_STATUS_IN_PROGRESS): ?>
+                                <?= Html::a('<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.funding', 'Edit'), ['/xcoin/funding/edit', 'id' => $funding->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
+                            <?php endif; ?>
+                            <!-- campaign edit button end -->
 
-                                <!-- campaign review button start -->
-                                <?php if (PublicOffersHelper::canReviewPublicOffers()): ?>
-                                    <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
-                                        <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Trusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted pull-right']) ?>
-                                    <?php else : ?>
-                                        <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('XcoinModule.funding', 'Untrusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
+                            <!-- campaign review button start -->
+                            <?php if (PublicOffersHelper::canReviewPublicOffers()): ?>
+                                <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
+                                    <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Trusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted pull-right']) ?>
+                                <?php else : ?>
+                                    <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('XcoinModule.funding', 'Untrusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                            <!-- campaign review button end -->
+
+                        </div>
+                        <div class="panel-body">
+
+                            <!-- campaign title start -->
+                            <h4 class="funding-title">
+                                <?= Html::encode($funding->title); ?>
+                                <!-- campaign review status start -->
+                                <small>
+                                    <?php if ($funding->status == Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED) : ?>
+                                        <div style="color: green; display: inline">
+                                            ( <i class="fa fa-check-circle-o"
+                                                 aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Investment Accepted') ?>
+                                            )
+                                        </div>
                                     <?php endif; ?>
-                                <?php endif; ?>
-                                <!-- campaign review button end -->
+                                    <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
+                                        <div style="color: orange; display: inline">
+                                            ( <i class="fa fa-check-circle-o"
+                                                 aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Under review') ?>
+                                            )
+                                        </div>
+                                    <?php else: ?>
+                                        <div style="color: dodgerblue; display: inline">
+                                            ( <i class="fa fa-check-circle-o"
+                                                 aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Verified') ?>
+                                            )
+                                        </div>
+                                    <?php endif; ?>
+                                </small>
+                                <!-- campaign review status end -->
+                            </h4>
+                            <!-- campaign title end -->
 
+                            <!-- campaign requesting start -->
+                            <h6 class="value">
+                                <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
+                                <strong><?= $funding->getRequestedAmount() ?></strong>
+                                <?= SpaceImage::widget([
+                                    'space' => $funding->asset->space,
+                                    'width' => 24,
+                                    'showTooltip' => true,
+                                    'link' => true
+                                ]); ?>
+                            </h6>
+                            <!-- campaign requesting end -->
+
+                            <!-- campaign description start -->
+                            <div class="description row">
+                                <div class="col-md-12">
+                                    <p class="media-heading"><?= Html::encode($funding->description); ?></p>
+                                </div>
                             </div>
-                            <div class="panel-body">
+                            <!-- campaign description end -->
 
-                                <!-- campaign title start -->
-                                <h4 class="funding-title">
-                                    <?= Html::encode($funding->title); ?>
-                                    <!-- campaign review status start -->
-                                    <small>
-                                        <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
-                                            <div style="color: orange; display: inline">
-                                                ( <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Under review') ?> )
-                                            </div>
-                                        <?php else: ?>
-                                            <div style="color: dodgerblue; display: inline">
-                                                ( <i class="fa fa-check-circle-o" aria-hidden="true"></i>  <?= Yii::t('XcoinModule.funding', 'Verified') ?> )
-                                            </div>
-                                        <?php endif; ?>
-                                    </small>
-                                    <!-- campaign review status end -->
-                                </h4>
-                                <!-- campaign title end -->
 
-                                <!-- campaign requesting start -->
-                                <h6 class="value">
-                                    <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
-                                    <strong><?= $funding->getRequestedAmount() ?></strong>
-                                    <?= SpaceImage::widget([
-                                        'space' => $funding->asset->space,
-                                        'width' => 24,
-                                        'showTooltip' => true,
-                                        'link' => true
-                                    ]); ?>
-                                </h6>
-                                <!-- campaign requesting end -->
-
-                                <!-- campaign description start -->
-                                <div class="description row">
-                                    <div class="col-md-12">
-                                        <p class="media-heading"><?= Html::encode($funding->description); ?></p>
+                            <div class="progress-info">
+                                <!-- campaign raised start -->
+                                <div class="raised">
+                                    <i class="fa fa-dot-circle-o"></i>
+                                    <div class="infos">
+                                        <strong><?= $funding->getRaisedAmount() ?></strong>
+                                        (<strong><?= $funding->getRaisedPercentage() ?>%</strong>)
+                                        <br>
+                                        <h6><?= Yii::t('XcoinModule.funding', 'Raised:') ?></h6>
                                     </div>
                                 </div>
-                                <!-- campaign description end -->
-
-
-                                <div class="progress-info">
-                                    <!-- campaign raised start -->
-                                    <div class="raised">
-                                        <i class="fa fa-dot-circle-o"></i>
-                                        <div class="infos">
-                                            <strong><?= $funding->getRaisedAmount() ?></strong>
-                                            (<strong><?= $funding->getRaisedPercentage() ?>%</strong>)
+                                <!-- campaign raised end -->
+                                <!-- campaign remaining days start -->
+                                <div class="days">
+                                    <i class="fa fa-clock-o"></i>
+                                    <div class="infos">
+                                        <?php if ($funding->getRemainingDays() > 0) : ?>
+                                            <strong><?= $funding->getRemainingDays() ?></strong>
                                             <br>
-                                            <h6><?= Yii::t('XcoinModule.funding', 'Raised:') ?></h6>
-                                        </div>
+                                            <h6><?= $funding->getRemainingDays() > 1 ? Yii::t('XcoinModule.funding', 'Days left') : Yii::t('XcoinModule.funding', 'Day left') ?></h6>
+                                        <?php else : ?>
+                                            <strong><?= Yii::t('XcoinModule.funding', 'Closed') ?></strong>
+                                            <br>
+                                        <?php endif; ?>
                                     </div>
-                                    <!-- campaign raised end -->
-                                    <!-- campaign remaining days start -->
-                                    <div class="days">
-                                        <i class="fa fa-clock-o"></i>
-                                        <div class="infos">
-                                            <?php if ($funding->getRemainingDays() > 0) : ?>
-                                                <strong><?= $funding->getRemainingDays() ?></strong>
-                                                <br>
-                                                <h6><?= $funding->getRemainingDays() > 1 ? Yii::t('XcoinModule.funding', 'Days left') : Yii::t('XcoinModule.funding', 'Day left') ?></h6>
-                                            <?php else : ?>
-                                                <strong><?= Yii::t('XcoinModule.funding', 'Closed') ?></strong>
-                                                <br>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                    <!-- campaign remaining days end -->
                                 </div>
+                                <!-- campaign remaining days end -->
+                            </div>
 
-                                <div class="funding-progress">
-                                    <!-- campaign raised start -->
-                                    <?php echo Progress::widget([
-                                        'percent' => $funding->getRaisedPercentage(),
-                                    ]); ?>
-                                    <!-- campaign raised end -->
-                                </div>
+                            <div class="funding-progress">
+                                <!-- campaign raised start -->
+                                <?php echo Progress::widget([
+                                    'percent' => $funding->getRaisedPercentage(),
+                                ]); ?>
+                                <!-- campaign raised end -->
+                            </div>
 
                                 <!-- campaign content start -->
                                 <?= RichText::output($funding->content); ?>
                                 <!-- campaign content end -->
 
 
-                            </div>
-                            <div class="panel-footer">
+                        </div>
+                        <div class="panel-footer">
 
-                                <!-- campaign invest action start -->
-                                <?php if (!$funding->canInvest()): ?>
-                                <div class="invest-btn disabled">
+                            <!-- campaign invest action start -->
+                            <?php if (!$funding->canInvest()): ?>
+                            <div class="invest-btn disabled">
+                                <?php else: ?>
+                                <div class="invest-btn">
+                                    <?php endif; ?>
+                                    <?php if (Yii::$app->user->isGuest): ?>
+                                        <?= Html::a(Yii::t('XcoinModule.funding', 'Invest in this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                                     <?php else: ?>
-                                    <div class="invest-btn">
-                                        <?php endif; ?>
-                                        <?php if (Yii::$app->user->isGuest): ?>
-                                            <?= Html::a(Yii::t('XcoinModule.funding', 'Invest in this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
-                                        <?php else: ?>
-                                            <?= Html::a(Yii::t('XcoinModule.funding', 'Invest in this project'), [
-                                                'invest',
-                                                'fundingId' => $funding->id,
-                                                'container' => $this->context->contentContainer
-                                            ], ['data-target' => '#globalModal']); ?>
-                                        <?php endif; ?>
+                                        <?= Html::a(Yii::t('XcoinModule.funding', 'Invest in this project'), [
+                                            'invest',
+                                            'fundingId' => $funding->id,
+                                            'container' => $this->context->contentContainer
+                                        ], ['data-target' => '#globalModal']); ?>
+                                    <?php endif; ?>
 
-                                    </div>
-                                    <!-- campaign invest action end -->
+                                </div>
+                                <!-- campaign invest action end -->
 
                             </div>
                         </div>

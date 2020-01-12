@@ -24,6 +24,7 @@ class FundingOverviewController extends Controller
     {
         $query = Funding::find();
         $query->where(['>', 'xcoin_funding.amount', 0]);
+        $query->andWhere(['=', 'xcoin_funding.status', 0]); // only not investment accepted campaigns
         $query->andWhere(['IS NOT', 'xcoin_funding.id', new Expression('NULL')]);
         $query->orderBy(['created_at' => SORT_DESC]);
 

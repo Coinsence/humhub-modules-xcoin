@@ -3,6 +3,7 @@
 namespace humhub\modules\xcoin\grids;
 
 use humhub\modules\xcoin\helpers\SpaceHelper;
+use humhub\modules\xcoin\models\Funding;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\bootstrap\Html;
@@ -128,14 +129,10 @@ class AccountsGridView extends GridView
                     $transferButton = $loadPKButton = '';
 
                     if (AccountHelper::canManageAccount($model) && Account::TYPE_TASK != $model->account_type) {
-
-                        // Module settings allowDirectCoinTransfer parameter value
-                        $allowDirectCoinTransfer = SpaceHelper::allowDirectCoinTransfer($model);
-
-                        if (!isset($allowDirectCoinTransfer) || $allowDirectCoinTransfer) {
-                            $accountAssetsList = AccountHelper::getAssetsList($model);
-
-                            if (!empty($accountAssetsList))
+                        if (Account::TYPE_FUNDING == $model->account_type) {
+                            // allow transfer only if investment is accepted
+                            $funding = $model->getFunding()->one();
+                            if ($funding && Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED == $funding->status) {
                                 $transferButton = Html::a(
                                         '<i class="fa fa-exchange" aria-hidden="true"></i>',
                                         [
@@ -148,7 +145,7 @@ class AccountsGridView extends GridView
                                             'data-target' => '#globalModal'
                                         ]
                                     ) . '&nbsp;';
-                            else
+                            } else {
                                 $transferButton = Html::a(
                                         '<i class="fa fa-exchange" aria-hidden="true"></i>',
                                         ['javascript:;'],
@@ -157,23 +154,58 @@ class AccountsGridView extends GridView
                                             'disabled' => true,
                                             'data-toggle' => 'tooltip',
                                             'data-placement' => 'right',
-                                            'title' => 'No assets available on this account!',
+                                            'title' => 'Transfer can be done only when investment is accepted for related crowdfunding campaign',
                                             'onclick' => 'return false;'
                                         ]
                                     ) . '&nbsp;';
-                        } else
-                            $transferButton = Html::a(
-                                    '<i class="fa fa-exchange" aria-hidden="true"></i>',
-                                    ['javascript:;'],
-                                    [
-                                        'class' => 'btn btn-default',
-                                        'disabled' => true,
-                                        'data-toggle' => 'tooltip',
-                                        'data-placement' => 'right',
-                                        'title' => Yii::t('XcoinModule.base', 'Direct coin transfer disabled by the space admin'),
-                                        'onclick' => 'return false;'
-                                    ]
-                                ) . '&nbsp;';
+                            }
+                        } else {
+                            // Module settings allowDirectCoinTransfer parameter value
+                            $allowDirectCoinTransfer = SpaceHelper::allowDirectCoinTransfer($model);
+
+                            if (!isset($allowDirectCoinTransfer) || $allowDirectCoinTransfer) {
+                                $accountAssetsList = AccountHelper::getAssetsList($model);
+
+                                if (!empty($accountAssetsList))
+                                    $transferButton = Html::a(
+                                            '<i class="fa fa-exchange" aria-hidden="true"></i>',
+                                            [
+                                                '/xcoin/transaction/transfer',
+                                                'accountId' => $model->id,
+                                                'container' => $this->contentContainer
+                                            ],
+                                            [
+                                                'class' => 'btn btn-default',
+                                                'data-target' => '#globalModal'
+                                            ]
+                                        ) . '&nbsp;';
+                                else
+                                    $transferButton = Html::a(
+                                            '<i class="fa fa-exchange" aria-hidden="true"></i>',
+                                            ['javascript:;'],
+                                            [
+                                                'class' => 'btn btn-default',
+                                                'disabled' => true,
+                                                'data-toggle' => 'tooltip',
+                                                'data-placement' => 'right',
+                                                'title' => 'No assets available on this account!',
+                                                'onclick' => 'return false;'
+                                            ]
+                                        ) . '&nbsp;';
+                            } else
+                                $transferButton = Html::a(
+                                        '<i class="fa fa-exchange" aria-hidden="true"></i>',
+                                        ['javascript:;'],
+                                        [
+                                            'class' => 'btn btn-default',
+                                            'disabled' => true,
+                                            'data-toggle' => 'tooltip',
+                                            'data-placement' => 'right',
+                                            'title' => Yii::t('XcoinModule.base', 'Direct coin transfer disabled by the space admin'),
+                                            'onclick' => 'return false;'
+                                        ]
+                                    ) . '&nbsp;';
+                        }
 
                         // load private key button if user account
                         if ($this->contentContainer instanceof User) {
