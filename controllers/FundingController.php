@@ -133,7 +133,6 @@ class FundingController extends ContentContainerController
                     'model' => $model,
                     'assetList' => $assetList,
                     'defaultAsset' => $defaultAsset,
-                    'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer),
                 ]
             );
         }
@@ -160,11 +159,17 @@ class FundingController extends ContentContainerController
         // Check validation
         if ($model->hasErrors() && $model->isSecondStep()) {
 
-            return $this->renderAjax('details', ['model' => $model]);
+            return $this->renderAjax('details', [
+                'model' => $model,
+                'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer)
+            ]);
         }
 
         // Step 2: Details
-        return $this->renderAjax('details', ['model' => $model]);
+        return $this->renderAjax('details', [
+            'model' => $model,
+            'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer)
+        ]);
     }
 
     public function actionCancel($id)

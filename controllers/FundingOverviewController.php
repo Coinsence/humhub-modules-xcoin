@@ -115,7 +115,6 @@ class FundingOverviewController extends Controller
                     'model' => $model,
                     'assetList' => $assetList,
                     'defaultAsset' => $defaultAsset,
-                    'myAsset' => AssetHelper::getSpaceAsset($model->space),
                 ]
             );
         }
@@ -135,7 +134,6 @@ class FundingOverviewController extends Controller
             && $model->save()
         ) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
-
 
             // update space name & description if automatically created
             if ($model->space->space_type == Space::SPACE_TYPE_FUNDING) {
@@ -158,10 +156,16 @@ class FundingOverviewController extends Controller
         // Check validation
         if ($model->hasErrors() && $model->isSecondStep()) {
 
-            return $this->renderAjax('../funding/details', ['model' => $model]);
+            return $this->renderAjax('../funding/details', [
+                'model' => $model,
+                'myAsset' => AssetHelper::getSpaceAsset($model->space)
+            ]);
         }
 
         // Step 2: Details
-        return $this->renderAjax('../funding/details', ['model' => $model]);
+        return $this->renderAjax('../funding/details', [
+            'model' => $model,
+            'myAsset' => AssetHelper::getSpaceAsset($model->space)
+        ]);
     }
 }

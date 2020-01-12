@@ -46,6 +46,8 @@ class AmountField extends InputWidget
 
         Html::addCssClass($this->options, 'form-control');
         $this->options['type'] = 'number';
+        $this->options['min'] = '0';
+        $this->options['step'] = '0.1';
         $this->options['readonly'] = $this->readonly;
 
         $this->field->template = '{label}{beginWrapper}<div class="input-group">

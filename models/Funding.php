@@ -11,6 +11,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
 
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\helpers\Utils;
 use Yii;
 
 /**
@@ -47,6 +48,9 @@ class Funding extends ActiveRecord
     const FUNDING_STATUS_IN_PROGRESS = 0;
     const FUNDING_STATUS_INVESTMENT_ACCEPTED = 1;
 
+    // used in readonly for setting up exchange rate
+    public $rate = 1;
+
     /**
      * @inheritdoc
      */
@@ -76,6 +80,7 @@ class Funding extends ActiveRecord
             ],
             [['space_id', 'asset_id', 'amount', 'created_by'], 'integer'],
             [['amount'], 'number', 'min' => '0'],
+            [['exchange_rate'], 'number', 'min' => '0.1'],
             [['created_at'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
@@ -96,7 +101,8 @@ class Funding extends ActiveRecord
                 'description',
                 'content',
                 'deadline',
-                'space_id'
+                'space_id',
+                'exchange_rate'
             ],
         ];
     }
@@ -124,18 +130,31 @@ class Funding extends ActiveRecord
     public function attributeHints()
     {
         return [
-            'amount' => Yii::t('XcoinModule.base', 'If set to 0 this exchange option is disabled.')
+            'amount' => Yii::t('XcoinModule.base', 'If set to 0 this exchange option is disabled.'),
+            'exchange_rate' => Yii::t('XcoinModule.base', 'How many space coins are you offering per requested coin.')
         ];
     }
 
+    public function init()
+    {
+        if ($this->isNewRecord) {
+            $this->exchange_rate = 1;
+        }
+        parent::init();
+    }
+
+
     /**
      * @inheritdoc
+     *
      */
     public function beforeSave($insert)
     {
-        if($this->isNewRecord){
-            $this->exchange_rate = 1;
+        if ($this->isNewRecord) {
             $this->status = self::FUNDING_STATUS_IN_PROGRESS;
+
+            //create funding account
+            AccountHelper::getFundingAccount($this);
         }
 
         return parent::beforeSave($insert);
@@ -185,7 +204,7 @@ class Funding extends ActiveRecord
 
     public function getRequestedAmount()
     {
-        return round($this->amount / $this->exchange_rate);
+        return $this->amount;
     }
 
     /**
@@ -242,12 +261,20 @@ class Funding extends ActiveRecord
 
     public function isFirstStep()
     {
-        return empty($this->asset_id) || empty($this->amount);
+        return empty($this->asset_id);
     }
 
     public function isSecondStep()
     {
-        return empty($this->title) || empty($this->description) || empty($this->content) || empty($this->deadline) || strlen($this->description) > 255;
+        return Utils::mempty(
+                $this->amount,
+                $this->exchange_rate,
+                $this->title,
+                $this->description,
+                $this->content,
+                $this->deadline
+
+            ) || strlen($this->description) > 255;
     }
 
     public function canDeleteFile()
@@ -289,7 +316,8 @@ class Funding extends ActiveRecord
     {
         if ($this->space->space_type == Space::SPACE_TYPE_FUNDING &&
             Space::findOne(['name' => $this->title])) {
-            $this->addError('title' , Yii::t('XcoinModule.funding', 'Title already used'));
+            $this->addError('title', Yii::t('XcoinModule.funding', 'Title already used'));
+
             return false;
         }
 
