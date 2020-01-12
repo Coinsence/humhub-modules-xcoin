@@ -10,11 +10,8 @@ namespace humhub\modules\xcoin\widgets;
 
 use humhub\modules\space\widgets\Image as SpaceImage;
 use yii\widgets\InputWidget;
-use yii\base\InvalidConfigException;
 use yii\helpers\Html;
-use yii\helpers\Json;
-use yii\web\JsExpression;
-use yii\web\View;
+
 
 /**
  * Description of AmountField
@@ -51,7 +48,7 @@ class AmountField extends InputWidget
         $this->options['readonly'] = $this->readonly;
 
         $this->field->template = '{label}{beginWrapper}<div class="input-group">
-          <span class="input-group-addon">' . SpaceImage::widget(['space' => $this->asset->space, 'width' => 25]) . '</span>
+          <span class="input-group-addon">' . ($this->asset ? SpaceImage::widget(['space' => $this->asset->space, 'width' => 25]) : '<img src=""> ' ) . '</span>
           {input}</div>{hint}{error}{endWrapper}';
     }
 
