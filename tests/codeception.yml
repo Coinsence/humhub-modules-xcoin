@@ -3,7 +3,7 @@ namespace: xcoin
 coverage:
     c3_url: 'http://app/index-test.php'
     enabled: true
-    remote: true
+    remote: false
     include:
     - ../controllers/*
     - ../grids/*
