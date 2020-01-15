@@ -24,6 +24,12 @@ class CrowdfundingCest
         $spaceFrom = 'XcoinSpace 1';
         $spaceTo = 'XcoinSpace 2';
 
+        $projectAmount = '20';
+        $projectTitle = 'Testing Project';
+        $projectDeadline = '12/30/20';
+        $projectDescription = 'ProjectDescription';
+        $projectFullDescription = 'ProjectFullDescription';
+
         $I->amUser1();
         $I->createSpace($spaceFrom, 'XcoinSpaceDescription');
         $I->createSpace($spaceTo, 'XcoinSpaceDescription');
@@ -48,22 +54,31 @@ class CrowdfundingCest
         $I->click('Next');
 
         $I->waitForText('Provide details', 30, '#globalModal');
-        $I->fillField('Funding[amount]', '20');
+        $I->fillField('Funding[amount]', $projectAmount);
         // $I->fillField('Funding[exchange_rate]', '1');
-        $I->fillField('Funding[title]', 'Testing Project');
-        $I->fillField('Funding[deadline]', '12/30/20');
-        $I->fillField('Funding[description]', 'ProjectDescription');
-        $I->executeJS('$("#funding-content .humhub-ui-richtext p").text("ProjectFullDescription")');
+        $I->fillField('Funding[title]', $projectTitle);
+        $I->fillField('Funding[deadline]', $projectDeadline);
+        $I->fillField('Funding[description]', $projectDescription);
+        $I->executeJS('$("#funding-content .humhub-ui-richtext p").text("' . $projectFullDescription . '")');
         $I->click('Next');
 
         $I->waitForText('Gallery', 30, '#globalModal');
         $I->click('Save');
 
+        $I->waitForText($projectTitle, 30);
+        $I->see($spaceFrom);
+        $I->see($projectAmount);
+        $I->see($projectTitle);
+        $I->see($projectDescription);
+        $I->see($projectFullDescription);
+        $I->see('Under review');
 
+        $I->amOnCrowdfunding();
 
-
-
-
+        $I->see('Project by ' . $spaceFrom);
+        $I->see($projectTitle);
+        $I->see($projectDescription);
+        $I->see('Requesting: ' . $projectAmount);
 
     }
 
