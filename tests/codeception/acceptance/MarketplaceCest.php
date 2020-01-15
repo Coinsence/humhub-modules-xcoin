@@ -7,7 +7,7 @@ use xcoin\AcceptanceTester;
 class MarketplaceCest
 {
 
-    public function testMarketplaceVisibility(AcceptanceTester $I)
+    public function testPageVisibility(AcceptanceTester $I)
     {
 
         $I->wantTo('ensure that marketplace page works');

@@ -7,7 +7,7 @@ use xcoin\AcceptanceTester;
 class CrowdfundingCest
 {
 
-    public function testCrowdfundingVisibility(AcceptanceTester $I)
+    public function testPageVisibility(AcceptanceTester $I)
     {
 
         $I->wantTo('ensure that crowdfunding page works');
