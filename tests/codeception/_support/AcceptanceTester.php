@@ -24,14 +24,14 @@ class AcceptanceTester extends \AcceptanceTester
     * Define custom actions here
     */
 
-    public function amOnCrowdfunding()
+    public function amOnCrowdfunding($params = [])
     {
-        return tests\codeception\_pages\CrowdfundingPage::openBy($this);
+        return tests\codeception\_pages\CrowdfundingPage::openBy($this, $params);
     }
 
-    public function amOnMarketplace()
+    public function amOnMarketplace($params = [])
     {
-        return tests\codeception\_pages\MarketplacePage::openBy($this);
+        return tests\codeception\_pages\MarketplacePage::openBy($this, $params);
     }
 
     public function createSpace($name, $description)
