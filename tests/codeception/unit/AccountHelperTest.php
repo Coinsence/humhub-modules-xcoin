@@ -5,11 +5,11 @@ namespace tests\codeception\unit\modules\xcoin;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\models\Account;
-use tests\codeception\_support\HumHubDbTestCase;
 use humhub\modules\space\models\Space;
+use xcoin\XcoinTestCase;
 use yii\db\ActiveQuery;
 
-class AccountHelperTest extends HumHubDbTestCase
+class AccountHelperTest extends XcoinTestCase
 {
     public function testCreateSpaceDefaultAccount()
     {
