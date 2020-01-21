@@ -2,6 +2,9 @@
 namespace xcoin;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\models\Product;
 
 /**
  * Inherited Methods
@@ -50,6 +53,129 @@ class FunctionalTester extends \FunctionalTester
             'visibility' => 1,
             'join_policy' => 2,
         ]);
+    }
+
+
+    public function amOnSpaceProjects($spaceId = null)
+    {
+
+        if ($spaceId == null) {
+            return;
+        } else {
+            $space = Space::findOne(['id' => $spaceId]);
+            $url = $space->createUrl('/xcoin/funding/index');
+            $this->amOnPage($url);
+        }
+
+    }
+
+    public function amOnProject($projectId = null)
+    {
+
+        if ($projectId == null) {
+            return;
+        } else {
+            $funding = Funding::findOne(['id' => $projectId]);
+            $space = $funding->getSpace()->one();
+            $url = $space->createUrl('/xcoin/funding/overview', [
+                'fundingId' => $funding->id
+            ]);
+            $this->amOnPage($url);
+        }
+
+    }
+
+    public function amOnProjectSpace($projectId = null)
+    {
+
+        if ($projectId == null) {
+            return;
+        } else {
+            $funding = Funding::findOne(['id' => $projectId]);
+            $space = $funding->getSpace()->one();
+            $url = $space->createUrl('/xcoin/funding/index', [
+                'fundingId' => $funding->id
+            ]);
+            $this->amOnPage($url);
+        }
+
+    }
+
+
+    public function amOnUserProducts($userId = null)
+    {
+
+        // TODO: better handle user module enabling
+        $this->sendAjaxPostRequest('index.php?r=user/account/enable-module&moduleId=xcoin', []);
+
+        if ($userId == null) {
+            return;
+        } else {
+            $user = User::findOne(['id' => $userId]);
+            $url = $user->createUrl('/xcoin/product/index');
+            $this->amOnPage($url);
+        }
+
+    }
+
+    public function amOnSpaceProducts($spaceId = null)
+    {
+
+        if ($spaceId == null) {
+            return;
+        } else {
+            $space = Space::findOne(['id' => $spaceId]);
+            $url = $space->createUrl('/xcoin/product/index');
+            $this->amOnPage($url);
+        }
+
+    }
+
+    public function amOnProduct($productId = null)
+    {
+
+        if ($productId == null) {
+            return;
+        } else {
+            $product = Product::findOne(['id' => $productId]);
+            $user = $product->getCreatedBy()->one();
+            $space = $product->getSpace()->one();
+            $url = $product->isSpaceProduct() ? $space->createUrl('/xcoin/product/overview', [
+                'productId' => $product->id
+            ]) : $user->createUrl('/xcoin/product/overview', [
+                'productId' => $product->id
+            ]);
+            $this->amOnPage($url);
+        }
+
+    }
+
+    public function amOnProductUser($productId = null)
+    {
+
+        if ($productId == null) {
+            return;
+        } else {
+            $product = Product::findOne(['id' => $productId]);
+            $user = $product->getCreatedBy()->one();
+            $url = $user->createUrl('/xcoin/product/index');
+            $this->amOnPage($url);
+        }
+
+    }
+
+    public function amOnProductSpace($productId = null)
+    {
+
+        if ($productId == null) {
+            return;
+        } else {
+            $product = Product::findOne(['id' => $productId]);
+            $space = $product->getSpace()->one();
+            $url = $space->createUrl('/xcoin/product/index');
+            $this->amOnPage($url);
+        }
+
     }
 
 }
