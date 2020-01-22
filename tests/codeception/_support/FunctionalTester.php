@@ -210,4 +210,31 @@ class FunctionalTester extends \FunctionalTester
 
     }
 
+
+    public function amOnSpaceAccountOverview($spaceId = null)
+    {
+
+        if ($spaceId === null) {
+            return;
+        } else {
+            $space = Space::findOne(['id' => $spaceId]);
+            $url = $space->createUrl('/xcoin/overview/index');
+            $this->amOnPage($url);
+        }
+
+    }
+
+    public function amOnUserAccountOverview($userId = null)
+    {
+
+        if ($userId === null) {
+            return;
+        } else {
+            $user = User::findOne(['id' => $userId]);
+            $url = $user->createUrl('/xcoin/overview/index');
+            $this->amOnPage($url);
+        }
+
+    }
+
 }
