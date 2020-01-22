@@ -66,6 +66,31 @@ class FunctionalTester extends \FunctionalTester
     }
 
 
+    public function enableSpaceModule($spaceId = null, $moduleId)
+    {
+        if($spaceId == null) {
+           return;
+        }
+
+        $space = Space::findOne(['id' => $spaceId]);
+        $space->enableModule($moduleId);
+        \Yii::$app->moduleManager->flushCache();
+    }
+
+    public function enableUserModule($userId = null, $moduleId)
+    {
+        if($userId == null) {
+            return;
+        }
+
+        $user = User::findOne(['id' => $userId]);
+        if (!$user->isModuleEnabled($moduleId)) {
+            $user->enableModule($moduleId);
+        }
+        \Yii::$app->moduleManager->flushCache();
+    }
+
+
     public function amOnSpaceProjects($spaceId = null)
     {
 
@@ -114,9 +139,6 @@ class FunctionalTester extends \FunctionalTester
 
     public function amOnUserProducts($userId = null)
     {
-
-        // TODO: better handle user module enabling
-        $this->sendAjaxPostRequest('index.php?r=user/account/enable-module&moduleId=xcoin', []);
 
         if ($userId == null) {
             return;
