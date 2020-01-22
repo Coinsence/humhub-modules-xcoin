@@ -1,20 +1,23 @@
 <?php
+
 /**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @link https://coinsence.org/
+ * @copyright Copyright (c) 2018 Coinsence
  * @license https://www.humhub.com/licences
  *
+ * @author Ghanmi Mortadha <mortadha.ghanmi56@gmail.com >
+ * @author Daly Ghaith <daly.ghaith@gmail.com>
  */
 
 namespace user\functional;
 
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\permissions\ReviewPublicOffers;
 use xcoin\FunctionalTester;
 
 class CrowdfundingCest
 {
-    // TODO: verifying project
     // TODO: invest in a project
 
     public function testPageVisibility(FunctionalTester $I)
@@ -99,7 +102,7 @@ class CrowdfundingCest
             'content' => $projectFullDescription
         ]);
 
-        $projectId = 1;
+        $projectId = 2;
 
         $I->amOnCrowdfunding();
         $I->see($projectTitle);
@@ -112,4 +115,26 @@ class CrowdfundingCest
 
     }
 
+    public function testProjectReview(FunctionalTester $I)
+    {
+        $I->wantTo('ensure that project review works');
+
+        $I->enableModule(1, 'xcoin');
+
+        $I->amUser1();
+        $I->setGroupPermission(2, ReviewPublicOffers::class);
+
+        $project = Funding::findOne(['id' => 1]);
+
+        $I->amOnCrowdfunding();
+        $I->see($project->title);
+
+        $I->amOnProject($project->id);
+        $I->see($project->title);
+
+        $I->click(['class' => 'review-btn-trusted']);
+
+        $I->amOnCrowdfunding(['verified' => 1]);
+        $I->see($project->title);
+    }
 }
