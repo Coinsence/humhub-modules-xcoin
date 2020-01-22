@@ -22,6 +22,7 @@ class MarketplaceCest
 {
     // TODO: buy a product
     // TODO: change all click action with it's respective ajax get call
+    // TODO: use createUrl method to create urls instead of hard-coding it
 
     public function testPageVisibility(FunctionalTester $I)
     {

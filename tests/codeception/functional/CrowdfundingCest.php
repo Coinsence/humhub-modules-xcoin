@@ -20,6 +20,7 @@ use xcoin\FunctionalTester;
 class CrowdfundingCest
 {
     // TODO: invest in a project
+    // TODO: use createUrl method to create urls instead of hard-coding it
 
     public function testPageVisibility(FunctionalTester $I)
     {
