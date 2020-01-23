@@ -9,7 +9,7 @@
  * @author Daly Ghaith <daly.ghaith@gmail.com>
  */
 
-namespace user\functional;
+namespace xcoin\functional;
 
 use xcoin\FunctionalTester;
 

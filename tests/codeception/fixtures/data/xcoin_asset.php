@@ -10,5 +10,6 @@
  */
 
 return [
-    ['id' => 1, 'space_id' => 1, 'title' => 'DEFAULT']
+    ['id' => 1, 'space_id' => 1, 'title' => 'DEFAULT'],
+    ['id' => 2, 'space_id' => 2, 'title' => 'DEFAULT']
 ];

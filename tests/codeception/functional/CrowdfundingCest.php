@@ -9,7 +9,7 @@
  * @author Daly Ghaith <daly.ghaith@gmail.com>
  */
 
-namespace user\functional;
+namespace xcoin\functional;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\models\Asset;
