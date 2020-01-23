@@ -13,6 +13,7 @@ namespace xcoin;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Funding;
 use humhub\modules\xcoin\models\Product;
 
@@ -48,6 +49,7 @@ class FunctionalTester extends \FunctionalTester
     {
         return tests\codeception\_pages\MarketplacePage::openBy($this, $params);
     }
+
 
     public function createSpace($name, $description, $color)
     {
@@ -211,7 +213,7 @@ class FunctionalTester extends \FunctionalTester
     }
 
 
-    public function amOnSpaceAccountOverview($spaceId = null)
+    public function amOnSpaceAccountsOverview($spaceId = null)
     {
 
         if ($spaceId === null) {
@@ -224,7 +226,7 @@ class FunctionalTester extends \FunctionalTester
 
     }
 
-    public function amOnUserAccountOverview($userId = null)
+    public function amOnUserAccountsOverview($userId = null)
     {
 
         if ($userId === null) {
@@ -233,6 +235,66 @@ class FunctionalTester extends \FunctionalTester
             $user = User::findOne(['id' => $userId]);
             $url = $user->createUrl('/xcoin/overview/index');
             $this->amOnPage($url);
+        }
+
+    }
+
+    public function amOnSpaceDefaultAccountDetails($spaceId = null)
+    {
+
+        if ($spaceId == null) {
+            return;
+        } else {
+            $account = Account::findOne(['space_id' => $spaceId, 'account_type' => Account::TYPE_DEFAULT]);
+            $space = $account->getSpace()->one();
+            $url = $space->createUrl('/xcoin/account', ['id' => $account->id]);
+            $this->amOnPage($url);
+
+        }
+
+    }
+
+    public function amOnUserDefaultAccountDetails($userId = null)
+    {
+
+        if ($userId == null) {
+            return;
+        } else {
+            $account = Account::findOne(['user_id' => $userId, 'account_type' => Account::TYPE_DEFAULT]);
+            $user = $account->getUser()->one();
+            $url = $user->createUrl('/xcoin/account', ['id' => $account->id]);
+            $this->amOnPage($url);
+
+        }
+
+    }
+
+    public function amOnSpaceAccountDetails($accountId = null)
+    {
+
+        if ($accountId == null) {
+            return;
+        } else {
+            $account = Account::findOne(['id' => $accountId]);
+            $space = $account->getSpace()->one();
+            $url = $space->createUrl('/xcoin/account', ['id' => $account->id]);
+            $this->amOnPage($url);
+
+        }
+
+    }
+
+    public function amOnUserAccountDetails($accountId = null)
+    {
+
+        if ($accountId == null) {
+            return;
+        } else {
+            $account = Account::findOne(['id' => $accountId]);
+            $user = $account->getUser()->one();
+            $url = $user->createUrl('/xcoin/account', ['id' => $account->id]);
+            $this->amOnPage($url);
+
         }
 
     }
