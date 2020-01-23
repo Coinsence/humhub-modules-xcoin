@@ -4,6 +4,8 @@ coverage:
     c3_url: 'http://app/index-test.php'
     enabled: true
     remote: false
+    low_limit: 40
+    high_limit: 80
     include:
     - ../controllers/*
     - ../grids/*
