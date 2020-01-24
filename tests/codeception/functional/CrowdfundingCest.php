@@ -12,14 +12,15 @@
 namespace xcoin\functional;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\models\Transaction;
 use humhub\modules\xcoin\permissions\ReviewPublicOffers;
 use xcoin\FunctionalTester;
 
 class CrowdfundingCest
 {
-    // TODO: invest in a project
     // TODO: use createUrl method to create urls instead of hard-coding it
 
     public function testPageVisibility(FunctionalTester $I)
@@ -242,4 +243,44 @@ class CrowdfundingCest
         ]);
 
     }
+
+    public function testProjectInvestment(FunctionalTester $I)
+    {
+
+        $I->wantTo('ensure that project investment works');
+
+        $I->amUser1();
+
+        $owner = Space::findOne(['id' => 1]);
+        $funding = Funding::findOne(['id' => 1]); // this funding is created by Space 1 owner by Admin
+        $investorAccount = Account::findOne(['user_id' => 2, 'account_type' => Account::TYPE_DEFAULT]);
+        $fundingAccount = Account::findOne(['space_id' => 1, 'account_type' => Account::TYPE_FUNDING]);
+
+        $amountToInvest = 10;
+
+        $I->enableSpaceModule(1, 'xcoin');
+        $I->enableUserModule(2, 'xcoin');
+
+        $I->sendAjaxGetRequest($owner->createUrl('/xcoin/funding/invest', ['fundingId' => '']));
+        $I->seeResponseCodeIs(404);
+
+        $I->sendAjaxGetRequest($owner->createUrl('/xcoin/funding/invest', ['fundingId' => $funding->id]));
+        $I->sendAjaxGetRequest($owner->createUrl('/xcoin/funding/invest', ['fundingId' => $funding->id, 'accountId' => $investorAccount->id]));
+        $I->sendAjaxPostRequest($owner->createUrl('/xcoin/funding/invest', ['fundingId' => $funding->id, 'accountId' => $investorAccount->id]), [
+            'FundingInvest[amountPay]' => $amountToInvest,
+            'FundingInvest[amountBuy]' => 1,
+        ]);
+        $I->seeRecord(Transaction::class, [
+            'from_account_id' => $investorAccount->id,
+            'to_account_id' => $fundingAccount->id,
+            'amount' => $amountToInvest
+        ]);
+        $I->seeRecord(Transaction::class, [
+            'from_account_id' => $fundingAccount->id,
+            'to_account_id' => $investorAccount->id,
+            'amount' => $amountToInvest
+        ]);
+
+    }
+
 }

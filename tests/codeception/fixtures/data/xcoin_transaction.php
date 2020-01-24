@@ -10,5 +10,7 @@
  */
 
 return [
-    ['id' => 1, 'asset_id' => 1, 'transaction_type' => 2, 'to_account_id' => 8, 'from_account_id' => 7, 'amount' => 1000, 'comment' => null, 'created_at' => '2020-01-22 00:52:49', 'eth_hash' => null]
+    ['id' => 1, 'asset_id' => 1, 'transaction_type' => 2, 'to_account_id' => 8, 'from_account_id' => 7, 'amount' => 500, 'comment' => null, 'created_at' => '2020-01-22 00:52:49', 'eth_hash' => null],
+    ['id' => 2, 'asset_id' => 1, 'transaction_type' => 2, 'to_account_id' => 1, 'from_account_id' => 7, 'amount' => 100, 'comment' => null, 'created_at' => '2020-01-22 00:52:50', 'eth_hash' => null],
+    ['id' => 3, 'asset_id' => 1, 'transaction_type' => 1, 'to_account_id' => 5, 'from_account_id' => 1, 'amount' => 20, 'comment' => null, 'created_at' => '2020-01-22 00:52:51', 'eth_hash' => null],
 ];

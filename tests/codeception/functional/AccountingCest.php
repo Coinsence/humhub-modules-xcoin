@@ -12,6 +12,7 @@
 namespace xcoin\functional;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Transaction;
@@ -77,6 +78,27 @@ class AccountingCest
 
     }
 
+    public function testSpaceAccountEditFailing(FunctionalTester $I)
+    {
+
+        $I->wantTo('ensure that space account edit failing in some cases');
+
+        $I->amUser1();
+
+        $I->enableSpaceModule(2, 'xcoin');
+
+        $account1 = Account::findOne(['space_id' => 2, 'account_type' => Account::TYPE_DEFAULT]);
+        $account2 = Account::findOne(['account_type' => Account::TYPE_ISSUE]);
+        $space = Space::findOne(['id' => 2]);
+
+        $I->sendAjaxPostRequest($space->createUrl('/xcoin/account/edit', ['id' => $account1->id]), []);
+        $I->seeResponseCodeIs(401);
+
+        $I->sendAjaxPostRequest($space->createUrl('/xcoin/account/edit', ['id' => $account2->id]), []);
+        $I->seeResponseCodeIs(401);
+
+    }
+
     public function testSpaceCrowdfundingAccount(FunctionalTester $I)
     {
 
@@ -128,11 +150,33 @@ class AccountingCest
 
         $space = Space::findOne(['id' => 1]);
 
+        $I->amOnPage($space->createUrl('/xcoin/overview/latest-transactions'));
+        $I->see('Latest transactions of all space owned accounts');
+
         $I->amOnPage($space->createUrl('/xcoin/overview/shareholder-list'));
         $I->see('Shareholder listing');
 
         $I->amOnPage($space->createUrl('/xcoin/overview/latest-asset-transactions'));
         $I->see('Latest transactions of space assets');
+
+    }
+
+    public function testUserAssetDistribution(FunctionalTester $I)
+    {
+
+        $I->wantTo('ensure that user asset distribution works');
+
+        $I->amAdmin();
+
+        $I->enableUserModule(1, 'xcoin');
+
+        $I->amOnUserAccountsOverview(1);
+        $I->see('Your accounts');
+
+        $user = User::findOne(['id' => 1]);
+
+        $I->amOnPage($user->createUrl('/xcoin/overview/latest-transactions'));
+        $I->see('Latest transactions of all user accounts');
 
     }
 
@@ -182,7 +226,6 @@ class AccountingCest
         $space1 = Space::findOne(['id' => 1]);
         $space2 = Space::findOne(['id' => 2]);
         $assetFromSpace1 = Asset::findOne(['space_id' => $space1->id]);
-        $assetFromSpace2 = Asset::findOne(['space_id' => $space2->id]);
         $accountDefaultSpace1 = Account::findOne(['space_id' => $space1->id, 'account_type' => Account::TYPE_DEFAULT]);
         $accountDefaultSpace2 = Account::findOne(['space_id' => $space2->id, 'account_type' => Account::TYPE_DEFAULT]);
 

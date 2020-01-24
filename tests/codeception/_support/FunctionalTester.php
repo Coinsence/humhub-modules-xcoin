@@ -299,4 +299,22 @@ class FunctionalTester extends \FunctionalTester
 
     }
 
+    public function amOnSpaceConfig($spaceId = null, $view = null)
+    {
+
+        if ($spaceId == null) {
+            return;
+        } else {
+            $space = Space::findOne(['id' => $spaceId]);
+            if ($view == null) {
+                $url = $space->createUrl('/xcoin/config/index');
+            } else {
+                $url = $space->createUrl('/xcoin/config/'.$view);
+            }
+            $this->amOnPage($url);
+
+        }
+
+    }
+
 }

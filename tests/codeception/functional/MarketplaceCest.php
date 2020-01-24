@@ -175,6 +175,89 @@ class MarketplaceCest
 
     }
 
+    public function testProductCreationWithDefaultAssetSet(FunctionalTester $I)
+    {
+
+        $I->amUser1();
+        $userId = 2;
+
+        $I->wantTo('ensure that product creation when default asset is set');
+
+        $spaceToCreate = 'Decimal Space';
+
+        $productName = 'Testing Product';
+        $productDescription = 'ProductDescription';
+        $productFullDescription = 'ProductFullDescription';
+        $productOfferType = Product::OFFER_DISCOUNT_FOR_COINS;
+        $productDiscount = 20;
+
+        // New space with id = 5
+        $I->createSpace($spaceToCreate, 'XcoinSpaceDescription', '#b5810a');
+        $spaceToCreateId = 5;
+
+        $asset = Asset::findOne(['space_id' => $spaceToCreateId]);
+
+        $I->enableUserModule($userId, 'xcoin');
+        $I->amOnUserProducts($userId);
+        $I->see('Currently there are no products.');
+
+        // We create a new product with discount offer type: 1
+        $I->sendAjaxGetRequest('index.php?r=xcoin/marketplace/sell');
+        $I->sendAjaxPostRequest('index.php?r=xcoin/marketplace/sell', [
+            'Product[name]' => $productName,
+            'Product[description]' => $productDescription,
+            'Product[content]' => $productFullDescription,
+            'Product[offer_type]' => $productOfferType,
+            'Product[asset_id]' => $asset->id,
+            'Product[discount]' => $productDiscount,
+        ]);
+        $I->seeRecord(Product::class, [
+            'name' => $productName,
+            'description' => $productDescription,
+            'content' => $productFullDescription,
+            'offer_type' => $productOfferType,
+            'product_type' => 1,
+            'discount' => $productDiscount,
+            'asset_id' => $asset->id
+        ]);
+
+        // We create a new product with total price in coins offer type: 2
+        $productOfferType = Product::OFFER_TOTAL_PRICE_IN_COINS;
+        $productPrice = 20;
+        $productPaymentType = Product::PAYMENT_PER_UNIT;
+        $I->sendAjaxPostRequest('index.php?r=xcoin/marketplace/sell', [
+            'Product[name]' => $productName,
+            'Product[description]' => $productDescription,
+            'Product[content]' => $productFullDescription,
+            'Product[offer_type]' => $productOfferType,
+            'Product[asset_id]' => $asset->id,
+            'Product[price]' => $productPrice,
+            'Product[payment_type]' => $productPaymentType,
+        ]);
+        $I->seeRecord(Product::class, [
+            'name' => $productName,
+            'description' => $productDescription,
+            'content' => $productFullDescription,
+            'offer_type' => $productOfferType,
+            'product_type' => Product::TYPE_PERSONAL,
+            'price' => $productPrice,
+            'payment_type' => $productPaymentType,
+            'asset_id' => $asset->id
+        ]);
+
+        $productId = 3;
+
+        $I->amOnMarketplace();
+        $I->see($productName);
+
+        $I->amOnProduct($productId);
+        $I->see($productName);
+
+        $I->amOnProductUser($productId);
+        $I->see($productName);
+
+    }
+
     public function testUserProductReview(FunctionalTester $I)
     {
         $I->wantTo('ensure that user product review works');

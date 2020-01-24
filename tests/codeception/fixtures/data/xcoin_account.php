@@ -18,5 +18,6 @@ return [
     ['id' => 6, 'user_id' => 3, 'space_id' => null, 'title' => 'User 3 Default Account', 'account_type' => 4, 'guid' => 'u1e50e0d-82cd-41fc-8b0c-552392f5839c'],
     ['id' => 7, 'user_id' => null, 'space_id' => 1, 'title' => 'Space 1 Issue Account', 'account_type' => 2, 'guid' => 's1e50e0d-82cd-41fc-8b0c-552392f5839d'],
     ['id' => 8, 'user_id' => null, 'space_id' => 1, 'title' => 'Space 1 Crowdfunding Campaign 1', 'account_type' => 3, 'guid' => 's1e50e0d-82cd-41fc-8b0c-552392f5839e', 'funding_id' => 1],
-    ['id' => 9, 'user_id' => null, 'space_id' => 2, 'title' => 'Space 2 Issue Account', 'account_type' => 2, 'guid' => 's1e50e0d-82cd-41fc-8b0c-552392f5839e']
+    ['id' => 9, 'user_id' => null, 'space_id' => 2, 'title' => 'Space 2 Issue Account', 'account_type' => 2, 'guid' => 's1e50e0d-82cd-41fc-8b0c-552392f5839e'],
+    ['id' => 10, 'user_id' => 3, 'space_id' => 1, 'title' => 'Community Investor', 'account_type' => 6, 'guid' => 's1e50e0d-82cd-41fc-8b0c-552392f5839f']
 ];
