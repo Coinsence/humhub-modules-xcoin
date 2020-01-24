@@ -28,23 +28,6 @@ class AssetController extends ContentContainerController
         return parent::beforeAction($action);
     }
 
-    public function actionEdit()
-    {
-        $asset = Asset::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $this->contentContainer->id]);
-        if ($asset === null) {
-            $asset = new Asset();
-            $asset->space_id = $this->contentContainer->id;
-        }
-
-        if ($asset->load(Yii::$app->request->post()) && $asset->save()) {
-            $this->view->saved();
-
-            return $this->htmlRedirect(['/xcoin/overview', 'container' => $this->contentContainer]);
-        }
-
-        return $this->renderAjax('edit', ['asset' => $asset]);
-    }
-
     public function actionIssue($id)
     {
         $asset = Asset::findOne(['id' => $id, 'space_id' => $this->contentContainer->id]);
