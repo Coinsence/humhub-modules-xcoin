@@ -193,6 +193,55 @@ class CrowdfundingCest
 
     }
 
+    public function testProjectEditFailure(FunctionalTester $I)
+    {
+
+        $I->wantTo('ensure that project edit fails');
+
+        $I->amAdmin();
+
+        $owner = Space::findOne(['id' => 1]);
+        $funding = Funding::findOne(['id' => 1]); // this funding is created by Space 1 owner by Admin
+
+        $I->enableSpaceModule($owner->id, 'xcoin');
+
+        $I->sendAjaxGetRequest('index.php?r=xcoin/funding/edit&id='.$funding->id.'&cguid='.$owner->guid);
+        $I->sendAjaxPostRequest('index.php?r=xcoin/funding/edit&id='.$funding->id.'&cguid='.$owner->guid, [
+            'step' => 2,
+            'Funding[space_id]' => $funding->space_id,
+            'Funding[asset_id]' => $funding->asset_id,
+            'Funding[amount]' => 0,
+            'Funding[exchange_rate]' => $funding->exchange_rate,
+            'Funding[rate]' => $funding->rate,
+            'Funding[title]' => $funding->title,
+            'Funding[deadline]' => $funding->deadline,
+            'Funding[description]' => $funding->description,
+            'Funding[content]' => $funding->content,
+        ]);
+        $I->sendAjaxPostRequest('index.php?r=xcoin/funding/edit&id='.$funding->id.'&cguid='.$owner->guid, [
+            'step' => 3,
+            'Funding[space_id]' => $funding->space_id,
+            'Funding[asset_id]' => $funding->asset_id,
+            'Funding[amount]' => 0,
+            'Funding[exchange_rate]' => $funding->exchange_rate,
+            'Funding[rate]' => $funding->rate,
+            'Funding[title]' => $funding->title.'_mod',
+            'Funding[deadline]' => $funding->deadline,
+            'Funding[description]' => $funding->description.'_mod',
+            'Funding[content]' => $funding->content,
+        ]);
+        $I->dontSeeRecord(Funding::class, [
+            'space_id' => $funding->space_id,
+            'asset_id' => $funding->asset_id,
+            'exchange_rate' => $funding->exchange_rate,
+            'amount' => 0,
+            'title' => $funding->title.'_mod',
+            'description' => $funding->description.'_mod',
+            'content' => $funding->content
+        ]);
+
+    }
+
     public function testProjectCancel(FunctionalTester $I)
     {
 

@@ -38,6 +38,28 @@ class AccountingCest
 
     }
 
+    public function testSpaceNoDirectCoinTransfer(FunctionalTester $I)
+    {
+
+        $I->wantTo('ensure that space direct coin transfer is disabled');
+
+        $I->amAdmin();
+
+        $I->enableSpaceModule(1, 'xcoin');
+
+        $space = Space::findOne(['id' => 1]);
+
+        $module = \Yii::$app->getModule('xcoin');
+        $module->settings->contentContainer($space)->set('allowDirectCoinTransfer', 0);
+
+        $I->amOnSpaceAccountsOverview(1);
+        $I->see('Accounts of this space');
+
+        $I->amOnSpaceDefaultAccountDetails(1);
+        $I->see('Account overview');
+
+    }
+
     public function testUserDefaultAccount(FunctionalTester $I)
     {
 
@@ -249,6 +271,74 @@ class AccountingCest
             'to_account_id' => $accountDefaultSpace2->id,
             'comment' => 'Testing transfer',
         ]);
+
+    }
+
+    public function testSpaceAccountEthereumSection(FunctionalTester $I)
+    {
+
+        $I->wantTo('ensure that space account ethereum section works');
+
+        $I->amAdmin();
+
+        $I->enableSpaceModule(1, 'xcoin');
+
+        $I->amOnSpaceEthereumOverview(1);
+        $I->see('Ethereum');
+
+
+    }
+
+    public function testAssetAmountWidget1(FunctionalTester $I)
+    {
+
+        $I->wantTo('ensure that AssetAmountWidget works (prepare)');
+        $I->amGoingTo('Enable the coinsence theme in order to execute the AssetAmount widget');
+
+        $I->amAdmin();
+
+
+        $I->enableSpaceModule(1, 'xcoin');
+        $I->enableUserModule(1, 'xcoin');
+
+        $I->amOnPage(['/admin/setting/design']);
+        $I->see('Appearance Settings');
+        $I->selectOption('#designsettingsform-theme', 'Coinsence');
+        $I->submitForm('.btn.btn-primary', []);
+        $I->seeResponseCodeIsSuccessful();
+
+        $spaceToCreate = 'Decimal Space';
+        // New space with id = 5
+        $I->createSpace($spaceToCreate, 'XcoinSpaceDescription', '#b5810a');
+        $I->amGoingTo('create a new space named after defaultAssetName Yii2 parameter');
+
+        $I->amOnPage('/');
+
+    }
+
+    public function testAssetAmountWidget2(FunctionalTester $I)
+    {
+
+        $I->wantTo('ensure that AssetAmountWidget works (final)');
+
+        $I->amAdmin();
+
+
+        $I->enableSpaceModule(1, 'xcoin');
+        $I->enableUserModule(1, 'xcoin');
+
+        $I->amOnPage(['/admin/setting/design']);
+        $I->see('Appearance Settings');
+        $I->selectOption('#designsettingsform-theme', 'Coinsence');
+        $I->submitForm('.btn.btn-primary', []);
+        $I->seeResponseCodeIsSuccessful();
+
+        $spaceToCreate = 'Decimal Space';
+        // New space with id = 5
+        $I->createSpace($spaceToCreate, 'XcoinSpaceDescription', '#b5810a');
+        $I->amGoingTo('create a new space named after defaultAssetName Yii2 parameter');
+
+        $I->amOnPage('/');
 
     }
 

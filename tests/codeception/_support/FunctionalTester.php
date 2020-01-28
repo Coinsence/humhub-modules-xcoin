@@ -317,4 +317,18 @@ class FunctionalTester extends \FunctionalTester
 
     }
 
+   public function amOnSpaceEthereumOverview($spaceId = null)
+   {
+
+       if ($spaceId == null) {
+           return;
+       } else {
+           $space = Space::findOne(['id' => $spaceId]);
+           $url = $space->createUrl('/xcoin/ethereum');
+           $this->amOnPage($url);
+
+       }
+
+   }
+
 }
