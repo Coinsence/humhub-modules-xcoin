@@ -11,6 +11,8 @@
 
 namespace xcoin\functional;
 
+use humhub\modules\space\MemberEvent;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\Account;
@@ -339,6 +341,86 @@ class AccountingCest
         $I->amGoingTo('create a new space named after defaultAssetName Yii2 parameter');
 
         $I->amOnPage('/');
+
+    }
+
+    public function testInvestorAccounting(FunctionalTester $I)
+    {
+
+        $I->wantTo('ensure that investor accounting works');
+
+        $space = Space::findOne(['id' => 2]);
+
+        $I->enableSpaceModule($space->id, 'xcoin');
+
+        $I->amUser1();
+
+        $I->amOnSpace($space->id);
+
+        //----------- set space investor setting -----------//
+
+        $I->click('.controls-header .dropdown-navigation .dropdown-toggle');
+        $I->see('Modules');
+
+        $I->click('.controls-header .dropdown-navigation ul li:nth-child(4) a');
+        $I->see('Space Modules');
+        $I->see('Accounting');
+
+        $I->click(['class' => 'configure-module-xcoin']);
+
+        $I->see('Xcoin module configuration');
+
+        $I->fillField('SpaceModuleBasicSettings[accountTitle]', 'Investor');
+        $I->fillField('SpaceModuleBasicSettings[transactionAmount]', 50);
+        $I->fillField('SpaceModuleBasicSettings[transactionComment]', 'Contributor transaction');
+
+        $I->click('Save');
+
+        //----------- Member Add Event -----------//
+
+        $I->switchIdentity('User3');
+
+        $user = User::findOne(['id' => 4]);
+
+        $I->amOnSpace($space->id);
+
+        $I->click('#requestMembershipButton');
+
+        MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
+            'space' => $space, 'user' => $user
+        ]));
+
+        $I->seeRecord(Account::class, [
+            'space_id' => $space->id,
+            'user_id' => $user->id,
+            'title' => 'Investor',
+            'account_type' => Account::TYPE_COMMUNITY_INVESTOR,
+            'investor_id' => $user->id
+        ]);
+
+        $I->seeRecord(Transaction::class, [
+            'amount' => 50,
+            'transaction_type' => Transaction::TRANSACTION_TYPE_ISSUE,
+        ]);
+
+        //----------- Member Remove Event -----------//
+
+        $I->switchIdentity('User1');
+
+        $I->sendAjaxPostRequest($space->createUrl('space/manage/member/remove', [
+            'userGuid' => $user->guid
+        ]));
+
+        MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_REMOVED, new MemberEvent([
+            'space' => $space, 'user' => $user
+        ]));
+
+        $I->seeRecord(Account::class, [
+            'space_id' => $space->id,
+            'user_id' => null,
+            'account_type' => Account::TYPE_COMMUNITY_INVESTOR,
+            'investor_id' => $user->id
+        ]);
 
     }
 

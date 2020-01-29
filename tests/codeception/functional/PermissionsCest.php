@@ -11,11 +11,6 @@
 
 namespace xcoin\functional;
 
-use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
-use humhub\modules\xcoin\models\Asset;
-use humhub\modules\xcoin\models\Product;
-use humhub\modules\xcoin\permissions\ReviewPublicOffers;
 use xcoin\FunctionalTester;
 
 class PermissionsCest
