@@ -35,6 +35,5 @@ script:
   - php ${HUMHUB_PATH}/protected/vendor/bin/codecept run --env travis
 
 after_failure:
-  - pwd
-  - ls -la
+  - cd ..
   - .travis/upload-failure.sh
