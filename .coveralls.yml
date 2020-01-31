@@ -1,3 +1,2 @@
 service_name: travis-ci
-coverage_clover: test/codeception/_output/coverage.xml
-json_path: test/codeception/_output/coverage.json
+coverage_clover: tests/codeception/_output/coverage.xml
