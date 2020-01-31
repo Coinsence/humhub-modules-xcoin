@@ -11,9 +11,10 @@ zip -ur failure.zip ${HUMHUB_PATH}/protected/runtime/logs || true
 
 zip -ur failure.zip /tmp/phpserver.log || true
 
+mv failure.zip coinsence-xcoin-travis-${TRAVIS_JOB_NUMBER}.zip
+
 # upload file
-curl --upload-file ./failure.zip https://transfer.sh/coinsence-xcoin-travis-${TRAVIS_JOB_NUMBER}.zip
-echo "Uploaded to https://transfer.sh/coinsence-xcoin-travis-${TRAVIS_JOB_NUMBER}.zip"
+curl -F "file=@coinsence-xcoin-travis-${TRAVIS_JOB_NUMBER}.zip" -s -w "\n"  https://file.io
 
 
 # delete zip
