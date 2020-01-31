@@ -1,7 +1,7 @@
 actor: Tester
 namespace: xcoin
 coverage:
-    c3_url: 'http://app/index-test.php'
+    c3_url: 'http://127.0.0.1:8080/index-test.php'
     enabled: true
     remote: false
     low_limit: 40
@@ -36,4 +36,4 @@ paths:
 config:
     # the entry script URL (with host info) for functional and acceptance tests
     # PLEASE ADJUST IT TO THE ACTUAL ENTRY SCRIPT URL
-    test_entry_url: http://app/index-test.php
+    test_entry_url: http://127.0.0.1:8080/index-test.php
