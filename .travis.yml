@@ -37,3 +37,8 @@ script:
 after_failure:
   - cd ..
   - .travis/upload-failure.sh
+
+after_success:
+  - test $TRAVIS_BRANCH = "coveralls-testing" &&
+    test $TRAVIS_PULL_REQUEST = "false" &&
+    php ${HUMHUB_PATH}/protected/vendor/bin/codecept run --coverage-json --coverage-xml --env travis
