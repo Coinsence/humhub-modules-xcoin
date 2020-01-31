@@ -1,0 +1,33 @@
+language: php
+sudo: enabled
+
+services:
+  - mysql
+git:
+  depth: 3
+
+php:
+  - 7.2
+
+env:
+  global:
+    - HUMHUB_PATH=/opt/humhub
+
+
+cache:
+  - $HOME/.composer/cache
+
+install:
+  - composer update
+  - .travis/setup-humhub.sh
+  - composer update
+
+before_install:
+  - php --server 127.0.0.1:8080 --docroot ${HUMHUB_PATH} &>/dev/null &
+  - sleep 5
+  - curl --fail --head http://127.0.0.1:8080/index-test.php
+
+script:
+  - cd tests
+  - php ${HUMHUB_PATH}/protected/vendor/bin/codecept build
+  - php ${HUMHUB_PATH}/protected/vendor/bin/codecept run
