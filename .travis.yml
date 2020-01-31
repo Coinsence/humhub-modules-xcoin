@@ -41,4 +41,6 @@ after_failure:
 after_success:
   - test $TRAVIS_BRANCH = "coveralls-testing" &&
     test $TRAVIS_PULL_REQUEST = "false" &&
-    php ${HUMHUB_PATH}/protected/vendor/bin/codecept run --coverage-xml --env travis
+    php ${HUMHUB_PATH}/protected/vendor/bin/codecept run --coverage-xml --env travis &&
+    cd .. &&
+    php ${HUMHUB_PATH}/protected/vendor/bin/php-coveralls -v
