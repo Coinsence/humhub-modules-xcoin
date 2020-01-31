@@ -15,7 +15,8 @@ env:
 
 
 cache:
-  - $HOME/.composer/cache
+  directories:
+    - $HOME/.composer/cache
 
 install:
   - composer update
