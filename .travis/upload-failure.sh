@@ -3,14 +3,11 @@
 # -e = exit when one command returns != 0, -v print each command before executing
 set -ev
 
-# change to protected directory
-cd protected
-
 # find _output folder and add to zip
-find humhub/ -type d -name "_output" -exec zip -r --exclude="*.gitignore" failure.zip {} +
+find tests/ -type d -name "_output" -exec zip -r --exclude="*.gitignore" failure.zip {} +
 
 # add logs to failure.zip
-zip -ur failure.zip runtime/logs || true
+zip -ur failure.zip ${HUMHUB_PATH}/protected/runtime/logs || true
 
 zip -ur failure.zip /tmp/phpserver.log || true
 
