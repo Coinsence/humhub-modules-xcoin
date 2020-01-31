@@ -11,6 +11,7 @@ cd ${HUMHUB_PATH}
 
 git clone --depth 1 https://github.com/Coinsence/humhub.git .
 composer install --prefer-dist --no-interaction
+composer require --dev php-coveralls/php-coveralls
 
 npm install
 grunt build-assets
