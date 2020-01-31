@@ -19,7 +19,7 @@ cd ${HUMHUB_PATH}/protected/humhub/tests
 sed -i -e "s|'installed' => true,|'installed' => true,\n\t'moduleAutoloadPaths' => ['$(dirname $old)']|g" config/common.php
 cat config/common.php
 
-mysql -e 'CREATE DATABASE humhub_test;'
+mysql -e 'CREATE DATABASE humhub_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
 php codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
 php codeception/bin/yii installer/auto
 php codeception/bin/yii search/rebuild
