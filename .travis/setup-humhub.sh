@@ -4,6 +4,7 @@
 set -ev
 
 old=$(pwd)
+DEFAULTASSETNAME='Decimal Space'
 
 mkdir ${HUMHUB_PATH}
 cd ${HUMHUB_PATH}
@@ -16,7 +17,7 @@ grunt build-assets
 
 cd ${HUMHUB_PATH}/protected/humhub/tests
 
-sed -i -e "s|'installed' => true,|'installed' => true,\n\t'moduleAutoloadPaths' => ['$(dirname $old)']|g" config/common.php
+sed -i -e "s|'installed' => true,|'installed' => true,\n\t'moduleAutoloadPaths' => ['$(dirname $old)'],\n\t'defaultAssetName' => '$DEFAULTASSETNAME'|g" config/common.php
 cat config/common.php
 
 mysql -e 'CREATE DATABASE humhub_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
