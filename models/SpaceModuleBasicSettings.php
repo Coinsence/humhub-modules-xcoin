@@ -45,26 +45,6 @@ class SpaceModuleBasicSettings extends Model
             $this->allowDirectCoinTransfer = 1;
     }
 
-    public function showAccountTitle()
-    {
-        return $this->accountTitle;
-    }
-
-    public function showTransactionAmount()
-    {
-        return $this->transactionAmount;
-    }
-
-    public function showTransactionComment()
-    {
-        return $this->transactionComment;
-    }
-
-    public function showAllowDirectCoinTransfer()
-    {
-        return $this->allowDirectCoinTransfer;
-    }
-
     /**
      * Static initializer
      * @return \self
