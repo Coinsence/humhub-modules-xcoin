@@ -115,7 +115,7 @@ class Transaction extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
-        if ($this->transaction_type != self::TRANSACTION_TYPE_ISSUE) {
+        if ($this->transaction_type != self::TRANSACTION_TYPE_ISSUE && $this->eth_hash == null) {
             Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_TRANSFER, new Event(['sender' => $this]));
         }
 
