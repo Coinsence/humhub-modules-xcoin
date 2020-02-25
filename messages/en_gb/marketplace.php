@@ -31,8 +31,8 @@ return [
     'Please enter your product name' => '',
     'Price' => '',
     'Save' => '',
-    'Select asset' => 'Select coin',
+    'Select asset' => 'Select COIN',
     'Select offer type' => '',
     'Select payment type' => '',
-    'Sell Product' => '',
+    'Sell Product' => 'Offer product',
 ];

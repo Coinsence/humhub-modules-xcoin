@@ -17,13 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Exchange</strong> asset' => '<strong>Exchange</strong> coin',
+    '<strong>Exchange</strong> asset' => '<strong>Exchange</strong> COIN',
     'Add new offer' => '',
-    'Asset Exchange' => 'Coin exchange',
+    'Asset Exchange' => 'COIN exchange',
     'Buy' => '',
     'Change' => '',
-    'Price per unit' => 'Price per coin',
-    'Select asset' => 'Slect coin',
+    'Price per unit' => 'Price per COIN',
+    'Select asset' => 'Select COIN',
     'Sender account' => '',
     'Total amount' => '',
 ];

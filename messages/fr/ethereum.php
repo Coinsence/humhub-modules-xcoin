@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Coin Address' => 'Adresse de la piéce',
+    'Coin Address' => 'Adresse des COIN',
     'Dao Address' => 'Adresse Dao',
     'Enable ethereum' => 'Activer Ethereum',
     'Ethereum' => 'Ethereum',

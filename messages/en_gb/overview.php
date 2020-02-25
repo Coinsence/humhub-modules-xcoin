@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Asset</strong> distribution' => '<strong>Coin</strong> owner list',
+    '<strong>Asset</strong> distribution' => '<strong>COIN</strong> owner list',
     '<strong>Latest transactions</strong> of all space owned accounts' => '',
     '<strong>Latest transactions</strong> of all user accounts' => '',
-    '<strong>Latest transactions</strong> of space assets' => '<strong>Latest transactions</strong> of space coins',
+    '<strong>Latest transactions</strong> of space assets' => '<strong>Latest transactions</strong> of space COINs',
     '<strong>Latest</strong> transactions' => '',
     '<strong>Latest</strong> transactions in your accounts' => '',
     '<strong>Shareholder</strong> listing' => '<strong>Contributor</strong> list',
@@ -30,11 +30,11 @@ return [
     'Create account' => '',
     'If no manager is specified this account is manged by the owner or it\'s representatives.' => '',
     'If no owner is specified, it is a personal account.' => '',
-    'Issue new assets' => 'Create new coins',
+    'Issue new assets' => 'Create new COINs',
     'Latest account transactions' => '',
-    'Latest asset transactions' => 'Latest coin transactions',
+    'Latest asset transactions' => 'Latest COIN transactions',
     'Latest transactions' => '',
-    'Shareholder list' => 'Contribution list',
+    'Shareholder list' => 'Contributor list',
     'Your accounts' => '',
     'Total Issued Amount' => '',
 ];

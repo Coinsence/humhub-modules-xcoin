@@ -17,16 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Account managed by the actual Space owner' => 'Compte géré par le propriétaire de l\'espace réel',
+    'Account managed by the actual Space owner' => 'Compte géré par le propriétaire de l\'espace',
     'Account overview:' => 'Aperçu du compte',
-    'Account summary' => 'Récapitulatif du compte',
+    'Account summary' => 'Résumé du compte',
     'Back to overview' => 'Retour à l\'aperçu',
-    'Balance' => 'Balance',
+    'Balance' => 'Solde',
     'Create/Edit Account' => 'Créer/ Modifier le compte',
     'Edit' => 'Modifier',
     'Ethereum Address' => 'Adresse Ethereum',
     'Manager' => 'Manager',
-    'No assets available' => 'Aucun asset disponible',
+    'No assets available' => 'Aucun COIN disponible',
     'Owner' => 'Propriétaire',
     'Save' => 'Enregistre',
     'Transfer' => 'Transfert',

@@ -18,13 +18,13 @@
  */
 return [
     '<strong>Select</strong> sender account' => '',
-    '<strong>Transfer</strong> asset' => '<strong>Send</strong> coins',
+    '<strong>Transfer</strong> asset' => '<strong>Send</strong> COINs',
     '<strong>Transfer</strong> details' => '<strong>Transaction</strong> details',
     'Amount' => '',
     'Comment' => '',
     'Date' => '',
     'Ethereum transaction Hash' => '',
-    'Select asset' => 'Select coin',
+    'Select asset' => 'Select COINs',
     'Sender account' => '',
     'Target account' => 'Receiver account',
     'Transaction ID' => '',

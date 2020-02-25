@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Coin Address' => '',
+    'Coin Address' => 'COIN address',
     'Dao Address' => '',
     'Enable ethereum' => '',
     'Ethereum' => '',
     'Ethereum summary' => '',
-    'unavailable' => '',
+    'unavailable' => 'Unavailable',
     'Space Ethereum migration is in progress ! This could take some minutes.' => ''
 ];

@@ -18,14 +18,14 @@
  */
 return [
     '<strong>Select</strong> sender account' => '<strong>Selectionner</strong> compte expéditeur',
-    '<strong>Transfer</strong> asset' => '<strong> send </strong> coin',
-    '<strong>Transfer</strong> details' => '<strong >Transaction</strong> details',
-    'Amount' => 'Monatnt',
-    'Comment' => 'Comment',
+    '<strong>Transfer</strong> asset' => '<strong> Transferer </strong> des COIN',
+    '<strong>Transfer</strong> details' => '<strong >Transaction</strong> détails',
+    'Amount' => 'Monatant',
+    'Comment' => 'Commentaire',
     'Date' => '',
     'Ethereum transaction Hash' => 'Ethereum transaction Hash',
-    'Select asset' => 'Sélectionner coin',
+    'Select asset' => 'Sélectionner les COIN',
     'Sender account' => 'Compte expéditeur',
-    'Target account' => 'Receiver account',
+    'Target account' => 'Compte recepteur',
     'Transaction ID' => 'ID de transaction',
 ];

@@ -26,8 +26,8 @@ return [
     'Edit' => '',
     'Ethereum Address' => '',
     'Manager' => '',
-    'No assets available' => 'No coins available',
+    'No assets available' => 'No COINs available',
     'Owner' => '',
-    'Save' => '',
+    'Save' => 'Transfer',
     'Transfer' => '',
 ];
