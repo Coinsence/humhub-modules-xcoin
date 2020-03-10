@@ -3,7 +3,7 @@
 namespace humhub\modules\xcoin\helpers;
 
 use humhub\modules\user\components\PermissionManager;
-use humhub\modules\xcoin\permissions\ReviewPublicOffers;
+use humhub\modules\xcoin\permissions\ReviewSubmittedProjects;
 use yii\base\InvalidConfigException;
 
 /**
@@ -17,8 +17,8 @@ class PublicOffersHelper
      * @return bool
      * @throws InvalidConfigException
      */
-    public static function canReviewPublicOffers()
+    public static function canReviewSubmittedProjects()
     {
-        return (new PermissionManager())->can(new ReviewPublicOffers());
+        return (new PermissionManager())->can(new ReviewSubmittedProjects());
     }
 }

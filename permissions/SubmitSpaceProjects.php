@@ -15,7 +15,7 @@ use Yii;
 /**
  * CreateEntry Permission
  */
-class CreateAccount extends \humhub\libs\BasePermission
+class SubmitSpaceProjects extends \humhub\libs\BasePermission
 {
 
     /**
@@ -30,29 +30,22 @@ class CreateAccount extends \humhub\libs\BasePermission
         Space::USERGROUP_OWNER,
         Space::USERGROUP_ADMIN,
         Space::USERGROUP_MODERATOR,
-        Space::USERGROUP_SUBMITTER,
-        Space::USERGROUP_MEMBER,
-        User::USERGROUP_SELF
+        Space::USERGROUP_SUBMITTER
     ];
 
     /**
      * @inheritdoc
      */
-    protected $fixedGroups = [
-        User::USERGROUP_FRIEND,
-        User::USERGROUP_GUEST,
-        User::USERGROUP_USER,
-        User::USERGROUP_FRIEND,
-    ];
+    protected $fixedGroups = [];
 
     public function getTitle()
     {
-        return Yii::t('XcoinModule.base', 'Create account');
+        return Yii::t('XcoinModule.base', 'Submit Project on behalf of this space');
     }
 
     public function getDescription()
     {
-        return Yii::t('XcoinModule.base', 'Allows the user to create an own account');
+        return Yii::t('XcoinModule.base', 'Allows the user to submit project proposals on behalf of this space');
     }
 
 }

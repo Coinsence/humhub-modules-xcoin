@@ -54,7 +54,7 @@ Assets::register($this);
                             <!-- product edit button end -->
 
                             <!-- product review button start -->
-                            <?php if (PublicOffersHelper::canReviewPublicOffers()): ?>
+                            <?php if (PublicOffersHelper::canReviewSubmittedProjects()): ?>
                                 <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
                                     <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.product', 'Trusted'), ['/xcoin/product/review', 'id' => $product->id, 'status' => Product::PRODUCT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted pull-right']) ?>
                                 <?php else : ?>

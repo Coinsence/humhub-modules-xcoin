@@ -187,7 +187,7 @@ class FundingController extends ContentContainerController
 
     public function actionReview($id, $status)
     {
-        if(!PublicOffersHelper::canReviewPublicOffers()){
+        if(!PublicOffersHelper::canReviewSubmittedProjects()){
             throw new HttpException(401);
         }
 

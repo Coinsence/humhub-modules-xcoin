@@ -15,7 +15,7 @@ use Yii;
 /**
  * CreateEntry Permission
  */
-class ReviewPublicOffers extends \humhub\libs\BasePermission
+class ReviewSubmittedProjects extends \humhub\libs\BasePermission
 {
 
     /**
@@ -26,7 +26,11 @@ class ReviewPublicOffers extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    public $defaultAllowedGroups = [];
+    public $defaultAllowedGroups = [
+        Space::USERGROUP_OWNER,
+        Space::USERGROUP_ADMIN,
+        Space::USERGROUP_MODERATOR
+    ];
 
     /**
      * @inheritdoc
@@ -35,7 +39,7 @@ class ReviewPublicOffers extends \humhub\libs\BasePermission
 
     public function getTitle()
     {
-        return Yii::t('XcoinModule.base', 'Review Public Offers');
+        return Yii::t('XcoinModule.base', 'Review Submitted Projects');
     }
 
     public function getDescription()

@@ -16,7 +16,7 @@ use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
 use humhub\modules\xcoin\models\Transaction;
-use humhub\modules\xcoin\permissions\ReviewPublicOffers;
+use humhub\modules\xcoin\permissions\ReviewSubmittedProjects;
 use xcoin\FunctionalTester;
 
 class CrowdfundingCest
@@ -126,7 +126,7 @@ class CrowdfundingCest
 
         $I->amUser1();
 
-        $I->setGroupPermission(2, ReviewPublicOffers::class);
+        $I->setGroupPermission(2, ReviewSubmittedProjects::class);
 
         $project = Funding::findOne(['id' => 1]);
 

@@ -81,7 +81,7 @@ Assets::register($this);
                             <!-- campaign edit button end -->
 
                             <!-- campaign review button start -->
-                            <?php if (PublicOffersHelper::canReviewPublicOffers()): ?>
+                            <?php if (PublicOffersHelper::canReviewSubmittedProjects()): ?>
                                 <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
                                     <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Trusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted pull-right']) ?>
                                 <?php else : ?>

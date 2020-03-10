@@ -3,7 +3,7 @@
 namespace humhub\modules\xcoin;
 
 use humhub\modules\xcoin\permissions\CreateAccount;
-use humhub\modules\xcoin\permissions\ReviewPublicOffers;
+use humhub\modules\xcoin\permissions\ReviewSubmittedProjects;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -47,11 +47,13 @@ class Module extends ContentContainerModule
      */
     public function getPermissions($contentContainer = null)
     {
-        $permissions [] = new permissions\ReviewPublicOffers();
+        $permissions [] = new permissions\ReviewSubmittedProjects();
 
         if ($contentContainer !== null) {
             $permissions [] = new permissions\CreateAccount();
         }
+
+        $permissions [] = new permissions\SubmitSpaceProjects();
 
         return $permissions;
     }
