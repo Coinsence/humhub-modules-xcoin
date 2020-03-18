@@ -18,8 +18,6 @@ class m200310_120451_challenge_table extends Migration
             'space_id' => $this->integer()->notNull(),
             'asset_id' => $this->integer()->notNull(),
             'title' => $this->char(100)->notNull(),
-            'country' => $this->char(2)->notNull(),
-            'location' => $this->char(255)->notNull(),
             'description' => $this->text()->notNull(),
             'created_at' => $this->dateTime()->defaultValue(date('Y-m-d H:i:s'))->notNull(),
             'created_by' => $this->integer()->notNull(),
