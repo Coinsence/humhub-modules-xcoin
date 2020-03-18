@@ -15,12 +15,9 @@ class m200310_120451_challenge_table extends Migration
     {
         $this->createTable('xcoin_challenge', [
             'id' => $this->primaryKey(),
-            'space_id' => $this->integer()->null(),
+            'space_id' => $this->integer()->notNull(),
             'asset_id' => $this->integer()->notNull(),
-            'category_id' => $this->integer()->notNull(),
             'title' => $this->char(100)->notNull(),
-            'country' => $this->char(2)->notNull(),
-            'location' => $this->char(255)->notNull(),
             'description' => $this->text()->notNull(),
             'created_at' => $this->dateTime()->defaultValue(date('Y-m-d H:i:s'))->notNull(),
             'created_by' => $this->integer()->notNull(),
@@ -28,9 +25,7 @@ class m200310_120451_challenge_table extends Migration
 
         $this->addForeignKey('fk_challenge_space', 'xcoin_challenge', 'space_id', 'space', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_challenge_asset', 'xcoin_challenge', 'asset_id', 'xcoin_asset', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_challenge_category', 'xcoin_challenge', 'category_id', 'xcoin_category', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_challenge_creator', 'xcoin_challenge', 'created_by', 'user', 'id', 'CASCADE', 'CASCADE');
-
     }
 
     /**
