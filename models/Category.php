@@ -20,6 +20,7 @@ use humhub\modules\user\models\User;
  * @property integer $id
  * @property string $name
  * @property string $slug
+ * @property integer $type
  * @property string $created_at
  * @property integer $created_by
  */
@@ -28,6 +29,10 @@ class Category extends ActiveRecord
 
     const SCENARIO_CREATE = 'screate';
     const SCENARIO_EDIT = 'sedit';
+
+    // category types
+    const TYPE_FUNDING = 1;
+    const TYPE_MARKETPLACE = 2;
 
     /**
      * @inheritdoc
@@ -43,12 +48,20 @@ class Category extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'slug', 'created_by'], 'required'],
-            [['created_by'], 'integer'],
+            [['name', 'slug', 'type', 'created_by'], 'required'],
+            [['type', 'created_by'], 'integer'],
+            ['type', 'validateType'],
             [['created_at'], 'safe'],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['name', 'slug'], 'string', 'max' => 255],
         ];
+    }
+
+    public function validateType($attribute, $params, $validator)
+    {
+        if (!in_array($this->$attribute, [self::TYPE_FUNDING, self::TYPE_MARKETPLACE])) {
+            $this->addError($attribute, Yii::t('XcoinModule.category', 'The type must be either "Crowdfunding" or "Marketplace".'));
+        }
     }
 
     public function scenarios()
@@ -56,6 +69,7 @@ class Category extends ActiveRecord
         return [
             self::SCENARIO_CREATE => [
                 'name',
+                'type'
             ],
             self::SCENARIO_EDIT => [
                 'name'
@@ -71,6 +85,14 @@ class Category extends ActiveRecord
         return [
             'id' => Yii::t('XcoinModule.category', 'ID'),
             'name' => Yii::t('XcoinModule.category', 'Name'),
+        ];
+    }
+
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_FUNDING => Yii::t('XcoinModule.category', 'Crowdfunding'),
+            self::TYPE_MARKETPLACE => Yii::t('XcoinModule.category', 'Marketplace'),
         ];
     }
 
