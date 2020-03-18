@@ -56,6 +56,7 @@ class Category extends ActiveRecord
             [['created_at'], 'safe'],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['name', 'slug'], 'string', 'max' => 255],
+            [['name'], 'unique', 'targetAttribute' => ['name', 'type'], 'message' => Yii::t('XcoinModule.category', 'the combination {attributes} is already used ')]
         ];
     }
 
@@ -100,7 +101,7 @@ class Category extends ActiveRecord
 
     public function canDeleteFile()
     {
-        return Yii::$app->user->identity->isSystemAdmin() ? true : false ;
+        return Yii::$app->user->identity->isSystemAdmin() ? true : false;
     }
 
     public function getCover()
