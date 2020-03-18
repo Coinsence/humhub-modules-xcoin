@@ -34,6 +34,8 @@ class Category extends ActiveRecord
     const TYPE_FUNDING = 1;
     const TYPE_MARKETPLACE = 2;
 
+    public $pictureFile;
+
     /**
      * @inheritdoc
      */
