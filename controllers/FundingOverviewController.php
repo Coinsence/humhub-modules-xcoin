@@ -13,6 +13,7 @@ use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
 use humhub\components\Controller;
+use humhub\modules\xcoin\models\FundingFilter;
 use Yii;
 use yii\db\Expression;
 use yii\web\HttpException;
@@ -20,21 +21,41 @@ use yii\web\HttpException;
 class FundingOverviewController extends Controller
 {
 
-    public function actionIndex($verified = false)
+    public function actionIndex($category = false)
     {
         $query = Funding::find();
         $query->where(['>', 'xcoin_funding.amount', 0]);
         $query->andWhere(['=', 'xcoin_funding.status', 0]); // only not investment accepted campaigns
         $query->andWhere(['IS NOT', 'xcoin_funding.id', new Expression('NULL')]);
         $query->orderBy(['created_at' => SORT_DESC]);
+        $query->andWhere(['review_status' => Funding::FUNDING_REVIEWED]);
 
-        if ($verified == Funding::FUNDING_REVIEWED) {
-            $query->andWhere(['review_status' => Funding::FUNDING_REVIEWED]);
-        } else {
-            $query->andWhere(['review_status' => Funding::FUNDING_NOT_REVIEWED]);
+        $model = new FundingFilter();
+
+        $model->load(Yii::$app->request->post());
+
+        $spacesList = [];
+        $challengesList = [];
+        $countriesList = [];
+
+        $spaces = Space::find();
+
+        if ($category) {
+            // TODO: filter spaceList on the base of the categories of its challenges
+            $spaces = Space::find();
         }
 
-        return $this->render('index', ['fundings' => $query->all()]);
+        foreach ($spaces->all() as $space) {
+            $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+        }
+
+        return $this->render('index', [
+            'model'         => $model,
+            'spacesList'    => $spacesList,
+            'challengesList'=> $challengesList,
+            'countriesList' => $countriesList,
+            'fundings'      => $query->all()
+        ]);
     }
 
 

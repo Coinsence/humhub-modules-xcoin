@@ -5,46 +5,136 @@
 
 .crowd-funding {
 
-}
+  /* Filters */
 
-/* Filters */
+  .filters {
+    border-bottom: 1px solid #d4d4d4;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+    padding: 16px 0;
 
-.crowd-funding .filters {
-  border-bottom: 1px solid #d4d4d4;
-  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-}
-.crowd-funding .filters .category {
-  display: block;
-  text-align: center;
-  height: 110px;
-}
-.crowd-funding .filters .category .regular-radio-button {
-  display: none;
-}
-.crowd-funding .filters .category span {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-  background-color: #3cbeef;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  border-radius: 16px;
-  box-shadow: 0 0 6px 2px #ccc;
-  padding: 10px;
-  cursor: pointer;
-}
-.crowd-funding .filters .category input:checked + span {
-  background-color: darkblue;
-}
+    .category {
+      display: block;
+      text-align: center;
+      height: 110px;
+    }
+    .category .regular-radio-button {
+      display: none;
+    }
+    .category span {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #3cbeef;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      border-radius: 16px;
+      box-shadow: 0 0 6px 2px #ccc;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .category input:checked + span {
+      background-color: darkblue;
+    }
 
-/* Content */
+    .location-field {
+      position: relative;
+    }
+    .location-field .location-selection {
+      height: 34px;
+      line-height: 1.428571429;
+      padding: 6px 24px 6px 12px;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      color: #555555;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      outline: 0;
+      cursor: pointer;
+    }
+    .location-field.selected .location-selection {
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+      transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+      border-color: #66afe9;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-color: transparent;
+    }
+    .location-field .location-selection .selection-arrow {
+      position: absolute;
+      bottom: 0;
+      right: 12px;
+      top: 0;
+      width: 4px;
+    }
+    .location-field .location-selection .selection-arrow b {
+      border-color: #999 transparent transparent transparent;
+      border-style: solid;
+      border-width: 4px 4px 0 4px;
+      height: 0;
+      left: 0;
+      margin-left: -4px;
+      margin-top: -2px;
+      position: absolute;
+      top: 50%;
+      width: 0;
+    }
+    .location-field.selected .location-selection .selection-arrow b {
+        border-color: transparent transparent #999 transparent;
+        border-width: 0 4px 4px 4px;
+    }
+    .location-field .location-dropdown {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 100%;
+      width: 100%;
 
-.crowd-funding .content {
+      background-color: white;
+      border: 1px solid #66afe9;
+      border-radius: 4px;
+      box-sizing: border-box;
+      z-index: 1051;
+
+      border-top: none;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+      overflow-x: hidden;
+      margin-top: -1px;
+    }
+    .location-field.selected .location-dropdown {
+      display: block;
+    }
+    .location-field .location-dropdown .dropdown-body {
+      padding: 10px;
+    }
+    .location-field.selected .location-dropdown .dropdown-footer {
+      padding: 10px;
+      border-top: 1px solid #ccc;
+      text-align: center;
+    }
+
+    .filter-actions {
+    }
+    .filter-actions button {
+      padding: 12px 24px;
+      font-size: 12px;
+    }
+
+  }
+
+  /* Content */
+
+  .content {
+
+  }
 
 }
 
