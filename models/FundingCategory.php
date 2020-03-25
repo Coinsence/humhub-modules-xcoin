@@ -59,7 +59,7 @@ class FundingCategory extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getUser()
+    public function getCategory()
     {
         return $this->hasOne(Category::class, ['id' => 'category_id']);
     }

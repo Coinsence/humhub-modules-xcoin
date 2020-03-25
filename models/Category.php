@@ -13,6 +13,7 @@ use Yii;
 use humhub\components\ActiveRecord;
 use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "xcoin_category".
@@ -97,6 +98,17 @@ class Category extends ActiveRecord
             self::TYPE_FUNDING => Yii::t('XcoinModule.category', 'Crowdfunding'),
             self::TYPE_MARKETPLACE => Yii::t('XcoinModule.category', 'Marketplace'),
         ];
+    }
+
+    /**
+     * Returns an ActiveQuery for all funding models of this category.
+     *
+     * @return ActiveQuery
+     */
+    public function getFundings()
+    {
+        return $this->hasMany(Funding::class, ['id' => 'funding_id'])
+            ->viaTable('xcoin_funding_category', ['category_id' => 'id']);
     }
 
     public function canDeleteFile()
