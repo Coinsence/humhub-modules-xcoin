@@ -41,25 +41,6 @@ class Events
             // deactivate directory menu item
             $event->sender->deleteItemByUrl(Url::to(['/directory/directory']));
         });
-
-
-        /*
-        $event->sender->addItem([
-            'label' => Yii::t('XcoinModule.base', 'Asset Exchange'),
-            'url' => Url::to(['/xcoin/exchange']),
-            'icon' => '<i class="fa fa-exchange"></i>',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'exchange'),
-            'sortOrder' => 100000,
-        ]);
-
-        $event->sender->addItem([
-            'label' => Yii::t('XcoinModule.base', 'Jobs / Help wanted'),
-            'url' => Url::to(['/xcoin/job/overview']),
-            'icon' => '<i class="fa fa-gavel"></i>',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'job' && Yii::$app->controller->action->id == 'overview'),
-            'sortOrder' => 900,
-        ]);
-        */
     }
 
     public static function onSpaceMenuInit($event)
@@ -70,16 +51,6 @@ class Events
 
             // used to include ether-icon since it's not present in fontawesome 4.7.0 icons
             Assets::register(Yii::$app->view);
-
-            if (AssetHelper::canManageAssets($space) || Funding::find()->count() > 0) {
-                $event->sender->addItem([
-                    'label' => Yii::t('XcoinModule.base', 'Crowd Funding'),
-                    'url' => $space->createUrl('/xcoin/funding'),
-                    'icon' => '<i class="fa fa-leaf"></i>',
-                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'funding'),
-                    'sortOrder' => 10000,
-                ]);
-            }
 
             $event->sender->addItem([
                 'label' => Yii::t('XcoinModule.base', 'Accounts'),
@@ -93,7 +64,7 @@ class Events
                 'url' => $space->createUrl('/xcoin/product'),
                 'icon' => '<i class="fa fa-product-hunt"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'product'),
-                'sortOrder' => 20000,
+                'sortOrder' => 10000,
             ]);
 
             $event->sender->addItem([
@@ -101,8 +72,33 @@ class Events
                 'url' => $space->createUrl('/xcoin/ethereum'),
                 'icon' => '<i class="ether-icon-menu"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'ethereum'),
-                'sortOrder' => 30000,
+                'sortOrder' => 20000,
             ]);
+
+
+            if (AssetHelper::canManageAssets($space) || Funding::find()->count() > 0) {
+                $event->sender->addItemGroup([
+                    'id' => 'crowdfunding',
+                    'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget',  Yii::t('XcoinModule.base', 'Crowdfunding')),
+                    'sortOrder' => 30000,
+                ]);
+                $event->sender->addItem([
+                    'label' => Yii::t('XcoinModule.base', 'Space Challenges'),
+                    'group' => 'crowdfunding',
+                    'url' => $space->createUrl('/xcoin/challenge'),
+                    'icon' => '<i class="fa fa-users"></i>',
+                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'challenge'),
+                    'sortOrder' => 30000,
+                ]);
+                $event->sender->addItem([
+                    'label' => Yii::t('XcoinModule.base', 'Submitted Proposals'),
+                    'group' => 'crowdfunding',
+                    'url' => '',
+                    'icon' => '<i class="fa fa-leaf"></i>',
+                    'isActive' => '',
+                    'sortOrder' => 30000,
+                ]);
+            }
         }
     }
 

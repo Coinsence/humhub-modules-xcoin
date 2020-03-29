@@ -91,14 +91,17 @@ class FundingController extends ContentContainerController
 
     public function actionEdit()
     {
-        if (!AssetHelper::canManageAssets($this->contentContainer)) {
+        /** @var Space $currentSpace */
+        $currentSpace = $this->contentContainer;
+
+        if (!AssetHelper::canManageAssets($currentSpace)) {
             throw new HttpException(401);
         }
 
-        $model = Funding::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $this->contentContainer->id]);
+        $model = Funding::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $currentSpace->id]);
         if ($model === null) {
             $model = new Funding();
-            $model->space_id = $this->contentContainer->id;
+            $model->space_id = $currentSpace->id;
             $model->created_by = Yii::$app->user->id;
         }
 
@@ -108,26 +111,8 @@ class FundingController extends ContentContainerController
         // Step 1: Wanted Asset Selection and Exchange Rate
         if ($model->isFirstStep()) {
 
-            // Get default Asset that will be preselected
-            $defaultAsset = null;
-
-            /* "defaultAssetName" parameter contains the default asset name that must be preselected
-            This parameter should be introduced in the file humhub/protected/config/common.php*/
-            if (array_key_exists('defaultAssetName', Yii::$app->params)) {
-                $defaultAssetName = Yii::$app->params['defaultAssetName'];
-                $defaultAssetSpace = Space::findOne(['name' => $defaultAssetName]);
-
-                if ($defaultAssetSpace) {
-                    $defaultAsset = AssetHelper::getSpaceAsset($defaultAssetSpace);
-                    if (!$defaultAsset->getIssuedAmount())
-                        $defaultAsset = null;
-                }
-            }
-
-            $assetList = [];
-            foreach (Asset::find()->andWhere(['!=', 'id', AssetHelper::getSpaceAsset($this->contentContainer)->id])->all() as $asset) {
-                $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
-            }
+            $assetList = AssetHelper::getAllAssets($currentSpace);
+            $defaultAsset = AssetHelper::getDefaultAsset();
 
             return $this->renderAjax('create', [
                     'model' => $model,
@@ -150,8 +135,8 @@ class FundingController extends ContentContainerController
 
             $this->view->saved();
 
-            return $this->redirect($this->contentContainer->createUrl('/xcoin/funding/overview', [
-                'container' => $this->contentContainer,
+            return $this->redirect($currentSpace->createUrl('/xcoin/funding/overview', [
+                'container' => $currentSpace,
                 'fundingId' => $model->id
             ]));
         }
@@ -161,14 +146,14 @@ class FundingController extends ContentContainerController
 
             return $this->renderAjax('details', [
                 'model' => $model,
-                'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer)
+                'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
             ]);
         }
 
         // Step 2: Details
         return $this->renderAjax('details', [
             'model' => $model,
-            'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer)
+            'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
         ]);
     }
 

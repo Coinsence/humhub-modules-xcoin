@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\helpers;
 
+use humhub\modules\space\widgets\Image as SpaceImage;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -86,4 +87,31 @@ class AssetHelper
         return false;
     }
 
+    public static function getAllAssets(Space $excludedSpace = null)
+    {
+        $assets = [];
+        foreach (Asset::find()->andWhere(['!=', 'id', self::getSpaceAsset($excludedSpace)->id])->all() as $asset) {
+            $assets[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
+        }
+
+        return $assets;
+    }
+
+    public static function getDefaultAsset()
+    {
+        $defaultAsset = null;
+
+        if (array_key_exists('defaultAssetName', Yii::$app->params)) {
+            $defaultAssetName = Yii::$app->params['defaultAssetName'];
+            $defaultAssetSpace = Space::findOne(['name' => $defaultAssetName]);
+
+            if ($defaultAssetSpace) {
+                $defaultAsset = self::getSpaceAsset($defaultAssetSpace);
+                if (!$defaultAsset->getIssuedAmount())
+                    $defaultAsset = null;
+            }
+        }
+
+        return $defaultAsset;
+    }
 }

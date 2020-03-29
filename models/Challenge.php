@@ -36,6 +36,8 @@ class Challenge extends ActiveRecord
     const SCENARIO_CREATE = 'screate';
     const SCENARIO_EDIT = 'sedit';
 
+    public $coverFile;
+
     /**
      * @inheritdoc
      */
@@ -64,13 +66,11 @@ class Challenge extends ActiveRecord
     {
         return [
             self::SCENARIO_CREATE => [
-                'space_id',
                 'asset_id',
                 'title',
                 'description'
             ],
             self::SCENARIO_EDIT => [
-                'space_id',
                 'asset_id',
                 'title',
                 'description'
@@ -86,7 +86,7 @@ class Challenge extends ActiveRecord
         return [
             'id' => Yii::t('XcoinModule.challenge', 'ID'),
             'space_id' => Yii::t('XcoinModule.challenge', 'Space ID'),
-            'asset_id' => Yii::t('XcoinModule.challenge', 'Requested asset'),
+            'asset_id' => Yii::t('XcoinModule.challenge', 'Requested coin'),
             'title' => Yii::t('XcoinModule.challenge', 'Title'),
             'description' => Yii::t('XcoinModule.challenge', 'Description'),
             'created_at' => Yii::t('XcoinModule.challenge', 'Created At'),
@@ -108,6 +108,14 @@ class Challenge extends ActiveRecord
     public function getAsset()
     {
         return $this->hasOne(Asset::class, ['id' => 'asset_id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getFundings()
+    {
+        return $this->hasMany(Funding::class, ['challenge_id' => 'id']);
     }
 
     /**
@@ -144,7 +152,7 @@ class Challenge extends ActiveRecord
     public function getCover()
     {
         return File::find()->where([
-            'object_model' => Funding::class,
+            'object_model' => Challenge::class,
             'object_id' => $this->id
         ])->orderBy(['id' => SORT_DESC])->one();
     }
