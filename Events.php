@@ -85,9 +85,9 @@ class Events
                 $event->sender->addItem([
                     'label' => Yii::t('XcoinModule.base', 'Space Challenges'),
                     'group' => 'crowdfunding',
-                    'url' => '',
+                    'url' => $space->createUrl('/xcoin/challenge'),
                     'icon' => '<i class="fa fa-users"></i>',
-                    'isActive' => '',
+                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'challenge'),
                     'sortOrder' => 30000,
                 ]);
                 $event->sender->addItem([
