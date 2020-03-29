@@ -13,9 +13,7 @@ use humhub\modules\space\Module;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
-
 use humhub\modules\xcoin\helpers\AssetHelper;
-use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\helpers\Utils;
 use Yii;
 use yii\db\ActiveQuery;
@@ -26,7 +24,7 @@ use yii\web\HttpException;
  *
  * @property integer $id
  * @property integer $space_id
- * @property integer $asset_id
+ * @property integer $challenge_id
  * @property integer $exchange_rate
  * @property integer $amount
  * @property string $created_at
@@ -38,7 +36,7 @@ use yii\web\HttpException;
  * @property integer $review_status
  * @property integer $status
  *
- * @property Asset $asset
+ * @property Challenge $challenge
  * @property User $createdBy
  * @property Space $space
  */
@@ -74,7 +72,7 @@ class Funding extends ActiveRecord
         return [
             [
                 [
-                    'asset_id',
+                    'challenge_id',
                     'created_by',
                     'amount',
                     'title',
@@ -84,11 +82,11 @@ class Funding extends ActiveRecord
                 ],
                 'required'
             ],
-            [['space_id', 'asset_id', 'amount', 'created_by'], 'integer'],
+            [['space_id', 'challenge_id', 'amount', 'created_by'], 'integer'],
             [['amount'], 'number', 'min' => '1'],
             [['exchange_rate'], 'number', 'min' => '0.1'],
             [['created_at'], 'safe'],
-            [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
+            [['challenge_id'], 'exist', 'skipOnError' => true, 'targetClass' => Challenge::class, 'targetAttribute' => ['challenge_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['title', 'description'], 'string', 'max' => 255],
@@ -101,7 +99,7 @@ class Funding extends ActiveRecord
     {
         return [
             self::SCENARIO_EDIT => [
-                'asset_id',
+                'challenge_id',
                 'amount',
                 'title',
                 'description',
@@ -121,7 +119,7 @@ class Funding extends ActiveRecord
         return [
             'id' => Yii::t('XcoinModule.base', 'ID'),
             'space_id' => Yii::t('XcoinModule.base', 'Space ID'),
-            'asset_id' => Yii::t('XcoinModule.base', 'Requested asset'),
+            'challenge_id' => Yii::t('XcoinModule.base', 'Challenge'),
             'exchange_rate' => Yii::t('XcoinModule.base', 'Exchange rate'),
             'amount' => Yii::t('XcoinModule.base', 'Requested Amount'),
             'created_at' => Yii::t('XcoinModule.base', 'Created At'),
@@ -193,9 +191,9 @@ class Funding extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getAsset()
+    public function getChallenge()
     {
-        return $this->hasOne(Asset::class, ['id' => 'asset_id']);
+        return $this->hasOne(Challenge::class, ['id' => 'challenge_id']);
     }
 
     /**
@@ -279,7 +277,7 @@ class Funding extends ActiveRecord
 
     public function isFirstStep()
     {
-        return empty($this->asset_id);
+        return empty($this->challenge_id);
     }
 
     public function isSecondStep()
