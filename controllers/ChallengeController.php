@@ -71,7 +71,9 @@ class ChallengeController extends ContentContainerController
 
             $this->view->saved();
 
-            return $this->htmlRedirect(['index', 'challengeId' => $model->id]);
+            return $this->htmlRedirect($currentSpace->createUrl('/xcoin/challenge/index', [
+                'challengeId' => $model->id
+            ]));
         }
 
         return $this->renderAjax('create', [
