@@ -129,6 +129,54 @@
       font-size: 12px;
     }
 
+    /* Categories owl-carousel styling */
+
+    .owl-stage {
+      margin: 20px 0;
+    }
+    .owl-carousel .owl-prev,
+    .owl-carousel .owl-next {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+    .owl-carousel .owl-prev {
+      left: -20px;
+    }
+    .owl-carousel .owl-next {
+      right: -20px;
+    }
+    .owl-carousel .owl-prev .fa,
+    .owl-carousel .owl-next .fa {
+      background-color: #fff;
+      height: 40px;
+      width: 40px;
+      line-height: 40px;
+      border-radius: 50%;
+      border: 1px solid gray;
+      box-shadow: 0 0 4px 0 gray;
+    }
+    .owl-carousel .disabled .fa {
+      background-color: #cbcbcb;
+      cursor: not-allowed;
+    }
+
+    /* Media queries */
+
+    @media (max-width: 767px) {
+      .owl-carousel .owl-prev {
+        left: -12px;
+      }
+      .owl-carousel .owl-next {
+        right: -12px;
+      }
+      .owl-carousel .owl-prev .fa,
+      .owl-carousel .owl-next .fa {
+        height: 32px;
+        width: 32px;
+        line-height: 32px;
+      }
+    }
   }
 
   /* Content */
@@ -144,9 +192,6 @@
       color: #202020;
     }
 
-    .panels {
-
-    }
     .add-project {
       height: 364px;
       display: flex;
@@ -204,6 +249,8 @@
       box-shadow: 0 0 40px #c5c5c5;
       -webkit-box-shadow: 0 0 40px #c5c5c5;
       -moz-box-shadow: 0 0 40px #c5c5c5;
+
+      border-radius: 8px;
 
       opacity: 0;
       transition: opacity 0.3s ease-in-out;
@@ -341,55 +388,6 @@
 
   }
 
-}
-
-/* Categories owl-carousel styling */
-
-.crowd-funding .filters .owl-stage {
-  margin: 20px 0;
-}
-.crowd-funding .filters .owl-carousel .owl-prev,
-.crowd-funding .filters .owl-carousel .owl-next {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-}
-.crowd-funding .filters .owl-carousel .owl-prev {
-  left: -20px;
-}
-.crowd-funding .filters .owl-carousel .owl-next {
-  right: -20px;
-}
-.crowd-funding .filters .owl-carousel .owl-prev .fa,
-.crowd-funding .filters .owl-carousel .owl-next .fa {
-  background-color: #fff;
-  height: 40px;
-  width: 40px;
-  line-height: 40px;
-  border-radius: 50%;
-  border: 1px solid gray;
-  box-shadow: 0 0 4px 0 gray;
-}
-.crowd-funding .filters .owl-carousel .disabled .fa {
-  background-color: #cbcbcb;
-  cursor: not-allowed;
-}
-
-/* Media queries */
-
-@media (max-width: 767px) {
-  .crowd-funding .filters .owl-carousel .owl-prev {
-    left: -12px;
-  }
-  .crowd-funding .filters .owl-carousel .owl-next {
-    right: -12px;
-  }
-  .crowd-funding .filters .owl-carousel .owl-prev .fa,
-  .crowd-funding .filters .owl-carousel .owl-next .fa {
-    height: 32px;
-    width: 32px;
-    line-height: 32px;
-  }
 }
 
 /* -------------------------------------------- */

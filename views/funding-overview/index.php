@@ -13,14 +13,13 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 use yii\bootstrap\Progress;
 
 
+Assets::register($this);
+Select2BootstrapAsset::register($this);
+
 /** @var $fundings Funding[] */
 /** @var $spacesList array */
 /** @var $challengesList array */
 /** @var $countriesList array */
-
-Assets::register($this);
-Select2BootstrapAsset::register($this);
-
 
 $img_placeholder = 'https://via.placeholder.com/600x400.png';
 $categories = [
@@ -198,10 +197,10 @@ $categories = [
                     <span class="num-projects"><?= count($fundings) . ' ' . Yii::t('XcoinModule.funding', 'Project(s)') ?></span>
                 </div>
             </div>
-            <div class="row panels">
+            <div class="panels">
                 <div class="col-md-3">
 
-                    <a href="<?= Url::to(['/xcoin/funding-overview/new']) ?>" data-target="#globalModal" class="add-project">
+                    <a class="add-project" href="<?= Url::to(['/xcoin/funding-overview/new']) ?>" data-target="#globalModal">
                         <span class="icon">
                             <i class="cross"></i>
                         </span>
@@ -229,8 +228,9 @@ $categories = [
                                         <?php else : ?>
                                             <div class="bg"
                                                  style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
-                                            <img src="<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>"
-                                                 height="140"/>
+                                            <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
+                                                'height' => '140'
+                                            ]) ?>
                                         <?php endif ?>
                                         <!-- campaign cover end -->
 

@@ -1,0 +1,106 @@
+
+/* -------------------------------------------- */
+/* Space challenges styling */
+/* -------------------------------------------- */
+
+.space-challenges {
+  .panels {
+    .add-challenge {
+      height: 296px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      border: 1px #cecece dashed;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .add-challenge .icon {
+      display: block;
+      background-color: #e2f7ff;
+      padding: 20px 30px;
+      border-radius: 50%;
+    }
+    .add-challenge .icon .cross {
+      position: relative;
+      display: block;
+      background-color: #3cbeef;
+      height: 23px;
+      width: 3px;
+    }
+    .add-challenge .icon .cross:after {
+      position: absolute;
+      content: '';
+      background-color: #3cbeef;
+      height: 3px;
+      width: 23px;
+      left: -10px;
+      top: 10px;
+    }
+    .add-challenge .text {
+      margin-top: 24px;
+      font-size: 18px;
+      color: #202020;
+    }
+
+    .panel {
+      border-radius: 8px;
+      position: relative;
+      transition: transform 0.3s ease-in-out;
+    }
+    .panel::after {
+
+      content: '';
+      position: absolute;
+      z-index: -1;
+
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+
+      box-shadow: 0 0 40px #c5c5c5;
+      -webkit-box-shadow: 0 0 40px #c5c5c5;
+      -moz-box-shadow: 0 0 40px #c5c5c5;
+
+      border-radius: 8px;
+
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+    .panel:hover {
+      transform: translate(0, -5px);
+    }
+    .panel:hover::after {
+      opacity: 1;
+    }
+    .panel .panel-heading {
+      padding: 0;
+      position: relative;
+    }
+    .panel .panel-heading > .bg {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background-size: 1px 1px;
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+    }
+    .panel .panel-heading > img {
+      position: relative;
+      width: 100%;
+      min-height: 230px;
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .panel .panel-body .challenge-title {
+      font-weight: bold;
+      color: #202020;
+    }
+  }
+}
+
+/* -------------------------------------------- */

@@ -27,22 +27,33 @@ class ChallengeController extends ContentContainerController
      */
     public $validContentContainerClasses = [Space::class];
 
-    public function actionIndex($challengeId = null)
+    public function actionIndex()
     {
-        $displayedChallenge = null;
-
-        if ($challengeId && !$displayedChallenge = Challenge::findOne(['id' => $challengeId])) {
-            throw new HttpException(404, 'Challenge not found!');
-        }
-
         $challenges = Challenge::find()
             ->where(['space_id' => $this->contentContainer->id])
             ->orderBy(['created_at' => SORT_DESC])
             ->all();
 
         return $this->render('index', [
-            'challenges' => $challenges,
-            'displayedChallenge' => $displayedChallenge
+            'challenges' => $challenges
+        ]);
+    }
+
+    /**
+     * @param $challengeId
+     * @return string
+     * @throws HttpException
+     */
+    public function actionOverview($challengeId)
+    {
+        $challenge = Challenge::findOne(['id' => $challengeId]);
+
+        if (!$challenge) {
+            throw new HttpException(404);
+        }
+
+        return $this->render('overview', [
+            'challenge' => $challenge,
         ]);
     }
 
