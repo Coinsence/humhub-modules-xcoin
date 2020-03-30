@@ -9,21 +9,45 @@ humhub.module('xcoin', function (module, require, $) {
 
     var client = require('client');
 
-    $("body").on('click', '#ether-enable-btn' ,function () {
+    $('body')
+        .on('click', '#ether-enable-btn' ,function () {
         $(this).fadeOut();
 
         var $loader = $('#ethereum-loader');
         $loader.show();
 
         client.ajax($(this).data('target-url'), {type: 'GET'}).catch(function (e) {module.log.error(e, true);});
-    });
-
-    $("body").on('change', '#spacemodulemanualsettings-selectallmembers',function () {
+    })
+        .on('change', '#spacemodulemanualsettings-selectallmembers',function () {
         if (this.checked)
             $('.field-spacemodulemanualsettings-selectedmembers').hide();
         else
             $('.field-spacemodulemanualsettings-selectedmembers').show();
     });
+
+    // Crowd-funding
+
+    $('body')
+        .on('click', '.crowd-funding', function (e) {
+            if ($(e.target).closest('#location-field').length > 0) {
+                if ($(e.target).closest('#location-field .location-selection').length > 0)
+                    $('#location-field').toggleClass('selected');
+            } else {
+                $('#location-field').removeClass('selected');
+            }
+        }).on('click', '.crowd-funding button[type="reset"]', function () {
+            $('#fundingfilter-space_id').val('').trigger('change');
+            $('#fundingfilter-challenge_id').val('').trigger('change');
+            $('#fundingfilter-country').val('').trigger('change');
+            $('#fundingfilter-city').val('').trigger('change');
+            $('#fundingfilter-keywords').val('').trigger('change');
+        }).on('click', '.reset-location', function () {
+            $('#fundingfilter-country').val('').trigger('change');
+            $('#fundingfilter-city').val('').trigger('change');
+            $('.location-selection .selection-text').html('Select location..')
+                .removeClass('placeholder')
+                .addClass('placeholder');
+        });
 
 });
 
