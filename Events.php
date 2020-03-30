@@ -56,7 +56,7 @@ class Events
                 'label' => Yii::t('XcoinModule.base', 'Accounts'),
                 'url' => $space->createUrl('/xcoin/overview'),
                 'icon' => '<i class="fa fa-money"></i>',
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && !in_array(Yii::$app->controller->id, ['funding', 'product', 'ethereum'])),
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && !in_array(Yii::$app->controller->id, ['funding', 'product', 'ethereum', 'challenge'])),
             ]);
 
             $event->sender->addItem([
@@ -93,9 +93,9 @@ class Events
                 $event->sender->addItem([
                     'label' => Yii::t('XcoinModule.base', 'Submitted Proposals'),
                     'group' => 'crowdfunding',
-                    'url' => '',
+                    'url' => $space->createUrl('/xcoin/funding'),
                     'icon' => '<i class="fa fa-leaf"></i>',
-                    'isActive' => '',
+                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'funding'),
                     'sortOrder' => 30000,
                 ]);
             }

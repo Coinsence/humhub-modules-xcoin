@@ -4,6 +4,7 @@ use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\widgets\ChallengeImage;
 use yii\bootstrap\Html;
 use yii\bootstrap\Progress;
 
@@ -14,25 +15,16 @@ Assets::register($this);
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div class="pull-right">
-            <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
-                <?= Html::a(Yii::t('XcoinModule.funding', 'Add asset offer'), [
-                    '/xcoin/funding/edit',
-                    'container' => $this->context->contentContainer
-                ], ['class' => 'btn btn-gradient-1 btn-sm', 'data-target' => '#globalModal']); ?>
-            <?php endif; ?>
-        </div>
-        <?= Yii::t('XcoinModule.funding', '<strong>Crowd</strong> funding') ?>
+        <strong><?= Yii::t('XcoinModule.funding', 'Submitted proposals') ?></strong>
     </div>
-
     <div class="panel-body">
         <?php if (count($fundings) == 0): ?>
             <br/>
             <p class="alert alert-warning">
-                <?= Yii::t('XcoinModule.funding', 'Currently there are no open funding requests.') ?>
+                <?= Yii::t('XcoinModule.funding', 'Currently there are no submitted proposals.') ?>
             </p>
         <?php else : ?>
-            <p><?= Yii::t('XcoinModule.funding', 'The assets listed below are currently wanted as crowd funding investment.') ?></p>
+            <p><?= Yii::t('XcoinModule.funding', 'The proposals listed below are currently wanted as crowd funding investment.') ?></p>
         <?php endif; ?>
 
     </div>
@@ -54,6 +46,9 @@ Assets::register($this);
                     <div class="col-md-3 crowd-funding">
                         <div class="panel">
                             <div class="panel-heading">
+                                <!-- challenge image start -->
+                                <?= ChallengeImage::widget(['challenge' => $funding->getChallenge()->one(), 'width' => 30, 'link' => true]) ?>
+                                <!-- challenge image end -->
                                 <!-- campaign cover start -->
                                 <?php if ($cover) : ?>
                                     <div class="bg" style="background-image: url('<?= $cover->getUrl() ?>')"></div>
@@ -137,7 +132,7 @@ Assets::register($this);
                                     <strong><?= $funding->getRequestedAmount() ?></strong>
                                 </span>
                                         <?= SpaceImage::widget([
-                                            'space' => $funding->asset->space,
+                                            'space' => $funding->getChallenge()->one()->space,
                                             'width' => 16,
                                             'showTooltip' => true,
                                             'link' => false

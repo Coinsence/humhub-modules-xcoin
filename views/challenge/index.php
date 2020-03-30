@@ -28,7 +28,7 @@ $displayedChallenge = $displayedChallenge ?: $challenges ? $challenges[0] : [];
                 ], ['class' => 'btn btn-gradient-1 btn-sm', 'data-target' => '#globalModal']); ?>
             <?php endif; ?>
         </div>
-        <strong><?= Yii::t('XcoinModule.challenge', 'Challenges') ?></strong>
+        <strong><?= Yii::t('XcoinModule.challenge', 'Space Challenges') ?></strong>
     </div>
 
     <div class="panel-body">
