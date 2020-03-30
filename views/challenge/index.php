@@ -14,7 +14,7 @@ Assets::register($this);
 /** @var $displayedChallenge Challenge */
 
 // if there is no selected challenge display first challenge
-$displayedChallenge = $displayedChallenge ?: $challenges[0];
+$displayedChallenge = $displayedChallenge ?: $challenges ? $challenges[0] : [];
 
 ?>
 
@@ -34,7 +34,7 @@ $displayedChallenge = $displayedChallenge ?: $challenges[0];
     <div class="panel-body">
         <p><?= Yii::t('XcoinModule.challenge', 'This is the list of space challenges.') ?></p>
 
-        <?php if (count($challenges) === 0): ?>
+        <?php if (!$displayedChallenge) : ?>
             <br/>
             <p class="alert alert-warning">
                 <?= Yii::t('XcoinModule.challenge', 'Currently there are no challenges.') ?>
@@ -59,6 +59,7 @@ $displayedChallenge = $displayedChallenge ?: $challenges[0];
         </div>
     </div>
 
+    <?php if($displayedChallenge): ?>
     <div class="col-md-12 fundingPanel">
         <div class="row">
             <?php
@@ -145,7 +146,7 @@ $displayedChallenge = $displayedChallenge ?: $challenges[0];
                     ?>
 
                     <a href="<?= $space->createUrl('/xcoin/funding/overview', [
-                        'container' => $this->context->contentContainer,
+                        'container' => $space,
                         'fundingId' => $funding->id
                     ]); ?>">
                         <div class="col-md-3 crowd-funding">
@@ -254,4 +255,5 @@ $displayedChallenge = $displayedChallenge ?: $challenges[0];
             </div>
         </div>
     </div>
+    <?php endif; ?>
 </div>

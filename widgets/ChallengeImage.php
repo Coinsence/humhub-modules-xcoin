@@ -9,20 +9,20 @@
 
 namespace humhub\modules\xcoin\widgets;
 
-use humhub\modules\xcoin\models\Category;
+use humhub\modules\xcoin\models\Challenge;
 use yii\base\Widget;
 use yii\bootstrap\Html;
 
 /**
- * Return category image
+ * Return challenge image
  */
-class CategoryImage extends Widget
+class ChallengeImage extends Widget
 {
 
     /**
-     * @var Category
+     * @var Challenge
      */
-    public $category;
+    public $challenge;
 
     /**
      * @var int the width of the image
@@ -38,6 +38,16 @@ class CategoryImage extends Widget
      * @var int the border radius of the image
      */
     public $borderRadius = 50;
+
+    /**
+     * @var boolean create link to the challenge
+     */
+    public $link = false;
+
+    /**
+     * @var array Html Options of the link
+     */
+    public $linkOptions = [];
 
     /**
      * @var array html options for the generated tag
@@ -59,6 +69,11 @@ class CategoryImage extends Widget
      */
     public function run()
     {
+        if (!isset($this->linkOptions['href'])) {
+            $this->linkOptions['href'] = $this->challenge->getSpace()->one()->createUrl('/xcoin/challenge/index', [
+                'challengeId' => $this->challenge->id
+            ]);
+        }
 
         if (!isset($this->htmlOptions['class'])) {
             $this->htmlOptions['class'] = '';
@@ -73,11 +88,13 @@ class CategoryImage extends Widget
         $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px;";
         $imageHtmlOptions['style'] .= " border-radius: " . $this->borderRadius . "px;";
 
-        $imageHtmlOptions['alt'] = Html::encode($this->category->name);
+        $imageHtmlOptions['alt'] = Html::encode($this->challenge->title);
         
-        return $this->render('@xcoin/widgets/views/category-image', [
-            'category' => $this->category,
-            'imageHtmlOptions' => $imageHtmlOptions
+        return $this->render('@xcoin/widgets/views/challenge-image', [
+            'challenge' => $this->challenge,
+            'link' => $this->link,
+            'linkOptions' => $this->linkOptions,
+            'imageHtmlOptions' => $imageHtmlOptions,
         ]);
     }
 }

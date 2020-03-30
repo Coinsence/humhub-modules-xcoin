@@ -5,6 +5,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\widgets\ChallengeImage;
 use yii\bootstrap\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use yii\bootstrap\Progress;
@@ -59,6 +60,10 @@ Assets::register($this);
                             <!-- campaign cover start -->
                             <div class="img-container">
 
+                                <!-- challenge image start -->
+                                <?= ChallengeImage::widget(['challenge' => $funding->getChallenge()->one(), 'width' => 30, 'link' => true]) ?>
+                                <!-- challenge image end -->
+
                                 <?php if ($cover) : ?>
                                     <?= \yii\bootstrap\Carousel::widget([
                                         'items' => $carouselItems,
@@ -92,7 +97,6 @@ Assets::register($this);
 
                         </div>
                         <div class="panel-body">
-
                             <!-- campaign title start -->
                             <h4 class="funding-title">
                                 <?= Html::encode($funding->title); ?>
@@ -123,12 +127,13 @@ Assets::register($this);
                             </h4>
                             <!-- campaign title end -->
 
+
                             <!-- campaign requesting start -->
                             <h6 class="value">
                                 <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
                                 <strong><?= $funding->getRequestedAmount() ?></strong>
                                 <?= SpaceImage::widget([
-                                    'space' => $funding->asset->space,
+                                    'space' => $funding->getChallenge()->one()->space,
                                     'width' => 24,
                                     'showTooltip' => true,
                                     'link' => true
@@ -197,9 +202,9 @@ Assets::register($this);
                                 <div class="invest-btn">
                                     <?php endif; ?>
                                     <?php if (Yii::$app->user->isGuest): ?>
-                                        <?= Html::a(Yii::t('XcoinModule.funding', 'Invest in this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+                                        <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                                     <?php else: ?>
-                                        <?= Html::a(Yii::t('XcoinModule.funding', 'Invest in this project'), [
+                                        <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
                                             'invest',
                                             'fundingId' => $funding->id,
                                             'container' => $this->context->contentContainer
