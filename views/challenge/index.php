@@ -14,7 +14,7 @@ Assets::register($this);
 /** @var $displayedChallenge Challenge */
 
 // if there is no selected challenge display first challenge
-$displayedChallenge = $displayedChallenge ?: $challenges ? $challenges[0] : [];
+$displayedChallenge = $displayedChallenge ?: ($challenges ? $challenges[0] : []);
 
 ?>
 
