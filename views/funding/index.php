@@ -34,7 +34,7 @@ Assets::register($this);
                         'container' => $this->context->contentContainer,
                         'fundingId' => $funding->id
                     ]); ?>">
-                        <div class="col-md-3">
+                        <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="panel">
                                 <div class="panel-heading">
                                     <!-- challenge image start -->

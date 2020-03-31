@@ -198,7 +198,7 @@ $categories = [
                 </div>
             </div>
             <div class="panels">
-                <div class="col-md-3">
+                <div class="col-sm-6 col-md-4 col-lg-3">
 
                     <a class="add-project" href="<?= Url::to(['/xcoin/funding-overview/new']) ?>" data-target="#globalModal">
                         <span class="icon">
@@ -216,7 +216,7 @@ $categories = [
                         <a href="<?= $space->createUrl('/xcoin/funding/overview', [
                             'fundingId' => $funding->id
                         ]); ?>">
-                            <div class="col-md-3">
+                            <div class="col-sm-6 col-md-4 col-lg-3">
                                 <div class="panel">
                                     <div class="panel-heading">
 

@@ -21,7 +21,7 @@ Assets::register($this);
         <div class="panel-body">
             <div class="panels">
                 <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
-                    <div class="col-md-3">
+                    <div class="col-sm-6 col-md-4 col-lg-3">
 
                         <a class="add-challenge" href="<?= Url::to(['/xcoin/challenge/create', 'container' => $this->context->contentContainer]) ?>" data-target="#globalModal">
                             <span class="icon">
@@ -39,18 +39,18 @@ Assets::register($this);
                     <a href="<?= $space->createUrl('/xcoin/challenge/overview', [
                         'challengeId' => $challenge->id
                     ]); ?>">
-                        <div class="col-md-3">
+                        <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="panel">
                                 <div class="panel-heading">
                                     <!-- challenge image start -->
                                     <?php if ($cover) : ?>
                                         <div class="bg" style="background-image: url('<?= $cover->getUrl() ?>')"></div>
-                                        <?= Html::img($cover->getUrl(), ['height' => '230']) ?>
+                                        <?= Html::img($cover->getUrl(), ['height' => '240']) ?>
                                     <?php else : ?>
                                         <div class="bg"
                                              style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-challenge-cover.png' ?>')"></div>
                                         <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-challenge-cover.png', [
-                                            'height' => '230'
+                                            'height' => '240'
                                         ]) ?>
                                     <?php endif ?>
                                     <!-- challenge image end -->

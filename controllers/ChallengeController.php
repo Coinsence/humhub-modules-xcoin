@@ -52,8 +52,11 @@ class ChallengeController extends ContentContainerController
             throw new HttpException(404);
         }
 
+        $fundings = $challenge->getFundings()->all();
+
         return $this->render('overview', [
             'challenge' => $challenge,
+            'fundings'  => $fundings
         ]);
     }
 
