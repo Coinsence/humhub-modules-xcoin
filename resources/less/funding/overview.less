@@ -1,0 +1,370 @@
+
+/* -------------------------------------------- */
+/* Space funding (submitted) overview styling */
+/* -------------------------------------------- */
+
+
+.space-funding {
+
+  .panel {
+
+    overflow: hidden;
+
+    .panel-heading {
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      border-radius: 0;
+    }
+    .panel-heading .img-container {
+      position: relative;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .panel-heading .img-container .bg {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+      background-size: 1px 1px;
+    }
+    .panel-heading .img-container img {
+      max-height: 610px;
+      object-fit: contain;
+    }
+    .panel-heading .challenge-btn,
+    .panel-heading .edit-btn,
+    .panel-heading .delete-btn,
+    .panel-heading .review-btn-trusted,
+    .panel-heading .review-btn-untrusted {
+      top: 18px;
+      position: absolute;
+      opacity: .5;
+      font-weight: bold;
+      box-shadow: @overview-action-btn-shadow;
+      transition:
+              box-shadow @overview-action-btn-transition,
+              opacity @overview-action-btn-transition;
+    }
+    .panel-heading .challenge-btn {
+      right: 18px;
+      color: black;
+      background: #ffffff;
+      border-radius: 26px;
+      padding: 10px 26px;
+    }
+    .panel-heading .edit-btn,
+    .panel-heading .delete-btn,
+    .panel-heading .review-btn-trusted,
+    .panel-heading .review-btn-untrusted {
+      border-radius: 20px;
+      font-size: 14px;
+      padding: 4px 12px;
+    }
+    .panel-heading .edit-btn {
+      left: 18px;
+      color: black;
+      background: #ffffff;
+    }
+    .panel-heading .delete-btn {
+      left: 130px;
+      color: white;
+      background: #e40000;
+    }
+    .panel-heading .review-btn-trusted {
+      right: 18px;
+      color: white;
+      background: #4ac309;
+    }
+    .panel-heading .review-btn-untrusted {
+      right: 18px;
+      color: white;
+      background: #d60000;
+    }
+    .panel-heading .challenge-btn:hover,
+    .panel-heading .edit-btn:hover,
+    .panel-heading .delete-btn:hover,
+    .panel-heading .review-btn-trusted:hover,
+    .panel-heading .review-btn-untrusted:hover,
+    .panel-heading .challenge-btn:active,
+    .panel-heading .edit-btn:active,
+    .panel-heading .delete-btn:active,
+    .panel-heading .review-btn-trusted:active,
+    .panel-heading .review-btn-untrusted:active {
+      box-shadow: @overview-action-btn-shadow-transitioned;
+      opacity: 1;
+      z-index: 1; /* meeh */
+    }
+    .panel-heading .challenge-btn small {
+      font-size: 14px;
+    }
+    .panel-heading .edit-btn i,
+    .panel-heading .delete-btn i,
+    .panel-heading .review-btn-trusted i,
+    .panel-heading .review-btn-untrusted i {
+      margin-right: 6px;
+    }
+
+    .panel-body {
+      padding: 24px;
+    }
+    .panel-body .funding-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #202020;
+    }
+    .panel-body .value {
+      text-transform: uppercase;
+      color: #202020;
+    }
+    .panel-body .value .space-acronym {
+      font-size: 11.56px;
+    }
+    .panel-body .location {
+      text-transform: uppercase;
+      color: #202020;
+    }
+    .panel-body .categories {
+      text-transform: uppercase;
+      color: #202020;
+      display: inline-block;
+    }
+    .panel-body .categories + ul {
+      list-style: none;
+      display: inline-block;
+      padding: 0;
+    }
+    .panel-body .categories + ul li {
+      display: inline-block;
+      padding: 6px 16px;
+      box-shadow: 0 1px 3px #00000029;
+      margin: 0 4px;
+      border-radius: 16px;
+    }
+    .panel-body .description p {
+      color: #202020;
+      margin: 10px 0 40px;
+    }
+    .panel-body .progress-info i.fa {
+      font-size: 34px;
+      color: #202020;
+      margin-right: 6px;
+      opacity: .25;
+    }
+    .panel-body .progress-info i.fa + div strong {
+      font-size: 12px;
+    }
+    .panel-body .progress-info i.fa + div h6 {
+      font-size: 10px;
+    }
+    .panel-body .progress-info > div > * {
+      display: inline-block;
+    }
+    .panel-body .progress-info > div {
+      color: #202020;
+      display: inline-block;
+      margin-right: 20px;
+    }
+    .panel-body .progress-info h6 {
+      margin: 0;
+    }
+    .panel-body .funding-progress {
+      /*padding: 0 15px;*/
+    }
+    .panel-body .funding-progress > div:not(.progress) {
+      display: inline-block;
+      font-size: 12px;
+    }
+    .panel-body .funding-progress .progress {
+      width: 100%;
+      height: 8px;
+      margin-top: 3px;
+      background: #e4e8eb;
+    }
+    .panel-body .funding-progress .progress-bar {
+      background-color: #9cd192;
+    }
+
+    .panel-footer {
+      background: none;
+      border: none;
+      padding: 0;
+      text-align: center;
+    }
+    .panel-footer .invest-btn {
+      /*position: absolute;*/
+      /*bottom: 0;*/
+      /*left: 0;*/
+      width: 100%;
+      /*height: 0;*/
+      /*-webkit-transition: height .25s ease-in-out;*/
+      /*-moz-transition: height .25s ease-in-out;*/
+      /*-ms-transition: height .25s ease-in-out;*/
+      /*-o-transition: height .25s ease-in-out;*/
+      /*transition: height .25s ease-in-out;*/
+    }
+    .panel-footer .invest-btn a,
+    .panel-footer .invest-btn button {
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      border-radius: 0;
+      width: 100%;
+      background: linear-gradient(to right, #3CBEEF, #28AA69);
+      text-transform: uppercase;
+      color: #fff;
+      display: inline-block;
+      padding: 26px 20px;
+      font-size: 17px;
+      font-weight: bold;
+    }
+    .panel-footer .invest-btn button {
+      outline: none;
+      border: none;
+    }
+    .panel-footer .invest-btn a:hover,
+    .panel-footer .invest-btn button:hover {
+      background: linear-gradient(to right, #24b6ed, #23955c);
+    }
+    .panel-footer .invest-btn.disabled {
+      cursor: not-allowed;
+    }
+    .panel-footer .invest-btn.disabled a,
+    .panel-footer .invest-btn.disabled button {
+      pointer-events: none;
+      display: inline-block;
+      opacity: 0.5;
+    }
+
+  }
+
+  .carousel-control {
+    width: auto;
+    bottom: unset;
+    top: calc(50% - 70px/2);
+    font-size: 36px;
+    line-height: 1;
+    padding: 15px 30px 19px;
+    border-radius: calc(70px/2);
+    opacity: 1;
+    color: #202020;
+    &:focus,
+    &:hover {
+      color: #202020;
+    }
+    &.right {
+      background: white;
+      right: 20px;
+      left: auto;
+    }
+    &.left {
+      background: white;
+      right: auto;
+      left: 20px;
+    }
+  }
+
+  @media (max-width: 1365px) {
+
+  }
+
+  @media (max-width: 991px) {
+
+  }
+
+  @media (max-width: 767px) {
+
+    .panel {
+
+      .panel-heading .challenge-btn,
+      .panel-heading .edit-btn,
+      .panel-heading .delete-btn,
+      .panel-heading .review-btn-trusted,
+      .panel-heading .review-btn-untrusted {
+        top: 16px;
+      }
+      .panel-heading .challenge-btn {
+        right: 16px;
+        border-radius: 30px;
+        padding: 10px 18px;
+      }
+      .panel-heading .challenge-btn small {
+        font-size: 12px;
+      }
+      .panel-heading .edit-btn,
+      .panel-heading .delete-btn,
+      .panel-heading .review-btn-trusted,
+      .panel-heading .review-btn-untrusted {
+        border-radius: 14px;
+        font-size: 12px;
+        padding: 4px 10px;
+      }
+
+    }
+
+    .carousel-control {
+      top: calc(50% - 50px/2);
+      font-size: 24px;
+      padding: 11px 22px 14px;
+      border-radius: calc(50px/2);
+    }
+
+  }
+
+  @media (max-width: 575px) {
+
+    .panel {
+
+      .panel-heading .challenge-btn,
+      .panel-heading .edit-btn,
+      .panel-heading .delete-btn,
+      .panel-heading .review-btn-trusted,
+      .panel-heading .review-btn-untrusted {
+        top: 14px;
+      }
+      .panel-heading .challenge-btn {
+        right: 14px;
+        border-radius: 20px;
+        padding: 4px 10px;
+      }
+      .panel-heading .challenge-btn small {
+        font-size: 10px;
+      }
+      .panel-heading .edit-btn,
+      .panel-heading .delete-btn,
+      .panel-heading .review-btn-trusted,
+      .panel-heading .review-btn-untrusted {
+        border-radius: 12px;
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+
+      .panel-body .progress-info i.fa {
+        font-size: 26px;
+        margin-right: 2px;
+      }
+      .panel-body .progress-info i.fa + div strong {
+        font-size: 10px;
+      }
+      .panel-body .progress-info i.fa + div h6 {
+        font-size: 8px;
+      }
+
+      .panel-footer .invest-btn a,
+      .panel-footer .invest-btn button {
+        font-size: 14px;
+      }
+    }
+
+    .carousel-control {
+      top: calc(50% - 36px/2);
+      font-size: 18px;
+      padding: 7px 16px 11px;
+      border-radius: calc(36px/2);
+    }
+
+  }
+
+}
+
+
+/* -------------------------------------------- */

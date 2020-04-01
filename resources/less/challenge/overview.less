@@ -33,10 +33,15 @@
     }
     .close-challenge .icon {
       display: block;
-      background-color: #e2f7ff;
+      background-color: #fff;
       padding: 22px 30px;
       border-radius: 50%;
       box-shadow: 0 3px 6px #00000029;
+      transition: box-shadow 500ms ease-in-out;
+    }
+    .close-challenge .icon:hover,
+    .close-challenge .icon:active {
+      box-shadow: 0 3px 10px #00000069;
     }
     .close-challenge .icon .X {
       position: relative;

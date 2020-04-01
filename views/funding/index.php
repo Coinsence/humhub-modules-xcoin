@@ -13,7 +13,7 @@ Assets::register($this);
 
 ?>
 
-<div class="space-funding">
+<div class="space-fundings">
     <div class="panel panel-default">
         <div class="panel-heading">
             <strong><?= Yii::t('XcoinModule.funding', 'Submitted proposals') ?></strong>
