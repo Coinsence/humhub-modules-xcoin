@@ -57,6 +57,7 @@ Assets::register($this);
                     </div>
                     <?= Html::a(Yii::t('XcoinModule.challenge', 'Add Your Project'), [
                         '/xcoin/funding/new',
+                        'challengeId' => $challenge->id,
                         'container' => $this->context->contentContainer
                     ], ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']); ?>
                 </div>

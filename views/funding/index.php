@@ -122,7 +122,7 @@ Assets::register($this);
                                     <strong><?= $funding->getRequestedAmount() ?></strong>
                                 </span>
                                             <?= SpaceImage::widget([
-                                                'space' => $funding->getChallenge()->one()->space,
+                                                'space' => $funding->getChallenge()->one()->asset->space,
                                                 'width' => 16,
                                                 'showTooltip' => true,
                                                 'link' => false

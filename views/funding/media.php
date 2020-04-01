@@ -15,15 +15,19 @@ $upload = Upload::withName();
 
 <?= Html::hiddenInput('step', '3'); ?>
 
-<?= $form->field($model, 'asset_id')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'challenge_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'amount', ['enableError' => false])->hiddenInput()->label(false)->hint(false) ?>
 <?= $form->field($model, 'exchange_rate', ['enableError' => false])->hiddenInput()->label(false)->hint(false) ?>
 <?= $form->field($model, 'title')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'description')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'content')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'country')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'city')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'deadline')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
-
+<?php if ($model->categories_names): ?>
+    <?= $form->field($model, 'categories_names')->hiddenInput(['value' => implode(",", $model->categories_names)])->label(false) ?>
+<?php endif; ?>
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12">

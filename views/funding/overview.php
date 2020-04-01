@@ -1,11 +1,14 @@
 <?php
 
+use humhub\libs\Iso3166Codes;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\widgets\CategoryImage;
 use humhub\modules\xcoin\widgets\ChallengeImage;
+use yii\bootstrap\Carousel;
 use yii\bootstrap\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use yii\bootstrap\Progress;
@@ -49,7 +52,7 @@ Assets::register($this);
                     $carouselItem .= Html::img($item->getUrl(), ['width' => '100%']);
                     $carouselItem .= "</div>";
 
-                    $carouselItems[] = $carouselItem;;
+                    $carouselItems[] = $carouselItem;
                 endforeach;
 
                 ?>
@@ -65,7 +68,7 @@ Assets::register($this);
                                 <!-- challenge image end -->
 
                                 <?php if ($cover) : ?>
-                                    <?= \yii\bootstrap\Carousel::widget([
+                                    <?= Carousel::widget([
                                         'items' => $carouselItems,
                                     ]) ?>
                                 <?php else : ?>
@@ -133,7 +136,7 @@ Assets::register($this);
                                 <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
                                 <strong><?= $funding->getRequestedAmount() ?></strong>
                                 <?= SpaceImage::widget([
-                                    'space' => $funding->getChallenge()->one()->space,
+                                    'space' => $funding->getChallenge()->one()->asset->space,
                                     'width' => 24,
                                     'showTooltip' => true,
                                     'link' => true
@@ -144,6 +147,31 @@ Assets::register($this);
                             <!-- campaign description start -->
                             <div class="description row">
                                 <div class="col-md-12">
+
+                                    <!-- new funding attributes start TODO try to find a better way to display them  !-->
+                                    <?= Yii::t('XcoinModule.funding', 'Categories:') ?>
+                                    <ul>
+                                        <?php foreach ($funding->getCategories()->all() as $category) : ?>
+                                            <li>
+                                                <?= CategoryImage::widget([
+                                                    'category' => $category,
+                                                    'width' => 40
+                                                ]) . $category->name; ?>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+
+                                    <h4>
+                                    <?= Yii::t('XcoinModule.funding', 'Country:') ?>
+                                    <?= Iso3166Codes::country($funding->country) ?>
+                                    </h4>
+
+                                    <h4>
+                                    <?= Yii::t('XcoinModule.funding', 'City:') ?>
+                                    <?= $funding->city ?>
+                                    </h4>
+                                    <!-- new funding attributes end -->
+
                                     <p class="media-heading"><?= Html::encode($funding->description); ?></p>
                                 </div>
                             </div>
@@ -187,9 +215,9 @@ Assets::register($this);
                                 <!-- campaign raised end -->
                             </div>
 
-                                <!-- campaign content start -->
-                                <?= RichText::output($funding->content); ?>
-                                <!-- campaign content end -->
+                            <!-- campaign content start -->
+                            <?= RichText::output($funding->content); ?>
+                            <!-- campaign content end -->
 
 
                         </div>

@@ -123,4 +123,9 @@ class Category extends ActiveRecord
             'object_id' => $this->id
         ])->orderBy(['id' => SORT_DESC])->one();
     }
+
+    public static function getCategoryByName($categoryName)
+    {
+        return Category::find()->where(['name' => $categoryName])->one();
+    }
 }

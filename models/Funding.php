@@ -3,6 +3,7 @@
 namespace humhub\modules\xcoin\models;
 
 use Colors\RandomColor;
+use cornernote\linkall\LinkAllBehavior;
 use DateTime;
 use Exception;
 use humhub\components\ActiveRecord;
@@ -35,6 +36,8 @@ use yii\web\HttpException;
  * @property string $content
  * @property integer $review_status
  * @property integer $status
+ * @property string $country
+ * @property string $city
  *
  * @property Challenge $challenge
  * @property User $createdBy
@@ -42,7 +45,7 @@ use yii\web\HttpException;
  */
 class Funding extends ActiveRecord
 {
-
+    const SCENARIO_NEW = 'snew';
     const SCENARIO_EDIT = 'sedit';
 
     // Funding review status
@@ -55,6 +58,9 @@ class Funding extends ActiveRecord
 
     // used in readonly for setting up exchange rate
     public $rate = 1;
+
+    // use when creating funding
+    public $categories_names;
 
     /**
      * @inheritdoc
@@ -78,10 +84,13 @@ class Funding extends ActiveRecord
                     'title',
                     'description',
                     'deadline',
-                    'content'
+                    'content',
+                    'country',
+                    'city',
                 ],
                 'required'
             ],
+            ['categories_names', 'required', 'message' => 'Please choose at least a category'],
             [['space_id', 'challenge_id', 'amount', 'created_by'], 'integer'],
             [['amount'], 'number', 'min' => '1'],
             [['exchange_rate'], 'number', 'min' => '0.1'],
@@ -89,16 +98,24 @@ class Funding extends ActiveRecord
             [['challenge_id'], 'exist', 'skipOnError' => true, 'targetClass' => Challenge::class, 'targetAttribute' => ['challenge_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
-            [['title', 'description'], 'string', 'max' => 255],
+            [['title', 'description', 'city'], 'string', 'max' => 255],
+            [['country'], 'string', 'max' => 2],
             [['content'], 'string'],
             [['deadline'], DbDateValidator::class],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            LinkAllBehavior::class,
         ];
     }
 
     public function scenarios()
     {
         return [
-            self::SCENARIO_EDIT => [
+            self::SCENARIO_NEW => [
                 'challenge_id',
                 'amount',
                 'title',
@@ -106,7 +123,18 @@ class Funding extends ActiveRecord
                 'content',
                 'deadline',
                 'space_id',
-                'exchange_rate'
+                'exchange_rate',
+                'country',
+                'city',
+                'categories_names'
+            ],
+            self::SCENARIO_EDIT => [
+                'title',
+                'description',
+                'content',
+                'deadline',
+                'country',
+                'city'
             ],
         ];
     }
@@ -128,6 +156,8 @@ class Funding extends ActiveRecord
             'description' => Yii::t('XcoinModule.base', 'Description'),
             'content' => Yii::t('XcoinModule.base', 'Needs & Commitments'),
             'deadline' => Yii::t('XcoinModule.base', 'Deadline'),
+            'country' => Yii::t('XcoinModule.base', 'Country'),
+            'city' => Yii::t('XcoinModule.base', 'City'),
         ];
     }
 
@@ -173,6 +203,16 @@ class Funding extends ActiveRecord
     {
         $this->createFundingAccount();
 
+        $categories = [];
+
+        foreach (explode(",", $this->categories_names) as $category_name) {
+            $category = Category::getCategoryByName($category_name);
+            if ($category) {
+                $categories[] = $category;
+            }
+        }
+        $this->linkAll('categories', $categories);
+
         parent::afterSave($insert, $changedAttributes);
     }
 
@@ -194,6 +234,12 @@ class Funding extends ActiveRecord
     public function getChallenge()
     {
         return $this->hasOne(Challenge::class, ['id' => 'challenge_id']);
+    }
+
+    public function getCategories()
+    {
+        return $this->hasMany(Category::class, ['id' => 'category_id'])
+            ->viaTable('xcoin_funding_category', ['funding_id' => 'id']);
     }
 
     /**
@@ -288,8 +334,9 @@ class Funding extends ActiveRecord
                 $this->title,
                 $this->description,
                 $this->content,
-                $this->deadline
-
+                $this->deadline,
+                $this->country,
+                $this->city
             ) || strlen($this->description) > 255;
     }
 

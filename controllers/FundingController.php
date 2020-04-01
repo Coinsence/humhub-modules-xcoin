@@ -2,11 +2,12 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
+use humhub\modules\xcoin\models\Challenge;
+use Throwable;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\xcoin\helpers\AccountHelper;
-use humhub\modules\xcoin\models\Asset;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Funding;
@@ -55,7 +56,7 @@ class FundingController extends ContentContainerController
     /**
      * @param $fundingId
      * @return string
-     * @throws \Throwable
+     * @throws Throwable
      * @throws HttpException
      */
     public function actionInvest($fundingId)
@@ -89,38 +90,38 @@ class FundingController extends ContentContainerController
         ]);
     }
 
-    public function actionEdit()
+    public function actionNew($challengeId)
     {
+        if(!$challenge = Challenge::findOne(['id' => $challengeId])){
+            throw new HttpException(404, 'Challenge not found!');
+        }
+
         /** @var Space $currentSpace */
         $currentSpace = $this->contentContainer;
 
-        if (!AssetHelper::canManageAssets($currentSpace)) {
-            throw new HttpException(401);
+        $user = Yii::$app->user->identity;
+
+        $model = new Funding();
+        $model->created_by = $user->id;
+        $model->challenge_id = $challenge->id;
+        $model->scenario = Funding::SCENARIO_NEW;
+
+        if (empty(Yii::$app->request->post('step'))) {
+
+            $spaces = MembershipHelper::getOwnSpaces($user);
+
+            $spacesList = [];
+            foreach ($spaces as $space) {
+                $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+            }
+
+            return $this->renderAjax('spaces-list', [
+                'funding' => $model,
+                'spacesList' => $spacesList,
+            ]);
         }
 
-        $model = Funding::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $currentSpace->id]);
-        if ($model === null) {
-            $model = new Funding();
-            $model->space_id = $currentSpace->id;
-            $model->created_by = Yii::$app->user->id;
-        }
-
-        $model->scenario = Funding::SCENARIO_EDIT;
         $model->load(Yii::$app->request->post());
-
-        // Step 1: Wanted Asset Selection and Exchange Rate
-        if ($model->isFirstStep()) {
-
-            $assetList = AssetHelper::getAllAssets($currentSpace);
-            $defaultAsset = AssetHelper::getDefaultAsset();
-
-            return $this->renderAjax('create', [
-                    'model' => $model,
-                    'assetList' => $assetList,
-                    'defaultAsset' => $defaultAsset,
-                ]
-            );
-        }
 
         // Try Save Step 2
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
@@ -154,6 +155,36 @@ class FundingController extends ContentContainerController
         return $this->renderAjax('details', [
             'model' => $model,
             'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
+        ]);
+    }
+
+    public function actionEdit()
+    {
+        /** @var Space $currentSpace */
+        $currentSpace = $this->contentContainer;
+
+        if (!AssetHelper::canManageAssets($currentSpace)) {
+            throw new HttpException(401);
+        }
+
+        if(!$model = Funding::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $currentSpace->id])){
+            throw new HttpException(404, 'Funding not found!');
+        }
+
+        $model->scenario = Funding::SCENARIO_EDIT;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $this->view->saved();
+
+            return $this->redirect($currentSpace->createUrl('/xcoin/funding/overview', [
+                'container' => $currentSpace,
+                'fundingId' => $model->id
+            ]));
+        }
+
+        return $this->renderAjax('edit', [
+            'model' => $model
         ]);
     }
 

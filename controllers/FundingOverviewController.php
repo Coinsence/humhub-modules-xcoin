@@ -2,21 +2,18 @@
 
 namespace humhub\modules\xcoin\controllers;
 
-use Colors\RandomColor;
-use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\Module;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AssetHelper;
-use humhub\modules\xcoin\helpers\SpaceHelper;
-use humhub\modules\xcoin\models\Asset;
+use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\Funding;
 use humhub\components\Controller;
 use humhub\modules\xcoin\models\FundingFilter;
+use humhub\modules\xcoin\widgets\ChallengeImage;
 use Yii;
 use yii\db\Expression;
-use yii\web\HttpException;
+use yii\helpers\ArrayHelper;
 
 class FundingOverviewController extends Controller
 {
@@ -50,23 +47,29 @@ class FundingOverviewController extends Controller
         }
 
         return $this->render('index', [
-            'model'         => $model,
-            'spacesList'    => $spacesList,
-            'challengesList'=> $challengesList,
+            'model' => $model,
+            'spacesList' => $spacesList,
+            'challengesList' => $challengesList,
             'countriesList' => $countriesList,
-            'fundings'      => $query->all()
+            'fundings' => $query->all()
         ]);
     }
 
 
     public function actionNew()
     {
+        $challenges = Challenge::find()->all();
+        if (empty($challenges)) {
+            $this->view->info(Yii::t('XcoinModule.funding', 'In order to create a project, there must be running challenges.'));
+
+            return $this->htmlRedirect('/xcoin/funding-overview');
+        }
+
         $user = Yii::$app->user->identity;
 
         $model = new Funding();
         $model->created_by = $user->id;
-
-        $space = null;
+        $model->scenario = Funding::SCENARIO_NEW;
 
         if (empty(Yii::$app->request->post('step'))) {
 
@@ -77,45 +80,26 @@ class FundingOverviewController extends Controller
                 $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
             }
 
-            return $this->renderAjax('spaces-list', [
+            return $this->renderAjax('../funding/spaces-list', [
                 'funding' => $model,
                 'spacesList' => $spacesList,
             ]);
         }
 
-        $model->scenario = Funding::SCENARIO_EDIT;
         $model->load(Yii::$app->request->post());
 
-        // Step 1: Wanted Asset Selection and Exchange Rate
+        // Step 1: Choose challenge
         if ($model->isFirstStep()) {
 
-            // Get default Asset that will be preselected
-            $defaultAsset = null;
+            $challengesList = [];
 
-            /* "defaultAssetName" parameter contains the default asset name that must be preselected
-            This parameter should be introduced in the file humhub/protected/config/common.php*/
-            if (array_key_exists('defaultAssetName', Yii::$app->params)) {
-                $defaultAssetName = Yii::$app->params['defaultAssetName'];
-                $defaultAssetSpace = Space::findOne(['name' => $defaultAssetName]);
-
-                if ($defaultAssetSpace) {
-                    $defaultAsset = AssetHelper::getSpaceAsset($defaultAssetSpace);
-                    if (!$defaultAsset->getIssuedAmount())
-                        $defaultAsset = null;
-                }
-            }
-
-            $assetList = [];
-            $assets = $model->space ? Asset::find()->andWhere(['!=', 'id', AssetHelper::getSpaceAsset($model->space)->id]) : Asset::find();
-
-            foreach ($assets->all() as $asset) {
-                $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
+            foreach ($challenges as $challenge) {
+                $challengesList[$challenge->id] = ChallengeImage::widget(['challenge' => $challenge, 'width' => 16, 'link' => true]);
             }
 
             return $this->renderAjax('../funding/create', [
                     'model' => $model,
-                    'assetList' => $assetList,
-                    'defaultAsset' => $defaultAsset,
+                    'challengesList' => $challengesList
                 ]
             );
         }

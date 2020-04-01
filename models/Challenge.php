@@ -26,6 +26,7 @@ use humhub\modules\space\models\Space;
  * @property string $description
  * @property string $created_at
  * @property integer $created_by
+ *
  * @property Asset $asset
  * @property User $createdBy
  * @property Space $space
