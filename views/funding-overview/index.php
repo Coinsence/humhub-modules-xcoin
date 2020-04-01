@@ -24,24 +24,24 @@ Select2BootstrapAsset::register($this);
 $img_placeholder = 'https://via.placeholder.com/600x400.png';
 $categories = [
     [
-        'id'    => 1,
-        'text'  => 'Arts and Culture',
-        'img'   => $img_placeholder
+        'id' => 1,
+        'text' => 'Arts and Culture',
+        'img' => $img_placeholder
     ],
     [
-        'id'    => 2,
-        'text'  => 'Quality education and awareness creation',
-        'img'   => $img_placeholder
+        'id' => 2,
+        'text' => 'Quality education and awareness creation',
+        'img' => $img_placeholder
     ],
     [
-        'id'    => 3,
-        'text'  => 'Child protection and youth empowerment',
-        'img'   => $img_placeholder
+        'id' => 3,
+        'text' => 'Child protection and youth empowerment',
+        'img' => $img_placeholder
     ],
     [
-        'id'    => 4,
-        'text'  => 'Community building and cohesion',
-        'img'   => $img_placeholder
+        'id' => 4,
+        'text' => 'Community building and cohesion',
+        'img' => $img_placeholder
     ],
 ];
 
@@ -58,31 +58,31 @@ $categories = [
                         'containerOptions' => [
                             'class' => 'categories'
                         ],
-                        'pluginOptions'     => [
+                        'pluginOptions' => [
                             'responsive' => [
-                                0       => [
+                                0 => [
                                     'items' => 2
                                 ],
-                                520     => [
+                                520 => [
                                     'items' => 3
                                 ],
-                                768     => [
+                                768 => [
                                     'items' => 4
                                 ],
-                                1192    => [
+                                1192 => [
                                     'items' => 5
                                 ],
-                                1366    => [
+                                1366 => [
                                     'items' => 6
                                 ],
-                                1556    => [
+                                1556 => [
                                     'items' => 8
                                 ],
                             ],
-                            'margin'        => 10,
-                            'nav'           => true,
-                            'dots'          => false,
-                            'navText'       => ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>']
+                            'margin' => 10,
+                            'nav' => true,
+                            'dots' => false,
+                            'navText' => ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>']
                         ]
                     ]);
                     ?>
@@ -93,7 +93,8 @@ $categories = [
                     <?php foreach ($categories as $category): ?>
                         <label class="category">
                             <input type="radio" name="categroy" value="<?= $category['id'] ?>">
-                            <a href="<?= Url::to(['/xcoin/funding-overview', 'category' => $category['id']]) ?>"><span style="background-image: url('<?= $category['img'] ?>'); "><?= $category['text'] ?></span></a>
+                            <a href="<?= Url::to(['/xcoin/funding-overview', 'category' => $category['id']]) ?>"><span
+                                        style="background-image: url('<?= $category['img'] ?>'); "><?= $category['text'] ?></span></a>
                         </label>
                     <?php endforeach; ?>
                     <?php OwlCarouselWidget::end(); ?>
@@ -101,34 +102,38 @@ $categories = [
             </div>
             <?php $form = ActiveForm::begin(['id' => 'filter-form']); ?>
             <div class="row">
-                <div class="col-md-3 space">
-                    <?=
-                    $form->field($model, 'space_id')->widget(Select2::class, [
-                        'data' => $spacesList,
-                        'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Space') . ' - ', 'value' => []],
-                        'theme' => Select2::THEME_BOOTSTRAP,
-                        'hideSearch' => true,
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                            'escapeMarkup' => new JsExpression("function(m) { return m; }"),
-                        ],
-                    ])->label(false)
-                    ?>
-                </div>
-                <div class="col-md-3 challenge">
-                    <?=
-                    $form->field($model, 'challenge_id')->widget(Select2::class, [
-                        'data' => $challengesList,
-                        'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Challenge') . ' - ', 'value' => []],
-                        'theme' => Select2::THEME_BOOTSTRAP,
-                        'hideSearch' => true,
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                            'escapeMarkup' => new JsExpression("function(m) { return m; }"),
-                        ],
-                    ])->label(false)
-                    ?>
-                </div>
+                <?php if (!empty($spacesList)) : ?>
+                    <div class="col-md-3 space">
+                        <?=
+                        $form->field($model, 'space_id')->widget(Select2::class, [
+                            'data' => $spacesList,
+                            'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Space') . ' - ', 'value' => []],
+                            'theme' => Select2::THEME_BOOTSTRAP,
+                            'hideSearch' => true,
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'escapeMarkup' => new JsExpression("function(m) { return m; }"),
+                            ],
+                        ])->label(false)
+                        ?>
+                    </div>
+                <?php endif; ?>
+                <?php if (!empty($challengesList)) : ?>
+                    <div class="col-md-3 challenge">
+                        <?=
+                        $form->field($model, 'challenge_id')->widget(Select2::class, [
+                            'data' => $challengesList,
+                            'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Challenge') . ' - ', 'value' => []],
+                            'theme' => Select2::THEME_BOOTSTRAP,
+                            'hideSearch' => true,
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'escapeMarkup' => new JsExpression("function(m) { return m; }"),
+                            ],
+                        ])->label(false)
+                        ?>
+                    </div>
+                <?php endif; ?>
                 <div class="col-md-3 location">
                     <div id="location-field" class="location-field">
                         <div class="location-selection">
@@ -139,23 +144,25 @@ $categories = [
                         </div>
                         <div class="location-dropdown">
                             <div class="dropdown-body">
-                                <div class="row">
-                                    <div class="col-md-6"><?= Yii::t('XcoinModule.funding', 'Country:') ?></div>
-                                    <div class="col-md-6">
-                                        <?=
-                                        $form->field($model, 'country')->widget(Select2::class, [
-                                            'data' => $countriesList,
-                                            'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Select a Country') . ' - ', 'value' => []],
-                                            'theme' => Select2::THEME_BOOTSTRAP,
-                                            'hideSearch' => true,
-                                            'pluginOptions' => [
-                                                'allowClear' => true,
-                                                'escapeMarkup' => new JsExpression("function(m) { return m; }"),
-                                            ],
-                                        ])->label(false)
-                                        ?>
+                                <?php if (!empty($countriesList)) : ?>
+                                    <div class="row">
+                                        <div class="col-md-6"><?= Yii::t('XcoinModule.funding', 'Country:') ?></div>
+                                        <div class="col-md-6">
+                                            <?=
+                                            $form->field($model, 'country')->widget(Select2::class, [
+                                                'data' => $countriesList,
+                                                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Select a Country') . ' - ', 'value' => []],
+                                                'theme' => Select2::THEME_BOOTSTRAP,
+                                                'hideSearch' => true,
+                                                'pluginOptions' => [
+                                                    'allowClear' => true,
+                                                    'escapeMarkup' => new JsExpression("function(m) { return m; }"),
+                                                ],
+                                            ])->label(false)
+                                            ?>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php endif; ?>
                                 <div class="row">
                                     <div class="col-md-6"><?= Yii::t('XcoinModule.funding', 'City:') ?></div>
                                     <div class="col-md-6">
@@ -200,7 +207,8 @@ $categories = [
             <div class="panels">
                 <div class="col-sm-6 col-md-4 col-lg-3">
 
-                    <a class="add-project" href="<?= Url::to(['/xcoin/funding-overview/new']) ?>" data-target="#globalModal">
+                    <a class="add-project" href="<?= Url::to(['/xcoin/funding-overview/new']) ?>"
+                       data-target="#globalModal">
                         <span class="icon">
                             <i class="cross"></i>
                         </span>
@@ -256,11 +264,13 @@ $categories = [
                                             <?= Html::encode($funding->title); ?>
                                             <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
                                                 <div style="color: orange; display: inline">
-                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.funding', 'Under review') ?>"></i>
+                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip"
+                                                       title="<?= Yii::t('XcoinModule.funding', 'Under review') ?>"></i>
                                                 </div>
                                             <?php else: ?>
                                                 <div style="color: dodgerblue; display: inline">
-                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.funding', 'Verified') ?>"></i>
+                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip"
+                                                       title="<?= Yii::t('XcoinModule.funding', 'Verified') ?>"></i>
                                                 </div>
                                             <?php endif; ?>
                                         </h4>
@@ -314,14 +324,14 @@ $categories = [
                                                     <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
                                                     <strong><?= $funding->getRequestedAmount() ?></strong>
                                                 </span>
-                                                        <?= SpaceImage::widget([
-                                                            'space' => $funding->getChallenge()->one()->space,
-                                                            'width' => 16,
-                                                            'showTooltip' => true,
-                                                            'link' => false
-                                                        ]); ?>
-                                                        <!-- campaign requesting end -->
-                                                    </div>
+                                                <?= SpaceImage::widget([
+                                                    'space' => $funding->getChallenge()->one()->space,
+                                                    'width' => 16,
+                                                    'showTooltip' => true,
+                                                    'link' => false
+                                                ]); ?>
+                                                <!-- campaign requesting end -->
+                                            </div>
 
                                         </div>
 
