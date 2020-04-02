@@ -89,7 +89,7 @@ Select2BootstrapAsset::register($this);
                             'data' => $spacesList,
                             'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Space') . ' - ', 'value' => $model->space_id ? $model->space_id : []],
                             'theme' => Select2::THEME_BOOTSTRAP,
-                            'hideSearch' => true,
+                            'hideSearch' => false,
                             'pluginOptions' => [
                                 'allowClear' => true,
                                 'escapeMarkup' => new JsExpression("function(m) { return m; }"),
