@@ -12,6 +12,8 @@ use \yii\helpers\Url;
 use \yii\helpers\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use yii\bootstrap\Progress;
+use yii\helpers\ArrayHelper;
+use humhub\modules\xcoin\models\Category;
 
 
 Assets::register($this);
@@ -111,6 +113,21 @@ Select2BootstrapAsset::register($this);
                         ?>
                     </div>
                 <?php endif; ?>
+                <div class="col-md-3">
+                    <?= $form->field($model, 'categories')->widget(Select2::className(), [
+                        'data' => ArrayHelper::map(Category::find()->all(), 'id', 'name'),
+                        'options' => [
+                            'placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Categories') . ' - ',
+                            'multiple' => true,
+                        ],
+                        'theme' => Select2::THEME_BOOTSTRAP,
+                        'hideSearch' => true,
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                            'escapeMarkup' => new JsExpression("function(m) { return m; }"),
+                        ],
+                    ])->label(false); ?>
+                </div>
                 <div class="col-md-3 location">
                     <div id="location-field" class="location-field">
                         <div class="location-selection">
