@@ -6,6 +6,7 @@ use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\helpers\ChallengeHelper;
 use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\Funding;
 use humhub\components\Controller;
@@ -16,8 +17,7 @@ use yii\db\Expression;
 
 class FundingOverviewController extends Controller
 {
-
-    public function actionIndex($category = false)
+    public function actionIndex($challengeId = null)
     {
         $query = Funding::find();
         $query->where(['>', 'xcoin_funding.amount', 0]);
@@ -26,20 +26,30 @@ class FundingOverviewController extends Controller
         $query->orderBy(['created_at' => SORT_DESC]);
         $query->andWhere(['review_status' => Funding::FUNDING_REVIEWED]);
 
+
         $model = new FundingFilter();
 
-        $model->load(Yii::$app->request->post());
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            if ($model->space_id)
+                $query->andWhere(['space_id' => $model->space_id]);
+            if ($model->country)
+                $query->andWhere(['country' => $model->country]);
+            if ($model->city)
+                $query->andWhere(['like', 'city', $model->city . '%', false]);
+            if ($model->keywords)
+                $query->andWhere(['like', 'title', '%' . $model->keywords . '%', false]);
+
+        } else if ($challengeId) {
+            $query->andWhere(['challenge_id' => $challengeId]);
+        }
+
 
         $spacesList = [];
         $challengesList = [];
         $countriesList = [];
 
         $spaces = Space::find();
-
-        if ($category) {
-            // TODO: filter spaceList on the base of the categories of its challenges
-            $spaces = Space::find();
-        }
 
         foreach ($spaces->all() as $space) {
             $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
@@ -50,7 +60,8 @@ class FundingOverviewController extends Controller
             'spacesList' => $spacesList,
             'challengesList' => $challengesList,
             'countriesList' => $countriesList,
-            'fundings' => $query->all()
+            'fundings' => $query->all(),
+            'challengesCarousel' => ChallengeHelper::getRandomChallenges()
         ]);
     }
 

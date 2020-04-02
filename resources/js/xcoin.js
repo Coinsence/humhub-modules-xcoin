@@ -36,11 +36,18 @@ humhub.module('xcoin', function (module, require, $) {
                 $('#location-field').removeClass('selected');
             }
         }).on('click', '.crowd-funding button[type="reset"]', function () {
+
+            // TODO fix reset for fundingfilter-space_id, fundingfilter-challenge_id, fundingfilter-country when filter is already filled and loaded
             $('#fundingfilter-space_id').val('').trigger('change');
             $('#fundingfilter-challenge_id').val('').trigger('change');
             $('#fundingfilter-country').val('').trigger('change');
+            // $('#fundingfilter-country').select2().val("").trigger("change");
+
             $('#fundingfilter-city').val('').trigger('change');
+            $('#fundingfilter-city').attr('value', '').trigger('change');
+
             $('#fundingfilter-keywords').val('').trigger('change');
+            $('#fundingfilter-keywords').attr('value', '').trigger('change');
         }).on('click', '.reset-location', function () {
             $('#fundingfilter-country').val('').trigger('change');
             $('#fundingfilter-city').val('').trigger('change');

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\models;
 
+use humhub\modules\xcoin\helpers\Utils;
 use Yii;
 use yii\base\Model;
 
@@ -17,17 +18,17 @@ class FundingFilter extends Model
     /**
      * @var int
      */
-    public $space;
+    public $space_id;
 
     /**
      * @var int
      */
-    public $challenge;
+    public $challenge_id;
 
     /**
      * @var string
      */
-    public $county;
+    public $country;
 
     /**
      * @var string
@@ -45,7 +46,15 @@ class FundingFilter extends Model
      */
     public function beforeValidate()
     {
-        return parent::beforeValidate();
+        parent::beforeValidate();
+
+        if (empty($this->space_id) && empty($this->challenge_id) && empty($this->country) && empty($this->city) && empty($this->keywords)) {
+            $this->addError('space_id', Yii::t('XcoinModule.funding', 'At least one filter field must be filled'));
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -53,7 +62,10 @@ class FundingFilter extends Model
      */
     public function rules()
     {
-        return [];
+        return [
+            [['space_id', 'challenge_id'], 'integer'],
+            [['country', 'city', 'keywords'], 'safe']
+        ];
     }
 
     /**
@@ -62,8 +74,8 @@ class FundingFilter extends Model
     public function attributeLabels()
     {
         return [
-            'space' => Yii::t('XcoinModule.base', 'Space'),
-            'challenge' => Yii::t('XcoinModule.base', 'Challenge'),
+            'space_id' => Yii::t('XcoinModule.base', 'Space'),
+            'challenge_id' => Yii::t('XcoinModule.base', 'Challenge'),
             'country' => Yii::t('XcoinModule.base', 'Country'),
             'city' => Yii::t('XcoinModule.base', 'City'),
             'keywords' => Yii::t('XcoinModule.base', 'Keywords')
