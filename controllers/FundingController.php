@@ -2,8 +2,8 @@
 
 namespace humhub\modules\xcoin\controllers;
 
-use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Challenge;
 use Throwable;
 use Yii;
@@ -110,11 +110,11 @@ class FundingController extends ContentContainerController
 
         if (empty(Yii::$app->request->post('step'))) {
 
-            $spaces = MembershipHelper::getOwnSpaces($user);
+            $spaces = SpaceHelper::getSubmitterSpaces($user);
 
             $spacesList = [];
             foreach ($spaces as $space) {
-                if (AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id)
+                if (AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id && SpaceHelper::canSubmitProject($space))
                     $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
             }
 
@@ -129,6 +129,10 @@ class FundingController extends ContentContainerController
         // Try Save Step 2
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
 
+            if (!SpaceHelper::canSubmitProject($model->space)) {
+                throw new HttpException(401);
+            }
+
             // Step 3: Gallery
             return $this->renderAjax('media', ['model' => $model]);
         }
@@ -139,8 +143,8 @@ class FundingController extends ContentContainerController
 
             $this->view->saved();
 
-            return $this->redirect($currentSpace->createUrl('/xcoin/funding/overview', [
-                'container' => $currentSpace,
+            return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
+                'container' => $model->space,
                 'fundingId' => $model->id
             ]));
         }

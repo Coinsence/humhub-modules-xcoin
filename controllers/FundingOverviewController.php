@@ -7,6 +7,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\ChallengeHelper;
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\Funding;
 use humhub\components\Controller;
@@ -84,7 +85,7 @@ class FundingOverviewController extends Controller
 
         if (empty(Yii::$app->request->post('step'))) {
 
-            $spaces = MembershipHelper::getOwnSpaces($user);
+            $spaces = SpaceHelper::getSubmitterSpaces($user);
 
             $spacesList = [];
             foreach ($spaces as $space) {

@@ -2,8 +2,13 @@
 
 namespace humhub\modules\xcoin\helpers;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\Account;
+use humhub\modules\xcoin\permissions\ReviewSubmittedProjects;
+use humhub\modules\xcoin\permissions\SubmitSpaceProjects;
 use Yii;
 
 /**
@@ -27,5 +32,27 @@ class SpaceHelper
         $module = Yii::$app->getModule('xcoin');
 
         return $module->settings->contentContainer($space)->get('allowDirectCoinTransfer');
+    }
+
+    public static function canSubmitProject(ContentContainerActiveRecord $container)
+    {
+        return $container->permissionManager->can(new SubmitSpaceProjects());
+    }
+
+    public static function canReviewProject(ContentContainerActiveRecord $container)
+    {
+        return $container->permissionManager->can(new ReviewSubmittedProjects());
+    }
+
+    public static function getSubmitterSpaces(User $user){
+        $spaces = [];
+
+        foreach(Membership::find()->where(['user_id'  => $user->id])->all() as $membership) {
+            if(self::canSubmitProject($membership->space)){
+                $spaces[] = $membership->space;
+            }
+        }
+
+        return $spaces;
     }
 }
