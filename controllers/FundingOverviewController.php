@@ -77,7 +77,8 @@ class FundingOverviewController extends Controller
 
             $spacesList = [];
             foreach ($spaces as $space) {
-                $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+                if (AssetHelper::getSpaceAsset($space))
+                    $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
             }
 
             return $this->renderAjax('../funding/spaces-list', [
@@ -94,7 +95,8 @@ class FundingOverviewController extends Controller
             $challengesList = [];
 
             foreach ($challenges as $challenge) {
-                $challengesList[$challenge->id] = ChallengeImage::widget(['challenge' => $challenge, 'width' => 16, 'link' => true]);
+                if (AssetHelper::getSpaceAsset($model->space)->id != $challenge->asset_id)
+                    $challengesList[$challenge->id] = ChallengeImage::widget(['challenge' => $challenge, 'width' => 16, 'link' => true]);
             }
 
             return $this->renderAjax('../funding/create', [

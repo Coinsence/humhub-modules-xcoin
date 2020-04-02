@@ -44,7 +44,7 @@ class FundingController extends ContentContainerController
     {
         $funding = Funding::findOne(['id' => $fundingId]);
 
-        if(!$funding) {
+        if (!$funding) {
             throw new HttpException(404);
         }
 
@@ -92,12 +92,13 @@ class FundingController extends ContentContainerController
 
     public function actionNew($challengeId)
     {
-        if(!$challenge = Challenge::findOne(['id' => $challengeId])){
+        if (!$challenge = Challenge::findOne(['id' => $challengeId])) {
             throw new HttpException(404, 'Challenge not found!');
         }
 
         /** @var Space $currentSpace */
         $currentSpace = $this->contentContainer;
+
 
         $user = Yii::$app->user->identity;
 
@@ -112,7 +113,8 @@ class FundingController extends ContentContainerController
 
             $spacesList = [];
             foreach ($spaces as $space) {
-                $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+                if (AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id)
+                    $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
             }
 
             return $this->renderAjax('spaces-list', [
@@ -167,7 +169,7 @@ class FundingController extends ContentContainerController
             throw new HttpException(401);
         }
 
-        if(!$model = Funding::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $currentSpace->id])){
+        if (!$model = Funding::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $currentSpace->id])) {
             throw new HttpException(404, 'Funding not found!');
         }
 
@@ -203,7 +205,7 @@ class FundingController extends ContentContainerController
 
     public function actionReview($id, $status)
     {
-        if(!PublicOffersHelper::canReviewSubmittedProjects()){
+        if (!PublicOffersHelper::canReviewSubmittedProjects()) {
             throw new HttpException(401);
         }
 
