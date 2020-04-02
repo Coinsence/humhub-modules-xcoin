@@ -35,11 +35,7 @@ Assets::register($this);
                     ]) ?>
                 <?php endif ?>
                 <!-- challenge image end -->
-                <a class="close-challenge" href="#">
-                    <span class="icon">
-                        <i class="X"></i>
-                    </span>
-                </a>
+                <?= Html::a('<span class="icon"><i class="X"></i></span>', ['/xcoin/challenge', 'container' => $this->context->contentContainer], ['class' => 'close-challenge']); ?>
             </div>
             <div class="challenge-info">
                 <h2 class="challenge-title"><?= $challenge->title ?></h2>
@@ -47,12 +43,12 @@ Assets::register($this);
                     <div class="challenge-asset">
                         <!-- challenge asset start -->
                         <?= SpaceImage::widget([
-                            'space' => $challenge->space,
+                            'space' => $challenge->asset->space,
                             'width' => 40,
                             'showTooltip' => true,
                             'link' => true
                         ]); ?>
-                        <span class="asset-name"><?= $challenge->space->name ?></span>
+                        <span class="asset-name"><?= $challenge->asset->space->name ?></span>
                         <!-- challenge asset end -->
                     </div>
                     <?= Html::a(Yii::t('XcoinModule.challenge', 'Add Your Project'), [
@@ -166,7 +162,7 @@ Assets::register($this);
                                     <strong><?= $funding->getRequestedAmount() ?></strong>
                                 </span>
                                                 <?= SpaceImage::widget([
-                                                    'space' => $funding->getChallenge()->one()->space,
+                                                    'space' => $challenge->asset->space,
                                                     'width' => 16,
                                                     'showTooltip' => true,
                                                     'link' => false
