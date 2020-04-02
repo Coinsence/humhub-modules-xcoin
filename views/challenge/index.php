@@ -20,6 +20,7 @@ Assets::register($this);
         </div>
         <div class="panel-body">
             <div class="panels">
+
                 <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
                     <div class="col-sm-6 col-md-4 col-lg-3">
 
@@ -30,6 +31,12 @@ Assets::register($this);
                             <span class="text"><?= Yii::t('XcoinModule.challenge', 'Add a challenge!') ?></span>
                         </a>
                     </div>
+                <?php else: ?>
+                    <?php if (count($challenges) == 0): ?>
+                        <p class="alert alert-warning col-md-12">
+                            <?= Yii::t('XcoinModule.challenge', 'Currently there are no challenges.') ?>
+                        </p>
+                    <?php endif; ?>
                 <?php endif; ?>
                 <?php foreach ($challenges as $challenge): ?>
                     <?php
