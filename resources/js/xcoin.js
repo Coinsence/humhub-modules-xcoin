@@ -32,23 +32,22 @@ humhub.module('xcoin', function (module, require, $) {
             if ($(e.target).closest('#location-field').length > 0) {
                 if ($(e.target).closest('#location-field .location-selection').length > 0)
                     $('#location-field').toggleClass('selected');
-            } else {
+            } else if ($(e.target).closest('.crowd-funding button[type="reset"]').length === 0) {
                 $('#location-field').removeClass('selected');
             }
-        }).on('click', '.crowd-funding button[type="reset"]', function () {
+        }).on('click', '.crowd-funding .reset', function () {
 
-            $('#fundingfilter-space_id').val('').trigger('change');
+            $('#fundingfilter-space_id').val(null).trigger('change');
 
-            $('#fundingfilter-categories').val('').trigger('change');
+            $('#fundingfilter-categories').val(null).trigger('change');
 
-            $('#fundingfilter-country').val('').trigger('change');
-            $('#fundingfilter-city').val('').trigger('change');
+            $('#fundingfilter-country').val(null).trigger('change');
+            $('#fundingfilter-city').val(null).trigger('change');
             $('.location-selection .selection-text').html('Select location..')
                 .removeClass('placeholder')
                 .addClass('placeholder');
 
-            $('#fundingfilter-keywords').val('').trigger('change');
-            $('#fundingfilter-keywords').attr('value', '').trigger('change');
+            $('#fundingfilter-keywords').val(null).trigger('change');
 
         }).on('click', '.reset-location', function () {
             $('#fundingfilter-country').val('').trigger('change');
@@ -56,12 +55,15 @@ humhub.module('xcoin', function (module, require, $) {
             $('.location-selection .selection-text').html('Select location..')
                 .removeClass('placeholder')
                 .addClass('placeholder');
+            console.log('changed');
         }).on('blur', '#fundingfilter-city', function () {
-            var country = $('#fundingfilter-country').val();
+            var countryISO= $('#fundingfilter-country').val();
             var city = $('#fundingfilter-city').val();
-
-            setLocation(country, city);
-
+            setLocation(countryISO, city);
+        }).on('change', '#fundingfilter-country', function () {
+            var countryISO = $('#fundingfilter-country').val();
+            var city = $('#fundingfilter-city').val();
+            setLocation(countryISO, city);
         }).on('keydown', '#fundingfilter-city', function (event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
@@ -70,8 +72,9 @@ humhub.module('xcoin', function (module, require, $) {
             }
         });
 
-    function setLocation(country, city) {
-        if (country && city) {
+    function setLocation(countryISO, city) {
+        if (countryISO && city) {
+            var country = $('#fundingfilter-country').select2('data')[0].text;
             $('.location-selection .selection-text').html(`${country}, ${city}`).removeClass('placeholder');
         }
         else {
@@ -79,8 +82,9 @@ humhub.module('xcoin', function (module, require, $) {
               .removeClass('placeholder')
               .addClass('placeholder');
         }
-        console.log(country, city);
     }
+
+    // TODO open location-field popup if an error occurred in one of its fields
 
 });
 

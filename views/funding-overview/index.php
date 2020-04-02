@@ -160,7 +160,7 @@ Select2BootstrapAsset::register($this);
                                             'theme' => Select2::THEME_BOOTSTRAP,
                                             'hideSearch' => false,
                                             'pluginOptions' => [
-                                                'allowClear' => false,
+                                                'allowClear' => true,
                                                 'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                                             ],
                                         ])->label(false)
@@ -195,7 +195,7 @@ Select2BootstrapAsset::register($this);
             <div class="row">
                 <div class="col-md-6 filter-actions">
                     <?= Html::submitButton(Yii::t('XcoinModule.funding', 'Apply filter'), ['class' => 'sumbit btn btn-gradient-1']) ?>
-                    <?= Html::resetButton(Yii::t('XcoinModule.funding', 'Reset'), ['class' => 'reset btn btn-default']) ?>
+                    <?= Html::Button(Yii::t('XcoinModule.funding', 'Reset'), ['class' => 'reset btn btn-default']) ?>
                 </div>
             </div>
             <?php ActiveForm::end(); ?>

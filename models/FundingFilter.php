@@ -54,6 +54,12 @@ class FundingFilter extends Model
             return false;
         }
 
+        if (empty($this->country) && !empty($this->city)) {
+            $this->addError('country', Yii::t('XcoinModule.funding', 'Please select a country along the entered city'));
+
+            return false;
+        }
+
         return true;
     }
 
