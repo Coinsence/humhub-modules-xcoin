@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\models\FundingInvest;
 use humhub\widgets\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
@@ -8,6 +10,9 @@ use humhub\modules\xcoin\widgets\AmountField;
 use humhub\modules\xcoin\widgets\SenderAccountField;
 
 Select2BootstrapAsset::register($this);
+
+/** @var Funding $funding */
+/** @var FundingInvest $model */
 ?>
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', '<strong>Funding</strong> Invest'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'asset-form']); ?>

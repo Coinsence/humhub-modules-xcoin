@@ -70,7 +70,7 @@ class FundingController extends ContentContainerController
         if ($fromAccount === null) {
             return $this->renderAjax('@xcoin/views/transaction/select-account', [
                 'contentContainer' => Yii::$app->user->getIdentity(),
-                'requireAsset' => $funding->getAsset()->one(),
+                'requireAsset' => $funding->challenge->asset,
                 'nextRoute' => ['/xcoin/funding/invest', 'fundingId' => $funding->id, 'container' => $this->contentContainer],
             ]);
         }

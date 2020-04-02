@@ -89,7 +89,7 @@ class FundingInvest extends Model
         $left = $this->funding->getAvailableAmount();
 
         // Check max amount of current account
-        $accountLeft = $this->fromAccount->getAssetBalance($this->funding->asset);
+        $accountLeft = $this->fromAccount->getAssetBalance($this->funding->challenge->asset);
 
         if ($accountLeft < $left) {
             return $accountLeft;
@@ -101,7 +101,7 @@ class FundingInvest extends Model
 
     public function getPayAsset()
     {
-        return $this->funding->asset;
+        return $this->funding->challenge->asset;
     }
 
     /**
