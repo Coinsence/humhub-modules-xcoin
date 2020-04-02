@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\xcoin\assets\Assets;
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Funding;
 use humhub\modules\xcoin\widgets\ChallengeImage;
 use yii\bootstrap\Carousel;
@@ -91,7 +92,7 @@ Assets::register($this);
             <!-- campaign edit button end -->
 
             <!-- campaign review button start -->
-            <?php if (PublicOffersHelper::canReviewSubmittedProjects()): ?>
+            <?php if (SpaceHelper::canReviewProject($funding->challenge->space)): ?>
                 <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
                     <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Trusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted pull-right']) ?>
                 <?php else : ?>
