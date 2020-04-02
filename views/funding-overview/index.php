@@ -68,12 +68,13 @@ Select2BootstrapAsset::register($this);
                     ?>
                     <label class="category all">
                         <input type="radio" name="categroy" checked>
-                        <a href="<?= Url::to(['/xcoin/funding-overview']) ?>"><span>All</span></a>
+                        <a href="<?= Url::to(['/xcoin/funding-overview']) ?>"><span><label>All</label></span></a>
                     </label>
                     <?php foreach ($challengesCarousel as $challenge): ?>
                         <label class="category">
-                            <a href="<?= Url::to(['/xcoin/funding-overview', 'challengeId' => $challenge['id']]) ?>"><span
-                                        style="background-image: url('<?= $challenge['img'] ?>'); "><?= $challenge['text'] ?></span></a>
+                            <a href="<?= Url::to(['/xcoin/funding-overview', 'challengeId' => $challenge['id']]) ?>">
+                                <span style="background-image: url('<?= $challenge['img'] ?>'); "><label><?= $challenge['text'] ?></label></span>
+                            </a>
                         </label>
                     <?php endforeach; ?>
                     <?php OwlCarouselWidget::end(); ?>

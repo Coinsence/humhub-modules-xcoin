@@ -25,10 +25,6 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      font-size: 14px;
-      font-weight: bold;
-      color: #fff;
-      background-color: #3cbeef;
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
@@ -36,6 +32,26 @@
       box-shadow: 0 0 6px 2px #ccc;
       padding: 10px;
       cursor: pointer;
+    }
+    .category.all span {
+      background-color: #3cbeef;
+    }
+    .category span label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+      z-index: 1;
+    }
+    .category:not(.all) span:after {
+      content: '';
+      position: absolute;
+      background-color: black;
+      height: 100%;
+      width: 100%;
+      left: 0;
+      border-radius: 16px;
+      opacity: 0.5;
+      z-index: 0;
     }
     .category input:checked + span {
       background-color: darkblue;
