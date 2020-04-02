@@ -58,17 +58,17 @@ Assets::register($this);
             <div class="img-container">
 
                 <?php if ($cover) : ?>
-                    <? if (count($carouselItems) > 1): ?>
+                    <?php if (count($carouselItems) > 1): ?>
                         <?= Carousel::widget([
                             'items' => $carouselItems,
                         ]) ?>
-                    <? else: ?>
+                    <?php else: ?>
                         <div class="bg"
                              style="background-image: url('<?= $cover->getUrl() ?>')"></div>
                         <?= Html::img($cover->getUrl(), [
                             'width' => '100%'
                         ]) ?>
-                    <? endif; ?>
+                    <?php endif; ?>
                 <?php else : ?>
                     <div class="bg"
                          style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>

@@ -106,6 +106,7 @@ class FundingController extends ContentContainerController
         $model->created_by = $user->id;
         $model->challenge_id = $challenge->id;
         $model->scenario = Funding::SCENARIO_NEW;
+        $model->review_status = Funding::FUNDING_REVIEWED;
 
         if (empty(Yii::$app->request->post('step'))) {
 

@@ -13,7 +13,6 @@ use humhub\modules\xcoin\models\FundingFilter;
 use humhub\modules\xcoin\widgets\ChallengeImage;
 use Yii;
 use yii\db\Expression;
-use yii\helpers\ArrayHelper;
 
 class FundingOverviewController extends Controller
 {
@@ -70,6 +69,7 @@ class FundingOverviewController extends Controller
         $model = new Funding();
         $model->created_by = $user->id;
         $model->scenario = Funding::SCENARIO_NEW;
+        $model->review_status = Funding::FUNDING_REVIEWED;
 
         if (empty(Yii::$app->request->post('step'))) {
 
