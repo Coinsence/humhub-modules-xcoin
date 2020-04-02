@@ -106,7 +106,6 @@ class FundingController extends ContentContainerController
         $model->created_by = $user->id;
         $model->challenge_id = $challenge->id;
         $model->scenario = Funding::SCENARIO_NEW;
-        $model->review_status = Funding::FUNDING_REVIEWED;
 
         if (empty(Yii::$app->request->post('step'))) {
 
@@ -210,11 +209,12 @@ class FundingController extends ContentContainerController
 
     public function actionReview($id, $status)
     {
-        if (!PublicOffersHelper::canReviewSubmittedProjects()) {
+        $model = Funding::findOne(['id' => $id]);
+
+        if (!SpaceHelper::canReviewProject($model->challenge->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {
             throw new HttpException(401);
         }
 
-        $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
         $model->scenario = Funding::SCENARIO_EDIT;
         $model->review_status = $status;
 
