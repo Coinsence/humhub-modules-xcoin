@@ -37,24 +37,50 @@ humhub.module('xcoin', function (module, require, $) {
             }
         }).on('click', '.crowd-funding button[type="reset"]', function () {
 
-            // TODO fix reset for fundingfilter-space_id, fundingfilter-challenge_id, fundingfilter-country when filter is already filled and loaded
             $('#fundingfilter-space_id').val('').trigger('change');
-            $('#fundingfilter-challenge_id').val('').trigger('change');
-            $('#fundingfilter-country').val('').trigger('change');
-            // $('#fundingfilter-country').select2().val("").trigger("change");
 
+            $('#fundingfilter-categories').val('').trigger('change');
+
+            $('#fundingfilter-country').val('').trigger('change');
             $('#fundingfilter-city').val('').trigger('change');
-            $('#fundingfilter-city').attr('value', '').trigger('change');
+            $('.location-selection .selection-text').html('Select location..')
+                .removeClass('placeholder')
+                .addClass('placeholder');
 
             $('#fundingfilter-keywords').val('').trigger('change');
             $('#fundingfilter-keywords').attr('value', '').trigger('change');
+
         }).on('click', '.reset-location', function () {
             $('#fundingfilter-country').val('').trigger('change');
             $('#fundingfilter-city').val('').trigger('change');
             $('.location-selection .selection-text').html('Select location..')
                 .removeClass('placeholder')
                 .addClass('placeholder');
+        }).on('blur', '#fundingfilter-city', function () {
+            var country = $('#fundingfilter-country').val();
+            var city = $('#fundingfilter-city').val();
+
+            setLocation(country, city);
+
+        }).on('keydown', '#fundingfilter-city', function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                $(this).blur();
+                return false;
+            }
         });
+
+    function setLocation(country, city) {
+        if (country && city) {
+            $('.location-selection .selection-text').html(`${country}, ${city}`).removeClass('placeholder');
+        }
+        else {
+            $('.location-selection .selection-text').html('Select location..')
+              .removeClass('placeholder')
+              .addClass('placeholder');
+        }
+        console.log(country, city);
+    }
 
 });
 

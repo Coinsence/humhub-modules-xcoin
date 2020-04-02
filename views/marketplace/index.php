@@ -12,7 +12,7 @@ Assets::register($this);
 /** @var $products Product[] */
 ?>
 
-<div class="container">
+<div class="container marketplace">
     <div class="row">
         <div class="col-md-12">
             <div class="pull-left status">
