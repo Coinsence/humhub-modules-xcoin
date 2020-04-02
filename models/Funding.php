@@ -203,15 +203,17 @@ class Funding extends ActiveRecord
     {
         $this->createFundingAccount();
 
-        $categories = [];
+        if ($this->categories_names) {
+            $categories = [];
 
-        foreach (explode(",", $this->categories_names) as $category_name) {
-            $category = Category::getCategoryByName($category_name);
-            if ($category) {
-                $categories[] = $category;
+            foreach (explode(",", $this->categories_names) as $category_name) {
+                $category = Category::getCategoryByName($category_name);
+                if ($category) {
+                    $categories[] = $category;
+                }
             }
+            $this->linkAll('categories', $categories);
         }
-        $this->linkAll('categories', $categories);
 
         parent::afterSave($insert, $changedAttributes);
     }

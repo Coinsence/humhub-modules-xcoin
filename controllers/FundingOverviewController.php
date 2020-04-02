@@ -35,8 +35,8 @@ class FundingOverviewController extends Controller
             if ($model->space_id)
                 $query->andWhere(['space_id' => $model->space_id]);
             if ($model->categories) {
-                $query->InnerJoin('xcoin_funding_category', 'xcoin_funding_category.id = xcoin_funding.id');
-                $query->andWhere(['xcoin_funding_category.id' => $model->categories]);
+                $query->joinWith('categories category');
+                $query->andWhere(['category.id' => $model->categories]);
             }
 
             if ($model->country)
