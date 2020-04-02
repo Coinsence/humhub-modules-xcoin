@@ -70,7 +70,7 @@ class ChallengeImage extends Widget
     public function run()
     {
         if (!isset($this->linkOptions['href'])) {
-            $this->linkOptions['href'] = $this->challenge->getSpace()->one()->createUrl('/xcoin/challenge/index', [
+            $this->linkOptions['href'] = $this->challenge->space->createUrl('/xcoin/challenge/overview', [
                 'challengeId' => $this->challenge->id
             ]);
         }

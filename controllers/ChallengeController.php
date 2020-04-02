@@ -46,7 +46,7 @@ class ChallengeController extends ContentContainerController
      */
     public function actionOverview($challengeId)
     {
-        $challenge = Challenge::findOne(['id' => $challengeId]);
+        $challenge = Challenge::findOne(['id' => $challengeId, 'space_id' => $this->contentContainer]);
 
         if (!$challenge) {
             throw new HttpException(404);
