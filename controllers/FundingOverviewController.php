@@ -108,8 +108,12 @@ class FundingOverviewController extends Controller
             $challengesList = [];
 
             foreach ($challenges as $challenge) {
-                if (AssetHelper::getSpaceAsset($model->space)->id != $challenge->asset_id)
+                if ($model->space) {
+                    if (AssetHelper::getSpaceAsset($model->space)->id != $challenge->asset_id)
+                        $challengesList[$challenge->id] = ChallengeImage::widget(['challenge' => $challenge, 'width' => 16, 'link' => true]);
+                } else {
                     $challengesList[$challenge->id] = ChallengeImage::widget(['challenge' => $challenge, 'width' => 16, 'link' => true]);
+                }
             }
 
             return $this->renderAjax('../funding/create', [
