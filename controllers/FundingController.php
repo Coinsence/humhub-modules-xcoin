@@ -128,7 +128,7 @@ class FundingController extends ContentContainerController
         // Try Save Step 2
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
 
-            if (!SpaceHelper::canSubmitProject($model->space)) {
+            if ($model->space && !SpaceHelper::canSubmitProject($model->space)) {
                 throw new HttpException(401);
             }
 

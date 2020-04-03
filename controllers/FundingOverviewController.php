@@ -15,6 +15,7 @@ use humhub\modules\xcoin\models\FundingFilter;
 use humhub\modules\xcoin\widgets\ChallengeImage;
 use Yii;
 use yii\db\Expression;
+use yii\web\HttpException;
 
 class FundingOverviewController extends Controller
 {
@@ -125,6 +126,10 @@ class FundingOverviewController extends Controller
 
         // Try Save Step 2
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
+
+            if ($model->space && !SpaceHelper::canSubmitProject($model->space)) {
+                throw new HttpException(401);
+            }
 
             // Step 3: Gallery
             return $this->renderAjax('../funding/media', ['model' => $model]);
