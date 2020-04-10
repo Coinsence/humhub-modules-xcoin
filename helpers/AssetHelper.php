@@ -90,7 +90,12 @@ class AssetHelper
     public static function getAllAssets(Space $excludedSpace = null)
     {
         $assets = [];
-        foreach (Asset::find()->andWhere(['!=', 'id', self::getSpaceAsset($excludedSpace)->id])->all() as $asset) {
+
+        $query = Asset::find();
+        if ($excludedSpace)
+            $query->andWhere(['!=', 'id', self::getSpaceAsset($excludedSpace)->id]);
+
+        foreach ($query->all() as $asset) {
             $assets[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
         }
 

@@ -75,7 +75,6 @@ Assets::register($this);
                         $cover = $funding->getCover();
                         ?>
                         <a href="<?= $space->createUrl('/xcoin/funding/overview', [
-                            'container' => $this->context->contentContainer,
                             'fundingId' => $funding->id
                         ]); ?>">
                             <div class="col-sm-6 col-md-4 col-lg-3">

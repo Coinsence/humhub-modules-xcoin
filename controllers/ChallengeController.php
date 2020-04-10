@@ -77,7 +77,7 @@ class ChallengeController extends ContentContainerController
         $model->scenario = Challenge::SCENARIO_CREATE;
         $model->space_id = $this->contentContainer->id;
 
-        $assets = AssetHelper::getAllAssets($currentSpace);
+        $assets = AssetHelper::getAllAssets();
         $defaultAsset = AssetHelper::getDefaultAsset();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
