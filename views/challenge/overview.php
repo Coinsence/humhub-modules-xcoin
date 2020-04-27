@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\xcoin\assets\Assets;
+use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\Funding;
 use yii\helpers\Html;
@@ -34,9 +35,15 @@ Assets::register($this);
                         'height' => '550'
                     ]) ?>
                 <?php endif ?>
+
                 <!-- challenge image end -->
                 <?= Html::a('<span class="icon"><i class="X"></i></span>', ['/xcoin/challenge', 'container' => $this->context->contentContainer], ['class' => 'close-challenge']); ?>
             </div>
+            <!-- campaign edit button start -->
+            <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
+                <?= Html::a('<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.challenge', 'Edit'), ['/xcoin/challenge/edit', 'id' => $challenge->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
+            <?php endif; ?>
+            <!-- campaign edit button end -->
             <div class="challenge-info">
                 <h2 class="challenge-title"><?= $challenge->title ?></h2>
                 <div class="middle-block">

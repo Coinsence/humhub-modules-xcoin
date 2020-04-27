@@ -97,4 +97,44 @@ class ChallengeController extends ContentContainerController
             ]
         );
     }
+
+    /**
+     * @return string|Response
+     * @throws HttpException
+     */
+    public function actionEdit()
+    {
+        /** @var Space $currentSpace */
+        $currentSpace = $this->contentContainer;
+
+        if (!AssetHelper::canManageAssets($currentSpace)) {
+            throw new HttpException(401);
+        }
+
+        $model = Challenge::findOne(['id' => Yii::$app->request->get('id')]);
+
+        if ($model == null) {
+            throw new HttpException(404, Yii::t('AdminModule.controllers_ChallengeController', 'Challenge not found!'));
+        }
+
+        $model->scenario = Challenge::SCENARIO_EDIT;
+
+        $assets = AssetHelper::getAllAssets();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
+            $this->view->saved();
+
+            return $this->htmlRedirect($currentSpace->createUrl('/xcoin/challenge/index', [
+                'challengeId' => $model->id
+            ]));
+        }
+
+        return $this->renderAjax('edit', [
+                'model' => $model,
+                'assets' => $assets
+            ]
+        );
+    }
 }
