@@ -17,7 +17,7 @@ class ChallengeHelper
     public static function getRandomChallenges()
     {
         $challengesCarousel = [];
-        $randomChallenges = Challenge::find()->asArray()->all();
+        $randomChallenges = Challenge::find()->where(['status' => Challenge::CHALLENGE_STATUS_ENABLED])->asArray()->all();
 
         if ($randomChallenges) {
             if (count($randomChallenges) > self::CAROUSEL_CHALLENGES_COUNT) {

@@ -26,6 +26,7 @@ use humhub\modules\space\models\Space;
  * @property string $description
  * @property string $created_at
  * @property integer $created_by
+ * @property integer $status
  *
  * @property Asset $asset
  * @property User $createdBy
@@ -36,6 +37,11 @@ class Challenge extends ActiveRecord
 
     const SCENARIO_CREATE = 'screate';
     const SCENARIO_EDIT = 'sedit';
+    const SCENARIO_EDIT_ADMIN = 'seditadmin';
+
+    // challenges statuses
+    const CHALLENGE_STATUS_DISABLED = 0;
+    const CHALLENGE_STATUS_ENABLED = 1;
 
     public $coverFile;
 
@@ -55,7 +61,7 @@ class Challenge extends ActiveRecord
         return [
             [['space_id', 'asset_id', 'title', 'description', 'created_by'], 'required'],
             [['space_id', 'asset_id', 'created_by'], 'integer'],
-            [['created_at'], 'safe'],
+            [['created_at', 'status'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
@@ -76,6 +82,9 @@ class Challenge extends ActiveRecord
                 'title',
                 'description'
             ],
+            self::SCENARIO_EDIT_ADMIN => [
+                'status',
+            ],
         ];
     }
 
@@ -93,6 +102,16 @@ class Challenge extends ActiveRecord
             'created_at' => Yii::t('XcoinModule.challenge', 'Created At'),
             'created_by' => Yii::t('XcoinModule.challenge', 'Created By')
         ];
+    }
+
+
+    public function beforeSave($insert)
+    {
+        if ($this->isNewRecord) {
+            $this->status = self::CHALLENGE_STATUS_DISABLED;
+        }
+
+        return parent::beforeSave($insert);
     }
 
     /**
