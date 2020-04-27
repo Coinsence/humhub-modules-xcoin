@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Challenge;
@@ -64,7 +65,7 @@ Assets::register($this);
                         'container' => $this->context->contentContainer
                     ], ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']); ?>
                 </div>
-                <p class="challenge-description"><?= $challenge->description ?></p>
+                <p class="challenge-description"><?= RichText::output($challenge->description); ?></p>
             </div>
         </div>
         <div class="panel-body">

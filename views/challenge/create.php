@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\widgets\Upload;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Challenge;
@@ -29,7 +30,8 @@ $upload = Upload::forModel($model, $model->coverFile);
             <?= $form->field($model, 'title')->textInput()->hint(Yii::t('XcoinModule.challenge', 'Please enter your challenge title')) ?>
         </div>
         <div class="col-md-12">
-            <?= $form->field($model, 'description')->textarea(['maxlength' => 255])->hint(Yii::t('XcoinModule.challenge', 'Please enter your challenge description')) ?>
+            <?= $form->field($model, 'description')->widget(RichTextField::class, ['preset' => 'full'])
+                ->hint(Yii::t('XcoinModule.challenge', 'Please enter your challenge description')) ?>
         </div>
         <div class="col-md-12">
             <?=
@@ -72,7 +74,7 @@ $upload = Upload::forModel($model, $model->coverFile);
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.challenge', 'Next')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.challenge', 'Save')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 
