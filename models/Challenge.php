@@ -184,6 +184,11 @@ class Challenge extends ActiveRecord
 
     public function isStopped()
     {
-        return $this->stopped == 1;
+        return $this->stopped == self::CHALLENGE_STOPPED;
+    }
+
+    public function isDisabled()
+    {
+        return $this->status == self::CHALLENGE_STATUS_DISABLED;
     }
 }

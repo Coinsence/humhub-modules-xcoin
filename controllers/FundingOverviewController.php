@@ -2,7 +2,6 @@
 
 namespace humhub\modules\xcoin\controllers;
 
-use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AssetHelper;
@@ -29,7 +28,7 @@ class FundingOverviewController extends Controller
         $query->andWhere(['review_status' => Funding::FUNDING_REVIEWED]);
         $query->innerJoin('xcoin_challenge', 'xcoin_funding.challenge_id = xcoin_challenge.id');
         $query->andWhere('xcoin_challenge.status = 1');
-
+        $query->andWhere('xcoin_challenge.stopped = 0');
 
         $model = new FundingFilter();
 
@@ -112,7 +111,7 @@ class FundingOverviewController extends Controller
             $challengesList = [];
 
             foreach ($challenges as $challenge) {
-                if ($challenge->isStopped())
+                if ($challenge->isStopped() or $challenge->isDisabled())
                     continue;
                 
                 if ($model->space) {
