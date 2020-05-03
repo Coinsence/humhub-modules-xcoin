@@ -27,6 +27,7 @@ use humhub\modules\space\models\Space;
  * @property string $created_at
  * @property integer $created_by
  * @property integer $status
+ * @property integer $stopped
  *
  * @property Asset $asset
  * @property User $createdBy
@@ -42,6 +43,8 @@ class Challenge extends ActiveRecord
     // challenges statuses
     const CHALLENGE_STATUS_DISABLED = 0;
     const CHALLENGE_STATUS_ENABLED = 1;
+    const CHALLENGE_ACTIVE = 0;
+    const CHALLENGE_STOPPED = 1;
 
     public $coverFile;
 
@@ -61,7 +64,7 @@ class Challenge extends ActiveRecord
         return [
             [['space_id', 'asset_id', 'title', 'description', 'created_by'], 'required'],
             [['space_id', 'asset_id', 'created_by'], 'integer'],
-            [['created_at', 'status'], 'safe'],
+            [['created_at', 'status', 'stopped'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
@@ -81,7 +84,8 @@ class Challenge extends ActiveRecord
             self::SCENARIO_EDIT => [
                 'asset_id',
                 'title',
-                'description'
+                'description',
+                'stopped'
             ],
             self::SCENARIO_EDIT_ADMIN => [
                 'status',
@@ -176,5 +180,10 @@ class Challenge extends ActiveRecord
             'object_model' => Challenge::class,
             'object_id' => $this->id
         ])->orderBy(['id' => SORT_DESC])->one();
+    }
+
+    public function isStopped()
+    {
+        return $this->stopped == 1;
     }
 }

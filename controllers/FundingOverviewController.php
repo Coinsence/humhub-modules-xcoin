@@ -74,6 +74,7 @@ class FundingOverviewController extends Controller
 
     public function actionNew()
     {
+        /** @var Challenge[] $challenges */
         $challenges = Challenge::find()->all();
         if (empty($challenges)) {
             $this->view->info(Yii::t('XcoinModule.funding', 'In order to create a project, there must be running challenges.'));
@@ -111,6 +112,9 @@ class FundingOverviewController extends Controller
             $challengesList = [];
 
             foreach ($challenges as $challenge) {
+                if ($challenge->isStopped())
+                    continue;
+                
                 if ($model->space) {
                     if (AssetHelper::getSpaceAsset($model->space)->id != $challenge->asset_id)
                         $challengesList[$challenge->id] = ChallengeImage::widget(['challenge' => $challenge, 'width' => 16, 'link' => true]);
@@ -128,6 +132,10 @@ class FundingOverviewController extends Controller
 
         // Try Save Step 2
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
+
+            if ($model->challenge->isStopped()) {
+                throw new HttpException(403, 'You can`t submit a funding to a stopped challenge!');
+            }
 
             if ($model->space && !SpaceHelper::canSubmitProject($model->space)) {
                 throw new HttpException(401);

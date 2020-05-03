@@ -96,6 +96,11 @@ class FundingController extends ContentContainerController
             throw new HttpException(404, 'Challenge not found!');
         }
 
+        if ($challenge->isStopped()) {
+            throw new HttpException(403, 'You can`t submit a funding to a stopped challenge!');
+        }
+
+
         /** @var Space $currentSpace */
         $currentSpace = $this->contentContainer;
 

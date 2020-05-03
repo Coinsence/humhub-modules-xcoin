@@ -47,6 +47,19 @@ $upload = Upload::forModel($model, $model->coverFile);
             ?>
         </div>
         <div class="col-md-12">
+            <?=
+            $form->field($model, 'stopped')->widget(Select2::class, [
+                'data' => [
+                    Challenge::CHALLENGE_ACTIVE => 'ACTIVE',
+                    Challenge::CHALLENGE_STOPPED => 'STOPPED'
+                ],
+                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.challenge', 'Select status') . ' - '],
+                'theme' => Select2::THEME_BOOTSTRAP,
+                'hideSearch' => true,
+            ])->label(Yii::t('XcoinModule.challenge', 'Status'));
+            ?>
+        </div>
+        <div class="col-md-12">
             <label class="control-label"><?= Yii::t('XcoinModule.challenge', 'Challenge Image') ?></label><br>
             <div class="col-md-2">
                 <?= $upload->button([

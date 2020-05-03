@@ -59,11 +59,17 @@ Assets::register($this);
                         <span class="asset-name"><?= $challenge->asset->space->name ?></span>
                         <!-- challenge asset end -->
                     </div>
-                    <?= Html::a(Yii::t('XcoinModule.challenge', 'Add Your Project'), [
-                        '/xcoin/funding/new',
-                        'challengeId' => $challenge->id,
-                        'container' => $this->context->contentContainer
-                    ], ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']); ?>
+                    <?php if ($challenge->isStopped()) : ?>
+                        <div class="add-project" style="color: red">
+                            <?= Yii::t('XcoinModule.challenge', 'This challenge is stopped') ?>
+                        </div>
+                    <?php else: ?>
+                        <?= Html::a(Yii::t('XcoinModule.challenge', 'Add Your Project'), [
+                            '/xcoin/funding/new',
+                            'challengeId' => $challenge->id,
+                            'container' => $this->context->contentContainer
+                        ], ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']); ?>
+                    <?php endif; ?>
                 </div>
                 <p class="challenge-description"><?= RichText::output($challenge->description); ?></p>
             </div>
@@ -89,10 +95,12 @@ Assets::register($this);
                                 <div class="panel">
                                     <div class="panel-heading">
                                         <?php if ($cover) : ?>
-                                            <div class="bg" style="background-image: url('<?= $cover->getUrl() ?>')"></div>
+                                            <div class="bg"
+                                                 style="background-image: url('<?= $cover->getUrl() ?>')"></div>
                                             <?= Html::img($cover->getUrl(), ['height' => '140']) ?>
                                         <?php else : ?>
-                                            <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
+                                            <div class="bg"
+                                                 style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
                                             <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
                                                 'height' => '140'
                                             ]) ?>
@@ -115,11 +123,13 @@ Assets::register($this);
                                             <?= Html::encode($funding->title); ?>
                                             <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
                                                 <div style="color: orange; display: inline">
-                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.funding', 'Under review') ?>"></i>
+                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip"
+                                                       title="<?= Yii::t('XcoinModule.funding', 'Under review') ?>"></i>
                                                 </div>
                                             <?php else: ?>
                                                 <div style="color: dodgerblue; display: inline">
-                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.funding', 'Verified') ?>"></i>
+                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip"
+                                                       title="<?= Yii::t('XcoinModule.funding', 'Verified') ?>"></i>
                                                 </div>
                                             <?php endif; ?>
                                         </h4>
@@ -136,7 +146,8 @@ Assets::register($this);
                                         <div class="funding-progress">
                                             <div>
                                                 <!-- campaign raised start -->
-                                                <?= Yii::t('XcoinModule.funding', 'Raised:') ?> <strong><?= $funding->getRaisedAmount() ?></strong>
+                                                <?= Yii::t('XcoinModule.funding', 'Raised:') ?>
+                                                <strong><?= $funding->getRaisedAmount() ?></strong>
                                                 (<strong><?= $funding->getRaisedPercentage() ?>%</strong>)
                                                 <!-- campaign raised end -->
                                             </div>
