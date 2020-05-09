@@ -55,7 +55,7 @@ class FundingOverviewController extends Controller
         if ($challengeId) {
             $challengesList = Challenge::findAll(['id' => $challengeId]);
         } else {
-            $challengesList = Challenge::find()->all();
+            $challengesList = Challenge::findAll(['status' => Challenge::CHALLENGE_STATUS_ENABLED, 'stopped' => Challenge::CHALLENGE_ACTIVE]);
         }
 
         $assetsList = [];
