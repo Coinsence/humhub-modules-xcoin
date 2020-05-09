@@ -35,7 +35,7 @@ class FundingOverviewController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             if ($model->space_id)
-                $query->andWhere(['space_id' => $model->space_id]);
+                $query->andWhere(['xcoin_funding.space_id' => $model->space_id]);
             if ($model->categories) {
                 $query->joinWith('categories category');
                 $query->andWhere(['category.id' => $model->categories]);
