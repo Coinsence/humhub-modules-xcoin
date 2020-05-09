@@ -34,8 +34,8 @@ class FundingOverviewController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            if ($model->space_id)
-                $query->andWhere(['xcoin_funding.space_id' => $model->space_id]);
+            if ($model->asset_id)
+                $query->andWhere(['xcoin_challenge.asset_id' => $model->asset_id]);
             if ($model->categories) {
                 $query->joinWith('categories category');
                 $query->andWhere(['category.id' => $model->categories]);
@@ -52,18 +52,24 @@ class FundingOverviewController extends Controller
             $query->andWhere(['challenge_id' => $challengeId]);
         }
 
-        $spacesList = [];
+        if ($challengeId) {
+            $challengesList = Challenge::findAll(['id' => $challengeId]);
+        } else {
+            $challengesList = Challenge::find()->all();
+        }
+
+        $assetsList = [];
         $countriesList = [];
 
-        $spaces = Space::find();
-
-        foreach ($spaces->all() as $space) {
-            $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+        foreach ($challengesList as $challenge) {
+            $asset = $challenge->asset;
+            $space = $challenge->asset->space;
+            $assetsList[$asset->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
         }
 
         return $this->render('index', [
             'model' => $model,
-            'spacesList' => $spacesList,
+            'assetsList' => $assetsList,
             'countriesList' => $countriesList,
             'fundings' => $query->all(),
             'challengesCarousel' => ChallengeHelper::getRandomChallenges()

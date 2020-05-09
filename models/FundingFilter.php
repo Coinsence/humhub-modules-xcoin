@@ -18,7 +18,7 @@ class FundingFilter extends Model
     /**
      * @var int
      */
-    public $space_id;
+    public $asset_id;
 
     /**
      * @var int[]
@@ -48,8 +48,8 @@ class FundingFilter extends Model
     {
         parent::beforeValidate();
 
-        if (empty($this->space_id) && empty($this->categories) && empty($this->country) && empty($this->city) && empty($this->keywords)) {
-            $this->addError('space_id', Yii::t('XcoinModule.funding', 'At least one filter field must be filled'));
+        if (empty($this->asset_id) && empty($this->categories) && empty($this->country) && empty($this->city) && empty($this->keywords)) {
+            $this->addError('asset_id', Yii::t('XcoinModule.funding', 'At least one filter field must be filled'));
 
             return false;
         }
@@ -69,7 +69,7 @@ class FundingFilter extends Model
     public function rules()
     {
         return [
-            [['space_id'], 'integer'],
+            [['asset_id'], 'integer'],
             [['categories', 'country', 'city', 'keywords'], 'safe']
         ];
     }
@@ -80,7 +80,7 @@ class FundingFilter extends Model
     public function attributeLabels()
     {
         return [
-            'space_id' => Yii::t('XcoinModule.base', 'Space'),
+            'asset_id' => Yii::t('XcoinModule.base', 'Asset'),
             'categories' => Yii::t('XcoinModule.base', 'Categories'),
             'country' => Yii::t('XcoinModule.base', 'Country'),
             'city' => Yii::t('XcoinModule.base', 'City'),

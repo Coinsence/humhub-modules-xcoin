@@ -37,7 +37,7 @@ humhub.module('xcoin', function (module, require, $) {
             }
         }).on('click', '.crowd-funding .reset', function () {
 
-            $('#fundingfilter-space_id').val(null).trigger('change');
+            $('#fundingfilter-asset_id').val(null).trigger('change');
 
             $('#fundingfilter-categories').val(null).trigger('change');
 

@@ -20,7 +20,7 @@ Assets::register($this);
 Select2BootstrapAsset::register($this);
 
 /** @var $fundings Funding[] */
-/** @var $spacesList array */
+/** @var $assetsList array */
 /** @var $challengesList array */
 /** @var $countriesList array */
 /** @var $challengesCarousel array */
@@ -82,12 +82,12 @@ Select2BootstrapAsset::register($this);
             </div>
             <?php $form = ActiveForm::begin(['id' => 'filter-form']); ?>
             <div class="row">
-                <?php if (!empty($spacesList)) : ?>
-                    <div class="col-md-3 space">
+                <?php if (!empty($assetsList)) : ?>
+                    <div class="col-md-3 asset">
                         <?=
-                        $form->field($model, 'space_id')->widget(Select2::class, [
-                            'data' => $spacesList,
-                            'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Space') . ' - ', 'value' => $model->space_id ? $model->space_id : []],
+                        $form->field($model, 'asset_id')->widget(Select2::class, [
+                            'data' => $assetsList,
+                            'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Asset') . ' - ', 'value' => $model->asset_id ? $model->asset_id : []],
                             'theme' => Select2::THEME_BOOTSTRAP,
                             'hideSearch' => false,
                             'pluginOptions' => [
