@@ -5,6 +5,7 @@ use yii\bootstrap\Html;
 
 /** @var $challenge Challenge  */
 /** @var $link bool  */
+/** @var $title bool  */
 /** @var $linkOptions []  */
 /** @var $imageHtmlOptions []  */
 ?>
@@ -16,6 +17,8 @@ use yii\bootstrap\Html;
     <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-challenge-cover.png', $imageHtmlOptions) ?>
 <?php endif ?>
 
-<small><?= Html::encode($challenge->title) ?></small>
+<?php if ($title): ?>
+    <small><?= Html::encode($challenge->title) ?></small>
+<?php endif; ?>
 
 <?php if ($link) :  echo Html::endTag('a'); endif; ?>

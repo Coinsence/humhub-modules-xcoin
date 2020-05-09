@@ -45,6 +45,11 @@ class ChallengeImage extends Widget
     public $link = false;
 
     /**
+     * @var boolean create text title of the challenge
+     */
+    public $title = true;
+
+    /**
      * @var array Html Options of the link
      */
     public $linkOptions = [];
@@ -93,6 +98,7 @@ class ChallengeImage extends Widget
         return $this->render('@xcoin/widgets/views/challenge-image', [
             'challenge' => $this->challenge,
             'link' => $this->link,
+            'title' => $this->title,
             'linkOptions' => $this->linkOptions,
             'imageHtmlOptions' => $imageHtmlOptions,
         ]);
