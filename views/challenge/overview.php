@@ -39,12 +39,13 @@ Assets::register($this);
 
                 <!-- challenge image end -->
                 <?= Html::a('<span class="icon"><i class="X"></i></span>', ['/xcoin/challenge', 'container' => $this->context->contentContainer], ['class' => 'close-challenge']); ?>
+                <!-- campaign edit button start -->
+                <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
+                    <?= Html::a('<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.challenge', 'Edit'), ['/xcoin/challenge/edit', 'id' => $challenge->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
+                <?php endif; ?>
+                <!-- campaign edit button end -->
             </div>
-            <!-- campaign edit button start -->
-            <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
-                <?= Html::a('<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.challenge', 'Edit'), ['/xcoin/challenge/edit', 'id' => $challenge->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
-            <?php endif; ?>
-            <!-- campaign edit button end -->
+
             <div class="challenge-info">
                 <h2 class="challenge-title"><?= $challenge->title ?></h2>
                 <div class="middle-block">

@@ -26,6 +26,31 @@
       object-fit: contain;
       object-position: center;
     }
+    .edit-btn {
+      position: absolute;
+      opacity: .5;
+      font-weight: bold;
+      box-shadow: @overview-action-btn-shadow;
+      transition:
+              box-shadow @overview-action-btn-transition,
+              opacity @overview-action-btn-transition;
+      top: 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      padding: 4px 12px;
+      left: 18px;
+      color: black;
+      background: #ffffff;
+    }
+    .edit-btn:hover,
+    .edit-btn:active {
+      box-shadow: @overview-action-btn-shadow-transitioned;
+      opacity: 1;
+      z-index: 1; /* meeh */
+    }
+    .edit-btn i {
+      margin-right: 6px;
+    }
     .close-challenge {
       position: absolute;
       top: 12px;
@@ -301,6 +326,12 @@
   @media (max-width: 767px) {
 
     > .panel > .panel-heading {
+      .edit-btn {
+        top: 16px;
+        border-radius: 14px;
+        font-size: 12px;
+        padding: 4px 10px;
+      }
       .challenge-info {
         padding: 26px 32px;
       }
@@ -335,6 +366,12 @@
       margin-right: -15px;
     }
     > .panel > .panel-heading {
+      .edit-btn {
+        top: 14px;
+        border-radius: 12px;
+        font-size: 10px;
+        padding: 4px 8px;
+      }
       .challenge-info {
         padding: 18px 16px;
       }
