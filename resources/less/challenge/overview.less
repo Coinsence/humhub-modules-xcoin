@@ -5,9 +5,8 @@
 
 .space-challenge {
   > .panel > .panel-heading {
-    padding: 56px 46px;
-    position: relative;
-    margin-bottom: 80px;
+    padding: 56px 46px 0;
+    margin-bottom: -100px;
     .img-container {
       position: relative;
     }
@@ -86,14 +85,13 @@
       top: 8px;
     }
     .challenge-info {
-      position: absolute;
       background-color: #fff;
-      bottom: -80px;
-      left: 15%;
       width: 70%;
       padding: 36px 64px;
       font-family: 'Roboto', sans-serif;
       box-shadow: 0 3px 50px #00000029;
+      transform: translateY(-160px);
+      margin: 0 auto;
     }
     .challenge-info .challenge-title {
       color: #202020;
@@ -131,7 +129,7 @@
     }
   }
   > .panel > .panel-body {
-    padding: 56px 46px;
+    padding: 0 46px 56px;
     .header {
       font-size: 18px;
       color: #202020;
@@ -303,7 +301,7 @@
   @media (max-width: 1365px) {
 
     > .panel > .panel-heading {
-      padding: 56px 44px;
+      padding: 56px 44px 0;
     }
 
   }
@@ -312,11 +310,8 @@
 
     > .panel > .panel-heading {
       padding: 0;
-      margin-bottom: 140px;
       .challenge-info {
         padding: 27px 62px;
-        bottom: -140px;
-        left: 6%;
         width: 88%;
       }
     }
@@ -352,7 +347,7 @@
       }
     }
     > .panel > .panel-body {
-      padding: 56px 26px;
+      padding: 0 26px 56px;
       .header {
         font-size: 16px;
         margin-bottom: 36px;
