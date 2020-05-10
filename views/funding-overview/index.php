@@ -14,11 +14,13 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 use yii\bootstrap\Progress;
 use yii\helpers\ArrayHelper;
 use humhub\modules\xcoin\models\Category;
+use humhub\modules\xcoin\models\Challenge;
 
 
 Assets::register($this);
 Select2BootstrapAsset::register($this);
 
+/** @var $selectedChallenge Challenge | null */
 /** @var $fundings Funding[] */
 /** @var $assetsList array */
 /** @var $challengesList array */
@@ -205,13 +207,17 @@ Select2BootstrapAsset::register($this);
     <div class="content">
         <div class="container">
             <div class="row header">
+                <?php if ($selectedChallenge): ?>
+                    <div class="col-md-12">
+                        <a class="challenge-url" href="<?= $selectedChallenge->space->createUrl('/xcoin/challenge/overview', ['challengeId' => $selectedChallenge->id]) ?>"><?= $selectedChallenge->title ?></a>
+                    </div>
+                <?php endif; ?>
                 <div class="col-md-6">
                     <span class="num-projects"><?= count($fundings) . ' ' . Yii::t('XcoinModule.funding', 'Project(s)') ?></span>
                 </div>
             </div>
             <div class="panels">
                 <div class="col-sm-6 col-md-4 col-lg-3">
-
                     <a class="add-project" href="<?= Url::to(['/xcoin/funding-overview/new']) ?>"
                        data-target="#globalModal">
                         <span class="icon">

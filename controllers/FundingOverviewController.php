@@ -67,7 +67,10 @@ class FundingOverviewController extends Controller
             $assetsList[$asset->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
         }
 
+        $challenge = Challenge::findOne(['id' => $challengeId]);
+
         return $this->render('index', [
+            'selectedChallenge' => $challenge,
             'model' => $model,
             'assetsList' => $assetsList,
             'countriesList' => $countriesList,
