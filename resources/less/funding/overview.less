@@ -29,8 +29,11 @@
       background-size: 1px 1px;
     }
     .panel-heading .img-container img {
-      max-height: 610px;
+      height: 610px;
       object-fit: contain;
+    }
+    .panel-heading .img-container .carousel-indicator li {
+      box-shadow: 0 0 4px -2px #111;
     }
     .panel-heading .challenge-btn,
     .panel-heading .edit-btn,
@@ -283,6 +286,10 @@
   @media (max-width: 767px) {
 
     .panel {
+
+      .panel-heading .img-container img {
+        height: 420px;
+      }
 
       .panel-heading .challenge-btn,
       .panel-heading .edit-btn,
