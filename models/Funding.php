@@ -129,6 +129,7 @@ class Funding extends ActiveRecord
                 'categories_names'
             ],
             self::SCENARIO_EDIT => [
+                'amount',
                 'title',
                 'description',
                 'content',
@@ -194,14 +195,16 @@ class Funding extends ActiveRecord
             if (!$this->space_id) {
                 $this->AttachSpace();
             }
-        }
+        } else
+            $this->adjustIssuesAmount();
 
         return parent::beforeSave($insert);
     }
 
     public function afterSave($insert, $changedAttributes)
     {
-        $this->createFundingAccount();
+        if ($insert)
+            $this->createFundingAccount();
 
         if ($this->categories_names) {
             $categories = [];
@@ -459,6 +462,37 @@ class Funding extends ActiveRecord
         $transaction->from_account_id = $issueAccount->id;
         $transaction->to_account_id = $account->id;
         $transaction->amount = $this->amount * $this->exchange_rate;
+
+        if (!$transaction->save()) {
+            throw new Exception('Could not create issue transaction for funding account');
+        }
+    }
+
+    private function adjustIssuesAmount()
+    {
+        if (!$fundingAccount = Account::findOne(['funding_id' => $this->id]))
+            throw new HttpException(404);
+
+        if (!$issueAccount = AccountHelper::getIssueAccount($this->space))
+            throw new HttpException(404);
+
+        if (!$asset = AssetHelper::getSpaceAsset($this->space))
+            throw new HttpException(404);
+
+        $transaction = new Transaction();
+        $transaction->asset_id = $asset->id;
+
+        if ($this->amount > $fundingAccount->getAssetBalance($asset)) {
+            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
+            $transaction->from_account_id = $issueAccount->id;
+            $transaction->to_account_id = $fundingAccount->id;
+            $transaction->amount = ($this->amount - $fundingAccount->getAssetBalance($asset)) * $this->exchange_rate;
+        } else {
+            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_REVERT;
+            $transaction->from_account_id = $fundingAccount->id;
+            $transaction->to_account_id = $issueAccount->id;
+            $transaction->amount = ($fundingAccount->getAssetBalance($asset) - $this->amount) * $this->exchange_rate;
+        }
 
         if (!$transaction->save()) {
             throw new Exception('Could not create issue transaction for funding account');

@@ -3,6 +3,7 @@
 use humhub\libs\Iso3166Codes;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\xcoin\models\Asset;
+use humhub\modules\xcoin\widgets\AmountField;
 use kartik\widgets\Select2;
 use yii\bootstrap\Html;
 use humhub\widgets\ModalButton;
@@ -21,6 +22,9 @@ use yii\web\JsExpression;
 
 <div class="modal-body">
     <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'amount')->widget(AmountField::class, ['asset' => $model->challenge->asset])->label(Yii::t('XcoinModule.funding', 'Requested amount')); ?>
+        </div>
         <div class="col-md-6">
             <?= $form->field($model, 'title')->textInput()
                 ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign title')) ?>

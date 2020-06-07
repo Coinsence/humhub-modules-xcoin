@@ -195,7 +195,8 @@ class FundingController extends ContentContainerController
         }
 
         return $this->renderAjax('edit', [
-            'model' => $model
+            'model' => $model,
+            'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
         ]);
     }
 

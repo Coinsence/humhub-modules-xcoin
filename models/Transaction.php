@@ -6,6 +6,8 @@ use humhub\components\Event;
 use Yii;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "xcoin_transaction".
@@ -23,12 +25,13 @@ use humhub\modules\xcoin\helpers\AssetHelper;
  * @property Account $fromAccount
  * @property Account $toAccount
  */
-class Transaction extends \yii\db\ActiveRecord
+class Transaction extends ActiveRecord
 {
 
     const TRANSACTION_TYPE_TRANSFER = 1;
     const TRANSACTION_TYPE_ISSUE = 2;
     const TRANSACTION_TYPE_TASK_PAYMENT = 3;
+    const TRANSACTION_TYPE_REVERT = 4;
 
     /** @var Event this event is dispatched a transaction with TRANSACTION_TYPE_ISSUE is triggered
      */
@@ -123,7 +126,7 @@ class Transaction extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getAsset()
     {
@@ -131,7 +134,7 @@ class Transaction extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFromAccount()
     {
@@ -139,7 +142,7 @@ class Transaction extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getToAccount()
     {
