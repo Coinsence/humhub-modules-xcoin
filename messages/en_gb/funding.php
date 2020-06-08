@@ -31,7 +31,7 @@ return [
     'Determine the exchange rate for which you are willing to trade assets.' => 'At which rate do you want to exchange your COINs?',
     'Edit' => '',
     'Gallery' => '',
-    'Invest in this project' => '',
+    'Invest in this project' => 'Invest COINs to this project',
     'Next' => '',
     'Offering:' => '',
     'Pay now' => 'Invest COINs now',
