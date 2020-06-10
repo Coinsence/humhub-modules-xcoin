@@ -35,7 +35,7 @@ return [
     'Invest in this project' => '',
     'Next' => '',
     'Offering:' => '',
-    'Pay now' => '',
+    'Pay now' => 'Allocate COINs',
     'Please enter your campaign deadline' => '',
     'Please enter your campaign description' => 'Please enter a short description of your campaign',
     'Please enter your campaign needs & commitments' => 'Please enter more details about your project',
