@@ -185,6 +185,7 @@ class FundingController extends ContentContainerController
         $model->scenario = Funding::SCENARIO_EDIT;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
             $this->view->saved();
 

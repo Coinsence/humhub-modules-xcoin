@@ -195,8 +195,7 @@ class Funding extends ActiveRecord
             if (!$this->space_id) {
                 $this->AttachSpace();
             }
-        } else
-            $this->adjustIssuesAmount();
+        }
 
         return parent::beforeSave($insert);
     }
@@ -205,6 +204,10 @@ class Funding extends ActiveRecord
     {
         if ($insert)
             $this->createFundingAccount();
+        else {
+            if (isset($changedAttributes['amount']) && $changedAttributes['amount'] != $this->amount)
+                $this->adjustIssuesAmount();
+        }
 
         if ($this->categories_names) {
             $categories = [];

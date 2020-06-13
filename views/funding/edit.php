@@ -11,9 +11,10 @@ use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;
 use yii\web\JsExpression;
+use humhub\modules\file\widgets\Upload;
 
 /** @var $myAsset Asset */
-
+$upload = Upload::withName();
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Provide details'), 'closable' => false]) ?>
@@ -70,11 +71,39 @@ use yii\web\JsExpression;
                 </div>
             </div>
         <?php endif; ?>
+        <div class="col-md-12">
+            <label class="control-label" for="funding-content"><?= Yii::t('XcoinModule.base', 'Gallery')?></label>
+            <div class="row">
+                <div class="col-md-2">
+                    <?= $upload->button([
+                        'label' => true,
+                        'tooltip' => false,
+                        'options' => ['accept' => 'image/*'],
+                        'cssButtonClass' => 'btn-default btn-sm',
+                        'dropZone' => '#account-form',
+                        'max' => 7,
+                    ]) ?>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-9">
+                    <?= $upload->preview([
+                        'options' => ['style' => 'margin-top:10px'],
+                        'model' => $model,
+                        'showInStream' => true,
+                    ]) ?>
+                </div>
+            </div>
+            <br>
+            <?= $upload->progress() ?>
+            <p class="help-block">
+                <?= Yii::t('XcoinModule.funding', 'Please note that first picture will be used as cover for your crowdfunding campaign.') ?>
+            </p>
+        </div>
     </div>
 </div>
 <hr>
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Next')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Save')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 
