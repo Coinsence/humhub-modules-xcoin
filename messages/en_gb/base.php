@@ -34,7 +34,7 @@ return [
     'Create account' => '',
     'Created At' => '',
     'Created By' => '',
-    'Crowd Funding' => '',
+    'Crowd Funding' => 'Projects',
     'Date' => '',
     'Deadline' => '',
     'Description' => 'Short description',

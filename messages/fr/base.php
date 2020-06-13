@@ -37,7 +37,7 @@ return [
     'Create account' => 'Créer un compte',
     'Created At' => 'Créé le',
     'Created By' => 'Créé par',
-    'Crowd Funding' => 'Crowdfunding',
+    'Crowd Funding' => 'Projects',
     'Date' => '',
     'Deadline' => 'Date limite',
     'Description' => 'Description',
