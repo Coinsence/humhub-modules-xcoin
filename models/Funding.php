@@ -396,19 +396,19 @@ class Funding extends ActiveRecord
 
     public function getCover()
     {
-        $cover = File::find()->where([
+        return File::find()->where([
             'object_model' => Funding::class,
-            'object_id' => $this->id
+            'object_id' => $this->id,
+            'show_in_stream' => true
         ])->orderBy(['id' => SORT_ASC])->one();
-
-        return $cover;
     }
 
     public function getGallery()
     {
         $gallery = File::find()->where([
             'object_model' => Funding::class,
-            'object_id' => $this->id
+            'object_id' => $this->id,
+            'show_in_stream' => true
         ])->orderBy(['id' => SORT_ASC])->all();
 
         //removing cover
