@@ -167,6 +167,13 @@ Assets::register($this);
                             )
                         </div>
                     <?php endif; ?>
+                    <?php if ($funding->status == Funding::FUNDING_STATUS_INVESTMENT_RESTARTED) : ?>
+                        <div style="color: orange; display: inline">
+                            ( <i class="fa fa-refresh"
+                                 aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Investment Restarted') ?>
+                            )
+                        </div>
+                    <?php endif; ?>
                     <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
                         <div style="color: orange; display: inline">
                             ( <i class="fa fa-check-circle-o"
