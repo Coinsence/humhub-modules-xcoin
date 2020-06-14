@@ -85,11 +85,64 @@ Assets::register($this);
             <?= ChallengeImage::widget(['challenge' => $funding->getChallenge()->one(), 'width' => 30, 'link' => true, 'linkOptions' => ['class' => 'challenge-btn']]) ?>
             <!-- challenge image end -->
 
-            <!-- campaign edit button start -->
-            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) && $funding->status == Funding::FUNDING_STATUS_IN_PROGRESS): ?>
-                <?= Html::a('<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.funding', 'Edit'), ['/xcoin/funding/edit', 'id' => $funding->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
+            <!-- campaign buttons start -->
+            <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
+                <?= Html::a(
+                    '<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.funding', 'Edit'),
+                    [
+                        '/xcoin/funding/edit',
+                        'id' => $funding->id,
+                        'container' => $this->context->contentContainer
+                    ],
+                    [
+                        'data-target' => '#globalModal',
+                        'class' => 'edit-btn',
+                        'title' => 'Edit campaign details'
+                    ]
+                ) ?>
+
+                <?php if ($funding->status != Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED) : ?>
+                    <?= Html::a('<i class="fa fa-check"></i>' . Yii::t('XcoinModule.funding', 'Close campaign'),
+                        [
+                            '/xcoin/funding/accept',
+                            'id' => $funding->id,
+                            'container' => $this->context->contentContainer
+                        ],
+                        [
+                            'class' => 'edit-btn',
+                            'style' => 'top: 60px; color:green',
+                            'title' => 'Accept investment'
+                        ]
+                    ) ?>
+                <?php else : ?>
+                    <?= Html::a('<i class="fa fa-refresh"></i>' . Yii::t('XcoinModule.funding', 'Restart campaign'),
+                        [
+                            '/xcoin/funding/restart',
+                            'id' => $funding->id,
+                            'container' => $this->context->contentContainer
+                        ],
+                        [
+                            'class' => 'edit-btn',
+                            'style' => 'top: 60px; color:orange',
+                            'title' => 'Accept investment'
+                        ]
+                    ) ?>
+                <?php endif; ?>
+
+                <?= Html::a('<i class="fa fa-times"></i>' . Yii::t('XcoinModule.funding', 'Cancel campaign'),
+                    [
+                        '/xcoin/funding/cancel',
+                        'id' => $funding->id,
+                        'container' => $this->context->contentContainer
+                    ],
+                    [
+                        'class' => 'edit-btn',
+                        'style' => 'top: 103px; color:red',
+                        'title' => 'Delete campaign'
+                    ]
+                ); ?>
             <?php endif; ?>
-            <!-- campaign edit button end -->
+            <!-- campaign buttons end -->
 
             <!-- campaign review button start -->
             <?php if (SpaceHelper::canReviewProject($funding->challenge->space) || PublicOffersHelper::canReviewSubmittedProjects()): ?>

@@ -244,6 +244,25 @@ class FundingController extends ContentContainerController
         $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
         $model->updateAttributes(['status' => Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED]);
 
-        return $this->htmlRedirect(['index', 'container' => $this->contentContainer]);
+        return $this->htmlRedirect(['overview',
+            'container' => $this->contentContainer,
+            'fundingId' => $model->id
+        ]);
+    }
+
+
+    public function actionRestart($id)
+    {
+        if (!AssetHelper::canManageAssets($this->contentContainer)) {
+            throw new HttpException(401);
+        }
+
+        $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
+        $model->updateAttributes(['status' => Funding::FUNDING_STATUS_INVESTMENT_RESTARTED]);
+
+        return $this->htmlRedirect(['overview',
+            'container' => $this->contentContainer,
+            'fundingId' => $model->id
+        ]);
     }
 }

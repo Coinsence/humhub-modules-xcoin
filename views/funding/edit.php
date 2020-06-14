@@ -61,16 +61,6 @@ $upload = Upload::withName();
             <?= $form->field($model, 'content')->widget(RichTextField::class, ['preset' => 'full'])
                 ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign needs & commitments')) ?>
         </div>
-        <?php if (!$model->isNewRecord): ?>
-            <div class="row">
-                <div class="col-md-6 text-center">
-                    <?= Html::a(Yii::t('XcoinModule.base', 'Accept investment'), ['accept', 'id' => $model->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-success', 'style' => 'margin-bottom: 10px;', 'data-modal-close' => '']); ?>
-                </div>
-                <div class="col-md-6 text-center">
-                    <?= Html::a(Yii::t('XcoinModule.base', 'Cancel this campaign'), ['cancel', 'id' => $model->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-danger', 'data-modal-close' => '']); ?>
-                </div>
-            </div>
-        <?php endif; ?>
         <div class="col-md-12">
             <label class="control-label" for="funding-content"><?= Yii::t('XcoinModule.base', 'Gallery')?></label>
             <div class="row">

@@ -55,6 +55,7 @@ class Funding extends ActiveRecord
     // Funding status
     const FUNDING_STATUS_IN_PROGRESS = 0;
     const FUNDING_STATUS_INVESTMENT_ACCEPTED = 1;
+    const FUNDING_STATUS_INVESTMENT_RESTARTED = 2;
 
     // used in readonly for setting up exchange rate
     public $rate = 1;

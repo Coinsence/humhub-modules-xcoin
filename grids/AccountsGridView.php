@@ -132,7 +132,7 @@ class AccountsGridView extends GridView
                         if (Account::TYPE_FUNDING == $model->account_type) {
                             // allow transfer only if investment is accepted
                             $funding = $model->getFunding()->one();
-                            if ($funding && Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED == $funding->status) {
+                            if ($funding && (in_array($funding->status, [Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED, Funding::FUNDING_STATUS_INVESTMENT_RESTARTED]))) {
                                 $transferButton = Html::a(
                                         '<i class="fa fa-exchange" aria-hidden="true"></i>',
                                         [
