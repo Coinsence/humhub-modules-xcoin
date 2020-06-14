@@ -178,7 +178,8 @@ class Challenge extends ActiveRecord
     {
         return File::find()->where([
             'object_model' => Challenge::class,
-            'object_id' => $this->id
+            'object_id' => $this->id,
+            'show_in_stream' => true
         ])->orderBy(['id' => SORT_DESC])->one();
     }
 
