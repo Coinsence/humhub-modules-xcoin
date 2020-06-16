@@ -79,7 +79,7 @@ class Events
             if (AssetHelper::canManageAssets($space) || Funding::find()->count() > 0) {
                 $event->sender->addItemGroup([
                     'id' => 'crowdfunding',
-                    'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget',  Yii::t('XcoinModule.base', 'Crowdfunding')),
+                    'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', Yii::t('XcoinModule.base', 'Crowdfunding')),
                     'sortOrder' => 30000,
                 ]);
                 $event->sender->addItem([
@@ -166,17 +166,19 @@ class Events
         // Get new account transaction parameters
         $module = Yii::$app->getModule('xcoin');
 
-        if (!$module->settings->space()) {
-            return;
-        }
-
-        $accountTitle = $module->settings->space()->get('accountTitle');
-        $transactionAmount = $module->settings->space()->get('transactionAmount');
-        $transactionComment = $module->settings->space()->get('transactionComment');
-
         //Prepare accounts
         $space = $event->space;
         $user = $event->user;
+
+
+        if (!$module->settings->space($space)) {
+            return;
+        }
+
+        $accountTitle = $module->settings->space($space)->get('accountTitle');
+        $transactionAmount = $module->settings->space($space)->get('transactionAmount');
+        $transactionComment = $module->settings->space($space)->get('transactionComment');
+
 
         $spaceIssueAccount = AccountHelper::getIssueAccount($space);
         $spaceDefaultAccount = Account::findOne(['space_id' => $space->id, 'account_type' => Account::TYPE_DEFAULT]);
