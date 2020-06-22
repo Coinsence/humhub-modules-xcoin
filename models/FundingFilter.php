@@ -48,12 +48,6 @@ class FundingFilter extends Model
     {
         parent::beforeValidate();
 
-        if (empty($this->asset_id) && empty($this->categories) && empty($this->country) && empty($this->city) && empty($this->keywords)) {
-            $this->addError('asset_id', Yii::t('XcoinModule.funding', 'At least one filter field must be filled'));
-
-            return false;
-        }
-
         if (empty($this->country) && !empty($this->city)) {
             $this->addError('country', Yii::t('XcoinModule.funding', 'Please select a country along the entered city'));
 

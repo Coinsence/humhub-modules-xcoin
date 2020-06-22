@@ -49,7 +49,7 @@ class FundingOverviewController extends Controller
             if ($model->city)
                 $query->andWhere(['like', 'city', $model->city . '%', false]);
             if ($model->keywords)
-                $query->andWhere(['like', 'title', '%' . $model->keywords . '%', false]);
+                $query->andWhere(['like', 'xcoin_funding.title', '%' . $model->keywords . '%', false]);
 
         } else if ($challengeId) {
             $query->andWhere(['challenge_id' => $challengeId]);
