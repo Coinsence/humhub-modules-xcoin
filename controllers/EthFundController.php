@@ -1,5 +1,6 @@
 <?php
 
+
 namespace humhub\modules\xcoin\controllers;
 
 use humhub\modules\space\models\Space;
@@ -12,6 +13,11 @@ use Yii;
 use yii\console\Controller;
 use yii\web\HttpException;
 
+/**
+ * Correct investor transactions amount an round them to 35coins rule
+ *
+ * @author Ghaith Daly <ghaith.daly@beecoop.co>
+ */
 class EthFundController extends Controller
 {
     public function actionCorrectVotes()
