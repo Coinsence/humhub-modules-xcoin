@@ -22,7 +22,7 @@ class m201018_212236_product_category_junction_table extends Migration
         $this->createIndex('idx-product_category', 'xcoin_product_category', ['product_id', 'category_id'], true);
 
         $this->addForeignKey('fk_product', 'xcoin_product_category', 'product_id', 'xcoin_product', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_category', 'xcoin_product_category', 'category_id', 'xcoin_category', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk_category_product', 'xcoin_product_category', 'category_id', 'xcoin_category', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**
