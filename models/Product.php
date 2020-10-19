@@ -17,7 +17,7 @@ use yii\db\ActiveQuery;
  * @property string $description
  * @property float $price
  * @property string $content
- * @property integer $asset_id
+ * @property integer $marketplace_id
  * @property integer $created_by
  * @property string $created_at
  * @property integer $space_id
@@ -28,8 +28,9 @@ use yii\db\ActiveQuery;
  * @property integer $payment_type
  * @property integer $review_status
  *
- * @property Asset $asset
+ * @property Marketplace $marketplace
  * @property User $owner
+ * @property Space $space
  */
 class Product extends ActiveRecord
 {
@@ -61,6 +62,9 @@ class Product extends ActiveRecord
 
     public $pictureFile;
 
+    // used when creating product
+    public $categories_names;
+
     /**
      * @inheritdoc
      */
@@ -75,18 +79,19 @@ class Product extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'description', 'content', 'asset_id', 'offer_type'], 'required'],
+            [['name', 'description', 'content', 'marketplace_id', 'offer_type'], 'required'],
+            ['categories_names', 'required', 'message' => 'Please choose at least a category'],
             [['price', 'payment_type'], 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS;
             }],
             [['discount'], 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS;
             }],
-            [['asset_id', 'created_by', 'product_type', 'space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
+            [['marketplace_id', 'created_by', 'product_type', 'space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
             [['price'], 'number', 'min' => '0'],
             [['discount'], 'number', 'min' => '0', 'max' => '100'],
             [['created_at'], 'safe'],
-            [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
+            [['marketplace_id'], 'exist', 'skipOnError' => true, 'targetClass' => Marketplace::class, 'targetAttribute' => ['marketplace_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['name', 'description'], 'string', 'max' => 255],
             [['content'], 'string'],
@@ -102,17 +107,17 @@ class Product extends ActiveRecord
                 'description',
                 'price',
                 'content',
-                'asset_id',
+                'marketplace_id',
                 'offer_type',
                 'discount',
-                'payment_type'
+                'payment_type',
+                'categories_names'
             ],
             self::SCENARIO_EDIT => [
                 'name',
                 'description',
                 'price',
                 'content',
-                'asset_id',
                 'offer_type',
                 'status',
                 'discount',
@@ -128,7 +133,7 @@ class Product extends ActiveRecord
     {
         return [
             'id' => Yii::t('XcoinModule.base', 'ID'),
-            'asset_id' => Yii::t('XcoinModule.base', 'Requested Coin'),
+            'marketplace_id' => Yii::t('XcoinModule.base', 'Marketplace'),
             'price' => Yii::t('XcoinModule.base', 'Price'),
             'created_at' => Yii::t('XcoinModule.base', 'Created At'),
             'created_by' => Yii::t('XcoinModule.base', 'Created By'),
@@ -138,16 +143,41 @@ class Product extends ActiveRecord
             'offer_type' => Yii::t('XcoinModule.base', 'Offer Type'),
             'status' => Yii::t('XcoinModule.base', 'Status'),
             'discount' => Yii::t('XcoinModule.base', 'Discount in %'),
-            'payment_type' => Yii::t('XcoinModule.base', 'Payment Type')
+            'payment_type' => Yii::t('XcoinModule.base', 'Payment Type'),
+            'country' => Yii::t('XcoinModule.base', 'Country'),
+            'city' => Yii::t('XcoinModule.base', 'City'),
         ];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->categories_names) {
+            $categories = [];
+
+            foreach (explode(",", $this->categories_names) as $category_name) {
+                $category = Category::getCategoryByName($category_name);
+                if ($category) {
+                    $categories[] = $category;
+                }
+            }
+            $this->linkAll('categories', $categories);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getAsset()
+    public function getMarketplace()
     {
-        return $this->hasOne(Asset::class, ['id' => 'asset_id']);
+        return $this->hasOne(Marketplace::class, ['id' => 'marketplace_id']);
+    }
+
+    public function getCategories()
+    {
+        return $this->hasMany(Category::class, ['id' => 'category_id'])
+            ->viaTable('xcoin_product_category', ['product_id' => 'id']);
     }
 
     /**

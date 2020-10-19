@@ -60,7 +60,7 @@ class Funding extends ActiveRecord
     // used in readonly for setting up exchange rate
     public $rate = 1;
 
-    // use when creating funding
+    // used when creating funding
     public $categories_names;
 
     /**
