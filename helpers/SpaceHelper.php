@@ -8,6 +8,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\permissions\ReviewSubmittedProjects;
+use humhub\modules\xcoin\permissions\SellSpaceProducts;
 use humhub\modules\xcoin\permissions\SubmitSpaceProjects;
 use Yii;
 
@@ -39,6 +40,11 @@ class SpaceHelper
         return $container->permissionManager->can(new SubmitSpaceProjects());
     }
 
+    public static function canSellProduct(ContentContainerActiveRecord $container)
+    {
+        return $container->permissionManager->can(new SellSpaceProducts());
+    }
+
     public static function canReviewProject(ContentContainerActiveRecord $container)
     {
         return $container->permissionManager->can(new ReviewSubmittedProjects());
@@ -49,6 +55,18 @@ class SpaceHelper
 
         foreach(Membership::find()->where(['user_id'  => $user->id])->all() as $membership) {
             if(self::canSubmitProject($membership->space)){
+                $spaces[] = $membership->space;
+            }
+        }
+
+        return $spaces;
+    }
+
+    public static function getSellerSpaces(User $user){
+        $spaces = [];
+
+        foreach(Membership::find()->where(['user_id'  => $user->id])->all() as $membership) {
+            if(self::canSellProduct($membership->space)){
                 $spaces[] = $membership->space;
             }
         }

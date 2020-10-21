@@ -31,9 +31,9 @@ class Events
 
         $event->sender->addItem([
             'label' => Yii::t('XcoinModule.base', 'Marketplace'),
-            'url' => Url::to(['/xcoin/marketplace', 'verified' => Product::PRODUCT_REVIEWED]),
+            'url' => Url::to(['/xcoin/marketplace-overview']),
             'icon' => '<i class="fa fa-shopping-basket"></i>',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'marketplace'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'marketplace-overview'),
             'sortOrder' => 900,
         ]);
 
@@ -57,14 +57,6 @@ class Events
                 'url' => $space->createUrl('/xcoin/overview'),
                 'icon' => '<i class="fa fa-money"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && !in_array(Yii::$app->controller->id, ['funding', 'product', 'ethereum', 'challenge'])),
-            ]);
-
-            $event->sender->addItem([
-                'label' => Yii::t('XcoinModule.base', 'Products'),
-                'url' => $space->createUrl('/xcoin/product'),
-                'icon' => '<i class="fa fa-product-hunt"></i>',
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'product'),
-                'sortOrder' => 10000,
             ]);
 
             $event->sender->addItem([
@@ -99,6 +91,30 @@ class Events
                     'sortOrder' => 30000,
                 ]);
             }
+
+            if (AssetHelper::canManageAssets($space) || Product::find()->count() > 0) {
+                $event->sender->addItemGroup([
+                    'id' => 'marketplace',
+                    'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', Yii::t('XcoinModule.base', 'Marketplace')),
+                    'sortOrder' => 40000,
+                ]);
+                $event->sender->addItem([
+                    'label' => Yii::t('XcoinModule.base', 'Space marketplaces'),
+                    'group' => 'marketplace',
+                    'url' => $space->createUrl('/xcoin/marketplace'),
+                    'icon' => '<i class="fa fa-shopping-basket"></i>',
+                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'marketplace'),
+                    'sortOrder' => 40000,
+                ]);
+                $event->sender->addItem([
+                    'label' => Yii::t('XcoinModule.base', 'Offered products'),
+                    'group' => 'marketplace',
+                    'url' => $space->createUrl('/xcoin/product'),
+                    'icon' => '<i class="fa fa-product-hunt"></i>',
+                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'product'),
+                    'sortOrder' => 40000,
+                ]);
+            }
         }
     }
 
@@ -112,13 +128,6 @@ class Events
                 'url' => $user->createUrl('/xcoin/overview'),
                 'icon' => '<i class="fa fa-money"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'overview'),
-            ]);
-
-            $event->sender->addItem([
-                'label' => Yii::t('XcoinModule.base', 'Products'),
-                'url' => $user->createUrl('/xcoin/product'),
-                'icon' => '<i class="fa fa-product-hunt"></i>',
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'product'),
             ]);
         }
     }
@@ -141,14 +150,6 @@ class Events
                 'icon' => '<i class="fa fa-money"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'overview'),
                 'sortOrder' => 210,
-            ]);
-
-            $event->sender->addItem([
-                'label' => Yii::t('XcoinModule.base', 'Products'),
-                'url' => $user->createUrl('/xcoin/product'),
-                'icon' => '<i class="fa fa-product-hunt"></i>',
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'product'),
-                'sortOrder' => 220,
             ]);
         }
     }

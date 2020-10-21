@@ -9,8 +9,12 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Asset;
+use humhub\modules\xcoin\models\Challenge;
+use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
+use humhub\modules\xcoin\widgets\MarketplaceImage;
 use Throwable;
 use Yii;
 use yii\web\HttpException;
@@ -40,49 +44,91 @@ class ProductController extends ContentContainerController
         }
     }
 
-    /**
-     * @return string
-     * @throws Exception
-     */
-    public function actionCreate()
+    public function actionNew($marketplaceId)
     {
+        if (!$marketplace = Marketplace::findOne(['id' => $marketplaceId])) {
+            throw new HttpException(404, 'Marketplace not found!');
+        }
+
+        if ($marketplace->isStopped()) {
+            throw new HttpException(403, 'You can`t sell a product in a closed marketplace!');
+        }
+
+
+        /** @var Space $currentSpace */
+        $currentSpace = $this->contentContainer;
+
+        $user = Yii::$app->user->identity;
+
         $model = new Product();
+        $model->created_by = $user->id;
+        $model->marketplace_id = $marketplace->id;
         $model->scenario = Product::SCENARIO_CREATE;
-        $model->product_type = Product::TYPE_SPACE;
-        $model->space_id = $this->contentContainer->id;
 
-        // Get default Asset that will be preselected
-        $defaultAsset = null;
+        if (empty(Yii::$app->request->post('step'))) {
 
-        /* "defaultAssetName" parameter contains the default asset name that must be preselected
-        This parameter should be introduced in the file humhub/protected/config/common.php*/
-        if (array_key_exists('defaultAssetName', Yii::$app->params)) {
-            $defaultAssetName = Yii::$app->params['defaultAssetName'];
-            $defaultAssetSpace = Space::findOne(['name' => $defaultAssetName]);
+            $spaces = SpaceHelper::getSellerSpaces($user);
 
-            if ($defaultAssetSpace) {
-                $defaultAsset = AssetHelper::getSpaceAsset($defaultAssetSpace);
-                if (!$defaultAsset->getIssuedAmount())
-                    $defaultAsset = null;
+            $spacesList = [];
+            foreach ($spaces as $space) {
+                if (AssetHelper::getSpaceAsset($space))
+                    $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
             }
+
+            return $this->renderAjax('../product/spaces-list', [
+                'product' => $model,
+                'spacesList' => $spacesList,
+            ]);
         }
 
-        $assetList = [];
-        foreach (Asset::find()->all() as $asset) {
-            if ($asset->getIssuedAmount()) {
-                $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
+        $model->load(Yii::$app->request->post());
+
+        // Try Save Step 2
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
+
+            if ($model->marketplace->isStopped()) {
+                throw new HttpException(403, 'You can`t sell a product in a closed marketplace!');
             }
+
+            if ($model->space && !SpaceHelper::canSellProduct($model->space)) {
+                throw new HttpException(401);
+            }
+
+            // Step 3: Gallery
+            return $this->renderAjax('../product/media', ['model' => $model]);
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
+        // Try Save Step 3
+        if (
+            Yii::$app->request->isPost &&
+            Yii::$app->request->post('step') == '3'
+            && $model->isNameUnique()
+            && $model->save()
+        ) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
             $this->view->saved();
 
-            return $this->htmlRedirect(['/xcoin/product', 'container' => $this->contentContainer]);
+            return $this->redirect($model->space->createUrl('/xcoin/product/overview', [
+                'container' => $model->space,
+                'productId' => $model->id
+            ]));
         }
 
-        return $this->renderAjax('create', ['model' => $model, 'assetList' => $assetList, 'defaultAsset' => $defaultAsset]);
+        // Check validation
+        if ($model->hasErrors() && $model->isSecondStep()) {
+
+            return $this->renderAjax('../product/details', [
+                'model' => $model,
+                'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null
+            ]);
+        }
+
+        // Step 2: Details
+        return $this->renderAjax('../product/details', [
+            'model' => $model,
+            'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null
+        ]);
     }
 
     /**
@@ -179,11 +225,13 @@ class ProductController extends ContentContainerController
 
     public function actionReview($id, $status)
     {
-        if(!PublicOffersHelper::canReviewSubmittedProjects()){
+
+        $model = Product::findOne(['id' => $id]);
+
+        if (!SpaceHelper::canReviewProject($model->marketplace->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {
             throw new HttpException(401);
         }
 
-        $model = Product::findOne(['id' => $id]);
         $model->scenario = Product::SCENARIO_EDIT;
         $model->review_status = $status;
 

@@ -12,7 +12,7 @@ use yii\web\JsExpression;
 use kartik\widgets\Select2;
 
 /** @var $model Challenge */
-/** @var $asset Asset[] */
+/** @var $assets Asset[] */
 /** @var $defaultAsset Asset */
 
 Select2BootstrapAsset::register($this);

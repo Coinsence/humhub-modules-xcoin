@@ -73,7 +73,7 @@ use yii\web\JsExpression;
             <?= $form->field($model, 'categories_names')->widget(Select2::className(), [
                 'model' => $model,
                 'attribute' => 'categories_names',
-                'data' => ArrayHelper::map(Category::find()->all(), 'name', 'name'),
+                'data' => ArrayHelper::map(Category::find()->where(['type' => Category::TYPE_FUNDING])->all(), 'name', 'name'),
                 'options' => [
                     'multiple' => true,
                 ]

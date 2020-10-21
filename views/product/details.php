@@ -3,19 +3,19 @@
 use humhub\libs\Iso3166Codes;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\xcoin\models\Asset;
+use humhub\modules\xcoin\models\Category;
 use humhub\modules\xcoin\models\Product;
 use kartik\widgets\Select2;
 use yii\bootstrap\Html;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yii\web\JsExpression;
-use humhub\modules\file\widgets\Upload;
 
 /** @var $model Product */
 /** @var $myAsset Asset */
 
-$upload = Upload::withName();
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.product', 'Provide details'), 'closable' => false]) ?>
@@ -28,19 +28,6 @@ $upload = Upload::withName();
 
 <div class="modal-body">
     <div class="row">
-        <div class="col-md-12">
-            <?=
-            $form->field($model, 'status')->widget(Select2::class, [
-                'data' => [
-                    Product::STATUS_UNAVAILABLE => 'UNAVAILABLE',
-                    Product::STATUS_AVAILABLE => 'AVAILABLE'
-                ],
-                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.product', 'Select status') . ' - '],
-                'theme' => Select2::THEME_BOOTSTRAP,
-                'hideSearch' => true,
-            ])->label(Yii::t('XcoinModule.product', 'Status'));
-            ?>
-        </div>
         <div class="col-md-12">
             <?= $form->field($model, 'name')->textInput()
                 ->hint(Yii::t('XcoinModule.product', 'Please enter your product name')) ?>
@@ -68,6 +55,16 @@ $upload = Upload::withName();
         <div class="col-md-6">
             <?= $form->field($model, 'city')->textInput()
                 ->hint(Yii::t('XcoinModule.product', 'Please enter your city')) ?>
+        </div>
+        <div class="col-md-12">
+            <?= $form->field($model, 'categories_names')->widget(Select2::class, [
+                'model' => $model,
+                'attribute' => 'categories_names',
+                'data' => ArrayHelper::map(Category::find()->where(['type' => Category::TYPE_MARKETPLACE])->all(), 'name', 'name'),
+                'options' => [
+                    'multiple' => true,
+                ]
+            ])->label('Categories'); ?>
         </div>
         <div class="col-md-6">
             <?=
@@ -114,33 +111,6 @@ $upload = Upload::withName();
                     'allowClear' => false,
                 ]
             ])->hint(Yii::t('XcoinModule.product', 'Please choose the payment type for your product')); ?>
-        </div>
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-2">
-                    <?= $upload->button([
-                        'label' => true,
-                        'tooltip' => false,
-                        'options' => ['accept' => 'image/*'],
-                        'cssButtonClass' => 'btn-default btn-sm',
-                        'dropZone' => '#product-form',
-                        'max' => 7,
-                    ]) ?>
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-9">
-                    <?= $upload->preview([
-                        'options' => ['style' => 'margin-top:10px'],
-                        'model' => $model,
-                        'showInStream' => true,
-                    ]) ?>
-                </div>
-            </div>
-            <br>
-            <?= $upload->progress() ?>
-            <p class="help-block">
-                <?= Yii::t('XcoinModule.product', 'Please note that first picture will be used as cover for your product.') ?>
-            </p>
         </div>
     </div>
 </div>

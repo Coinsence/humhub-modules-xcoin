@@ -14,9 +14,9 @@ use humhub\modules\space\models\Space;
 use Yii;
 
 /**
- * SubmitSpaceProjects
+ * SellSpaceProducts Permission
  */
-class SubmitSpaceProjects extends BasePermission
+class SellSpaceProducts extends BasePermission
 {
 
     /**
@@ -41,12 +41,12 @@ class SubmitSpaceProjects extends BasePermission
 
     public function getTitle()
     {
-        return Yii::t('XcoinModule.base', 'Submit Project on behalf of this space');
+        return Yii::t('XcoinModule.base', 'Sell Product on behalf of this space');
     }
 
     public function getDescription()
     {
-        return Yii::t('XcoinModule.base', 'Allows the user to submit project proposals on behalf of this space');
+        return Yii::t('XcoinModule.base', 'Allows the user to sell product on behalf of this space');
     }
 
 }

@@ -3,7 +3,7 @@
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\widgets\Upload;
 use humhub\modules\xcoin\models\Asset;
-use humhub\modules\xcoin\models\Challenge;
+use humhub\modules\xcoin\models\Marketplace;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
@@ -11,7 +11,7 @@ use humhub\assets\Select2BootstrapAsset;
 use yii\web\JsExpression;
 use kartik\widgets\Select2;
 
-/** @var $model Challenge */
+/** @var $model Marketplace */
 /** @var $assets Asset[] */
 
 Select2BootstrapAsset::register($this);
@@ -19,55 +19,55 @@ Select2BootstrapAsset::register($this);
 $upload = Upload::forModel($model, $model->coverFile);
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.challenge', 'Edit Challenge'), 'closable' => false]) ?>
-<?php $form = ActiveForm::begin(['id' => 'challenge-form']); ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.marketplace', 'Edit Marketplace'), 'closable' => false]) ?>
+<?php $form = ActiveForm::begin(['id' => 'marketplace-form']); ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
 
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'title')->textInput()->hint(Yii::t('XcoinModule.challenge', 'Please enter your challenge title')) ?>
+            <?= $form->field($model, 'title')->textInput()->hint(Yii::t('XcoinModule.marketplace', 'Please enter your marketplace title')) ?>
         </div>
         <div class="col-md-12">
             <?= $form->field($model, 'description')->widget(RichTextField::class, ['preset' => 'full'])
-                ->hint(Yii::t('XcoinModule.challenge', 'Please enter your challenge description')) ?>
+                ->hint(Yii::t('XcoinModule.marketplace', 'Please enter your marketplace description')) ?>
         </div>
         <div class="col-md-12">
             <?=
             $form->field($model, 'asset_id')->widget(Select2::class, [
                 'data' => $assets,
-                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.challenge', 'Select coin') . ' - ', 'value' => $model->asset_id],
+                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.marketplace', 'Select coin') . ' - ', 'value' => $model->asset_id],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ],
-            ])->label(Yii::t('XcoinModule.funding', 'Requested coin'));
+            ])->label(Yii::t('XcoinModule.marketplace', 'Sales coin'));
             ?>
         </div>
         <div class="col-md-12">
             <?=
             $form->field($model, 'stopped')->widget(Select2::class, [
                 'data' => [
-                    Challenge::CHALLENGE_ACTIVE => 'ACTIVE',
-                    Challenge::CHALLENGE_STOPPED => 'STOPPED'
+                    Marketplace::MARKETPLACE_ACTIVE => 'OPEN',
+                    Marketplace::MARKETPLACE_STOPPED => 'CLOSED'
                 ],
-                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.challenge', 'Select status') . ' - '],
+                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.marketplace', 'Select status') . ' - '],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
-            ])->label(Yii::t('XcoinModule.challenge', 'Status'));
+            ])->label(Yii::t('XcoinModule.marketplace', 'Status'));
             ?>
         </div>
         <div class="col-md-12">
-            <label class="control-label"><?= Yii::t('XcoinModule.challenge', 'Challenge Image') ?></label><br>
+            <label class="control-label"><?= Yii::t('XcoinModule.marketplace', 'Marketplace Image') ?></label><br>
             <div class="col-md-2">
                 <?= $upload->button([
                     'label' => true,
                     'tooltip' => false,
                     'options' => ['accept' => 'image/*'],
                     'cssButtonClass' => 'btn-default btn-sm',
-                    'dropZone' => '#challenge-form',
+                    'dropZone' => '#marketplace-form',
                     'max' => 1,
                 ]) ?>
             </div>
@@ -86,7 +86,7 @@ $upload = Upload::forModel($model, $model->coverFile);
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.challenge', 'Save')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.marketplace', 'Save')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 
