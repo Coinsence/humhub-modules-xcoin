@@ -29,6 +29,12 @@ Select2BootstrapAsset::register($this);
 
 ?>
 
+<style>
+    .crowd-funding .content .add-project{
+        height: 320px;
+    }
+</style>
+
 <div class="crowd-funding">
     <div class="filters">
         <div class="container">
