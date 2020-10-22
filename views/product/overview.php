@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\user\widgets\Image;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Product;
@@ -137,24 +138,38 @@ Assets::register($this);
             <!-- product title end -->
 
 
+            <div class="value">
+                <?= Yii::t('XcoinModule.product', 'Owner:') ?>
+                <span>
+                    <?= Image::widget([
+                        'user' => $product->getCreatedBy()->one(),
+                        'width' => 34,
+                        'showTooltip' => true,
+                        'link' => true
+                    ]); ?>
+                    <?=" <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname. " ".Html::encode($product->getCreatedBy()->one()->profile->lastname)) . "</strong>"; ?>
+                </span>
+            </div>
+
             <!-- product pricing start -->
             <h6 class="value">
+                <?= Yii::t('XcoinModule.marketplace', 'Price') ?> :
                 <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
-                    <?= Yii::t('XcoinModule.marketplace', 'Price') ?> : <b><?= $product->price ?></b>
+                    <b><?= $product->price ?></b>
                     <?= SpaceImage::widget([
                         'space' => $product->marketplace->asset->space,
                         'width' => 24,
                         'showTooltip' => true,
-                        'link' => false
+                        'link' => true
                     ]); ?>
                     <small> <?= $product->getPaymentType() ?> </small>
                 <?php else : ?>
-                <?= $product->discount ?> %
+                <b><?= $product->discount ?> %</b>
                 <?= SpaceImage::widget([
                     'space' => $product->marketplace->asset->space,
                     'width' => 24,
                     'showTooltip' => true,
-                    'link' => false
+                    'link' => true
                 ]); ?>
                 <?= Yii::t('XcoinModule.marketplace', 'Discount') ?>
                 <?php endif; ?>

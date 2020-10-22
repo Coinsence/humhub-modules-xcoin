@@ -117,8 +117,8 @@ Select2BootstrapAsset::register($this);
                     </div>
                 <?php endif; ?>
                 <div class="col-md-3">
-                    <?= $form->field($model, 'categories')->widget(Select2::className(), [
-                        'data' => ArrayHelper::map(Category::find()->all(), 'id', 'name'),
+                    <?= $form->field($model, 'categories')->widget(Select2::class, [
+                        'data' => ArrayHelper::map(Category::find()->where(['type' => Category::TYPE_FUNDING])->all(), 'id', 'name'),
                         'options' => [
                             'placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Categories') . ' - ',
                             'multiple' => true,

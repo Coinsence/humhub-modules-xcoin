@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\user\widgets\Image;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\models\Product;
@@ -47,6 +48,16 @@ Assets::register($this);
                                         ]) ?>
                                     <?php endif ?>
                                     <!-- product picture end -->
+                                    <div class="project-owner">
+                                        <!-- user image start -->
+                                        <?= Image::widget([
+                                            'user' => $product->getCreatedBy()->one(),
+                                            'width' => 34,
+                                            'showTooltip' => true,
+                                            'link' => false
+                                        ]); ?>
+                                        <!-- user image end -->
+                                    </div>
                                 </div>
                                 <div class="panel-body">
                                     <h4 class="funding-title">

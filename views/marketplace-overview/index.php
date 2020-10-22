@@ -1,6 +1,7 @@
 <?php
 
 use humhub\libs\Iso3166Codes;
+use humhub\modules\user\widgets\Image;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
@@ -123,8 +124,8 @@ Select2BootstrapAsset::register($this);
                     </div>
                 <?php endif; ?>
                 <div class="col-md-3">
-                    <?= $form->field($model, 'categories')->widget(Select2::className(), [
-                        'data' => ArrayHelper::map(Category::find()->all(), 'id', 'name'),
+                    <?= $form->field($model, 'categories')->widget(Select2::class, [
+                        'data' => ArrayHelper::map(Category::find()->where(['type' => Category::TYPE_MARKETPLACE])->all(), 'id', 'name'),
                         'options' => [
                             'placeholder' => '- ' . Yii::t('XcoinModule.marketplace', 'Categories') . ' - ',
                             'multiple' => true,
@@ -255,6 +256,20 @@ Select2BootstrapAsset::register($this);
                                             ]) ?>
                                         <?php endif ?>
                                         <!-- product picture end -->
+                                        <div class="project-owner">
+                                            <!-- user image start -->
+                                            <?= Image::widget([
+                                                'user' => $product->getCreatedBy()->one(),
+                                                'width' => 34,
+                                                'showTooltip' => true,
+                                                'link' => false
+                                            ]); ?>
+                                            <!-- user image end -->
+
+                                            <!-- user name start -->
+                                            <span><?= Yii::t('XcoinModule.product', 'Product by') . " <strong>" . Html::encode($product->getCreatedBy()->one()->username) . "</strong>"; ?></span>
+                                            <!-- user name end -->
+                                        </div>
                                     </div>
                                     <div class="panel-body">
                                         <h4 class="funding-title">
