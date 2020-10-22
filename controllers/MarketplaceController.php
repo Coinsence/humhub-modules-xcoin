@@ -1,67 +1,140 @@
 <?php
+/**
+ * @link https://coinsence.org/
+ * @copyright Copyright (c) 2020 Coinsence
+ * @license https://www.humhub.com/licences
+ *
+ * @author Daly Ghaith <daly.ghaith@gmail.com>
+ */
 
 namespace humhub\modules\xcoin\controllers;
 
-use humhub\components\Controller;
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AssetHelper;
-use humhub\modules\xcoin\models\Asset;
-use humhub\modules\xcoin\models\Product;
+use humhub\modules\xcoin\models\Marketplace;
 use Yii;
+use yii\web\HttpException;
+use yii\web\Response;
 
-class MarketplaceController extends Controller
+/**
+ * Description of MarketplaceController
+ */
+class MarketplaceController extends ContentContainerController
 {
+    /**
+     * @inheritdoc
+     */
+    public $validContentContainerClasses = [Space::class];
 
-    public function actionIndex($verified = false)
+    public function actionIndex()
     {
-        $products = Product::find()->where([
-                'status' => Product::STATUS_AVAILABLE,
-                'review_status' => $verified == Product::PRODUCT_REVIEWED ? Product::PRODUCT_REVIEWED : Product::PRODUCT_NOT_REVIEWED
-            ])->all();
+        $marketplaces = Marketplace::find()
+            ->where(['space_id' => $this->contentContainer->id])
+            ->orderBy(['created_at' => SORT_DESC])
+            ->all();
 
         return $this->render('index', [
-            'products' => $products,
+            'marketplaces' => $marketplaces
         ]);
     }
 
-    public function actionSell()
+    /**
+     * @param $marketplaceId
+     * @return string
+     * @throws HttpException
+     */
+    public function actionOverview($marketplaceId)
     {
-        $model = new Product();
-        $model->scenario = Product::SCENARIO_CREATE;
-        $model->product_type = Product::TYPE_PERSONAL;
+        $marketplace = Marketplace::findOne(['id' => $marketplaceId, 'space_id' => $this->contentContainer]);
 
-        // Get default Asset that will be preselected
-        $defaultAsset = null;
-
-        /* "defaultAssetName" parameter contains the default asset name that must be preselected
-        This parameter should be introduced in the file humhub/protected/config/common.php*/
-        if (array_key_exists('defaultAssetName', Yii::$app->params)) {
-            $defaultAssetName = Yii::$app->params['defaultAssetName'];
-            $defaultAssetSpace = Space::findOne(['name' => $defaultAssetName]);
-
-            if ($defaultAssetSpace) {
-                $defaultAsset = AssetHelper::getSpaceAsset($defaultAssetSpace);
-                if (!$defaultAsset->getIssuedAmount())
-                    $defaultAsset = null;
-            }
+        if (!$marketplace) {
+            throw new HttpException(404);
         }
 
-        $assetList = [];
-        foreach (Asset::find()->all() as $asset) {
-            if ($asset->getIssuedAmount()) {
-                $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
-            }
+        $products = $marketplace->getProducts()->all();
+
+        return $this->render('overview', [
+            'marketplace' => $marketplace,
+            'products'  => $products
+        ]);
+    }
+
+    /**
+     * @return string|Response
+     * @throws HttpException
+     */
+    public function actionCreate()
+    {
+        /** @var Space $currentSpace */
+        $currentSpace = $this->contentContainer;
+
+        if (!AssetHelper::canManageAssets($currentSpace)) {
+            throw new HttpException(401);
         }
+
+        $model = new Marketplace();
+        $model->scenario = Marketplace::SCENARIO_CREATE;
+        $model->space_id = $this->contentContainer->id;
+
+        $assets = AssetHelper::getAllAssets();
+        $defaultAsset = AssetHelper::getDefaultAsset();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
             $this->view->saved();
 
-            return $this->htmlRedirect(['/xcoin/marketplace']);
+            return $this->htmlRedirect($currentSpace->createUrl('/xcoin/marketplace/index', [
+                'marketplaceId' => $model->id
+            ]));
         }
 
-        return $this->renderAjax('sell', ['model' => $model, 'assetList' => $assetList, 'defaultAsset' => $defaultAsset]);
+        return $this->renderAjax('create', [
+                'model' => $model,
+                'assets' => $assets,
+                'defaultAsset' => $defaultAsset,
+            ]
+        );
+    }
+
+    /**
+     * @return string|Response
+     * @throws HttpException
+     */
+    public function actionEdit()
+    {
+        /** @var Space $currentSpace */
+        $currentSpace = $this->contentContainer;
+
+        if (!AssetHelper::canManageAssets($currentSpace)) {
+            throw new HttpException(401);
+        }
+
+        $model = Marketplace::findOne(['id' => Yii::$app->request->get('id')]);
+
+        if ($model == null) {
+            throw new HttpException(404, Yii::t('AdminModule.controllers_MarketplaceController', 'Marketplace not found!'));
+        }
+
+        $model->scenario = Marketplace::SCENARIO_EDIT;
+
+        $assets = AssetHelper::getAllAssets();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
+            $this->view->saved();
+
+            return $this->htmlRedirect($currentSpace->createUrl('/xcoin/marketplace/overview', [
+                'marketplaceId' => $model->id
+            ]));
+        }
+
+        return $this->renderAjax('edit', [
+                'model' => $model,
+                'assets' => $assets
+            ]
+        );
     }
 }

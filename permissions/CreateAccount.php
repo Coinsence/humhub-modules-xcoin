@@ -30,6 +30,7 @@ class CreateAccount extends \humhub\libs\BasePermission
         Space::USERGROUP_OWNER,
         Space::USERGROUP_ADMIN,
         Space::USERGROUP_MODERATOR,
+        Space::USERGROUP_SUBMITTER,
         Space::USERGROUP_MEMBER,
         User::USERGROUP_SELF
     ];

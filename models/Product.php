@@ -2,12 +2,19 @@
 
 namespace humhub\modules\xcoin\models;
 
+use Colors\RandomColor;
+use cornernote\linkall\LinkAllBehavior;
 use humhub\components\ActiveRecord;
 use humhub\modules\file\models\File;
+use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\Module;
 use humhub\modules\user\models\User;
+use humhub\modules\xcoin\helpers\AccountHelper;
+use humhub\modules\xcoin\helpers\Utils;
 use Yii;
 use yii\db\ActiveQuery;
+use yii\web\HttpException;
 
 /**
  * This is the model class for table "xcoin_product".
@@ -17,7 +24,7 @@ use yii\db\ActiveQuery;
  * @property string $description
  * @property float $price
  * @property string $content
- * @property integer $asset_id
+ * @property integer $marketplace_id
  * @property integer $created_by
  * @property string $created_at
  * @property integer $space_id
@@ -27,9 +34,12 @@ use yii\db\ActiveQuery;
  * @property float $discount
  * @property integer $payment_type
  * @property integer $review_status
+ * @property string $country
+ * @property string $city
  *
- * @property Asset $asset
+ * @property Marketplace $marketplace
  * @property User $owner
+ * @property Space $space
  */
 class Product extends ActiveRecord
 {
@@ -61,6 +71,9 @@ class Product extends ActiveRecord
 
     public $pictureFile;
 
+    // used when creating product
+    public $categories_names;
+
     /**
      * @inheritdoc
      */
@@ -75,22 +88,31 @@ class Product extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'description', 'content', 'asset_id', 'offer_type'], 'required'],
+            [['name', 'description', 'content', 'marketplace_id', 'offer_type', 'city', 'country'], 'required'],
+            ['categories_names', 'required', 'message' => 'Please choose at least a category'],
             [['price', 'payment_type'], 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS;
             }],
             [['discount'], 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS;
             }],
-            [['asset_id', 'created_by', 'product_type', 'space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
+            [['marketplace_id', 'created_by', 'product_type', 'space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
             [['price'], 'number', 'min' => '0'],
             [['discount'], 'number', 'min' => '0', 'max' => '100'],
             [['created_at'], 'safe'],
-            [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
+            [['marketplace_id'], 'exist', 'skipOnError' => true, 'targetClass' => Marketplace::class, 'targetAttribute' => ['marketplace_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
+            [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['name', 'description'], 'string', 'max' => 255],
             [['content'], 'string'],
             [['pictureFile'], 'safe'],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            LinkAllBehavior::class,
         ];
     }
 
@@ -99,24 +121,29 @@ class Product extends ActiveRecord
         return [
             self::SCENARIO_CREATE => [
                 'name',
+                'space_id',
                 'description',
                 'price',
                 'content',
-                'asset_id',
+                'marketplace_id',
                 'offer_type',
                 'discount',
-                'payment_type'
+                'payment_type',
+                'categories_names',
+                'country',
+                'city'
             ],
             self::SCENARIO_EDIT => [
                 'name',
                 'description',
                 'price',
                 'content',
-                'asset_id',
                 'offer_type',
                 'status',
                 'discount',
-                'payment_type'
+                'payment_type',
+                'country',
+                'city'
             ],
         ];
     }
@@ -128,7 +155,7 @@ class Product extends ActiveRecord
     {
         return [
             'id' => Yii::t('XcoinModule.base', 'ID'),
-            'asset_id' => Yii::t('XcoinModule.base', 'Requested Coin'),
+            'marketplace_id' => Yii::t('XcoinModule.base', 'Marketplace'),
             'price' => Yii::t('XcoinModule.base', 'Price'),
             'created_at' => Yii::t('XcoinModule.base', 'Created At'),
             'created_by' => Yii::t('XcoinModule.base', 'Created By'),
@@ -138,16 +165,54 @@ class Product extends ActiveRecord
             'offer_type' => Yii::t('XcoinModule.base', 'Offer Type'),
             'status' => Yii::t('XcoinModule.base', 'Status'),
             'discount' => Yii::t('XcoinModule.base', 'Discount in %'),
-            'payment_type' => Yii::t('XcoinModule.base', 'Payment Type')
+            'payment_type' => Yii::t('XcoinModule.base', 'Payment Type'),
+            'country' => Yii::t('XcoinModule.base', 'Country'),
+            'city' => Yii::t('XcoinModule.base', 'City'),
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if ($this->isNewRecord) {
+            $this->status = self::STATUS_AVAILABLE;
+
+            if (!$this->space_id) {
+                $this->AttachSpace();
+            }
+        }
+
+        return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->categories_names) {
+            $categories = [];
+
+            foreach (explode(",", $this->categories_names) as $category_name) {
+                $category = Category::getCategoryByName($category_name);
+                if ($category) {
+                    $categories[] = $category;
+                }
+            }
+            $this->linkAll('categories', $categories);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getAsset()
+    public function getMarketplace()
     {
-        return $this->hasOne(Asset::class, ['id' => 'asset_id']);
+        return $this->hasOne(Marketplace::class, ['id' => 'marketplace_id']);
+    }
+
+    public function getCategories()
+    {
+        return $this->hasMany(Category::class, ['id' => 'category_id'])
+            ->viaTable('xcoin_product_category', ['product_id' => 'id']);
     }
 
     /**
@@ -173,21 +238,25 @@ class Product extends ActiveRecord
 
     public function getPicture()
     {
-        $cover = File::find()->where([
+        return File::find()->where([
             'object_model' => Product::class,
-            'object_id' => $this->id
+            'object_id' => $this->id,
+            'show_in_stream' => true
         ])->orderBy(['id' => SORT_ASC])->one();
-
-        return $cover;
     }
 
-    public function beforeSave($insert)
+    public function getGallery()
     {
-        if ($this->isNewRecord) {
-            $this->status = self::STATUS_AVAILABLE;
-        }
+        $gallery = File::find()->where([
+            'object_model' => Product::class,
+            'object_id' => $this->id,
+            'show_in_stream' => true
+        ])->orderBy(['id' => SORT_ASC])->all();
 
-        return parent::beforeSave($insert);
+        //removing cover
+        array_shift($gallery);
+
+        return $gallery;
     }
 
     public static function getOfferTypes()
@@ -246,5 +315,58 @@ class Product extends ActiveRecord
     public function isOwner($user)
     {
         return $user->id == $this->getCreatedBy()->one()->id;
+    }
+
+    public function isNameUnique()
+    {
+        if (Space::findOne(['name' => $this->name])) {
+            $this->addError('name', Yii::t('XcoinModule.product', 'Name already used'));
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isFirstStep()
+    {
+        return empty($this->marketplace_id);
+    }
+
+    public function isSecondStep()
+    {
+        return Utils::mempty(
+                $this->name,
+                $this->description,
+                $this->content,
+                $this->country,
+                $this->city,
+                $this->offer_type
+            ) || strlen($this->description) > 255 ||
+            ($this->offer_type == self::OFFER_DISCOUNT_FOR_COINS && empty($this->discount)) ||
+            ($this->offer_type == self::OFFER_TOTAL_PRICE_IN_COINS && (empty($this->price) || empty($this->payment_type)));
+    }
+
+    private function AttachSpace()
+    {
+        /* @var Module $module */
+        $module = Yii::$app->getModule('space');
+
+        // init space model
+        $space = new Space();
+        $space->scenario = Space::SCENARIO_CREATE;
+        $space->visibility = $module->settings->get('defaultVisibility', Space::VISIBILITY_REGISTERED_ONLY);
+        $space->join_policy = $module->settings->get('defaultJoinPolicy', Space::JOIN_POLICY_APPLICATION);
+        $space->color = RandomColor::one(['luminosity' => 'dark']);
+        $space->space_type = Space::SPACE_TYPE_FUNDING;
+        $space->name = $this->name;
+        $space->description = $this->description;
+        $space->url = UrlValidator::autogenerateUniqueSpaceUrl($this->name);
+
+        if (!$space->save()) {
+            throw new HttpException(400);
+        }
+
+        $this->space_id = $space->id;
     }
 }

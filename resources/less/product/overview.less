@@ -1,0 +1,250 @@
+
+/* -------------------------------------------- */
+/* Product overview styling */
+/* -------------------------------------------- */
+
+
+.fundingPanel .panel.cover {
+  overflow: hidden;
+}
+
+.fundingPanel .panel.cover .panel-heading {
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.fundingPanel .panel.cover .panel-heading .img-container {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.fundingPanel .panel.cover .panel-heading .img-container .bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  background-size: 1px 1px;
+}
+
+.fundingPanel .panel.cover .panel-heading .img-container img {
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.fundingPanel .panel.cover .panel-heading .edit-btn {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  color: black;
+  background: white;
+  border-radius: 20px;
+  font-size: 14px;
+  padding: 4px 12px;
+  font-weight: bold;
+}
+
+.fundingPanel .panel.cover .panel-heading .delete-btn {
+  position: absolute;
+  top: 18px;
+  left: 130px;
+  color: white;
+  background: red;
+  border-radius: 20px;
+  font-size: 14px;
+  padding: 4px 12px;
+  font-weight: bold;
+}
+
+.fundingPanel .panel.cover .panel-heading .review-btn-trusted {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  color: white;
+  background: #5bea0987;
+  border-radius: 20px;
+  font-size: 14px;
+  padding: 4px 12px;
+  font-weight: bold;
+}
+
+.fundingPanel .panel.cover .panel-heading .review-btn-untrusted {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  color: white;
+  background: #FF000087;
+  border-radius: 20px;
+  font-size: 14px;
+  padding: 4px 12px;
+  font-weight: bold;
+}
+
+.fundingPanel .panel.cover .panel-heading .edit-btn:hover {
+  background: #cecece;
+}
+
+.fundingPanel .panel.cover .panel-heading .delete-btn:hover {
+  background: #e40000;
+}
+
+.fundingPanel .panel.cover .panel-heading .review-btn-trusted:hover {
+  background: #4AC309;
+}
+
+.fundingPanel .panel.cover .panel-heading .review-btn-untrusted:hover {
+  background: #d60000;
+}
+
+.fundingPanel .panel.cover .panel-heading .edit-btn i,
+.fundingPanel .panel.cover .panel-heading .delete-btn i,
+.fundingPanel .panel.cover .panel-heading .review-btn-trusted i,
+.fundingPanel .panel.cover .panel-heading .review-btn-untrusted i {
+  margin-right: 6px;
+}
+
+.fundingPanel .panel.cover .panel-body {
+  padding: 24px;
+}
+
+.fundingPanel .panel.cover .panel-body .funding-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #202020;
+}
+
+.fundingPanel .panel.cover .panel-body .value {
+  text-transform: uppercase;
+  color: #202020;
+}
+
+.fundingPanel .panel.cover .panel-body .description {
+
+}
+
+.fundingPanel .panel.cover .panel-body .description p {
+  color: #202020;
+  margin: 10px 0 40px;
+}
+
+.fundingPanel .panel.cover .panel-body .progress-info i.fa {
+  font-size: 34px;
+  color: #202020;
+  margin-right: 6px;
+  opacity: .25;
+}
+
+.fundingPanel .panel.cover .panel-body .progress-info i.fa + div strong {
+  font-size: 12px;
+}
+
+.fundingPanel .panel.cover .panel-body .progress-info i.fa + div h6 {
+  font-size: 10px;
+}
+
+.fundingPanel .panel.cover .panel-body .progress-info > div > * {
+  display: inline-block;
+}
+
+.fundingPanel .panel.cover .panel-body .progress-info > div {
+  color: #202020;
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.fundingPanel .panel.cover .panel-body .progress-info h6 {
+  margin: 0;
+}
+
+.fundingPanel .panel.cover .panel-body .funding-progress {
+  /*padding: 0 15px;*/
+}
+
+.fundingPanel .panel.cover .panel-body .funding-progress > div:not(.progress) {
+  display: inline-block;
+  font-size: 12px;
+}
+
+.fundingPanel .panel.cover .panel-body .funding-progress .progress {
+  width: 100%;
+  height: 8px;
+  margin-top: 3px;
+  background: #e4e8eb;
+}
+
+.fundingPanel .panel.cover .panel-body .funding-progress .progress-bar {
+  background-color: #9cd192;
+}
+
+.fundingPanel .panel.cover .panel-footer {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: center;
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn {
+  /*position: absolute;*/
+  /*bottom: 0;*/
+  /*left: 0;*/
+  width: 100%;
+  /*height: 0;*/
+  /*-webkit-transition: height .25s ease-in-out;*/
+  /*-moz-transition: height .25s ease-in-out;*/
+  /*-ms-transition: height .25s ease-in-out;*/
+  /*-o-transition: height .25s ease-in-out;*/
+  /*transition: height .25s ease-in-out;*/
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn a,
+.fundingPanel .panel.cover .panel-footer .invest-btn button {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  width: 100%;
+  background: linear-gradient(to right, #3CBEEF, #28AA69);
+  text-transform: uppercase;
+  color: #fff;
+  display: inline-block;
+  padding: 26px 20px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn button {
+  outline: none;
+  border: none;
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn a:hover,
+.fundingPanel .panel.cover .panel-footer .invest-btn button:hover {
+  background: linear-gradient(to right, #24b6ed, #23955c);
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn.disabled {
+  cursor: not-allowed;
+}
+
+.fundingPanel .panel.cover .panel-footer .invest-btn.disabled a,
+.fundingPanel .panel.cover .panel-footer .invest-btn.disabled button {
+  pointer-events: none;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+.fundingPanel .panel.content .panel-heading {
+  padding: 20px 10px;
+}
+
+.fundingPanel .panel.content .panel-heading .col-md-4 {
+  text-align: center;
+}
+
+.fundingPanel .panel.content .panel-heading img {
+  border-radius: 6px;
+}
+
+
+/* -------------------------------------------- */

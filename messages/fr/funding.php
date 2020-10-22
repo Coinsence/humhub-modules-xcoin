@@ -20,6 +20,7 @@ return [
     '<strong>Crowd</strong> Funding' => '<strong>Crowd</strong> funding',
     '<strong>Crowd</strong> funding' => '<strong>Crowd</strong> funding',
     '<strong>Funding</strong> Invest' => '<strong>Financement</strong> Investisement',
+    'Asset' => 'COIN',
     'Add asset offer' => 'Lancer la campagne de financement',
     'Closed' => 'Fermé',
     'Currently there are no open funding requests.' => 'Actuellement, il n ya pas de demandes de financement ouvertes',

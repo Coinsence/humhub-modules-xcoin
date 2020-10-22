@@ -1,0 +1,404 @@
+
+/* -------------------------------------------- */
+/* Space challenge styling */
+/* -------------------------------------------- */
+
+.space-challenge {
+  > .panel > .panel-heading {
+    padding: 56px 46px 0;
+    margin-bottom: -100px;
+    .img-container {
+      position: relative;
+    }
+    .img-container > .bg {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background-size: 1px 1px;
+    }
+    .img-container > img {
+      position: relative;
+      width: 100%;
+      min-height: 550px;
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+      object-fit: contain;
+      object-position: center;
+    }
+    .edit-btn {
+      position: absolute;
+      opacity: .5;
+      font-weight: bold;
+      box-shadow: @overview-action-btn-shadow;
+      transition:
+              box-shadow @overview-action-btn-transition,
+              opacity @overview-action-btn-transition;
+      top: 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      padding: 4px 12px;
+      left: 18px;
+      color: black;
+      background: #ffffff;
+    }
+    .edit-btn:hover,
+    .edit-btn:active {
+      box-shadow: @overview-action-btn-shadow-transitioned;
+      opacity: 1;
+      z-index: 1; /* meeh */
+    }
+    .edit-btn i {
+      margin-right: 6px;
+    }
+    .close-challenge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+    }
+    .close-challenge .icon {
+      display: block;
+      background-color: #fff;
+      padding: 22px 30px;
+      border-radius: 50%;
+      box-shadow: 0 3px 6px #00000029;
+      transition: box-shadow 500ms ease-in-out;
+    }
+    .close-challenge .icon:hover,
+    .close-challenge .icon:active {
+      box-shadow: 0 3px 10px #00000069;
+    }
+    .close-challenge .icon .X {
+      position: relative;
+      display: block;
+      background-color: #c4c4c4;
+      height: 19px;
+      width: 3px;
+      transform: rotate(45deg);
+    }
+    .close-challenge .icon .X:after {
+      position: absolute;
+      content: '';
+      background-color: #c4c4c4;
+      height: 3px;
+      width: 19px;
+      left: -8px;
+      top: 8px;
+    }
+    .challenge-info {
+      background-color: #fff;
+      width: 70%;
+      padding: 36px 64px;
+      font-family: 'Roboto', sans-serif;
+      box-shadow: 0 3px 50px #00000029;
+      transform: translateY(-160px);
+      margin: 0 auto;
+    }
+    .challenge-info .challenge-title {
+      color: #202020;
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 0;
+      margin-bottom: 22px;
+    }
+    .challenge-info .middle-block {
+      padding: 15px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #70707033;
+      border-bottom: 1px solid #70707033;
+    }
+    .challenge-info .middle-block .asset-name {
+      // display: inline-block;
+      margin-left: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #202020;
+
+    }
+    .challenge-info .middle-block .add-project {
+      padding: 15px 46px;
+      border-radius: 30px;
+      font-size: 14px;
+    }
+    .challenge-info .challenge-description {
+      margin-top: 22px;
+      color: #202020;
+      font-size: 14px;
+    }
+  }
+  > .panel > .panel-body {
+    padding: 0 46px 56px;
+    .header {
+      font-size: 18px;
+      color: #202020;
+      font-weight: bold;
+      margin-bottom: 48px;
+    }
+  }
+  .received-funding .panels {
+    .panel {
+      border-radius: 8px;
+      position: relative;
+      transition: transform 0.3s ease-in-out;
+    }
+    .panel::after {
+
+      content: '';
+      position: absolute;
+      z-index: -1;
+
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+
+      box-shadow: 0 0 40px #c5c5c5;
+      -webkit-box-shadow: 0 0 40px #c5c5c5;
+      -moz-box-shadow: 0 0 40px #c5c5c5;
+
+      border-radius: 8px;
+
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+    .panel:hover {
+      transform: translate(0, -5px);
+    }
+    .panel:hover::after {
+      opacity: 1;
+    }
+    .panel .panel-heading {
+      padding: 0;
+      position: relative;
+    }
+    .panel .panel-heading > .bg {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background-size: 1px 1px;
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+    }
+    .panel .panel-heading > img {
+      position: relative;
+      width: 100%;
+      min-height: 140px;
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+      object-fit: contain;
+      object-position: center;
+    }
+    .panel .panel-heading .project-owner {
+      position: absolute;
+      bottom: -16px;
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+    .panel .panel-heading .project-owner div.space-acronym {
+      display: block;
+      margin: 0 auto;
+      border: white 2px solid;
+    }
+    .panel .panel-heading .project-owner img.profile-user-photo {
+      border: white 2px solid;
+    }
+    .panel .panel-heading .project-owner span {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+    }
+    .panel .panel-heading .project-owner strong {
+      font-weight: 600;
+    }
+    .panel .panel-body {
+      margin-top: 20px;
+      height: 100px;
+    }
+    .panel .panel-body .funding-title {
+      text-align: center;
+      font-weight: bold;
+      font-size: 14px;
+      margin: 0;
+    }
+    .panel .panel-body .media {
+      margin-top: 6px;
+    }
+    .panel .panel-footer {
+      background-color: white;
+      border: none;
+      padding: 0;
+    }
+    .panel .panel-footer .funding-progress {
+      padding: 0 15px;
+    }
+    .panel .panel-footer .funding-progress > div:not(.progress) {
+      display: inline-block;
+      font-size: 10px;
+    }
+    .panel .panel-footer .funding-progress .clock::before {
+      content: 'L';
+      color: white;
+      text-align: center;
+      width: 100%;
+      display: block;
+      margin-left: 1px;
+      font-size: 10px;
+    }
+    .panel .panel-footer .funding-progress .clock {
+      display: inline-block;
+      vertical-align: middle;
+      width: 18px;
+      height: 18px;
+      border-radius: 18px;
+      background: gray;
+      margin-right: 4px;
+    }
+    .panel .panel-footer .funding-progress .clock.red {
+      background: red;
+    }
+    .panel .panel-footer .funding-progress .days {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .panel .panel-footer .funding-progress .clock.red + .days {
+      color: red;
+    }
+    .panel .panel-footer .funding-progress .progress {
+      width: 100%;
+      height: 6px;
+      margin-top: 3px;
+      background: #e4e8eb;
+    }
+    .panel .panel-footer .funding-progress .progress-bar {
+      background-color: #9cd192;
+    }
+    .panel .panel-footer .funding-details {
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid #f0f5f8;
+    }
+    .panel .panel-footer .funding-details .col-md-12 {
+      height: 42px;
+      padding: 12px 15px;
+      font-size: 12px;
+      text-align: center;
+    }
+    .panel .panel-footer .funding-details .col-md-12 > * {
+      vertical-align: middle;
+    }
+    .panel .panel-footer .funding-details .text {
+      text-transform: uppercase;
+    }
+  }
+
+
+  /* Media queries */
+
+  @media (max-width: 1365px) {
+
+    > .panel > .panel-heading {
+      padding: 56px 44px 0;
+    }
+
+  }
+
+  @media (max-width: 991px) {
+
+    > .panel > .panel-heading {
+      padding: 0;
+      .challenge-info {
+        padding: 27px 62px;
+        width: 88%;
+      }
+    }
+
+  }
+
+  @media (max-width: 767px) {
+
+    > .panel > .panel-heading {
+      .edit-btn {
+        top: 16px;
+        border-radius: 14px;
+        font-size: 12px;
+        padding: 4px 10px;
+      }
+      .challenge-info {
+        padding: 26px 32px;
+      }
+      .challenge-info .challenge-title {
+        font-size: 28px;
+      }
+      .challenge-info .middle-block {
+        padding: 11px 0;
+      }
+      .challenge-info .middle-block .add-project {
+        padding: 10px 34px;
+        border-radius: 20px;
+        font-size: 12px;
+      }
+      .challenge-info .challenge-description {
+        margin-top: 20px;
+        font-size: 13px;
+      }
+    }
+    > .panel > .panel-body {
+      padding: 0 26px 56px;
+      .header {
+        font-size: 16px;
+        margin-bottom: 36px;
+      }
+    }
+  }
+
+  @media (max-width: 575px) {
+    > .panel {
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+    > .panel > .panel-heading {
+      .edit-btn {
+        top: 14px;
+        border-radius: 12px;
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+      .challenge-info {
+        padding: 18px 16px;
+      }
+      .challenge-info .challenge-title {
+        font-size: 22px;
+        margin-bottom: 14px;
+      }
+      .challenge-info .middle-block .challenge-asset .space-acronym {
+        width: 24px;
+        height: 24px;
+        font-size: 9.6px;
+      }
+      .challenge-info .middle-block .asset-name {
+        font-size: 10px;
+        margin-left: 0;
+      }
+      .challenge-info .challenge-description {
+        margin-top: 20px;
+        font-size: 12px;
+      }
+    }
+
+    > .panel > .panel-body {
+      .header {
+        font-size: 14px;
+        margin-bottom: 28px;
+      }
+    }
+
+  }
+
+}
+
+
+/* -------------------------------------------- */

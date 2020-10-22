@@ -5,7 +5,6 @@ namespace humhub\modules\xcoin\helpers;
 use humhub\components\Event;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
-use humhub\modules\xcoin\models\Transaction;
 use humhub\modules\xcoin\permissions\CreateAccount;
 use Yii;
 use humhub\modules\space\models\Space;
@@ -178,7 +177,7 @@ class AccountHelper
     public static function getFundingAccountBalance(Funding $funding, $requested = true)
     {
         if ($requested) {
-            $asset = Asset::findOne(['id' => $funding->asset_id]);
+            $asset = Asset::findOne(['id' => $funding->getChallenge()->one()->asset_id]);
         } else {
             $asset = AssetHelper::getSpaceAsset($funding->space);
         }

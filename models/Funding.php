@@ -3,6 +3,7 @@
 namespace humhub\modules\xcoin\models;
 
 use Colors\RandomColor;
+use cornernote\linkall\LinkAllBehavior;
 use DateTime;
 use Exception;
 use humhub\components\ActiveRecord;
@@ -13,9 +14,7 @@ use humhub\modules\space\Module;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
-
 use humhub\modules\xcoin\helpers\AssetHelper;
-use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\helpers\Utils;
 use Yii;
 use yii\db\ActiveQuery;
@@ -26,7 +25,7 @@ use yii\web\HttpException;
  *
  * @property integer $id
  * @property integer $space_id
- * @property integer $asset_id
+ * @property integer $challenge_id
  * @property integer $exchange_rate
  * @property integer $amount
  * @property string $created_at
@@ -37,14 +36,16 @@ use yii\web\HttpException;
  * @property string $content
  * @property integer $review_status
  * @property integer $status
+ * @property string $country
+ * @property string $city
  *
- * @property Asset $asset
+ * @property Challenge $challenge
  * @property User $createdBy
  * @property Space $space
  */
 class Funding extends ActiveRecord
 {
-
+    const SCENARIO_NEW = 'snew';
     const SCENARIO_EDIT = 'sedit';
 
     // Funding review status
@@ -54,9 +55,13 @@ class Funding extends ActiveRecord
     // Funding status
     const FUNDING_STATUS_IN_PROGRESS = 0;
     const FUNDING_STATUS_INVESTMENT_ACCEPTED = 1;
+    const FUNDING_STATUS_INVESTMENT_RESTARTED = 2;
 
     // used in readonly for setting up exchange rate
     public $rate = 1;
+
+    // used when creating funding
+    public $categories_names;
 
     /**
      * @inheritdoc
@@ -74,41 +79,64 @@ class Funding extends ActiveRecord
         return [
             [
                 [
-                    'asset_id',
+                    'challenge_id',
                     'created_by',
                     'amount',
                     'title',
                     'description',
                     'deadline',
-                    'content'
+                    'content',
+                    'country',
+                    'city',
                 ],
                 'required'
             ],
-            [['space_id', 'asset_id', 'amount', 'created_by'], 'integer'],
+            ['categories_names', 'required', 'message' => 'Please choose at least a category'],
+            [['space_id', 'challenge_id', 'amount', 'created_by'], 'integer'],
             [['amount'], 'number', 'min' => '1'],
             [['exchange_rate'], 'number', 'min' => '0.1'],
             [['created_at'], 'safe'],
-            [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
+            [['challenge_id'], 'exist', 'skipOnError' => true, 'targetClass' => Challenge::class, 'targetAttribute' => ['challenge_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
-            [['title', 'description'], 'string', 'max' => 255],
+            [['title', 'description', 'city'], 'string', 'max' => 255],
+            [['country'], 'string', 'max' => 2],
             [['content'], 'string'],
             [['deadline'], DbDateValidator::class],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            LinkAllBehavior::class,
         ];
     }
 
     public function scenarios()
     {
         return [
-            self::SCENARIO_EDIT => [
-                'asset_id',
+            self::SCENARIO_NEW => [
+                'challenge_id',
                 'amount',
                 'title',
                 'description',
                 'content',
                 'deadline',
                 'space_id',
-                'exchange_rate'
+                'exchange_rate',
+                'country',
+                'city',
+                'categories_names'
+            ],
+            self::SCENARIO_EDIT => [
+                'amount',
+                'title',
+                'description',
+                'content',
+                'deadline',
+                'country',
+                'city'
             ],
         ];
     }
@@ -121,7 +149,7 @@ class Funding extends ActiveRecord
         return [
             'id' => Yii::t('XcoinModule.base', 'ID'),
             'space_id' => Yii::t('XcoinModule.base', 'Space ID'),
-            'asset_id' => Yii::t('XcoinModule.base', 'Requested asset'),
+            'challenge_id' => Yii::t('XcoinModule.base', 'Challenge'),
             'exchange_rate' => Yii::t('XcoinModule.base', 'Exchange rate'),
             'amount' => Yii::t('XcoinModule.base', 'Requested Amount'),
             'created_at' => Yii::t('XcoinModule.base', 'Created At'),
@@ -130,6 +158,8 @@ class Funding extends ActiveRecord
             'description' => Yii::t('XcoinModule.base', 'Description'),
             'content' => Yii::t('XcoinModule.base', 'Needs & Commitments'),
             'deadline' => Yii::t('XcoinModule.base', 'Deadline'),
+            'country' => Yii::t('XcoinModule.base', 'Country'),
+            'city' => Yii::t('XcoinModule.base', 'City'),
         ];
     }
 
@@ -173,7 +203,24 @@ class Funding extends ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-        $this->createFundingAccount();
+        if ($insert)
+            $this->createFundingAccount();
+        else {
+            if (isset($changedAttributes['amount']) && $changedAttributes['amount'] != $this->amount)
+                $this->adjustIssuesAmount();
+        }
+
+        if ($this->categories_names) {
+            $categories = [];
+
+            foreach (explode(",", $this->categories_names) as $category_name) {
+                $category = Category::getCategoryByName($category_name);
+                if ($category) {
+                    $categories[] = $category;
+                }
+            }
+            $this->linkAll('categories', $categories);
+        }
 
         parent::afterSave($insert, $changedAttributes);
     }
@@ -193,9 +240,15 @@ class Funding extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getAsset()
+    public function getChallenge()
     {
-        return $this->hasOne(Asset::class, ['id' => 'asset_id']);
+        return $this->hasOne(Challenge::class, ['id' => 'challenge_id']);
+    }
+
+    public function getCategories()
+    {
+        return $this->hasMany(Category::class, ['id' => 'category_id'])
+            ->viaTable('xcoin_funding_category', ['funding_id' => 'id']);
     }
 
     /**
@@ -279,7 +332,7 @@ class Funding extends ActiveRecord
 
     public function isFirstStep()
     {
-        return empty($this->asset_id);
+        return empty($this->challenge_id);
     }
 
     public function isSecondStep()
@@ -290,8 +343,9 @@ class Funding extends ActiveRecord
                 $this->title,
                 $this->description,
                 $this->content,
-                $this->deadline
-
+                $this->deadline,
+                $this->country,
+                $this->city
             ) || strlen($this->description) > 255;
     }
 
@@ -343,19 +397,19 @@ class Funding extends ActiveRecord
 
     public function getCover()
     {
-        $cover = File::find()->where([
+        return File::find()->where([
             'object_model' => Funding::class,
-            'object_id' => $this->id
+            'object_id' => $this->id,
+            'show_in_stream' => true
         ])->orderBy(['id' => SORT_ASC])->one();
-
-        return $cover;
     }
 
     public function getGallery()
     {
         $gallery = File::find()->where([
             'object_model' => Funding::class,
-            'object_id' => $this->id
+            'object_id' => $this->id,
+            'show_in_stream' => true
         ])->orderBy(['id' => SORT_ASC])->all();
 
         //removing cover
@@ -412,6 +466,37 @@ class Funding extends ActiveRecord
         $transaction->from_account_id = $issueAccount->id;
         $transaction->to_account_id = $account->id;
         $transaction->amount = $this->amount * $this->exchange_rate;
+
+        if (!$transaction->save()) {
+            throw new Exception('Could not create issue transaction for funding account');
+        }
+    }
+
+    private function adjustIssuesAmount()
+    {
+        if (!$fundingAccount = Account::findOne(['funding_id' => $this->id]))
+            throw new HttpException(404);
+
+        if (!$issueAccount = AccountHelper::getIssueAccount($this->space))
+            throw new HttpException(404);
+
+        if (!$asset = AssetHelper::getSpaceAsset($this->space))
+            throw new HttpException(404);
+
+        $transaction = new Transaction();
+        $transaction->asset_id = $asset->id;
+
+        if ($this->amount > $fundingAccount->getAssetBalance($asset)) {
+            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
+            $transaction->from_account_id = $issueAccount->id;
+            $transaction->to_account_id = $fundingAccount->id;
+            $transaction->amount = ($this->amount - $fundingAccount->getAssetBalance($asset)) * $this->exchange_rate;
+        } else {
+            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_REVERT;
+            $transaction->from_account_id = $fundingAccount->id;
+            $transaction->to_account_id = $issueAccount->id;
+            $transaction->amount = ($fundingAccount->getAssetBalance($asset) - $this->amount) * $this->exchange_rate;
+        }
 
         if (!$transaction->save()) {
             throw new Exception('Could not create issue transaction for funding account');

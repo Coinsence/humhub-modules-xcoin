@@ -20,6 +20,7 @@ return [
     '<strong>Crowd</strong> Funding' => '',
     '<strong>Crowd</strong> funding' => '',
     '<strong>Funding</strong> Invest' => '',
+    'Asset' => 'COIN',
     'Add asset offer' => '',
     'Closed' => '',
     'Currently there are no open funding requests.' => '',

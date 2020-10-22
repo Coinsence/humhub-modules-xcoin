@@ -3,10 +3,11 @@
 namespace humhub\modules\xcoin\controllers;
 
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
+use humhub\modules\xcoin\helpers\SpaceHelper;
+use humhub\modules\xcoin\models\Challenge;
+use Throwable;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\xcoin\helpers\AccountHelper;
-use humhub\modules\xcoin\models\Asset;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Funding;
@@ -43,7 +44,7 @@ class FundingController extends ContentContainerController
     {
         $funding = Funding::findOne(['id' => $fundingId]);
 
-        if(!$funding) {
+        if (!$funding) {
             throw new HttpException(404);
         }
 
@@ -55,7 +56,7 @@ class FundingController extends ContentContainerController
     /**
      * @param $fundingId
      * @return string
-     * @throws \Throwable
+     * @throws Throwable
      * @throws HttpException
      */
     public function actionInvest($fundingId)
@@ -69,7 +70,7 @@ class FundingController extends ContentContainerController
         if ($fromAccount === null) {
             return $this->renderAjax('@xcoin/views/transaction/select-account', [
                 'contentContainer' => Yii::$app->user->getIdentity(),
-                'requireAsset' => $funding->getAsset()->one(),
+                'requireAsset' => $funding->challenge->asset,
                 'nextRoute' => ['/xcoin/funding/invest', 'fundingId' => $funding->id, 'container' => $this->contentContainer],
             ]);
         }
@@ -89,56 +90,52 @@ class FundingController extends ContentContainerController
         ]);
     }
 
-    public function actionEdit()
+    public function actionNew($challengeId)
     {
-        if (!AssetHelper::canManageAssets($this->contentContainer)) {
-            throw new HttpException(401);
+        if (!$challenge = Challenge::findOne(['id' => $challengeId])) {
+            throw new HttpException(404, 'Challenge not found!');
         }
 
-        $model = Funding::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $this->contentContainer->id]);
-        if ($model === null) {
-            $model = new Funding();
-            $model->space_id = $this->contentContainer->id;
-            $model->created_by = Yii::$app->user->id;
+        if ($challenge->isStopped()) {
+            throw new HttpException(403, 'You can`t submit a funding to a stopped challenge!');
         }
 
-        $model->scenario = Funding::SCENARIO_EDIT;
+
+        /** @var Space $currentSpace */
+        $currentSpace = $this->contentContainer;
+
+
+        $user = Yii::$app->user->identity;
+
+        $model = new Funding();
+        $model->created_by = $user->id;
+        $model->challenge_id = $challenge->id;
+        $model->scenario = Funding::SCENARIO_NEW;
+
+        if (empty(Yii::$app->request->post('step'))) {
+
+            $spaces = SpaceHelper::getSubmitterSpaces($user);
+
+            $spacesList = [];
+            foreach ($spaces as $space) {
+                if (AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id && SpaceHelper::canSubmitProject($space))
+                    $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+            }
+
+            return $this->renderAjax('spaces-list', [
+                'funding' => $model,
+                'spacesList' => $spacesList,
+            ]);
+        }
+
         $model->load(Yii::$app->request->post());
-
-        // Step 1: Wanted Asset Selection and Exchange Rate
-        if ($model->isFirstStep()) {
-
-            // Get default Asset that will be preselected
-            $defaultAsset = null;
-
-            /* "defaultAssetName" parameter contains the default asset name that must be preselected
-            This parameter should be introduced in the file humhub/protected/config/common.php*/
-            if (array_key_exists('defaultAssetName', Yii::$app->params)) {
-                $defaultAssetName = Yii::$app->params['defaultAssetName'];
-                $defaultAssetSpace = Space::findOne(['name' => $defaultAssetName]);
-
-                if ($defaultAssetSpace) {
-                    $defaultAsset = AssetHelper::getSpaceAsset($defaultAssetSpace);
-                    if (!$defaultAsset->getIssuedAmount())
-                        $defaultAsset = null;
-                }
-            }
-
-            $assetList = [];
-            foreach (Asset::find()->andWhere(['!=', 'id', AssetHelper::getSpaceAsset($this->contentContainer)->id])->all() as $asset) {
-                $assetList[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
-            }
-
-            return $this->renderAjax('create', [
-                    'model' => $model,
-                    'assetList' => $assetList,
-                    'defaultAsset' => $defaultAsset,
-                ]
-            );
-        }
 
         // Try Save Step 2
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
+
+            if ($model->space && !SpaceHelper::canSubmitProject($model->space)) {
+                throw new HttpException(401);
+            }
 
             // Step 3: Gallery
             return $this->renderAjax('media', ['model' => $model]);
@@ -150,8 +147,8 @@ class FundingController extends ContentContainerController
 
             $this->view->saved();
 
-            return $this->redirect($this->contentContainer->createUrl('/xcoin/funding/overview', [
-                'container' => $this->contentContainer,
+            return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
+                'container' => $model->space,
                 'fundingId' => $model->id
             ]));
         }
@@ -161,14 +158,46 @@ class FundingController extends ContentContainerController
 
             return $this->renderAjax('details', [
                 'model' => $model,
-                'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer)
+                'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
             ]);
         }
 
         // Step 2: Details
         return $this->renderAjax('details', [
             'model' => $model,
-            'myAsset' => AssetHelper::getSpaceAsset($this->contentContainer)
+            'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
+        ]);
+    }
+
+    public function actionEdit()
+    {
+        /** @var Space $currentSpace */
+        $currentSpace = $this->contentContainer;
+
+        if (!AssetHelper::canManageAssets($currentSpace)) {
+            throw new HttpException(401);
+        }
+
+        if (!$model = Funding::findOne(['id' => Yii::$app->request->get('id'), 'space_id' => $currentSpace->id])) {
+            throw new HttpException(404, 'Funding not found!');
+        }
+
+        $model->scenario = Funding::SCENARIO_EDIT;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
+            $this->view->saved();
+
+            return $this->redirect($currentSpace->createUrl('/xcoin/funding/overview', [
+                'container' => $currentSpace,
+                'fundingId' => $model->id
+            ]));
+        }
+
+        return $this->renderAjax('edit', [
+            'model' => $model,
+            'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
         ]);
     }
 
@@ -187,11 +216,12 @@ class FundingController extends ContentContainerController
 
     public function actionReview($id, $status)
     {
-        if(!PublicOffersHelper::canReviewPublicOffers()){
+        $model = Funding::findOne(['id' => $id]);
+
+        if (!SpaceHelper::canReviewProject($model->challenge->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {
             throw new HttpException(401);
         }
 
-        $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
         $model->scenario = Funding::SCENARIO_EDIT;
         $model->review_status = $status;
 
@@ -214,6 +244,25 @@ class FundingController extends ContentContainerController
         $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
         $model->updateAttributes(['status' => Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED]);
 
-        return $this->htmlRedirect(['index', 'container' => $this->contentContainer]);
+        return $this->htmlRedirect(['overview',
+            'container' => $this->contentContainer,
+            'fundingId' => $model->id
+        ]);
+    }
+
+
+    public function actionRestart($id)
+    {
+        if (!AssetHelper::canManageAssets($this->contentContainer)) {
+            throw new HttpException(401);
+        }
+
+        $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
+        $model->updateAttributes(['status' => Funding::FUNDING_STATUS_INVESTMENT_RESTARTED]);
+
+        return $this->htmlRedirect(['overview',
+            'container' => $this->contentContainer,
+            'fundingId' => $model->id
+        ]);
     }
 }

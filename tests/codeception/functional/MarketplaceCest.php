@@ -15,7 +15,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Product;
-use humhub\modules\xcoin\permissions\ReviewPublicOffers;
+use humhub\modules\xcoin\permissions\ReviewSubmittedProjects;
 use xcoin\FunctionalTester;
 
 class MarketplaceCest
@@ -266,7 +266,7 @@ class MarketplaceCest
 
         $I->amUser1();
 
-        $I->setGroupPermission(2, ReviewPublicOffers::class);
+        $I->setGroupPermission(2, ReviewSubmittedProjects::class);
 
         $product = Product::findOne(['id' => 1]);
 
@@ -292,7 +292,7 @@ class MarketplaceCest
 
         $I->amUser1();
 
-        $I->setGroupPermission(2, ReviewPublicOffers::class);
+        $I->setGroupPermission(2, ReviewSubmittedProjects::class);
 
         $product = Product::findOne(['id' => 2]);
 
