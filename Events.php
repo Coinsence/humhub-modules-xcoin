@@ -56,7 +56,7 @@ class Events
                 'label' => Yii::t('XcoinModule.base', 'Accounts'),
                 'url' => $space->createUrl('/xcoin/overview'),
                 'icon' => '<i class="fa fa-money"></i>',
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && !in_array(Yii::$app->controller->id, ['funding', 'product', 'ethereum', 'challenge'])),
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && !in_array(Yii::$app->controller->id, ['funding', 'product', 'ethereum', 'challenge', 'marketplace'])),
             ]);
 
             $event->sender->addItem([
@@ -130,6 +130,13 @@ class Events
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'overview'),
             ]);
         }
+
+        $event->sender->addItem([
+            'label' => Yii::t('XcoinModule.base', 'Products'),
+            'url' => $user->createUrl('/xcoin/product'),
+            'icon' => '<i class="fa fa-product-hunt"></i>',
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'product')
+        ]);
     }
 
     public static function onAccountTopMenuInit($event)
@@ -150,6 +157,14 @@ class Events
                 'icon' => '<i class="fa fa-money"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'overview'),
                 'sortOrder' => 210,
+            ]);
+
+            $event->sender->addItem([
+                'label' => Yii::t('XcoinModule.base', 'Products'),
+                'url' => $user->createUrl('/xcoin/product'),
+                'icon' => '<i class="fa fa-product-hunt"></i>',
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'product'),
+                'sortOrder' => 215,
             ]);
         }
     }

@@ -54,10 +54,6 @@ class ProductController extends ContentContainerController
             throw new HttpException(403, 'You can`t sell a product in a closed marketplace!');
         }
 
-
-        /** @var Space $currentSpace */
-        $currentSpace = $this->contentContainer;
-
         $user = Yii::$app->user->identity;
 
         $model = new Product();
@@ -79,6 +75,13 @@ class ProductController extends ContentContainerController
                 'product' => $model,
                 'spacesList' => $spacesList,
             ]);
+        }
+
+        if (Yii::$app->request->post('personal-product') == '1') {
+            $model->space_id = null;
+            $model->product_type = Product::TYPE_PERSONAL;
+        } else {
+            $model->product_type = Product::TYPE_SPACE;
         }
 
         $model->load(Yii::$app->request->post());
@@ -109,10 +112,18 @@ class ProductController extends ContentContainerController
 
             $this->view->saved();
 
-            return $this->redirect($model->space->createUrl('/xcoin/product/overview', [
-                'container' => $model->space,
-                'productId' => $model->id
-            ]));
+
+            $url = $model->isSpaceProduct() ?
+                $model->space->createUrl('/xcoin/product/overview', [
+                    'container' => $model->space,
+                    'productId' => $model->id
+                ]) :
+                $user->createUrl('/xcoin/product/overview', [
+                    'container' => $user,
+                    'productId' => $model->id
+                ]);
+
+            return $this->redirect($url);
         }
 
         // Check validation

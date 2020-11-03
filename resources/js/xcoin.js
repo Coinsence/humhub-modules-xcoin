@@ -86,5 +86,8 @@ humhub.module('xcoin', function (module, require, $) {
 
     // TODO open location-field popup if an error occurred in one of its fields
 
+    $('body').on('click', '#submit-personal-product', function (e) {
+       $("#personal-product").val('1');
+    });
 });
 

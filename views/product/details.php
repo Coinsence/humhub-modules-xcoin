@@ -22,9 +22,11 @@ use yii\web\JsExpression;
 <?php $form = ActiveForm::begin(['id' => 'product-form']); ?>
 
 <?= Html::hiddenInput('step', '2'); ?>
+<?= Html::hiddenInput('step', '2'); ?>
 
 <?= $form->field($model, 'marketplace_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'product_type')->hiddenInput()->label(false) ?>
 
 <div class="modal-body">
     <div class="row">

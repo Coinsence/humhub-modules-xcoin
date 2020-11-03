@@ -5,13 +5,52 @@ use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\models\Product;
 use yii\bootstrap\Html;
+use yii\helpers\Url;
 
 Assets::register($this);
 
 /** @var $products Product[] */
-
 ?>
-
+<!-- TODO move styles to less files -->
+<style>
+    .add-challenge {
+        height: 325px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border: 1px #cecece dashed;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+    .add-challenge .icon {
+        display: block;
+        background-color: #e2f7ff;
+        padding: 20px 30px;
+        border-radius: 50%;
+    }
+    .add-challenge .icon .cross {
+        position: relative;
+        display: block;
+        background-color: #3cbeef;
+        height: 23px;
+        width: 3px;
+    }
+    .add-challenge .icon .cross:after {
+        position: absolute;
+        content: '';
+        background-color: #3cbeef;
+        height: 3px;
+        width: 23px;
+        left: -10px;
+        top: 10px;
+    }
+    .add-challenge .text {
+        margin-top: 24px;
+        font-size: 18px;
+        color: #202020;
+    }
+</style>
 <div class="space-fundings">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -19,18 +58,27 @@ Assets::register($this);
         </div>
         <div class="panel-body">
             <div class="panels">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <a class="add-challenge " href="<?= Url::to(['/xcoin/marketplace-overview/new']) ?>"
+                       data-target="#globalModal">
+                        <span class="icon">
+                            <i class="cross"></i>
+                        </span>
+                        <span class="text"><?= Yii::t('XcoinModule.marketplace', 'Sell Your Product!') ?></span>
+                    </a>
+                </div>
                 <?php if (count($products) == 0): ?>
                     <p class="alert alert-warning col-md-12">
-                        <?= Yii::t('XcoinModule.product', 'Currently there are no offered products.') ?>
+                        <?= Yii::t('XcoinModule.product', 'Currently you are not offering any product.') ?>
                     </p>
                 <?php endif; ?>
                 <?php foreach ($products as $product): ?>
                     <?php
-                    $space = $product->getSpace()->one();
+                    $owner = $product->getCreatedBy()->one();
                     $picture = $product->getPicture();
                     ?>
 
-                    <a href="<?= $space->createUrl('/xcoin/product/overview', [
+                    <a href="<?= $owner->createUrl('/xcoin/product/overview', [
                         'container' => $this->context->contentContainer,
                         'productId' => $product->id
                     ]); ?>">
@@ -50,23 +98,14 @@ Assets::register($this);
                                     <?php endif ?>
                                     <!-- product picture end -->
                                     <div class="project-owner">
-                                        <!-- owner image start -->
-                                        <?php if($product->isSpaceProduct()): ?>
-                                            <?= SpaceImage::widget([
-                                                'space' => $product->getSpace()->one(),
-                                                'width' => 34,
-                                                'showTooltip' => true,
-                                                'link' => false
-                                            ]); ?>
-                                        <?php else : ?>
+                                        <!-- user image start -->
                                         <?= Image::widget([
                                             'user' => $product->getCreatedBy()->one(),
                                             'width' => 34,
-                                            'showTooltip' => true,
+                                            'showTooltip' => false,
                                             'link' => false
                                         ]); ?>
-                                        <?php endif; ?>
-                                        <!-- owner image end -->
+                                        <!-- user image end -->
                                     </div>
                                 </div>
                                 <div class="panel-body">
