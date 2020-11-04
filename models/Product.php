@@ -36,6 +36,7 @@ use yii\web\HttpException;
  * @property integer $review_status
  * @property string $country
  * @property string $city
+ * @property string $link
  *
  * @property Marketplace $marketplace
  * @property User $owner
@@ -96,6 +97,9 @@ class Product extends ActiveRecord
             [['discount'], 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS;
             }],
+            [['link'], 'required', 'when' => function ($model) {
+                return $model->marketplace->isLinkRequired();
+            }],
             [['marketplace_id', 'created_by', 'product_type', 'space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
             [['price'], 'number', 'min' => '0'],
             [['discount'], 'number', 'min' => '0', 'max' => '100'],
@@ -104,8 +108,9 @@ class Product extends ActiveRecord
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['name', 'description'], 'string', 'max' => 255],
-            [['content'], 'string'],
+            [['content', 'link'], 'string'],
             [['pictureFile'], 'safe'],
+            [['link'], 'url'],
         ];
     }
 
@@ -132,7 +137,8 @@ class Product extends ActiveRecord
                 'categories_names',
                 'country',
                 'city',
-                'product_type'
+                'product_type',
+                'link'
             ],
             self::SCENARIO_EDIT => [
                 'name',
@@ -144,7 +150,8 @@ class Product extends ActiveRecord
                 'discount',
                 'payment_type',
                 'country',
-                'city'
+                'city',
+                'link'
             ],
         ];
     }
@@ -169,6 +176,7 @@ class Product extends ActiveRecord
             'payment_type' => Yii::t('XcoinModule.base', 'Payment Type'),
             'country' => Yii::t('XcoinModule.base', 'Country'),
             'city' => Yii::t('XcoinModule.base', 'City'),
+            'link' => Yii::t('XcoinModule.base', 'Call to action link'),
         ];
     }
 
@@ -324,7 +332,7 @@ class Product extends ActiveRecord
         if ($this->product_type == self::TYPE_PERSONAL) {
             return true;
         }
-        
+
         if (Space::findOne(['name' => $this->name])) {
             $this->addError('name', Yii::t('XcoinModule.product', 'Name already used'));
 

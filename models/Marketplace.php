@@ -28,6 +28,8 @@ use humhub\modules\space\models\Space;
  * @property integer $created_by
  * @property integer $status
  * @property integer $stopped
+ * @property string $action_name
+ * @property integer $is_link_required
  *
  * @property Asset $asset
  * @property User $createdBy
@@ -62,13 +64,13 @@ class Marketplace extends ActiveRecord
     public function rules()
     {
         return [
-            [['space_id', 'asset_id', 'title', 'description', 'created_by'], 'required'],
-            [['space_id', 'asset_id', 'created_by'], 'integer'],
+            [['space_id', 'asset_id', 'title', 'description', 'created_by', 'is_link_required'], 'required'],
+            [['space_id', 'asset_id', 'created_by', 'is_link_required'], 'integer'],
             [['created_at', 'status', 'stopped'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
-            [['title'], 'string', 'max' => 255],
+            [['title', 'action_name'], 'string', 'max' => 255],
             [['description'], 'string'],
         ];
     }
@@ -79,13 +81,17 @@ class Marketplace extends ActiveRecord
             self::SCENARIO_CREATE => [
                 'asset_id',
                 'title',
-                'description'
+                'description',
+                'action_name',
+                'is_link_required'
             ],
             self::SCENARIO_EDIT => [
                 'asset_id',
                 'title',
                 'description',
-                'stopped'
+                'stopped',
+                'action_name',
+                'is_link_required'
             ],
             self::SCENARIO_EDIT_ADMIN => [
                 'status',
@@ -105,7 +111,9 @@ class Marketplace extends ActiveRecord
             'title' => Yii::t('XcoinModule.marketplace', 'Title'),
             'description' => Yii::t('XcoinModule.marketplace', 'Description'),
             'created_at' => Yii::t('XcoinModule.marketplace', 'Created At'),
-            'created_by' => Yii::t('XcoinModule.marketplace', 'Created By')
+            'created_by' => Yii::t('XcoinModule.marketplace', 'Created By'),
+            'action_name' => Yii::t('XcoinModule.marketplace', 'Call to action'),
+            'is_link_required' => Yii::t('XcoinModule.marketplace', 'Product call to action link'),
         ];
     }
 
@@ -114,6 +122,10 @@ class Marketplace extends ActiveRecord
     {
         if ($this->isNewRecord) {
             $this->status = self::MARKETPLACE_STATUS_DISABLED;
+        }
+
+        if (!$this->action_name) {
+            $this->action_name = Yii::t('XcoinModule.marketplace', 'Buy Product');
         }
 
         return parent::beforeSave($insert);
@@ -191,5 +203,10 @@ class Marketplace extends ActiveRecord
     public function isDisabled()
     {
         return $this->status == self::MARKETPLACE_STATUS_DISABLED;
+    }
+
+    public function isLinkRequired()
+    {
+        return $this->is_link_required == 1;
     }
 }

@@ -30,6 +30,11 @@ class BuyProductButton extends Widget
     public $icon = 'fa-plus';
 
     /**
+     * @var string
+     */
+    public $label;
+
+    /**
      * Creates the Wall Widget
      */
     public function run()
@@ -45,6 +50,6 @@ class BuyProductButton extends Widget
 
     public function getLabel()
     {
-        return Yii::t('XcoinModule.base', 'Buy this Product');
+        return $this->label;
     }
 }
