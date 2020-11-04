@@ -86,7 +86,7 @@ Assets::register($this);
             <!-- marketplace image end -->
 
             <!-- product buttons start -->
-            <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
+            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) || $product->isOwner(Yii::$app->user->identity) ): ?>
                 <?= Html::a(
                     '<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.product', 'Edit'),
                     [
@@ -141,13 +141,25 @@ Assets::register($this);
             <div class="value">
                 <?= Yii::t('XcoinModule.product', 'Owner:') ?>
                 <span>
-                    <?= Image::widget([
-                        'user' => $product->getCreatedBy()->one(),
-                        'width' => 34,
-                        'showTooltip' => true,
-                        'link' => true
-                    ]); ?>
-                    <?=" <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname. " ".Html::encode($product->getCreatedBy()->one()->profile->lastname)) . "</strong>"; ?>
+                    <!-- owner image start -->
+                    <?php if($product->isSpaceProduct()): ?>
+                        <?= SpaceImage::widget([
+                            'space' => $product->getSpace()->one(),
+                            'width' => 34,
+                            'showTooltip' => false,
+                            'link' => false
+                        ]); ?>
+                        <?=" <strong>" . Html::encode($product->getSpace()->one()->name) . "</strong>"; ?>
+                    <?php else : ?>
+                        <?= Image::widget([
+                            'user' => $product->getCreatedBy()->one(),
+                            'width' => 34,
+                            'showTooltip' => false,
+                            'link' => false
+                        ]); ?>
+                        <?=" <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname. " ".$product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?>
+                    <?php endif; ?>
+                    <!-- owner image end -->
                 </span>
             </div>
 
@@ -212,7 +224,7 @@ Assets::register($this);
         <div class="panel-footer">
 
             <!-- product buy action start -->
-            <?php if ($product->status == Product::STATUS_UNAVAILABLE): ?>
+            <?php if ($product->status == Product::STATUS_UNAVAILABLE || $product->isOwner(Yii::$app->user->identity)): ?>
             <div class="invest-btn disabled">
                 <?php else: ?>
                 <div class="invest-btn">

@@ -85,10 +85,10 @@ Assets::register($this);
                     <?php endif; ?>
                     <?php foreach ($products as $product): ?>
                         <?php
-                            $space = $product->getSpace()->one();
+                            $owner = $product->isSpaceProduct() ? $product->getSpace()->one() : $product->getCreatedBy()->one();
                             $picture = $product->getPicture();
                         ?>
-                        <a href="<?= $space->createUrl('/xcoin/product/overview', [
+                        <a href="<?= $owner->createUrl('/xcoin/product/overview', [
                             'productId' => $product->id
                         ]); ?>">
                             <div class="col-sm-6 col-md-4 col-lg-3">
@@ -106,18 +106,29 @@ Assets::register($this);
                                             ]) ?>
                                         <?php endif ?>
                                         <!-- product picture end -->
-                                        <div class="project-owner">
-                                            <!-- user image start -->
-                                            <?= Image::widget([
-                                                'user' => $product->getCreatedBy()->one(),
-                                                'width' => 34,
-                                                'showTooltip' => true,
-                                                'link' => false
-                                            ]); ?>
-                                            <!-- user image end -->
+                                        <div class="project-owner" style="bottom: -33px">
+                                            <!-- owner image start -->
+                                            <?php if($product->isSpaceProduct()): ?>
+                                                <?= SpaceImage::widget([
+                                                    'space' => $product->getSpace()->one(),
+                                                    'width' => 34,
+                                                    'showTooltip' => false,
+                                                    'link' => false
+                                                ]); ?>
+                                                <span><?= Yii::t('XcoinModule.product', 'Product by') . " <strong>" . Html::encode($product->getSpace()->one()->name) . "</strong>"; ?></span>
+                                            <?php else : ?>
+                                                <?= Image::widget([
+                                                    'user' => $product->getCreatedBy()->one(),
+                                                    'width' => 34,
+                                                    'showTooltip' => false,
+                                                    'link' => false
+                                                ]); ?>
+                                                <span><?= Yii::t('XcoinModule.product', 'Product by') . " <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname. " ".$product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?></span>
+                                            <?php endif; ?>
+                                            <!-- owner image end -->
                                         </div>
                                     </div>
-                                    <div class="panel-body">
+                                    <div class="panel-body" style="margin-top: 38px;">
                                         <h4 class="funding-title">
                                             <?= Html::encode($product->name); ?>
                                             <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>

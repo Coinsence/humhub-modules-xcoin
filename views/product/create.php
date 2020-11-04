@@ -19,6 +19,7 @@ Select2BootstrapAsset::register($this);
 <?php $form = ActiveForm::begin(['id' => 'product-form']); ?>
 <?= Html::hiddenInput('step', '1'); ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'product_type')->hiddenInput()->label(false) ?>
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12">

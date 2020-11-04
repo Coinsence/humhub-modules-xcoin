@@ -93,7 +93,6 @@ class MarketplaceOverviewController extends Controller
 
         $model = new Product();
         $model->scenario = Product::SCENARIO_CREATE;
-        $model->product_type = Product::TYPE_SPACE;
 
         if (empty(Yii::$app->request->post('step'))) {
 
@@ -115,6 +114,12 @@ class MarketplaceOverviewController extends Controller
 
         // Step 1: Choose marketplace
         if ($model->isFirstStep()) {
+            if (Yii::$app->request->post('personal-product') == '1') {
+                $model->space_id = null;
+                $model->product_type = Product::TYPE_PERSONAL;
+            } else {
+                $model->product_type = Product::TYPE_SPACE;
+            }
 
             $marketplacesList = [];
 
@@ -139,7 +144,6 @@ class MarketplaceOverviewController extends Controller
 
         // Try Save Step 2
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
-
             if ($model->marketplace->isStopped()) {
                 throw new HttpException(403, 'You can`t sell a product in a closed marketplace!');
             }
@@ -163,10 +167,17 @@ class MarketplaceOverviewController extends Controller
 
             $this->view->saved();
 
-            return $this->redirect($model->space->createUrl('/xcoin/product/overview', [
-                'container' => $model->space,
-                'productId' => $model->id
-            ]));
+            $url = $model->isSpaceProduct() ?
+                $model->space->createUrl('/xcoin/product/overview', [
+                    'container' => $model->space,
+                    'productId' => $model->id
+                ]) :
+                $user->createUrl('/xcoin/product/overview', [
+                    'container' => $user,
+                    'productId' => $model->id
+                ]);
+
+            return $this->redirect($url);
         }
 
         // Check validation
