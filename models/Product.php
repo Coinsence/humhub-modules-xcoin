@@ -131,7 +131,8 @@ class Product extends ActiveRecord
                 'payment_type',
                 'categories_names',
                 'country',
-                'city'
+                'city',
+                'product_type'
             ],
             self::SCENARIO_EDIT => [
                 'name',
@@ -176,7 +177,7 @@ class Product extends ActiveRecord
         if ($this->isNewRecord) {
             $this->status = self::STATUS_AVAILABLE;
 
-            if (!$this->space_id) {
+            if ((!$this->space_id) && $this->product_type == self::TYPE_SPACE) {
                 $this->AttachSpace();
             }
         }
@@ -319,6 +320,11 @@ class Product extends ActiveRecord
 
     public function isNameUnique()
     {
+        var_dump($this->product_type);
+        if ($this->product_type == self::TYPE_PERSONAL) {
+            return true;
+        }
+        
         if (Space::findOne(['name' => $this->name])) {
             $this->addError('name', Yii::t('XcoinModule.product', 'Name already used'));
 
