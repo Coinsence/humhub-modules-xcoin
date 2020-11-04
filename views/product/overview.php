@@ -233,7 +233,7 @@ Assets::register($this);
                         <?= Html::a(Yii::t('XcoinModule.product', 'Buy this product'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                     <?php else: ?>
                         <?php if ($product->marketplace->isLinkRequired()): ?>
-                            <?= Html::a($product->marketplace->action_name, $product->link, ['target' => '_blank']) ?>
+                            <?= Html::a($product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product') , $product->link, ['target' => '_blank']) ?>
                         <?php else : ?>
                             <?= BuyProductButton::widget([
                                 'guid' => $product->getCreatedBy()->one()->guid,
