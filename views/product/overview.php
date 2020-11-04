@@ -237,7 +237,7 @@ Assets::register($this);
                         <?php else : ?>
                             <?= BuyProductButton::widget([
                                 'guid' => $product->getCreatedBy()->one()->guid,
-                                'label' => $product->marketplace->action_name
+                                'label' => $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product')
                             ]) ?>
                         <?php endif ?>
                     <?php endif; ?>
