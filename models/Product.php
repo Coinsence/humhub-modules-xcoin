@@ -240,6 +240,11 @@ class Product extends ActiveRecord
         return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
+    public function shortenName()
+    {
+        return (strlen($this->name) > 50) ? substr($this->name, 0, 47) . '...' : $this->name;
+    }
+
     public function shortenDescription()
     {
         return (strlen($this->description) > 100) ? substr($this->description, 0, 97) . '...' : $this->description;

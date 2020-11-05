@@ -42,8 +42,8 @@ Assets::register($this);
                                         <div class="bg" style="background-image: url('<?= $picture->getUrl() ?>')"></div>
                                         <?= Html::img($picture->getUrl(), ['height' => '140']) ?>
                                     <?php else : ?>
-                                        <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
-                                        <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
+                                        <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png' ?>')"></div>
+                                        <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png', [
                                             'height' => '140',
                                             'width' => '320'
                                         ]) ?>
@@ -70,8 +70,8 @@ Assets::register($this);
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <h4 class="funding-title">
-                                        <?= Html::encode($product->name); ?>
+                                    <h4 class="funding-title" rel="tooltip" title="<?= str_replace('"', '&quot;',$product->name) ?>">
+                                        <?= Html::encode($product->shortenName()); ?>
                                         <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
                                             <div style="color: orange; display: inline">
                                                 <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.product', 'Under review') ?>"></i>
