@@ -86,7 +86,7 @@ Assets::register($this);
             <!-- marketplace image end -->
 
             <!-- product buttons start -->
-            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) || $product->isOwner(Yii::$app->user->identity) ): ?>
+            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) || $product->isOwner(Yii::$app->user->identity)): ?>
                 <?= Html::a(
                     '<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.product', 'Edit'),
                     [
@@ -142,14 +142,14 @@ Assets::register($this);
                 <?= Yii::t('XcoinModule.product', 'Owner:') ?>
                 <span>
                     <!-- owner image start -->
-                    <?php if($product->isSpaceProduct()): ?>
+                    <?php if ($product->isSpaceProduct()): ?>
                         <?= SpaceImage::widget([
                             'space' => $product->getSpace()->one(),
                             'width' => 34,
                             'showTooltip' => false,
                             'link' => false
                         ]); ?>
-                        <?=" <strong>" . Html::encode($product->getSpace()->one()->name) . "</strong>"; ?>
+                        <?= " <strong>" . Html::encode($product->getSpace()->one()->name) . "</strong>"; ?>
                     <?php else : ?>
                         <?= Image::widget([
                             'user' => $product->getCreatedBy()->one(),
@@ -157,7 +157,7 @@ Assets::register($this);
                             'showTooltip' => false,
                             'link' => false
                         ]); ?>
-                        <?=" <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname. " ".$product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?>
+                        <?= " <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname . " " . $product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?>
                     <?php endif; ?>
                     <!-- owner image end -->
                 </span>
@@ -176,14 +176,14 @@ Assets::register($this);
                     ]); ?>
                     <small> <?= $product->getPaymentType() ?> </small>
                 <?php else : ?>
-                <b><?= $product->discount ?> %</b>
-                <?= SpaceImage::widget([
-                    'space' => $product->marketplace->asset->space,
-                    'width' => 24,
-                    'showTooltip' => true,
-                    'link' => true
-                ]); ?>
-                <?= Yii::t('XcoinModule.marketplace', 'Discount') ?>
+                    <b><?= $product->discount ?> %</b>
+                    <?= SpaceImage::widget([
+                        'space' => $product->marketplace->asset->space,
+                        'width' => 24,
+                        'showTooltip' => true,
+                        'link' => true
+                    ]); ?>
+                    <?= Yii::t('XcoinModule.marketplace', 'Discount') ?>
                 <?php endif; ?>
             </h6>
             <!-- product pricing end -->
@@ -232,7 +232,14 @@ Assets::register($this);
                     <?php if (Yii::$app->user->isGuest): ?>
                         <?= Html::a(Yii::t('XcoinModule.product', 'Buy this product'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                     <?php else: ?>
-                        <?= BuyProductButton::widget(['guid' => $product->getCreatedBy()->one()->guid])?>
+                        <?php if ($product->marketplace->isLinkRequired()): ?>
+                            <?= Html::a($product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product') , $product->link, ['target' => '_blank']) ?>
+                        <?php else : ?>
+                            <?= BuyProductButton::widget([
+                                'guid' => $product->getCreatedBy()->one()->guid,
+                                'label' => $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product')
+                            ]) ?>
+                        <?php endif ?>
                     <?php endif; ?>
                 </div>
                 <!-- product buy action end -->

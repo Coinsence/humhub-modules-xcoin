@@ -22,7 +22,6 @@ use yii\web\JsExpression;
 <?php $form = ActiveForm::begin(['id' => 'product-form']); ?>
 
 <?= Html::hiddenInput('step', '2'); ?>
-<?= Html::hiddenInput('step', '2'); ?>
 
 <?= $form->field($model, 'marketplace_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
@@ -94,15 +93,18 @@ use yii\web\JsExpression;
             ])->hint(Yii::t('XcoinModule.product', 'Please choose the type of you offer')) ?>
 
         </div>
-        <div class="col-md-6" id="product-price" style="display: <?= $model->hasErrors('price') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" :  "none"; ?>">
+        <div class="col-md-6" id="product-price"
+             style="display: <?= $model->hasErrors('price') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" : "none"; ?>">
             <?= $form->field($model, 'price')->input('number', ['min' => 1])
                 ->hint(Yii::t('XcoinModule.product', 'Please enter a price for your product')) ?>
         </div>
-        <div class="col-md-12" id="product-discount" style="display: <?= $model->hasErrors('discount') || $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS ? "block" :  "none"; ?>">
+        <div class="col-md-12" id="product-discount"
+             style="display: <?= $model->hasErrors('discount') || $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS ? "block" : "none"; ?>">
             <?= $form->field($model, 'discount')->input('number', ['min' => 0.01, 'max' => 100])
                 ->hint(Yii::t('XcoinModule.product', 'Please enter the discount in percentage')) ?>
         </div>
-        <div class="col-md-12" id="product-payment-type" style="display: <?= $model->hasErrors('payment_type') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" :  "none"; ?>">
+        <div class="col-md-12" id="product-payment-type"
+             style="display: <?= $model->hasErrors('payment_type') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" : "none"; ?>">
             <?=
             $form->field($model, 'payment_type')->widget(Select2::class, [
                 'data' => Product::getPaymentTypes(),
@@ -114,6 +116,12 @@ use yii\web\JsExpression;
                 ]
             ])->hint(Yii::t('XcoinModule.product', 'Please choose the payment type for your product')); ?>
         </div>
+        <?php if ($model->marketplace->isLinkRequired()) : ?>
+            <div class="col-md-12">
+                <?= $form->field($model, 'link')->textInput()
+                    ->hint(Yii::t('XcoinModule.product', 'Please enter your product call to action link')) ?>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 <hr>
