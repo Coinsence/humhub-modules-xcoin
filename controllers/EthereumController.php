@@ -23,6 +23,22 @@ use yii\web\HttpException;
 
 class EthereumController extends ContentContainerController
 {
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        if (!$this->module->isCrowdfundingEnabled()) {
+            throw new HttpException(403, Yii::t('XcoinModule.base', 'Crowdfunding is not enabled'));
+        }
+
+        return true;
+    }
+
     const EVENT_ENABLE_ETHEREUM = 'enableEthereum';
     const EVENT_MIGRATE_MISSING_TRANSACTIONS = 'migrateMissingTransactions';
     const EVENT_SYNCHRONIZE_BALANCES = 'synchronizeBalances';

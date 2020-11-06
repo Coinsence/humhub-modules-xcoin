@@ -20,6 +20,22 @@ use yii\web\HttpException;
  */
 class EthFundController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        if (!$this->module->isCrowdfundingEnabled()) {
+            throw new HttpException(403, Yii::t('XcoinModule.base', 'Crowdfunding is not enabled'));
+        }
+
+        return true;
+    }
+
     public function actionCorrectVotes()
     {
         $challenge = Challenge::findOne(['id' => 7]); // SDG Impact Challenge
