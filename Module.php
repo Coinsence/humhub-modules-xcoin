@@ -2,18 +2,35 @@
 
 namespace humhub\modules\xcoin;
 
-use humhub\modules\xcoin\permissions\CreateAccount;
-use humhub\modules\xcoin\permissions\ReviewSubmittedProjects;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use yii\helpers\Url;
 
 class Module extends ContentContainerModule
 {
 
     public $resourcesPath = 'resources';
+
+    /**
+     * @inheritdoc
+     */
+    public function getConfigUrl()
+    {
+        return Url::to(['/xcoin/admin/config']);
+    }
+
+    /**
+     * Determines crowdfunding feature is enabled or not
+     *
+     * @return boolean
+     */
+    public function isCrowdfundingEnabled()
+    {
+        return $this->settings->get('isCrowdfundingEnabled', true);
+    }
 
     /**
      * @inheritdoc
@@ -64,5 +81,4 @@ class Module extends ContentContainerModule
             return $container->createUrl('/xcoin/config/index');
         }
     }
-
 }
