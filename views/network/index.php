@@ -24,14 +24,9 @@ Select2BootstrapAsset::register($this);
 
 $count = count($results);
 ?>
-<style>
-    .crowd-funding .content .panel .panel-body {
-        margin-top: 0;
-    }
-</style>
-<div class="crowd-funding">
-    <div class="filters">
-        <div class="container">
+<div class="network">
+    <div class="container">
+        <div class="filters">
             <div class="row">
                 <div class="col-md-12">
                     <?php
@@ -97,51 +92,53 @@ $count = count($results);
                 </div>
             </div>
         </div>
-    </div>
-    <div class="content">
-        <div class="container">
+        <div class="content">
             <div class="row header">
-                <div class="col-md-6">
-                    <span class="num-projects">
-                        <?= $count . ' ' . ($type == NetworkController::TYPE_USER ? Yii::t('XcoinModule.network', 'User') : Yii::t('XcoinModule.network', 'Space')) . ($count != 1 ? 's' : '') ?>
-                    </span>
-                </div>
+                <span class="col-md-6 num-projects">
+                    <?= $count . ' ' . ($type == NetworkController::TYPE_USER ? Yii::t('XcoinModule.network', 'User') : Yii::t('XcoinModule.network', 'Space')) . ($count != 1 ? 's' : '') ?>
+                </span>
             </div>
             <div class="panels">
                 <?php if ($type == NetworkController::TYPE_USER): ?>
                     <?php foreach ($results as $user): ?>
-                        <div class="col-sm-6 col-md-4 col-lg-3" style="height: 350px">
-                            <div class="panel">
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="user panel">
                                 <div class="panel-heading">
                                     <?= UserImage::widget([
                                         'user' => $user,
-                                        'width' => 60,
+                                        'width' => 75,
                                         'showTooltip' => false,
-                                        'link' => true
+                                        'link' => true,
+                                        'htmlOptions' => ['class' => 'user-img']
                                     ]); ?>
-                                    <strong><?= Html::encode($user->profile->firstname . " " . $user->profile->lastname) ?></strong><br>
-                                    <small><?= Html::encode($user->profile->title) ?></small><br>
-                                    <small>
-                                        <?= Html::encode($user->profile->city) ?>
-                                        <?= ($user->profile->city && $user->profile->country) ? ', ' : ' ' ?>
-                                        <?= Iso3166Codes::country($user->profile->country) ?>
-                                    </small>
+                                    <div class="user-info">
+                                        <h4 class="user-fullname"><?= Html::encode($user->profile->firstname . " " . $user->profile->lastname) ?></h4>
+                                        <h5 class="user-title"><?= Html::encode($user->profile->title) ?></h5>
+                                        <h6 class="user-location">
+                                            <?= Html::encode($user->profile->city) ?>
+                                            <?= ($user->profile->city && $user->profile->country) ? ', ' : ' ' ?>
+                                            <?= Iso3166Codes::country($user->profile->country) ?>
+                                        </h6>
+                                    </div>
                                 </div>
                                 <div class="panel-body">
-                                    <?= Html::encode(StringUtils::shorten($user->profile->about, 100)) ?><br><br>
+                                    <p class="user-description">
+                                        <?= Html::encode(StringUtils::shorten($user->profile->about, 100)) ?>
+                                    </p>
 
-                                    <?php $userTags = explode(',', $user->tags) ?>
-                                    <?php foreach ($userTags as $tag) : ?>
-                                        <?php if (!empty($tag)) : ?>
-                                            <b class="btn btn-default"><?= Html::encode($tag) ?></b>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
+                                    <ul class="user-tags">
+                                        <?php foreach (explode(',', $user->tags) as $tag) : ?>
+                                            <?php if (!empty($tag)) : ?>
+                                                <li><?= Html::encode($tag) ?></li>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </ul>
                                 </div>
-                                <div class="panel-footer text-center" style="margin-top: 20px">
+                                <div class="panel-footer">
                                     <?= Html::a(
                                         '<i class="fa fa-user-plus"></i>' . Yii::t('XcoinModule.network', 'Connect'),
                                         $user->getUrl(),
-                                        ['class' => 'btn btn-info btn-lg']
+                                        ['class' => 'btn btn-info']
                                     ) ?>
                                 </div>
                             </div>
@@ -150,23 +147,29 @@ $count = count($results);
                 <?php else: ?>
                     <?php foreach ($results as $space): ?>
                         <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="panel">
+                            <div class="space panel">
                                 <div class="panel-heading text-center">
                                     <?= SpaceImage::widget([
                                         'space' => $space,
-                                        'width' => 60,
+                                        'width' => 75,
                                         'showTooltip' => false,
-                                        'link' => true
+                                        'link' => true,
+                                        'htmlOptions' => ['class' => 'space-img']
                                     ]); ?>
-                                    <h5><b><?= Html::encode($space->name) ?></b></h5>
+                                    <div class="space-info">
+                                        <h5 class="space-title"><?= Html::encode($space->name) ?></h5>
+                                    </div>
                                 </div>
-                                <div class="panel-body text-center">
-                                    <?= Html::encode(StringUtils::shorten($space->description, 100)) ?><br><br>
-
-                                    <b class="btn btn-default"><?= $space->getFollowerCount() ?> <?= Yii::t('XcoinModule.network', 'Follower') . ($space->getFollowerCount() != 1 ? 's' : '') ?></b>
-                                    <b class="btn btn-default"><?= Membership::getSpaceMembersQuery($space)->active()->visible()->count() ?> <?= Yii::t('XcoinModule.network', 'User') . (Membership::getSpaceMembersQuery($space)->active()->visible()->count() != 1 ? 's' : '') ?></b>
+                                <div class="panel-body">
+                                    <p class="space-description">
+                                        <?= Html::encode(StringUtils::shorten($space->description, 100)) ?>
+                                    </p>
+                                    <ul class="space-stats">
+                                        <li><span class="count"><?= $space->getFollowerCount() ?></span><?= Yii::t('XcoinModule.network', 'Follower') . ($space->getFollowerCount() != 1 ? 's' : '') ?></li>
+                                        <li><span class="count"><?= Membership::getSpaceMembersQuery($space)->active()->visible()->count() ?></span><?= Yii::t('XcoinModule.network', 'User') . (Membership::getSpaceMembersQuery($space)->active()->visible()->count() != 1 ? 's' : '') ?></li>
+                                    </ul>
                                 </div>
-                                <div class="panel-footer text-center" style="margin-top: 20px">
+                                <div class="panel-footer">
                                     <?= Html::a(
                                         Yii::t('XcoinModule.network', 'Visit Space'),
                                         $space->getUrl(),
