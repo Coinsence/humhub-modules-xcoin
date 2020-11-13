@@ -43,8 +43,6 @@ class UserExperience extends Widget
      */
     public function run()
     {
-        Yii::$app->i18n->autosetLocale();
-
         return $this->render('@xcoin/widgets/views/user-experience', [
             'experiences' => Experience::findAll(['user_id' => $this->user->id]),
             'htmlOptions' => $this->htmlOptions
