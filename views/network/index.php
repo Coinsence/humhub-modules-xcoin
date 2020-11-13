@@ -8,6 +8,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\controllers\NetworkController;
 use humhub\modules\xcoin\models\Tag;
+use humhub\modules\space\models\Membership as Membership;
 use humhub\modules\xcoin\utils\StringUtils;
 use kv4nt\owlcarousel\OwlCarouselWidget;
 use humhub\assets\Select2BootstrapAsset;
@@ -163,7 +164,7 @@ $count = count($results);
                                     <?= Html::encode(StringUtils::shorten($space->description, 100)) ?><br><br>
 
                                     <b class="btn btn-default"><?= $space->getFollowerCount() ?> <?= Yii::t('XcoinModule.network', 'Follower') . ($space->getFollowerCount() != 1 ? 's' : '') ?></b>
-                                    <b class="btn btn-default"><?= $space->getMemberships()->count() ?> <?= Yii::t('XcoinModule.network', 'User') . ($space->getMemberships()->count() != 1 ? 's' : '') ?></b>
+                                    <b class="btn btn-default"><?= Membership::getSpaceMembersQuery($space)->active()->visible()->count() ?> <?= Yii::t('XcoinModule.network', 'User') . (Membership::getSpaceMembersQuery($space)->active()->visible()->count() != 1 ? 's' : '') ?></b>
                                 </div>
                                 <div class="panel-footer text-center" style="margin-top: 20px">
                                     <?= Html::a(
