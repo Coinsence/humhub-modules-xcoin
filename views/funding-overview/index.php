@@ -30,8 +30,8 @@ Select2BootstrapAsset::register($this);
 ?>
 
 <div class="crowd-funding">
-    <div class="filters">
-        <div class="container">
+    <div class="container">
+        <div class="filters">
             <div class="row">
                 <div class="col-md-12">
                     <?php
@@ -203,9 +203,7 @@ Select2BootstrapAsset::register($this);
             </div>
             <?php ActiveForm::end(); ?>
         </div>
-    </div>
-    <div class="content">
-        <div class="container">
+        <div class="content">
             <div class="row header">
                 <?php if ($selectedChallenge): ?>
                     <div class="col-md-12">
