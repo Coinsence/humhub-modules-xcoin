@@ -21,6 +21,7 @@ class m201113_102851_user_experience extends Migration
             'city' => $this->string(),
             'start_date' => $this->date()->defaultValue(date('Y-m-d'))->notNull(),
             'end_date' => $this->date()->defaultValue(date('Y-m-d')),
+            'actual_position' => $this->integer()->defaultValue(0),
             'user_id' => $this->integer()
         ]);
 

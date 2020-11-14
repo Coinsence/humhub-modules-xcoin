@@ -89,5 +89,17 @@ humhub.module('xcoin', function (module, require, $) {
     $('body').on('click', '#submit-personal-product', function (e) {
        $("#personal-product").val('1');
     });
+
+   // experience widget
+    $('body').on('click', '#experience-actual_position', function () {
+        let $end_date_input = $('#experience-end_date');
+
+        if($(this).is(':checked')){
+            $end_date_input.prop('disabled', true);
+            $end_date_input.val('')
+        } else {
+            $end_date_input.prop('disabled', false);
+        }
+    })
 });
 

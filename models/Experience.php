@@ -25,6 +25,7 @@ use yii\db\ActiveQuery;
  * @property string $city
  * @property string $start_date
  * @property string $end_date
+ * @property integer $actual_position
  * @property integer $user_id
  *
  * @property User $user
@@ -46,7 +47,10 @@ class Experience extends ActiveRecord
     {
         return [
             [['position', 'employer', 'start_date'], 'required'],
-            [['user_id'], 'integer'],
+            [['end_date'], 'required', 'when' => function ($model) {
+                return !$model->actual_position;
+            }],
+            [['user_id', 'actual_position'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => false, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
             [['position', 'employer', 'description', 'country', 'city'], 'string'],
         ];
@@ -67,6 +71,7 @@ class Experience extends ActiveRecord
             'start_date' => Yii::t('XcoinModule.base', 'Start Date'),
             'end_date' => Yii::t('XcoinModule.base', 'End Date'),
             'user_id' => Yii::t('XcoinModule.base', 'User ID'),
+            'actual_position' => Yii::t('XcoinModule.base', 'Actual Position'),
         ];
     }
 
@@ -76,6 +81,18 @@ class Experience extends ActiveRecord
             $this->user_id = Yii::$app->user->id;
         }
 
+        if ($this->actual_position) {
+            $this->end_date = null;
+        }
+
+        if ($this->start_date) {
+            $this->start_date = $this->start_date . '-01';
+        }
+
+        if ($this->end_date) {
+            $this->end_date = $this->end_date . '-01';
+        }
+        
         return parent::beforeSave($insert);
     }
 
