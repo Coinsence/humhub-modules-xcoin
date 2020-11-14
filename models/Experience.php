@@ -79,7 +79,7 @@ class Experience extends ActiveRecord
     public function validateDates()
     {
         if ($this->end_date) {
-            if (strtotime($this->end_date) <= strtotime($this->start_date)) {
+            if (strtotime($this->end_date) < strtotime($this->start_date)) {
                 $this->addError('end_date', Yii::t('XcoinModule.experience', 'Experience Start Date must be greater than End Date'));
             }
         }

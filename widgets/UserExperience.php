@@ -13,6 +13,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\Experience;
 use Yii;
 use yii\base\Widget;
+use yii\db\Expression;
 
 /**
  * UserExperience Widget
@@ -44,7 +45,10 @@ class UserExperience extends Widget
     public function run()
     {
         return $this->render('@xcoin/widgets/views/user-experience', [
-            'experiences' => Experience::find()->where(['user_id' => $this->user->id])->orderBy(['start_date' => SORT_DESC])->all(),
+            'experiences' => Experience::find()
+                ->where(['user_id' => $this->user->id])
+                ->orderBy([ new Expression('end_date IS NULL desc, end_date desc')])
+                ->all(),
             'htmlOptions' => $this->htmlOptions,
             'user' => $this->user
         ]);
