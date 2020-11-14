@@ -44,7 +44,7 @@ class UserExperience extends Widget
     public function run()
     {
         return $this->render('@xcoin/widgets/views/user-experience', [
-            'experiences' => Experience::find()->where(['user_id' => $this->user->id])->orderBy(['id' => SORT_DESC])->all(),
+            'experiences' => Experience::find()->where(['user_id' => $this->user->id])->orderBy(['start_date' => SORT_DESC])->all(),
             'htmlOptions' => $this->htmlOptions,
             'user' => $this->user
         ]);

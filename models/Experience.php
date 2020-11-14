@@ -50,6 +50,7 @@ class Experience extends ActiveRecord
             [['end_date'], 'required', 'when' => function ($model) {
                 return !$model->actual_position;
             }],
+            ['end_date', 'validateDates'],
             [['user_id', 'actual_position'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => false, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
             [['position', 'employer', 'description', 'country', 'city'], 'string'],
@@ -75,6 +76,15 @@ class Experience extends ActiveRecord
         ];
     }
 
+    public function validateDates()
+    {
+        if ($this->end_date) {
+            if (strtotime($this->end_date) <= strtotime($this->start_date)) {
+                $this->addError('end_date', Yii::t('XcoinModule.experience', 'Experience Start Date must be greater than End Date'));
+            }
+        }
+    }
+
     public function beforeSave($insert)
     {
         if ($this->isNewRecord) {
@@ -92,7 +102,7 @@ class Experience extends ActiveRecord
         if ($this->end_date) {
             $this->end_date = $this->end_date . '-01';
         }
-        
+
         return parent::beforeSave($insert);
     }
 

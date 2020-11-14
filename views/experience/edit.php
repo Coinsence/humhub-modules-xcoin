@@ -68,6 +68,7 @@ Assets::register($this);
             <?= $form->field($model, 'start_date')->widget(DatePicker::class, [
                 'dateFormat' => 'yyyy-MM',
                 'clientOptions' => [
+                    'yearRange' => "-30:+0",
                     'changeMonth' => true,
                     'changeYear' => true,
                     'showButtonPanel' => true,
@@ -82,6 +83,7 @@ Assets::register($this);
             <?= $form->field($model, 'end_date')->widget(DatePicker::class, [
                 'dateFormat' => 'yyyy-MM',
                 'clientOptions' => [
+                    'yearRange' => "-30:+0",
                     'changeMonth' => true,
                     'changeYear' => true,
                     'showButtonPanel' => true,
