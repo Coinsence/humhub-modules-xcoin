@@ -61,9 +61,9 @@ humhub\modules\mostactiveusers\Assets::register($this);
                       if ($friendShipState === Friendship::STATE_NONE) {
                       echo Html::a('<img src="/themes/Coinsence/img/addPerson.svg" alt="" />' . Yii::t("FriendshipModule.base", ""), Url::to(['/friendship/request/add', 'userId' => $user->id]), ['class' => 'addPerson', 'data-method' => 'POST', 'data-ui-loader' => '']); 
                           }
-                      else{
-                       echo Html::a('<img src="/themes/Coinsence/img/addPerson.svg" alt="" />'.Yii::t("FriendshipModule.base", ""), Url::to(['/friendship/request/delete', 'userId' => $user->id]), ['class' => 'btn btn-default zouaoui', 'data-method' => 'POST', 'data-ui-loader' => '']);
-                      }
+                    //   else{
+                    //    echo Html::a('<img src="/themes/Coinsence/img/addPerson.svg" alt="" />'.Yii::t("FriendshipModule.base", ""), Url::to(['/friendship/request/delete', 'userId' => $user->id]), ['class' => 'btn btn-default zouaoui', 'data-method' => 'POST', 'data-ui-loader' => '']);
+                    //   }
                   }
               ?>
              
