@@ -9,6 +9,7 @@
 
 namespace humhub\modules\xcoin\models;
 
+use cornernote\linkall\LinkAllBehavior;
 use Yii;
 use yii\db\ActiveQuery;
 use humhub\components\ActiveRecord;
@@ -50,6 +51,9 @@ class Marketplace extends ActiveRecord
 
     public $coverFile;
 
+    // used when creating marketplace
+    public $categories_names;
+
     /**
      * @inheritdoc
      */
@@ -65,6 +69,7 @@ class Marketplace extends ActiveRecord
     {
         return [
             [['space_id', 'asset_id', 'title', 'description', 'created_by', 'is_link_required'], 'required'],
+            ['categories_names', 'required', 'message' => 'Please choose at least a category'],
             [['space_id', 'asset_id', 'created_by', 'is_link_required'], 'integer'],
             [['created_at', 'status', 'stopped'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
@@ -83,7 +88,8 @@ class Marketplace extends ActiveRecord
                 'title',
                 'description',
                 'action_name',
-                'is_link_required'
+                'is_link_required',
+                'categories_names'
             ],
             self::SCENARIO_EDIT => [
                 'asset_id',
@@ -117,6 +123,12 @@ class Marketplace extends ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            LinkAllBehavior::class,
+        ];
+    }
 
     public function beforeSave($insert)
     {
@@ -129,6 +141,24 @@ class Marketplace extends ActiveRecord
         }
 
         return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->categories_names) {
+            $categories = [];
+
+            $x = $this->categories_names;
+            foreach ($this->categories_names as $category_name) {
+                $category = Category::getCategoryByName($category_name);
+                if ($category) {
+                    $categories[] = $category;
+                }
+            }
+            $this->linkAll('categories', $categories);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -169,6 +199,12 @@ class Marketplace extends ActiveRecord
     public function getSpace()
     {
         return $this->hasOne(Space::class, ['id' => 'space_id']);
+    }
+
+    public function getCategories()
+    {
+        return $this->hasMany(Category::class, ['id' => 'category_id'])
+            ->viaTable('xcoin_marketplace_category', ['marketplace_id' => 'id']);
     }
 
     public function canDeleteFile()

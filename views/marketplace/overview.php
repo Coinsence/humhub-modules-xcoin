@@ -15,6 +15,30 @@ Assets::register($this);
 /** @var $products Product[] */
 
 ?>
+<!-- TODO : move styling to css/less files, @craxrev -->
+
+<style>
+    .space-challenge .panel .panel-heading .categories {
+        margin-top: 30px;
+        text-transform: uppercase;
+        color: #202020;
+        display: inline-block;
+    }
+
+    .space-challenge .panel .panel-heading .categories + ul {
+        list-style: none;
+        display: inline-block;
+        padding: 0;
+    }
+
+    .space-challenge .panel .panel-heading .categories + ul li {
+        display: inline-block;
+        padding: 6px 16px;
+        box-shadow: 0 1px 3px #00000029;
+        margin: 0 4px;
+        border-radius: 16px;
+    }
+</style>
 
 <div class="space-challenge">
     <div class="panel panel-default">
@@ -71,6 +95,18 @@ Assets::register($this);
                         ], ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']); ?>
                     <?php endif; ?>
                 </div>
+                <?php if ($marketplace->getCategories()->count()) : ?>
+                    <!-- product categories start -->
+                    <h6 class="categories"><?= Yii::t('XcoinModule.marketplace', 'Available product categories :') ?></h6>
+                    <ul>
+                        <?php foreach ($marketplace->getCategories()->all() as $category) : ?>
+                            <li>
+                                <?= $category->name; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <!-- product categories end -->
+                <?php endif; ?>
                 <p class="challenge-description"><?= RichText::output($marketplace->description); ?></p>
             </div>
         </div>
@@ -85,8 +121,8 @@ Assets::register($this);
                     <?php endif; ?>
                     <?php foreach ($products as $product): ?>
                         <?php
-                            $owner = $product->isSpaceProduct() ? $product->getSpace()->one() : $product->getCreatedBy()->one();
-                            $picture = $product->getPicture();
+                        $owner = $product->isSpaceProduct() ? $product->getSpace()->one() : $product->getCreatedBy()->one();
+                        $picture = $product->getPicture();
                         ?>
                         <a href="<?= $owner->createUrl('/xcoin/product/overview', [
                             'productId' => $product->id
@@ -96,10 +132,12 @@ Assets::register($this);
                                     <div class="panel-heading">
                                         <!-- product picture start -->
                                         <?php if ($picture) : ?>
-                                            <div class="bg" style="background-image: url('<?= $picture->getUrl() ?>')"></div>
+                                            <div class="bg"
+                                                 style="background-image: url('<?= $picture->getUrl() ?>')"></div>
                                             <?= Html::img($picture->getUrl(), ['height' => '140']) ?>
                                         <?php else : ?>
-                                            <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png' ?>')"></div>
+                                            <div class="bg"
+                                                 style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png' ?>')"></div>
                                             <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png', [
                                                 'height' => '140',
                                                 'width' => '320'
@@ -108,7 +146,7 @@ Assets::register($this);
                                         <!-- product picture end -->
                                         <div class="project-owner" style="bottom: -33px">
                                             <!-- owner image start -->
-                                            <?php if($product->isSpaceProduct()): ?>
+                                            <?php if ($product->isSpaceProduct()): ?>
                                                 <?= SpaceImage::widget([
                                                     'space' => $product->getSpace()->one(),
                                                     'width' => 34,
@@ -123,21 +161,24 @@ Assets::register($this);
                                                     'showTooltip' => false,
                                                     'link' => false
                                                 ]); ?>
-                                                <span><?= Yii::t('XcoinModule.product', 'Product by') . " <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname. " ".$product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?></span>
+                                                <span><?= Yii::t('XcoinModule.product', 'Product by') . " <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname . " " . $product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?></span>
                                             <?php endif; ?>
                                             <!-- owner image end -->
                                         </div>
                                     </div>
                                     <div class="panel-body" style="margin-top: 38px;">
-                                        <h4 class="funding-title" rel="tooltip" title="<?= str_replace('"', '&quot;',$product->name) ?>">
+                                        <h4 class="funding-title" rel="tooltip"
+                                            title="<?= str_replace('"', '&quot;', $product->name) ?>">
                                             <?= Html::encode($product->shortenName()); ?>
                                             <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
                                                 <div style="color: orange; display: inline">
-                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.marketplace', 'Under review') ?>"></i>
+                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip"
+                                                       title="<?= Yii::t('XcoinModule.marketplace', 'Under review') ?>"></i>
                                                 </div>
                                             <?php else: ?>
                                                 <div style="color: dodgerblue; display: inline">
-                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.marketplace', 'Verified') ?>"></i>
+                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip"
+                                                       title="<?= Yii::t('XcoinModule.marketplace', 'Verified') ?>"></i>
                                                 </div>
                                             <?php endif; ?>
                                         </h4>
@@ -156,7 +197,8 @@ Assets::register($this);
                                                 <!-- product pricing & discount start -->
                                                 <div class="text-center">
                                                     <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
-                                                        <?= Yii::t('XcoinModule.marketplace', 'Price') ?> : <b><?= $product->price ?></b>
+                                                        <?= Yii::t('XcoinModule.marketplace', 'Price') ?> :
+                                                        <b><?= $product->price ?></b>
                                                         <?= SpaceImage::widget([
                                                             'space' => $product->marketplace->asset->space,
                                                             'width' => 24,
