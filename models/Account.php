@@ -25,6 +25,7 @@ use yii\db\Expression;
  * @property string $ethereum_address
  * @property integer $funding_id
  * @property integer $investor_id
+ * @property integer $archived
  *
  * @property Space $space
  * @property User $user
@@ -42,6 +43,8 @@ class Account extends ActiveRecord
     const TYPE_DEFAULT = 4;
     const TYPE_TASK = 5;
     const TYPE_COMMUNITY_INVESTOR = 6;
+
+    const ACCOUNT_ARCHIVED = 1;
 
     /** @var Event this event is dispatched when account with
      * TYPE_DEFAULT is created for space in order to create ethereum DAO

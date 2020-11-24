@@ -57,7 +57,8 @@ class AccountHelper
         if ($container instanceof Space) {
             $query = Account::find()
                 ->andWhere(['space_id' => $container->id])
-                ->andWhere(['!=', 'account_type', Account::TYPE_ISSUE]);
+                ->andWhere(['!=', 'account_type', Account::TYPE_ISSUE])
+                ->andWhere(['archived' => 0]);
 
             if ($asset) {
                 $query
