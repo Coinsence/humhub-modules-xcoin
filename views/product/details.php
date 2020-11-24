@@ -61,7 +61,13 @@ use yii\web\JsExpression;
             <?= $form->field($model, 'categories_names')->widget(Select2::class, [
                 'model' => $model,
                 'attribute' => 'categories_names',
-                'data' => ArrayHelper::map(Category::find()->where(['type' => Category::TYPE_MARKETPLACE])->all(), 'name', 'name'),
+                'data' => ArrayHelper::map(
+                    Category::find()
+                        ->alias('category')
+                        ->leftJoin('xcoin_marketplace_category mc','mc.category_id = category.id')
+                        ->where('mc.marketplace_id = '. $model->marketplace_id)
+                        ->all()
+                    , 'name', 'name'),
                 'options' => [
                     'multiple' => true,
                 ]
