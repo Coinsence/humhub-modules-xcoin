@@ -3,7 +3,6 @@
 namespace humhub\modules\xcoin\helpers;
 
 use humhub\modules\content\components\ContentContainerPermissionManager;
-use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use Yii;
@@ -88,7 +87,7 @@ class AssetHelper
 
             $permissionManager = new ContentContainerPermissionManager(['subject' => $user, 'contentContainer' => $container]);
 
-            if ($permissionManager->can(CreatePublicContent::class)){
+            if ($permissionManager->can(ManageContent::class)){
                 return true;
             }
         }
