@@ -4,6 +4,7 @@ namespace humhub\modules\xcoin\grids;
 
 use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Funding;
+use humhub\widgets\ModalConfirm;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\bootstrap\Html;
@@ -15,6 +16,7 @@ use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use yii\helpers\Url;
 
 /**
  * Description of LatestTransactionsGridView
@@ -126,7 +128,7 @@ class AccountsGridView extends GridView
                 'contentOptions' => ['style' => 'text-align:right'],
                 'value' => function ($model) {
 
-                    $transferButton = $loadPKButton = '';
+                    $transferButton = $loadPKButton = $disabledButton = '';
 
                     if (AccountHelper::canManageAccount($model) && Account::TYPE_TASK != $model->account_type) {
                         if (Account::TYPE_FUNDING == $model->account_type) {
@@ -224,10 +226,22 @@ class AccountsGridView extends GridView
                         }
                     }
 
+                    if ($model->space != null && $model->space->isAdmin(Yii::$app->user->getIdentity()->id) && !in_array($model->account_type, [Account::TYPE_DEFAULT, Account::TYPE_TASK])) {
+                        $disabledButton = ModalConfirm::widget([
+                            'uniqueID' => 'model_disable_account' . $model->id,
+                            'title' => Yii::t('XcoinModule.base', '<strong>Confirm</strong> disabling account'),
+                            'message' => Yii::t('XcoinModule.base', 'Do you really want to disable this account?'),
+                            'buttonTrue' => Yii::t('XcoinModule.base', 'Disable'),
+                            'buttonFalse' => Yii::t('XcoinModule.base', 'Cancel'),
+                            'linkContent' => '<i class="fa fa-ban"></i> ',
+                            'cssClass' => 'btn btn-default',
+                            'linkHref' => Url::to(['/xcoin/account/disable', 'id' => $model->id, 'container' => $this->contentContainer])
+                        ]);
+                    }
 
                     $overviewButton = Html::a('<i class="fa fa-search" aria-hidden="true"></i>', ['/xcoin/account', 'id' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default']);
 
-                    return $loadPKButton . $transferButton . $overviewButton;
+                    return $loadPKButton . $transferButton . $disabledButton . $overviewButton;
                 }
             ],
         ];

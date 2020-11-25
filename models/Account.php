@@ -274,7 +274,32 @@ class Account extends ActiveRecord
 
     public function disable()
     {
-        $this->revertTransactions();
-        // TODO disable account
+        // send coin to default account rather than issue account
+        $defaultAccount = Account::findOne([
+            'space_id' => $this->getSpace()->one()->id,
+            'account_type' => Account::TYPE_DEFAULT
+        ]);
+
+        // send all coins to default account
+        foreach (
+            Transaction::find()
+                ->where(['to_account_id' => $this->id])->all()
+            as $transaction
+        ) {
+            $transferTransaction = new Transaction();
+
+            $transferTransaction->asset_id = $transaction->asset_id;
+            $transferTransaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
+            $transferTransaction->amount = $transaction->amount;
+            $transferTransaction->comment = "Disabling Account";
+            $transferTransaction->from_account_id = $transaction->to_account_id;
+            $transferTransaction->to_account_id = $defaultAccount->id;
+
+            $transferTransaction->save();
+        }
+
+        $this->archived = self::ACCOUNT_ARCHIVED;
+
+        $this->save();
     }
 }

@@ -75,4 +75,18 @@ class AccountController extends ContentContainerController
         return $this->renderAjax('edit', ['account' => $account]);
     }
 
+    public function actionDisable($id)
+    {
+        if($this->contentContainer instanceof User){
+            $this->redirect($this->contentContainer->createUrl('/xcoin/overview'),302);
+        }
+
+        if (!$account = Account::findOne(['id' => $id])) {
+            throw new HttpException(404, 'Account Not found.');
+        }
+
+        $account->disable();
+
+        $this->redirect($this->contentContainer->createUrl('/xcoin/overview'));
+    }
 }
