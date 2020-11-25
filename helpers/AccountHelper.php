@@ -164,7 +164,7 @@ class AccountHelper
             return true;
         }
 
-        if ($account->user_id === null && $account->space !== null && $account->space->isAdmin($user->id)) {
+        if ($account->space !== null && $account->space->isAdmin($user->id)) {
             return true;
         }
 

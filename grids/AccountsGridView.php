@@ -226,7 +226,7 @@ class AccountsGridView extends GridView
                         }
                     }
 
-                    if ($model->space != null && $model->space->isAdmin(Yii::$app->user->getIdentity()->id) && in_array($model->account_type, [Account::TYPE_STANDARD, Account::TYPE_COMMUNITY_INVESTOR])) {
+                    if ($model->space != null && AccountHelper::canManageAccount($model) && in_array($model->account_type, [Account::TYPE_STANDARD, Account::TYPE_COMMUNITY_INVESTOR])) {
                         $disabledButton = ModalConfirm::widget([
                             'uniqueID' => 'model_disable_account' . $model->id,
                             'title' => Yii::t('XcoinModule.base', '<strong>Confirm</strong> disabling account'),
