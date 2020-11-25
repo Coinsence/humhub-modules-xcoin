@@ -179,14 +179,6 @@ $cover = $funding->getCover();
 
         </div>
     </div>
-    <script>
-    $(".projectsSlider").slick({
-        infinite: false,
-        slidesToShow: 1,
-        variableWidth: true,
-        appendArrows: $(".projectsPortfolio .arrows"),
-
-    });
-    </script>
+    
 
 </div>

@@ -59,23 +59,9 @@ class ProjectPortfolio extends \yii\base\Widget
          * Try to autodetect current user by controller
          */
       
-        // test
-        $layout="";
-        // print_r("hhhhhhhhhhhhhhhhhhhhhh".$this->user->id);
-        $content = '';
-        //foreach (Activity::findAll(['object_id' => 6]) as $activity); {//['object_model' => Activity::class]    
-            // $activity->delete();
-            // , 'object_id' => $this->id
-            //$layout.= $activity->getWallOut();// getSource()   getModel  $activity->getSource()->content->getUrl()
-        //}
-        
-        //$this->activities=$layout;
-        // $this->activities=Activity::find()->where(['object_id' => 3])->andWhere(['object_model'=>'humhub\modules\post\models\Post'])->andWhere(['<>','module','space'])->all() ;
-        // $activities=Activity::findAll(['object_id' => 43]);
-        // test
-        //foreach(['space','user','content','comment','tasks','like'] as $module){
+       
         $allActivities=[];  
-        // robafica
+      
         $classArray = array(
             Post::class => 'created_by',
             Follow::class => 'user_id',

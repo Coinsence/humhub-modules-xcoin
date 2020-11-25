@@ -20,15 +20,11 @@ use yii\helpers\Html;
     <?php else : ?>
     <div class="whatWeOffer">
     <h2>What I offer to the community</h2>
-    <p>
-        <?php foreach ($profileOfferNeeds as $profileOfferNeed) : ?>
-
-            <?= Html::encode($profileOfferNeed->profile_offer) ?>
-            <?php if (!Yii::$app->user->isGuest) {
+    <?php if (!Yii::$app->user->isGuest) {
             echo Html::a(
-                '<i class="fas fa-pencil-alt editPencil"></i>',
+                '<i class="fa fa-pencil editPencil"></i>',
                 [
-                    '/xcoin/offer/edit','container' => $user
+                    '/xcoin/offer/edit','container' => $user,'id'=>$user->id
     
                     
                 ],
@@ -39,22 +35,24 @@ use yii\helpers\Html;
                 ]
             );
             }?>
+    <p>
+        <?php foreach ($profileOfferNeeds as $profileOfferNeed) : ?>
+
+            <?= Html::encode($profileOfferNeed->profile_offer) ?>
+            
         <?php endforeach; ?>
         
     </p>
     </div>
     
+   
     <div class="whatWeNeed">
     <h2>What I need from the community</h2>
-    <p>
-        <?php foreach ($profileOfferNeeds as $profileOfferNeed) : ?>
-
-            <?= Html::encode($profileOfferNeed->profile_need) ?>
-            <?php if (!Yii::$app->user->isGuest) {
+    <?php if (!Yii::$app->user->isGuest) {
             echo Html::a(
-                '<i class="fas fa-pencil-alt editPencil"></i>',
+                '<i class="fa fa-pencil editPencil"></i>',
                 [
-                    '/xcoin/offer/edit','container' => $user
+                    '/xcoin/need/edit','container' => $user
                     
                 ],
                 [
@@ -64,6 +62,11 @@ use yii\helpers\Html;
                 ]
             );
         }?>
+    <p>
+        <?php foreach ($profileOfferNeeds as $profileOfferNeed) : ?>
+
+            <?= Html::encode($profileOfferNeed->profile_need) ?>
+           
         <?php endforeach; ?>
     </p>
     </div>

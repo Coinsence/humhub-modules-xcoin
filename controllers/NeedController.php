@@ -9,9 +9,9 @@ use yii\web\HttpException;
 use yii\web\Response;
 
 /**
- * Description of OfferController
+ * Description of NeedController
  */
-class OfferController extends ContentContainerController
+class NeedController extends ContentContainerController
 {
     /**
      * @param null $id
@@ -25,12 +25,7 @@ class OfferController extends ContentContainerController
             throw new HttpException(401);
         }
         if ($id) {
-            $row = (new \yii\db\Query())
-            ->select(['id', 'profile_offer','profile_need'])
-            ->from('profile_offer_need')
-            ->where(['user_id' => $id])
-            ->all();
-          print_r($row);
+           
           $model=ProfileOfferNeed::find(['user_id'=>$id])->all();
         } else {
             $model = new ProfileOfferNeed();
@@ -45,7 +40,7 @@ class OfferController extends ContentContainerController
     
         return $this->renderAjax('edit', [
             'model' => $model,
-            'rows'=> $row
+           
         ]);
  
     }

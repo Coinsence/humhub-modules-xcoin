@@ -15,6 +15,7 @@ use kartik\widgets\Select2;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
+use PhpOffice\PhpSpreadsheet\Helper\Html;
 use yii\web\JsExpression;
 
 /** @var $model Experience */
@@ -22,22 +23,21 @@ use yii\web\JsExpression;
 Assets::register($this);
 ?>
 
-<style>
-    .ui-datepicker-calendar {
-        display: none;
-    }
-</style>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.experience', 'Provide Profile details'), 'closable' => false]) ?>
-<?php $form = ActiveForm::begin(['id' => 'experience-form']); ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.profile', 'Provide Profile details'), 'closable' => false]) ?>
+<?php $form = ActiveForm::begin(['id' => 'profile-form']); ?>
 
 <div class="modal-body">
     <div class="row">
         
         <div class="col-md-12">
-            <?= $form->field($model, 'description')->textarea(['rows' => 8])
-                ->hint(Yii::t('XcoinModule.experience', 'Please enter What I offer to the community')) ?>
+        <?php foreach($model as $mod) :?>
+    
+          <?= $form->field($mod, 'profile_offer')->textarea(['rows' => 3])
+                ->hint(Yii::t('XcoinModule.profile', 'Please enter What I offer to the community')) ?>
+       <?php endforeach;?>
         </div>
+       
        
         
      
@@ -45,7 +45,7 @@ Assets::register($this);
 </div>
 <hr>
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.experience', 'Save')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.profile', 'Save')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 

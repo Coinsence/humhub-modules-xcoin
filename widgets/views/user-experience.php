@@ -52,7 +52,7 @@ use yii\helpers\Html;
             <?php if (Yii::$app->user->id === $user->id) : ?>
                 <div class="editExperience">
                     <?= Html::a(
-                        '<i class="fas fa-pencil-alt"></i>',
+                        '<i class="fa fa-pencil"></i>',
                         ['/xcoin/experience/edit', 'container' => $user, 'id' => $experience->id],
                         [
                             'data-target' => '#globalModal',

@@ -103,3 +103,27 @@ humhub.module('xcoin', function (module, require, $) {
     })
 });
 
+
+$(".marketPlacesSlider").slick({
+    infinite: false,
+    slidesToShow: 1,
+    variableWidth: true,
+    appendArrows: $(".marketPlacePortfolio .arrows"),
+
+});
+
+
+
+
+$(".projectsSlider").slick({
+    infinite: false,
+    slidesToShow: 1,
+    variableWidth: true,
+    appendArrows: $(".projectsPortfolio .arrows"),
+
+});
+$(".slick-prev").append('<i class="fa fa-angle-left"></i>');
+$(".slick-next").append('<i class="fa fa-angle-right"></i>');
+//sliders.js
+
+
