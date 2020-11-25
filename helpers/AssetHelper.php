@@ -86,11 +86,11 @@ class AssetHelper
                 return true;
             }
 
-//            $permissionManager = new ContentContainerPermissionManager(['subject' => $user, 'contentContainer' => $container]);
-//
-//            if ($permissionManager->can(CreatePublicContent::class)){
-//                return true;
-//            }
+            $permissionManager = new ContentContainerPermissionManager(['subject' => $user, 'contentContainer' => $container]);
+
+            if ($permissionManager->can(CreatePublicContent::class)){
+                return true;
+            }
         }
 
         return false;
