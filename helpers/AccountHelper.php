@@ -73,7 +73,8 @@ class AccountHelper
         } elseif ($container instanceof User) {
             $query = Account::find()
                 ->andWhere(['user_id' => $container->id])
-                ->andWhere(['not in', 'account_type', [Account::TYPE_ISSUE, Account::TYPE_TASK]]);
+                ->andWhere(['not in', 'account_type', [Account::TYPE_ISSUE, Account::TYPE_TASK]])
+                ->andWhere(['archived' => 0]);
 
             if ($asset) {
                 $query
