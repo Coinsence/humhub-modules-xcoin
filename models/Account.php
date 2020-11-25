@@ -281,18 +281,14 @@ class Account extends ActiveRecord
         ]);
 
         // send all coins to default account
-        foreach (
-            Transaction::find()
-                ->where(['to_account_id' => $this->id])->all()
-            as $transaction
-        ) {
+        foreach ($this->getAssets() as $asset) {
             $transferTransaction = new Transaction();
 
-            $transferTransaction->asset_id = $transaction->asset_id;
+            $transferTransaction->asset_id = $asset->id;
             $transferTransaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
-            $transferTransaction->amount = $transaction->amount;
+            $transferTransaction->amount = $this->getAssetBalance($asset);
             $transferTransaction->comment = "Disabling Account";
-            $transferTransaction->from_account_id = $transaction->to_account_id;
+            $transferTransaction->from_account_id = $this->id;
             $transferTransaction->to_account_id = $defaultAccount->id;
 
             $transferTransaction->save();
