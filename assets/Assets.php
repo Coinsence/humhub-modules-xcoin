@@ -21,9 +21,7 @@ class Assets extends AssetBundle
 
     public $css = [
         'css/xcoin.css',
-        'css/user.css',
-        'css/bootstrap.min.css',
-       
+        'css/user.css',       
         'css/slick.css',
         'css/slick-theme.css',
        
