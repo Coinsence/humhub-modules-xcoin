@@ -21,7 +21,7 @@ use yii\helpers\Html;
 
 <?= Html::beginTag('div') ?>
 
-<div class="row experience" style="display: flex;align-items: baseline;position: relative;">
+<div class="row experience" style="align-items: baseline;position: relative;">
    
         <h2><?= Yii::t('XcoinModule.experience', 'Experience') ?></h2>
     

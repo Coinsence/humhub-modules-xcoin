@@ -56,7 +56,7 @@ Select2BootstrapAsset::register($this);
             <div class="projectCard createNewProject">
                 <a class="add-project" href="<?=Url::to(['/xcoin/funding-overview/new'])?>" data-target="#globalModal">
                     <span class="addProjectCross">
-                        <i class="fas fa-plus"></i>
+                        <i class="fa fa-plus"></i>
                     </span>
                     <span class="addProjectText"><?=Yii::t('XcoinModule.funding', 'Create Your Project!')?></span>
                 </a>

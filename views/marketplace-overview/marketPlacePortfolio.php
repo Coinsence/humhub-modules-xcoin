@@ -54,7 +54,7 @@ Select2BootstrapAsset::register($this);
                 <a class="add-project" href="<?= Url::to(['/xcoin/marketplace-overview/new']) ?>"
                     data-target="#globalModal">
                     <span class="addMarketPlaceCross">
-                        <i class="fas fa-plus"></i>
+                        <i class="fa fa-plus"></i>
                     </span>
                     <span
                         class="addMarketPlaceText"><?= Yii::t('XcoinModule.marketplace', 'Sell Your Product!') ?></span>

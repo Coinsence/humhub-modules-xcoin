@@ -203,17 +203,17 @@ body {
     margin-right: 20%
 }
 
-.statistics .counter {
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
+.statistics .count {
+    font-style: normal !important;
+    font-weight: bold !important;
+    font-size: 18px !important;
     line-height: 16px;
-    color: #1E1E1E;
+    color: #1E1E1E !important;
     display: block;
     text-align: center;
 }
 
-.statistics .category {
+.statistics .title {
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
@@ -254,7 +254,7 @@ body {
 }
 
 .userInfo .contact button:not(.connect) {
-    background: white;
+    background: white !important;
 }
 
 .userInfo .contact .connect,.userInfo .contact .disconnect  {

@@ -11,67 +11,69 @@ use yii\helpers\Html;
 /** @var $htmlOptions [] */
 ?>
 
-
-<div class="whatIOffer">
-                
-    <?php if (count($profileOfferNeeds) == 0) : ?>
-    <p class="alert alert-warning col-md-12">   
-    </p>
-    <?php else : ?>
-    <div class="whatWeOffer">
-    <h2>What I offer to the community</h2>
-    <?php if (!Yii::$app->user->isGuest) {
-            echo Html::a(
-                '<i class="fa fa-pencil editPencil"></i>',
-                [
-                    '/xcoin/offer/edit','container' => $user,'id'=>$user->id
-    
-                    
-                ],
-                [
-                    'data-target' => '#globalModal',
-                    'class' => 'edit-btn'
-                
-                ]
-            );
-            }?>
-    <p>
-        <?php foreach ($profileOfferNeeds as $profileOfferNeed) : ?>
-
-            <?= Html::encode($profileOfferNeed->profile_offer) ?>
-            
-        <?php endforeach; ?>
-        
-    </p>
-    </div>
-    
+<?php if (count($profileOfferNeeds) == 0) : ?>
    
-    <div class="whatWeNeed">
-    <h2>What I need from the community</h2>
-    <?php if (!Yii::$app->user->isGuest) {
-            echo Html::a(
-                '<i class="fa fa-pencil editPencil"></i>',
-                [
-                    '/xcoin/need/edit','container' => $user
+<?php else : ?>
+    <div class="whatIOffer">
                     
-                ],
-                [
-                    'data-target' => '#globalModal',
-                    'class' => 'edit-btn'
-                
-                ]
-            );
-        }?>
-    <p>
-        <?php foreach ($profileOfferNeeds as $profileOfferNeed) : ?>
+    
+    
+        
+        <div class="whatWeOffer">
+        <h2>What I offer to the community</h2>
+        <?php if (!Yii::$app->user->isGuest) {
+                echo Html::a(
+                    '<i class="fa fa-pencil editPencil"></i>',
+                    [
+                        '/xcoin/offer/edit','container' => $user,'id'=>$user->id
+        
+                        
+                    ],
+                    [
+                        'data-target' => '#globalModal',
+                        'class' => 'edit-btn'
+                    
+                    ]
+                );
+                }?>
+        <p>
+            <?php foreach ($profileOfferNeeds as $profileOfferNeed) : ?>
 
-            <?= Html::encode($profileOfferNeed->profile_need) ?>
-           
-        <?php endforeach; ?>
-    </p>
+                <?= Html::encode($profileOfferNeed->profile_offer) ?>
+                
+            <?php endforeach; ?>
+            
+        </p>
+        </div>
+        
+    
+        <div class="whatWeNeed">
+        <h2>What I need from the community</h2>
+        <?php if (!Yii::$app->user->isGuest) {
+                echo Html::a(
+                    '<i class="fa fa-pencil editPencil"></i>',
+                    [
+                        '/xcoin/need/edit','container' => $user
+                        
+                    ],
+                    [
+                        'data-target' => '#globalModal',
+                        'class' => 'edit-btn'
+                    
+                    ]
+                );
+            }?>
+        <p>
+            <?php foreach ($profileOfferNeeds as $profileOfferNeed) : ?>
+
+                <?= Html::encode($profileOfferNeed->profile_need) ?>
+            
+            <?php endforeach; ?>
+        </p>
+        </div>
+    
     </div>
-    <?php endif; ?>
-</div>
+<?php endif; ?>
 
     
    
