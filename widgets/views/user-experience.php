@@ -43,8 +43,8 @@ use yii\helpers\Html;
           <?= Yii::t('XcoinModule.experience', 'No experiences found.') ?>
       </p>
     <?php endif; ?>
+    <ul class="listExperience">
     <?php foreach ($experiences as $experience) : ?>
-    <ul>
         <li>
           <h3 class="position"> <?= Html::encode($experience->position) ?></h3>
           <h3 class="companyName"><?= Html::encode($experience->employer) ?></h3>
@@ -82,8 +82,8 @@ use yii\helpers\Html;
         
         <p class="moreDetails"><?= Html::encode($experience->description) ?></p>
       </li>
+      
+      <?php endforeach; ?>
     </ul>
-
-<?php endforeach; ?>
 </div>
 <?= Html::endTag('div') ?>

@@ -122,7 +122,7 @@ body {
 
 .userInfo .detailInfo {
     text-align: center;
-    margin-top: 30px;
+   
 }
 
 .userInfo .socialLinks {
@@ -170,7 +170,7 @@ body {
 }
 
 .userInfo .bio {
-    margin-top: 34px;
+    margin-top: 9px !important;
     margin: 50px auto;
     padding: 0 7%;
 }
@@ -506,6 +506,7 @@ body {
     font-weight: 600;
     font-size: 14px;
     margin-bottom: 6px;
+    margin-top: 0;
 }
 
 .experience .position {
@@ -522,7 +523,13 @@ body {
     font-size: 14px;
     line-height: 19px;
     color: #B9B9B9;
-    margin-bottom: 15px
+    margin-bottom: 0;
+    margin-top: 0;
+
+}
+.listExperience li {
+    margin-top: 20px;
+    position: relative;
 }
 
 .experience .moreDetails {
@@ -1232,7 +1239,7 @@ margin-bottom: 20px;
 }
 
 .userCoins .coinsBody {
-    margin-top: 40px;
+    margin-top: 10px;
 }
 
 .userCoins .coinsBody .coin {

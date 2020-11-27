@@ -19,7 +19,7 @@ Select2BootstrapAsset::register($this);
     <div class="form-group">
         <label class="control-label"><?= Yii::t('XcoinModule.transaction', 'Sender account') ?></label>
         <div class="form-control" style="padding-top:4px;">
-            <?php if ($fromAccount->space !== null): ?>
+            <?php if ($fromAccount->space !== null):echo $fromAccount->space; ?>
                 <?= SpaceImage::widget(['space' => $fromAccount->space, 'width' => 24]); ?>
             <?php endif; ?>
             <?php if ($fromAccount->user !== null): ?>

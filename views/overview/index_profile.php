@@ -19,7 +19,7 @@ Assets::register($this);
         <?php endif; ?>
     </div>
 
-    <div class="panel-body">
+    <div class="panel-body"> 
         <?= AccountsGridView::widget(['contentContainer' => $this->context->contentContainer]) ?>
     </div>
 </div>

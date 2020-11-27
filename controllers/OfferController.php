@@ -30,7 +30,6 @@ class OfferController extends ContentContainerController
             ->from('profile_offer_need')
             ->where(['user_id' => $id])
             ->all();
-          print_r($row);
           $model=ProfileOfferNeed::find(['user_id'=>$id])->all();
         } else {
             $model = new ProfileOfferNeed();

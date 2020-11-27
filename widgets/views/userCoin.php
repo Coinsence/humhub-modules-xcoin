@@ -10,12 +10,13 @@ use yii\helpers\Url;
 use humhub\modules\xcoin\widgets\AssetAmount;
 use humhub\modules\xcoin\widgets\SidebarUser as MostActiveUsers;
 use humhub\modules\xcoin\assets\Assets;
-
 use humhub\modules\xcoin\helpers\AccountHelper;
 
 Assets::register($this);
-?>
 
+use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\modules\user\widgets\Image as UserImage;
+?>
 
 
 <div class="userCoins">
@@ -24,64 +25,20 @@ Assets::register($this);
         <a href="" class="accountDetail">Account Details</a>
     </div>
     <div class="coinsBody">
-
-        <div class="coin">
-        <div class="panel-body">
-    </div>
-            <img src="/themes/Coinsence/img/coinsenceToken.jpg" class="coinImage" alt="" />
-            <span class="amountCoin">500</span>
-        </div>
-        <div class="coin">
-            <img src="/themes/Coinsence/img/coinsenceToken.jpg" class="coinImage" alt="" />
-            <span class="amountCoin">500</span>
-        </div>
-        <div class="coin">
-            <img src="/themes/Coinsence/img/coinsenceToken.jpg" class="coinImage" alt="" />
-            <span class="amountCoin">500</span>
-        </div>
-        <div class="coin">
-            <img src="/themes/Coinsence/img/coinsenceToken.jpg" class="coinImage" alt="" />
-            <span class="amountCoin">500</span>
-        </div>
-    </div>
-</div>
-<div class="ongoingprojects">
-    <h2>Ongoing Projects you might like</h2>
-    <div class="ongoingproject">
-        <img src="/themes/Coinsence/img/project5.jpg" alt="" />
-        <p>Coinsence Tunisia Community Building</p>
-    </div>
-    <div class="ongoingproject">
-        <img src="/themes/Coinsence/img/project5.jpg" alt="" />
-        <p>Vernissage de l'exposition LES ARTISTES de LA MÉDINA</p>
-    </div>
-    <div class="ongoingproject">
-        <img src="/themes/Coinsence/img/project5.jpg" alt="" />
-        <p>
-            La présentation du dernier essai de Mr HAKIM BEN HAMOUDA (ancien
-            ministre de l'économie et des
-        </p>
-    </div>
-</div>
-<div class="offersMayLike">
-    <h2>Offers you might like</h2>
-    <div class="offerMayLike">
-        <img src="/themes/Coinsence/img/project4.jpg" alt="" />
-        <p>Learn everything about photography in this 2 days course</p>
-    </div>
-    <div class="offerMayLike">
-        <img src="/themes/Coinsence/img/project4.jpg" alt="" />
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </div>
-    <div class="offerMayLike">
-        <img src="/themes/Coinsence/img/project4.jpg" alt="" />
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Sagittis duis maecenas facilisi enim justo.
-        </p>
+        <?php foreach($list as $lis) : ?>
+           <div class="coin">
+         <a class="tt"  title="" 
+         data-toggle="tooltip" data-placement="top" 
+         data-original-title="<?= $lis['name']?>"  style="border-radius: 50%;margin-right: 2px; background-color:<?=$lis['color']?>;">        
+        
+           <?php echo substr($lis['name'], 0, 1);?>
+        
+        </a>
+            <span class="amountCoin"><?=$lis['sum(xcoin_transaction.amount)'] ?></span>
+        </div>   
+        <?php endforeach;?>
     </div>
 </div>
 
-<?=MostActiveUsers::widget();?>
-<?=AssetAmount::widget();?>
-<?php 
+
+ 
