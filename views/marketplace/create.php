@@ -48,6 +48,26 @@ $upload = Upload::forModel($model, $model->coverFile);
             ?>
         </div>
         <div class="col-md-12">
+            <?=
+            $form->field($model, 'action_name')
+                ->textInput()
+                ->hint(Yii::t('XcoinModule.marketplace', 'Please enter product call to action button name, default is "Buy Product"'))
+            ?>
+        </div>
+        <div class="col-md-12">
+            <?=
+            $form->field($model, 'is_link_required')->widget(Select2::class, [
+                'data' => [
+                    0 => Yii::t('XcoinModule.marketplace', 'Optional'),
+                    1 => Yii::t('XcoinModule.marketplace', 'Required')
+                ],
+                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.marketplace', 'Select product call to action link option') . ' - '],
+                'theme' => Select2::THEME_BOOTSTRAP,
+                'hideSearch' => true,
+            ]);
+            ?>
+        </div>
+        <div class="col-md-12">
             <label class="control-label"><?= Yii::t('XcoinModule.marketplace', 'Marketplace Image') ?></label><br>
             <div class="col-md-2">
                 <?= $upload->button([

@@ -279,8 +279,8 @@ Select2BootstrapAsset::register($this);
                                         </div>
                                     </div>
                                     <div class="panel-body">
-                                        <h4 class="funding-title">
-                                            <?= Html::encode($product->name); ?>
+                                        <h4 class="funding-title" rel="tooltip" title="<?= str_replace('"', '&quot;',$product->name) ?>">
+                                            <?= Html::encode($product->shortenName()); ?>
                                             <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
                                                 <div style="color: orange; display: inline">
                                                     <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.product', 'Under review') ?>"></i>

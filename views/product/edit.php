@@ -115,6 +115,12 @@ $upload = Upload::withName();
                 ]
             ])->hint(Yii::t('XcoinModule.product', 'Please choose the payment type for your product')); ?>
         </div>
+        <?php if ($model->marketplace->isLinkRequired()) : ?>
+            <div class="col-md-12">
+                <?= $form->field($model, 'link')->textInput()
+                    ->hint(Yii::t('XcoinModule.product', 'Please enter your product call to action link')) ?>
+            </div>
+        <?php endif; ?>
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-2">

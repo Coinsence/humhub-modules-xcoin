@@ -29,6 +29,7 @@ $upload = Upload::withName();
 <?= $form->field($model, 'payment_type')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'product_type')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'link')->hiddenInput()->label(false) ?>
 
 <?php if ($model->categories_names): ?>
     <?= $form->field($model, 'categories_names')->hiddenInput(['value' => implode(",", $model->categories_names)])->label(false) ?>
