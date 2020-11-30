@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  
 
   $(".projectsSlider").slick({
     infinite: false,
@@ -20,14 +19,11 @@ $(document).ready(function () {
   $(".slick-prev").append('<i class="fas fa-angle-left"></i>');
   $(".slick-next").append('<i class="fas fa-angle-right"></i>');
 
-
-
 });
 
 // window.addEventListener("hashchange", function () {
 
 // }, false);
-
 
 
 function locationHashChanged() {
@@ -64,6 +60,5 @@ window.addEventListener('hashchange', locationHashChanged);
 //       slideIndex--;
 //     }
 //   });
-
 
 $('.badges span a:empty').parent().remove()

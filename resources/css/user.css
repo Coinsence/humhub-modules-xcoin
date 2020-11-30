@@ -84,7 +84,6 @@ body {
     width: 100%;
     object-fit: cover;
     box-sizing: border-box;
-    border-radius: 4px;
 }
 
 .userInfo .topInfo {
@@ -110,7 +109,12 @@ body {
 }
 
 .userInfo .profilePicture {
-    text-align: center
+    text-align: center;
+}
+
+.userInfo .profilePicture > a {
+    position: relative;
+    z-index: 3;
 }
 
 .userInfo .profilePicture img {
@@ -364,11 +368,6 @@ body {
 }
 
 @media (max-width:767px) {
-    #profile-image-upload-buttons{
-        left: 110px !important;
-        top: 65px !important;
-        transform: none !important;
-    }
     .userInfo .profilePicture img{
         margin-left: 20px;
     }
@@ -1435,10 +1434,26 @@ margin-bottom: 20px;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(40px, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 5;
 }
-#user-profile-image:hover ~ #profile-image-upload-buttons,#profile-image-upload-buttons:hover{
+#profilefileupload:hover ~ #profile-image-upload-buttons,#profile-image-upload-buttons:hover{
 opacity: 1 !important;
+}
+#profilefileupload {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    opacity: 0;
+    width: 113px;
+    height: 100%;
+    transform: translateX(-50%);
+    z-index: 4;
+}
+#profilefileupload input {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
 }
 .profilePicture{
     margin-top: -95px;
@@ -1448,15 +1463,39 @@ opacity: 1 !important;
 }
 .userInfo .image-upload-container{
     height: 226px !important;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     background: linear-gradient(0deg, #9B9B9B, #9B9B9B), #FFFFFF;
+}
+#banner-image-upload-buttons {
+    z-index: 2;
+}
+.banner-upload-placeholder {
+    z-index: 1;
 }
 #bannerfileupload:hover{
     opacity: 1 !important;
 }
+#bannerfileupload:hover::before {
+    content: '';
+    position: absolute;
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    opacity: .35;
+}
 #bannerfileupload{
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
 }
 #bannerfileupload input{
     top: 0;
@@ -1464,6 +1503,7 @@ opacity: 1 !important;
     left: 0;
     width: 100%;
     cursor: pointer;
+    z-index: 2;
 }
 #bannerfileupload >div{
     text-align: center;
@@ -1487,6 +1527,18 @@ font-size: 14px;
 line-height: 19px;
 text-align: center;
 color: #FFFFFF;
+}
+@media screen and (max-width: 767px) {
+    #profilefileupload {
+        left: 0;
+        width: 133px;
+        transform: none;
+    }
+    #profile-image-upload-buttons{
+        left: 30px;
+        top: 65px;
+        transform: none;
+    }
 }
 .contact .editProfile{
     /* width: 152px; */

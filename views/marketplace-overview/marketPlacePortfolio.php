@@ -138,16 +138,3 @@ Select2BootstrapAsset::register($this);
         </div>
     </div>
 </div>
-<script>
-$(".marketPlacesSlider").slick({
-    infinite: false,
-    slidesToShow: 1,
-    variableWidth: true,
-    appendArrows: $(".marketPlacePortfolio .arrows"),
-
-});
-
-$(".slick-prev").append('<i class="fas fa-angle-left"></i>');
-$(".slick-next").append('<i class="fas fa-angle-right"></i>');
-</script>
-<script src="themes/Coinsence/js/sliders.js"></script>
