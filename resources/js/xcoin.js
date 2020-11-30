@@ -127,3 +127,19 @@ $(".slick-next").append('<i class="fa fa-angle-right"></i>');
 //sliders.js
 
 
+// datePickerPlaceholder
+
+
+
+
+function start() {
+
+    setTimeout(function() {
+        $('#experience-start_date').attr("placeholder",'YYYY-MM')
+        $('#experience-end_date').attr("placeholder",'YYYY-MM')
+      start();
+    }, 1000);
+}
+
+// Begins
+start();
