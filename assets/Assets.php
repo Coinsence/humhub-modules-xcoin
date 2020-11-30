@@ -31,7 +31,7 @@ class Assets extends AssetBundle
         'slick/slick.js',
         'js/xcoin.js',
         'js/sliders.js',
-        'js/jquery-3.5.1.min.js',
+        'js/Header.js',
 
     ];
 }
