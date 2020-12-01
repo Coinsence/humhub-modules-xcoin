@@ -21,8 +21,8 @@ use yii\web\JsExpression;
 
 Assets::register($this);
 
-$model->start_date = date('Y-m', strtotime($model->start_date));
-$model->end_date = date('Y-m', strtotime($model->end_date));
+$model->start_date = $model->start_date ? date('Y-m', strtotime($model->start_date)): '';
+$model->end_date = $model->end_date ? date('Y-m', strtotime($model->end_date)) : '';
 ?>
 
 <style>
