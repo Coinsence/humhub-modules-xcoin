@@ -21,7 +21,7 @@ class AssetController extends ContentContainerController
 
     public function beforeAction($action)
     {
-        if (!AssetHelper::canManageAssets($this->contentContainer)) {
+        if (!AssetHelper::canManageAssets($this->contentContainer) && Yii::$app->user->isAdmin()) {
             throw new \yii\web\HttpException(401, 'Permission denied!');
         }
 
