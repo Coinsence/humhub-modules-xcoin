@@ -74,9 +74,10 @@ Assets::register($this);
                     'showButtonPanel' => true,
                     'onClose' => new JsExpression("function(dateText, inst) { 
                          $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                         inst.dpDiv.removeClass('hack-to-fix-wrong-position');
                     }"),
                     'beforeShow'=> new JsExpression("function(input, inst) {
-                        $(document).scrollTop(0); // please don't tell me why, I had enough
+                        inst.dpDiv.addClass('hack-to-fix-wrong-position');
                     }")
                 ],
                 'options' => ['class' => 'form-control', 'placeholder' => 'YYYY-MM', 'autocomplete' => "off"]])
@@ -92,9 +93,10 @@ Assets::register($this);
                     'showButtonPanel' => true,
                     'onClose' => new JsExpression("function(dateText, inst) { 
                          $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                         inst.dpDiv.removeClass('hack-to-fix-wrong-position');
                     }"),
                     'beforeShow'=> new JsExpression("function(input, inst) {
-                        $(document).scrollTop(0); // please don't tell me why, I had enough
+                        inst.dpDiv.addClass('hack-to-fix-wrong-position');
                     }")
                 ],
                 'options' => ['class' => 'form-control', 'placeholder' => 'YYYY-MM',  'autocomplete' => "off", 'value' => 'present', 'disabled' => $model->actual_position == 1]])

@@ -1643,3 +1643,6 @@ border: 1px solid #3cbeef !important;
         padding: 13px 24px 13px 0px !important;
     }
 }
+.hack-to-fix-wrong-position {
+    position: absolute !important;
+}
