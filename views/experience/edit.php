@@ -20,6 +20,9 @@ use yii\web\JsExpression;
 /** @var $model Experience */
 
 Assets::register($this);
+
+$model->start_date = date('Y-m', strtotime($model->start_date));
+$model->end_date = date('Y-m', strtotime($model->end_date));
 ?>
 
 <style>
@@ -65,41 +68,11 @@ Assets::register($this);
             <?= $form->field($model, 'actual_position')->checkbox() ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'start_date')->widget(DatePicker::class, [
-                'dateFormat' => 'yyyy-MM',
-                'clientOptions' => [
-                    'yearRange' => "-30:+0",
-                    'changeMonth' => true,
-                    'changeYear' => true,
-                    'showButtonPanel' => true,
-                    'onClose' => new JsExpression("function(dateText, inst) { 
-                         $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-                         inst.dpDiv.removeClass('hack-to-fix-wrong-position');
-                    }"),
-                    'beforeShow'=> new JsExpression("function(input, inst) {
-                        inst.dpDiv.addClass('hack-to-fix-wrong-position');
-                    }")
-                ],
-                'options' => ['class' => 'form-control', 'placeholder' => 'YYYY-MM', 'autocomplete' => "off"]])
+            <?= $form->field($model, 'start_date')->textInput(['placeholder' => 'YYYY-MM'])
                 ->hint(Yii::t('XcoinModule.experience', 'When was this experience started')) ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'end_date')->widget(DatePicker::class, [
-                'dateFormat' => 'yyyy-MM',
-                'clientOptions' => [
-                    'yearRange' => "-30:+0",
-                    'changeMonth' => true,
-                    'changeYear' => true,
-                    'showButtonPanel' => true,
-                    'onClose' => new JsExpression("function(dateText, inst) { 
-                         $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-                         inst.dpDiv.removeClass('hack-to-fix-wrong-position');
-                    }"),
-                    'beforeShow'=> new JsExpression("function(input, inst) {
-                        inst.dpDiv.addClass('hack-to-fix-wrong-position');
-                    }")
-                ],
-                'options' => ['class' => 'form-control', 'placeholder' => 'YYYY-MM',  'autocomplete' => "off", 'value' => 'present', 'disabled' => $model->actual_position == 1]])
+            <?= $form->field($model, 'end_date')->textInput(['placeholder' => 'YYYY-MM', 'disabled' => $model->actual_position == 1])
                 ->hint(Yii::t('XcoinModule.experience', 'When was this experience ended')) ?>
         </div>
     </div>
