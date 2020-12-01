@@ -74,9 +74,12 @@ Assets::register($this);
                     'showButtonPanel' => true,
                     'onClose' => new JsExpression("function(dateText, inst) { 
                          $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                    }"),
+                    'beforeShow'=> new JsExpression("function(input, inst) {
+                        $(document).scrollTop(0); // please don't tell me why, I had enough
                     }")
                 ],
-                'options' => ['class' => 'form-control', 'autocomplete' => "off"]])
+                'options' => ['class' => 'form-control', 'placeholder' => 'YYYY-MM', 'autocomplete' => "off"]])
                 ->hint(Yii::t('XcoinModule.experience', 'When was this experience started')) ?>
         </div>
         <div class="col-md-6">
@@ -89,9 +92,12 @@ Assets::register($this);
                     'showButtonPanel' => true,
                     'onClose' => new JsExpression("function(dateText, inst) { 
                          $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                    }"),
+                    'beforeShow'=> new JsExpression("function(input, inst) {
+                        $(document).scrollTop(0); // please don't tell me why, I had enough
                     }")
                 ],
-                'options' => ['class' => 'form-control', 'autocomplete' => "off", 'value' => 'present', 'disabled' => $model->actual_position == 1]])
+                'options' => ['class' => 'form-control', 'placeholder' => 'YYYY-MM',  'autocomplete' => "off", 'value' => 'present', 'disabled' => $model->actual_position == 1]])
                 ->hint(Yii::t('XcoinModule.experience', 'When was this experience ended')) ?>
         </div>
     </div>

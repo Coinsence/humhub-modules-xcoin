@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-  $(".projectsSlider").slick({
+  $(".projectsSlider:not(.slick-slider)").slick({
     infinite: false,
     slidesToShow: 1,
     variableWidth: true,
@@ -8,7 +8,7 @@ $(document).ready(function () {
 
   });
 
-  $(".marketPlacesSlider").slick({
+  $(".marketPlacesSlider:not(.slick-slider)").slick({
     infinite: false,
     slidesToShow: 1,
     variableWidth: true,
@@ -61,4 +61,4 @@ window.addEventListener('hashchange', locationHashChanged);
 //     }
 //   });
 
-$('.badges span a:empty').parent().remove()
+
