@@ -102,6 +102,9 @@ humhub.module('xcoin', function (module, require, $) {
         }
     });
 
+    // fix datepicker wrong position
+    $.extend($.datepicker,{_checkOffset:function(inst,offset,isFixed){return offset}});
+
     // user profile slicked widgets
     $('.marketPlacesSlider').slick({
         infinite: false,
