@@ -23,6 +23,8 @@ use humhub\modules\xcoin\models\ProductFilter;
 use humhub\modules\xcoin\widgets\MarketplaceImage;
 use yii\db\Expression;
 use yii\web\HttpException;
+use humhub\modules\space\models\Space;
+
 /**
  * Displays the profile header of a user
  *
@@ -67,95 +69,88 @@ class MarketPlacePortfolio extends \yii\base\Widget
      */
     public function run()
     {
-        // test
-        $query = Product::find();
-        $query->andWhere(['xcoin_product.status' => Product::STATUS_AVAILABLE]);
-        $query->andWhere(['IS NOT', 'xcoin_product.id', new Expression('NULL')]);
-        $query->orderBy(['created_at' => SORT_DESC]);
-        $query->andWhere(['review_status' => Product::PRODUCT_REVIEWED]);
-        $query->innerJoin('xcoin_marketplace', 'xcoin_product.marketplace_id = xcoin_marketplace.id');
-        $query->andWhere('xcoin_marketplace.status = 1');
-        $query->andWhere('xcoin_marketplace.stopped = 0');
+    //     // test
+    //     $query = Product::find();
+    //     $query->andWhere(['xcoin_product.status' => Product::STATUS_AVAILABLE]);
+    //     $query->andWhere(['IS NOT', 'xcoin_product.id', new Expression('NULL')]);
+    //     $query->orderBy(['created_at' => SORT_DESC]);
+    //     $query->andWhere(['review_status' => Product::PRODUCT_REVIEWED]);
+    //     $query->innerJoin('xcoin_marketplace', 'xcoin_product.marketplace_id = xcoin_marketplace.id');
+    //     $query->andWhere('xcoin_marketplace.status = 1');
+    //     $query->andWhere('xcoin_marketplace.stopped = 0');
 
-        $model = new ProductFilter();
-        $marketplaceId = null;
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+    //     $model = new ProductFilter();
+    //     $marketplaceId = null;
+    //     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            if ($model->asset_id)
-                $query->andWhere(['xcoin_marketplace.asset_id' => $model->asset_id]);
-            if ($model->categories) {
-                $query->joinWith('categories category');
-                $query->andWhere(['category.id' => $model->categories]);
-            }
+    //         if ($model->asset_id)
+    //             $query->andWhere(['xcoin_marketplace.asset_id' => $model->asset_id]);
+    //         if ($model->categories) {
+    //             $query->joinWith('categories category');
+    //             $query->andWhere(['category.id' => $model->categories]);
+    //         }
 
-            if ($model->country)
-                $query->andWhere(['country' => $model->country]);
-            if ($model->city)
-                $query->andWhere(['like', 'city', $model->city . '%', false]);
-            if ($model->keywords)
-                $query->andWhere(['like', 'xcoin_product.name', '%' . $model->keywords . '%', false]);
-        } else if ($marketplaceId) {
-            $query->andWhere(['marketplace_id' => $marketplaceId]);
-        }
+    //         if ($model->country)
+    //             $query->andWhere(['country' => $model->country]);
+    //         if ($model->city)
+    //             $query->andWhere(['like', 'city', $model->city . '%', false]);
+    //         if ($model->keywords)
+    //             $query->andWhere(['like', 'xcoin_product.name', '%' . $model->keywords . '%', false]);
+    //     } else if ($marketplaceId) {
+    //         $query->andWhere(['marketplace_id' => $marketplaceId]);
+    //     }
 
-        if ($marketplaceId) {
-            $marketplacesList = Marketplace::findAll(['id' => $marketplaceId]);
-        } else {
-            $marketplacesList = Marketplace::findAll(['status' => Marketplace::MARKETPLACE_STATUS_ENABLED, 'stopped' => Marketplace::MARKETPLACE_ACTIVE]);
-        }
+    //     if ($marketplaceId) {
+    //         $marketplacesList = Marketplace::findAll(['id' => $marketplaceId]);
+    //     } else {
+    //         $marketplacesList = Marketplace::findAll(['status' => Marketplace::MARKETPLACE_STATUS_ENABLED, 'stopped' => Marketplace::MARKETPLACE_ACTIVE]);
+    //     }
 
-        $assetsList = [];
-        $countriesList = [];
+    //     $assetsList = [];
+    //     $countriesList = [];
 
-        foreach ($marketplacesList as $marketplace) {
-            $asset = $marketplace->asset;
-            $space = $marketplace->asset->space;
-            $assetsList[$asset->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
-        }
+    //     foreach ($marketplacesList as $marketplace) {
+    //         $asset = $marketplace->asset;
+    //         $space = $marketplace->asset->space;
+    //         $assetsList[$asset->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+    //     }
 
-        $marketplace = Marketplace::findOne(['id' => $marketplaceId]);
-        // test
-        //  
-        if (!Yii::$app->user->isGuest && Yii::$app->useR->id == $this->user->id) {
-            $this->isProfileOwner = true;
-        }
-        // test
-        return $this->render('marketPlacePortfolio', [
-            'selectedMarketplace' => $marketplace,
-            'model' => $model,
-            'assetsList' => $assetsList,
-            'countriesList' => $countriesList,
-            'user' => $this->user,
-        'isProfileOwner' => $this->isProfileOwner,
-            'products' => $query->all(),
-            'marketplacesCarousel' => MarketplaceHelper::getRandomMarketplaces()
-        ]);
+    //     $marketplace = Marketplace::findOne(['id' => $marketplaceId]);
+    //     // test
+    //     //  
+    //     if (!Yii::$app->user->isGuest && Yii::$app->useR->id == $this->user->id) {
+    //         $this->isProfileOwner = true;
+    //     }
+    //     // test
+    //     return $this->render('marketPlacePortfolio', [
+    //         'selectedMarketplace' => $marketplace,
+    //         'model' => $model,
+    //         'assetsList' => $assetsList,
+    //         'countriesList' => $countriesList,
+    //         'user' => $this->user,
+    //     'isProfileOwner' => $this->isProfileOwner,
+    //         'products' => $query->all(),
+    //         'marketplacesCarousel' => MarketplaceHelper::getRandomMarketplaces()
+    //     ]);
         
+    // }
+        if ($this->user instanceof Space) {
+            $products = Product::find()->where(['space_id' => $this->user->id])->all();
+
+            return $this->render('marketPlacePortfolio', [
+                'products' => $products,
+            ]);
+        } else {
+            $products = Product::find()->where([
+                'created_by' => $this->user->id,
+                'product_type' => Product::TYPE_PERSONAL
+            ])->all();
+
+            return $this->render('marketPlacePortfolio', [
+                'products' => $products,
+            ]);
+        }
     }
+
 }
-
-?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

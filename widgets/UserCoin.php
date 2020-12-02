@@ -1,7 +1,7 @@
 <?php
 
 namespace humhub\modules\xcoin\widgets;
-
+use humhub\modules\like\models\Like;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -27,18 +27,20 @@ class UserCoin extends \yii\base\Widget
     public function run()
     {
         $dbCommand = Yii::$app->db->createCommand("
-            select space.name,space.color,sum(xcoin_transaction.amount) from xcoin_transaction
-            left join xcoin_account on xcoin_transaction.to_account_id=xcoin_account.id 
-            left join xcoin_asset on xcoin_asset.id=xcoin_transaction.asset_id 
-            left join space on xcoin_asset.space_id=space.id 
-            where xcoin_account.user_id=". $this->user->id ." GROUP BY space.name");
+        select xcoin_v_account_balance.balance,space.*
+         from xcoin_v_account_balance 
+        left join xcoin_account on xcoin_account.id=xcoin_v_account_balance.account_id left join xcoin_asset on xcoin_asset.id=xcoin_v_account_balance.asset_id 
+        left join space on space.id=xcoin_asset.space_id 
+        where xcoin_account.user_id=". $this->user->id." and xcoin_v_account_balance.balance !=0;");
         $data = $dbCommand->queryAll();//output
         $spaces=[];
+       //$listlike= Like::find()->where(['created_by'=>13])->all();
+       //print_r($listlike);
         foreach($data as $d) {
             $spaceCommAND=Yii::$app->db->createCommand("select * as spaces from space where name=".$d['name']);
             array_push($spaces,$spaceCommAND);
         }
-        return $this->render('userCoin', ['user' => $this->user, 'assets' => $data, 'spaces' => $spaces, 'cssClass' => $this->cssClass]);
+        return $this->render('userCoin', ['user' => $this->user, 'coins' => $data, 'spaces' => $spaces, 'cssClass' => $this->cssClass]);
     }
 }
 

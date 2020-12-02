@@ -649,6 +649,7 @@ body {
     height: 50%;
     border-radius: 4px;
     margin: -1px;
+    border-bottom: solid 2px #8080805e;
 }
 
 .projectCard .projectCardHeader img, .marketPlaceCard .marketPlaceCardHeader img {
@@ -1642,4 +1643,35 @@ border: 1px solid #3cbeef !important;
     .panel-profile .statistics .entry{
         padding: 13px 24px 13px 0px !important;
     }
+}
+
+
+
+
+.userCoins .coinsBody {
+    display: flex;
+    align-items: center;
+}
+.userCoins .coinsBody .myCoinBlock{
+    display: inline-block;
+}
+
+.userCoins .coinsBody .myCoinName {
+    width: 24px;
+    height: 24px;
+    font-size: 10.56px;
+    padding: 4.32px 0;
+    border-radius: 12px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.projectOwner>span
+{
+    display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+transform: translateY(-50%);
 }

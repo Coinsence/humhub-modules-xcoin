@@ -12,19 +12,34 @@ Assets::register($this);
 
 <div class="userCoins <?= $cssClass ?>">
     <div class="coinsHeader">
-        <h2><span>Coins</span><i class="fa fa-question-circle"></i></h2>
+        <h2>
+            <span>Coins</span>
+            <i class="fa fa-question-circle"></i>
+        </h2>
         <a href="<?= $user->createUrl('/xcoin/overview') ?>" class="accountDetail">Account Details</a>
     </div>
     <div class="coinsBody">
-        <?php foreach($assets as $asset) : ?>
+        <?php if($coins==null) :?>
+            <span>No Coins found.<span>
+        <?php endif;?>
+        <?php foreach($coins as $coin) : ?>
            <div class="coin">
-               <a class="tt" title=""
+               <a class="tt myCoinBlock" title=""
                   data-toggle="tooltip" data-placement="top"
-                  data-original-title="<?= $asset['name'] ?>"
-                  style="border-radius: 50%; margin-right: 2px; background-color:<?= $asset['color'] ?>;">
-                   <?= substr($asset['name'], 0, 1) ?>
+                  data-original-title="<?= $coin['name'] ?>"
+                  >
+               <div class="myCoinName" style="background-color:<?= $coin['color'] ?>;">
+                   <?php
+                   $pos=strpos($coin['name'], ' ');
+                   if($pos!=false){
+                       echo substr($coin['name'],0,1).substr($coin['name'],$pos+1,1);
+                   }
+                   
+                   ?>
+               </div>
                </a>
-               <span class="amountCoin"><?=$asset['sum(xcoin_transaction.amount)'] ?></span>
+               <span class="amountCoin">
+                   <?= round($coin['balance'],1)?></span>
            </div>
         <?php endforeach;?>
     </div>
