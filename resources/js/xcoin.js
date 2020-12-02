@@ -8,6 +8,7 @@
 humhub.module('xcoin', function (module, require, $) {
 
     var client = require('client');
+    var event = require('event');
 
     $('body')
         .on('click', '#ether-enable-btn' ,function () {
@@ -105,6 +106,17 @@ humhub.module('xcoin', function (module, require, $) {
     // fix datepicker wrong position
     $.extend($.datepicker,{_checkOffset:function(inst,offset,isFixed){return offset}});
 
+    event.on('humhub:modules:client:pjax:success', function (evt, events, update) {
+        initProfileCarousels();
+    });
+
+    initProfileCarousels();
+
+});
+
+
+function initProfileCarousels() {
+
     // user profile slicked widgets
     $('.marketPlacesSlider').slick({
         infinite: false,
@@ -121,4 +133,4 @@ humhub.module('xcoin', function (module, require, $) {
     $('.slick-prev').append('<i class="fa fa-angle-left"></i>');
     $('.slick-next').append('<i class="fa fa-angle-right"></i>');
 
-});
+}
