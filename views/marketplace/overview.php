@@ -88,7 +88,8 @@ Assets::register($this);
                             <?= Yii::t('XcoinModule.marketplace', 'This marketplace is closed') ?>
                         </div>
                     <?php else: ?>
-                        <?= Html::a(Yii::t('XcoinModule.marketplace', 'Sell Your Product'), [
+                        <?= Html::a(
+                            $marketplace->isTasksMarketplace() ? Yii::t('XcoinModule.marketplace', 'Add your job') : Yii::t('XcoinModule.marketplace', 'Sell Your Product'), [
                             '/xcoin/product/new',
                             'marketplaceId' => $marketplace->id,
                             'container' => $this->context->contentContainer
@@ -97,7 +98,11 @@ Assets::register($this);
                 </div>
                 <?php if ($marketplace->getCategories()->count()) : ?>
                     <!-- product categories start -->
-                    <h6 class="categories"><?= Yii::t('XcoinModule.marketplace', 'Available product categories :') ?></h6>
+                    <?php if ($marketplace->isTasksMarketplace()) : ?>
+                        <h6 class="categories"><?= Yii::t('XcoinModule.marketplace', 'Available jobs categories :') ?></h6>
+                    <?php else : ?>
+                        <h6 class="categories"><?= Yii::t('XcoinModule.marketplace', 'Available product categories :') ?></h6>
+                    <?php endif; ?>
                     <ul>
                         <?php foreach ($marketplace->getCategories()->all() as $category) : ?>
                             <li>
@@ -111,7 +116,11 @@ Assets::register($this);
             </div>
         </div>
         <div class="panel-body">
-            <h3 class="header"><?= Yii::t('XcoinModule.marketplace', 'Suggested Products') ?></h3>
+            <?php if ($marketplace->isTasksMarketplace()) : ?>
+                <h3 class="header"><?= Yii::t('XcoinModule.marketplace', 'Suggested Jobs') ?></h3>
+            <?php else : ?>
+                <h3 class="header"><?= Yii::t('XcoinModule.marketplace', 'Suggested Products') ?></h3>
+            <?php endif; ?>
             <div class="received-funding">
                 <div class="row panels">
                     <?php if (count($products) == 0): ?>
@@ -153,7 +162,7 @@ Assets::register($this);
                                                     'showTooltip' => false,
                                                     'link' => false
                                                 ]); ?>
-                                                <span><?= Yii::t('XcoinModule.product', 'Product by') . " <strong>" . Html::encode($product->getSpace()->one()->name) . "</strong>"; ?></span>
+                                                <span><?= ($marketplace->isTasksMarketplace() ? Yii::t('XcoinModule.product', 'Job by') : Yii::t('XcoinModule.product', 'Product by')) . " <strong>" . Html::encode($product->getSpace()->one()->name) . "</strong>"; ?></span>
                                             <?php else : ?>
                                                 <?= Image::widget([
                                                     'user' => $product->getCreatedBy()->one(),
@@ -161,7 +170,7 @@ Assets::register($this);
                                                     'showTooltip' => false,
                                                     'link' => false
                                                 ]); ?>
-                                                <span><?= Yii::t('XcoinModule.product', 'Product by') . " <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname . " " . $product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?></span>
+                                                <span><?= ($marketplace->isTasksMarketplace() ? Yii::t('XcoinModule.product', 'Job by') : Yii::t('XcoinModule.product', 'Product by')) . " <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname . " " . $product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?></span>
                                             <?php endif; ?>
                                             <!-- owner image end -->
                                         </div>

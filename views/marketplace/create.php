@@ -80,6 +80,9 @@ $upload = Upload::forModel($model, $model->coverFile);
             ?>
         </div>
         <div class="col-md-12">
+            <?= $form->field($model, 'is_tasks_marketplace')->checkbox() ?>
+        </div>
+        <div class="col-md-12">
             <label class="control-label"><?= Yii::t('XcoinModule.marketplace', 'Marketplace Image') ?></label><br>
             <div class="col-md-2">
                 <?= $upload->button([
