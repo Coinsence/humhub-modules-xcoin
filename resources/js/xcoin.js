@@ -100,46 +100,25 @@ humhub.module('xcoin', function (module, require, $) {
         } else {
             $end_date_input.prop('disabled', false);
         }
-    })
+    });
+
+    // fix datepicker wrong position
+    $.extend($.datepicker,{_checkOffset:function(inst,offset,isFixed){return offset}});
+
+    // user profile slicked widgets
+    $('.marketPlacesSlider').slick({
+        infinite: false,
+        slidesToShow: 1,
+        variableWidth: true,
+        appendArrows: $('.marketPlacePortfolio .arrows'),
+    });
+    $('.projectsSlider').slick({
+        infinite: false,
+        slidesToShow: 1,
+        variableWidth: true,
+        appendArrows: $('.projectsPortfolio .arrows'),
+    });
+    $('.slick-prev').append('<i class="fa fa-angle-left"></i>');
+    $('.slick-next').append('<i class="fa fa-angle-right"></i>');
+
 });
-
-
-$(".marketPlacesSlider").slick({
-    infinite: false,
-    slidesToShow: 1,
-    variableWidth: true,
-    appendArrows: $(".marketPlacePortfolio .arrows"),
-
-});
-
-
-
-
-$(".projectsSlider").slick({
-    infinite: false,
-    slidesToShow: 1,
-    variableWidth: true,
-    appendArrows: $(".projectsPortfolio .arrows"),
-
-});
-$(".slick-prev").append('<i class="fa fa-angle-left"></i>');
-$(".slick-next").append('<i class="fa fa-angle-right"></i>');
-//sliders.js
-
-
-// datePickerPlaceholder
-
-
-
-
-function start() {
-
-    setTimeout(function() {
-        $('#experience-start_date').attr("placeholder",'YYYY-MM')
-        $('#experience-end_date').attr("placeholder",'YYYY-MM')
-      start();
-    }, 1000);
-}
-
-// Begins
-start();
