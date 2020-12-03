@@ -20,6 +20,10 @@ class UserCoin extends \yii\base\Widget
     public $user;
 
     /**
+     * @var \humhub\modules\space\models\Space the Space which this header belongs to
+     */
+    public $space;
+    /**
      * @var string css classes
      */
     public $cssClass;
@@ -37,10 +41,16 @@ class UserCoin extends \yii\base\Widget
        //$listlike= Like::find()->where(['created_by'=>13])->all();
        //print_r($listlike);
         foreach($data as $d) {
-            $spaceCommAND=Yii::$app->db->createCommand("select * as spaces from space where name=".$d['name']);
-            array_push($spaces,$spaceCommAND);
+            $spaceCommAND=Yii::$app->db->createCommand("select *  from space where url='".$d['url']."';");
+            $x=$spaceCommAND->queryAll();
+            array_push($spaces,$x);
         }
-        return $this->render('userCoin', ['user' => $this->user, 'coins' => $data, 'spaces' => $spaces, 'cssClass' => $this->cssClass]);
+        return $this->render('userCoin', [
+            'user' => $this->user, 
+            'coins' => $data,
+            'spaces' => $spaces,
+            'cssClass' => $this->cssClass
+            ]);
     }
 }
 

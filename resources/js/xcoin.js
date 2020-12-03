@@ -131,15 +131,10 @@ $(".slick-next").append('<i class="fa fa-angle-right"></i>');
 
 
 
-
-function start() {
-
-    setTimeout(function() {
-        $('#experience-start_date').attr("placeholder",'YYYY-MM')
-        $('#experience-end_date').attr("placeholder",'YYYY-MM')
-      start();
-    }, 1000);
+function imageError(e,color){
+    e.style.backgroundColor=color;
+    e.classList.add('myCoinName')
+	// e.setAttribute("c","error.png");
+	e.removeAttribute("onError");
+    e.removeAttribute("onclick");
 }
-
-// Begins
-start();

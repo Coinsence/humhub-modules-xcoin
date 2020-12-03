@@ -27,23 +27,20 @@ Assets::register($this);
         display: none;
     }
 </style>
-
+<!-- ->hint(Yii::t('XcoinModule.experience', 'Please enter the position')) ?>-->
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.experience', 'Provide experience details'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'experience-form']); ?>
 
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'position')->textInput()
-                ->hint(Yii::t('XcoinModule.experience', 'Please enter the position')) ?>
+            <?= $form->field($model, 'position')->textInput()?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'employer')->textInput()
-                ->hint(Yii::t('XcoinModule.experience', 'Please enter the employer')) ?>
+            <?= $form->field($model, 'employer')->textInput()?>
         </div>
         <div class="col-md-12">
-            <?= $form->field($model, 'description')->textarea(['rows' => 8])
-                ->hint(Yii::t('XcoinModule.experience', 'Please enter a description for this experience')) ?>
+            <?= $form->field($model, 'description')->textarea(['rows' => 8])?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'country')->widget(Select2::class, [
@@ -55,11 +52,11 @@ Assets::register($this);
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ],
-            ])->hint(Yii::t('XcoinModule.experience', 'Please enter the country')) ?>
+            ])?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'city')->textInput()
-                ->hint(Yii::t('XcoinModule.experience', 'Please enter the city')) ?>
+                ?>
         </div>
         <div class="col-md-12">
             <?= $form->field($model, 'actual_position')->checkbox() ?>
@@ -77,7 +74,7 @@ Assets::register($this);
                     }")
                 ],
                 'options' => ['class' => 'form-control', 'autocomplete' => "off"]])
-                ->hint(Yii::t('XcoinModule.experience', 'When was this experience started')) ?>
+                ?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'end_date')->widget(DatePicker::class, [
@@ -92,7 +89,7 @@ Assets::register($this);
                     }")
                 ],
                 'options' => ['class' => 'form-control', 'autocomplete' => "off", 'value' => 'present', 'disabled' => $model->actual_position == 1]])
-                ->hint(Yii::t('XcoinModule.experience', 'When was this experience ended')) ?>
+                 ?>
         </div>
     </div>
 </div>

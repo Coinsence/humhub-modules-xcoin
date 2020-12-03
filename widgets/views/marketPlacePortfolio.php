@@ -58,7 +58,7 @@ Assets::register($this);
         <div class="headerMarketPlace">
             <strong><?= Yii::t('XcoinModule.product', 'Marketplace Portfolio ') ?></strong>            <div class="arrows"></div>
         </div>
-        <div class="panels marketPlacesSlider">
+        <div class="marketPlacesSlider">
             <div class="marketPlaceCard createNewMarketPlace">
                 <a class="add-project " href="<?= Url::to(['/xcoin/marketplace-overview/new']) ?>"
                 data-target="#globalModal">
