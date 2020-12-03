@@ -8,6 +8,7 @@
 humhub.module('xcoin', function (module, require, $) {
 
     var client = require('client');
+    var event = require('event');
 
     $('body')
         .on('click', '#ether-enable-btn' ,function () {
@@ -100,35 +101,18 @@ humhub.module('xcoin', function (module, require, $) {
         } else {
             $end_date_input.prop('disabled', false);
         }
-    })
-});
+    });
 
+    // fix datepicker wrong position
+    $.extend($.datepicker,{_checkOffset:function(inst,offset,isFixed){return offset}});
 
-$(".marketPlacesSlider").slick({
-    infinite: false,
-    slidesToShow: 1,
-    variableWidth: true,
-    appendArrows: $(".marketPlacePortfolio .arrows"),
+    event.on('humhub:modules:client:pjax:success', function (evt, events, update) {
+        initProfileCarousels();
+    });
 
-});
-
-
-
-
-$(".projectsSlider").slick({
-    infinite: false,
-    slidesToShow: 1,
-    variableWidth: true,
-    appendArrows: $(".projectsPortfolio .arrows"),
+    initProfileCarousels();
 
 });
-$(".slick-prev").append('<i class="fa fa-angle-left"></i>');
-$(".slick-next").append('<i class="fa fa-angle-right"></i>');
-//sliders.js
-
-
-// datePickerPlaceholder
-
 
 
 function imageError(e,color){
@@ -137,4 +121,23 @@ function imageError(e,color){
 	// e.setAttribute("c","error.png");
 	e.removeAttribute("onError");
     e.removeAttribute("onclick");
+}
+function initProfileCarousels() {
+
+    // user profile slicked widgets
+    $('.marketPlacesSlider').slick({
+        infinite: false,
+        slidesToShow: 1,
+        variableWidth: true,
+        appendArrows: $('.marketPlacePortfolio .arrows'),
+    });
+    $('.projectsSlider').slick({
+        infinite: false,
+        slidesToShow: 1,
+        variableWidth: true,
+        appendArrows: $('.projectsPortfolio .arrows'),
+    });
+    $('.slick-prev').append('<i class="fa fa-angle-left"></i>');
+    $('.slick-next').append('<i class="fa fa-angle-right"></i>');
+
 }
