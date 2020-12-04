@@ -34,20 +34,8 @@ Select2BootstrapAsset::register($this);
 
 <div class="content">
     <div class="projectsPortfolio">
-        <!-- <div class="row header">
-                <?php /*if ($selectedChallenge):*/ ?>
-                <div class="col-md-12">
-                    <a class="challenge-url"
-                        href="<?/*=$selectedChallenge->space->createUrl('/xcoin/challenge/overview', ['challengeId' => $selectedChallenge->id])*/?>"><?/*=$selectedChallenge->title*/?></a>
-                </div>
-                <?/*php endif;*/?>
-                <div class="col-md-6">
-                    <span
-                        class="num-projects"><?/*=count($fundings) . ' ' . Yii::t('XcoinModule.funding', 'Project(s)')*/?></span>
-                </div>
-            </div> -->
         <div class="headerProjects">
-            <h2>Projects Portfolio</h2>
+            <h2><?= Yii::t('XcoinModule.product', 'Projects Portfolio') ?></h2>
             <div class="arrows"></div>
         </div>
         <div class="panels projectsSlider">
@@ -65,12 +53,12 @@ Select2BootstrapAsset::register($this);
             <?php foreach ($fundings as $funding): ?>
             <?php if ($funding->getRemainingDays() > 0): ?>
             <?php
-$space = $funding->getSpace()->one();
-$cover = $funding->getCover();
-?>
+                $space = $funding->getSpace()->one();
+                $cover = $funding->getCover();
+            ?>
             <a href="<?=$space->createUrl('/xcoin/funding/overview', [
-    'fundingId' => $funding->id,
-]);?>">
+                'fundingId' => $funding->id,
+            ]);?>">
                 <!-- <div class="col-sm-6 col-md-4 col-lg-3"> -->
                 <!-- begin test -->
                 <div class="projectCard">
@@ -86,21 +74,19 @@ $cover = $funding->getCover();
                             style="background-image: url('<?=Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png'?>')">
                         </div>
                         <?=Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
-    'height' => '140',
-])?>
+                            'height' => '140',
+                        ])?>
                         <?php endif?>
                         <!-- campaign cover end -->
-
-
                     </div>
                     <div class="projectCardBody">
                         <!-- space image start -->
                         <?=SpaceImage::widget([
-    'space' => $space,
-    'width' => 34,
-    'showTooltip' => true,
-    'link' => false,
-]);?>
+                        'space' => $space,
+                        'width' => 34,
+                        'showTooltip' => true,
+                        'link' => false,
+                    ]);?>
                         <!-- space image end -->
                         <!-- <img class="projectImage" src="./img/projectLogo.png" alt="" /> -->
                         <!-- Yii::t('XcoinModule.funding', 'Project by') -->
@@ -127,13 +113,11 @@ $cover = $funding->getCover();
                             <?=Html::encode($funding->shortenDescription());?>
                         </p>
                         <div class="accumulation">
-                            <!-- <span class="accumulationProgression">
-        <span class="accumulated"></span>
-      </span> -->
+                     
                             <!-- campaign raised start -->
                             <?php echo Progress::widget([
-    'percent' => $funding->getRaisedPercentage(),
-]); ?>
+                                'percent' => $funding->getRaisedPercentage(),
+                            ]); ?>
 
                             <span class="accumulatedTokens"><?=$funding->getRaisedAmount()?></span>
                             <span class="accumulatedPercentage">(<?=$funding->getRaisedPercentage()?>%)</span>
@@ -158,18 +142,12 @@ $cover = $funding->getCover();
                             <?=Yii::t('XcoinModule.funding', 'Requesting:')?> </span>
                         <b class="amount"><?=$funding->getRequestedAmount()?></b>
                         <?=SpaceImage::widget([
-    'space' => $funding->getChallenge()->one()->asset->space,
-    'width' => 16,
-    'showTooltip' => true,
-    'link' => false,
-    'class' => "coinImage",
-]);?>
-                        <!-- campaign requesting end -->
-
-
-                        <!-- <span class="requesting">Requesting : </span>
-    <b class="amount">10000</b>
-    <img class="coinImage" src="./img/coinsenceToken.jpg" alt="coin" /> -->
+                            'space' => $funding->getChallenge()->one()->asset->space,
+                            'width' => 16,
+                            'showTooltip' => true,
+                            'link' => false,
+                            'class' => "coinImage",
+                        ]);?>
                     </div>
                 </div>
                 <!-- end test -->

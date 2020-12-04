@@ -44,4 +44,5 @@ return [
     'Untrusted' => 'Definir comme non vérfié',
     'Under review' => 'Vérification en cours',
     'Verified' => 'Vérfié',
+    'Projects Portfolio' => 'Portfolio de projets'
 ];
