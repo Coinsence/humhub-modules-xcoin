@@ -31,6 +31,7 @@ use humhub\modules\space\models\Space;
  * @property integer $stopped
  * @property string $action_name
  * @property integer $is_link_required
+ * @property integer $is_tasks_marketplace
  *
  * @property Asset $asset
  * @property User $createdBy
@@ -48,6 +49,8 @@ class Marketplace extends ActiveRecord
     const MARKETPLACE_STATUS_ENABLED = 1;
     const MARKETPLACE_ACTIVE = 0;
     const MARKETPLACE_STOPPED = 1;
+
+    const TASK_MARKETPLACE_ACTIVE = 1;
 
     public $coverFile;
 
@@ -89,7 +92,8 @@ class Marketplace extends ActiveRecord
                 'description',
                 'action_name',
                 'is_link_required',
-                'categories_names'
+                'categories_names',
+                'is_tasks_marketplace'
             ],
             self::SCENARIO_EDIT => [
                 'asset_id',
@@ -97,7 +101,8 @@ class Marketplace extends ActiveRecord
                 'description',
                 'stopped',
                 'action_name',
-                'is_link_required'
+                'is_link_required',
+                'is_tasks_marketplace'
             ],
             self::SCENARIO_EDIT_ADMIN => [
                 'status',
@@ -120,6 +125,7 @@ class Marketplace extends ActiveRecord
             'created_by' => Yii::t('XcoinModule.marketplace', 'Created By'),
             'action_name' => Yii::t('XcoinModule.marketplace', 'Call to action'),
             'is_link_required' => Yii::t('XcoinModule.marketplace', 'Product call to action link'),
+            'is_tasks_marketplace' => Yii::t('XcoinModule.marketplace', 'Tasks Marketplace'),
         ];
     }
 
@@ -244,5 +250,10 @@ class Marketplace extends ActiveRecord
     public function isLinkRequired()
     {
         return $this->is_link_required == 1;
+    }
+
+    public function isTasksMarketplace()
+    {
+        return $this->is_tasks_marketplace == self::TASK_MARKETPLACE_ACTIVE;
     }
 }
