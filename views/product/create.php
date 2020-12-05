@@ -15,7 +15,7 @@ use kartik\widgets\Select2;
 Select2BootstrapAsset::register($this);
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.product', 'Set product marketplace'), 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.product', 'Set marketplace'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'product-form']); ?>
 <?= Html::hiddenInput('step', '1'); ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>

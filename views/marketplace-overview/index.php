@@ -263,7 +263,7 @@ Select2BootstrapAsset::register($this);
                                                 'showTooltip' => false,
                                                 'link' => false
                                             ]); ?>
-                                            <span><?= Yii::t('XcoinModule.product', 'Product by') . " <strong>" . Html::encode($product->getSpace()->one()->name) . "</strong>"; ?></span>
+                                            <span><?= Yii::t('XcoinModule.product', 'By') . " <strong>" . Html::encode($product->getSpace()->one()->name) . "</strong>"; ?></span>
                                         <?php else : ?>
                                             <?= Image::widget([
                                                 'user' => $product->getCreatedBy()->one(),
@@ -271,7 +271,7 @@ Select2BootstrapAsset::register($this);
                                                 'showTooltip' => false,
                                                 'link' => false
                                             ]); ?>
-                                            <span><?= Yii::t('XcoinModule.product', 'Product by') . " <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname. " ".$product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?></span>
+                                            <span><?= Yii::t('XcoinModule.product', 'By') . " <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname. " ".$product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?></span>
                                         <?php endif; ?>
                                         <!-- owner image end -->
                                     </div>

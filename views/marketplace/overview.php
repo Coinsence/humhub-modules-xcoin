@@ -162,7 +162,7 @@ Assets::register($this);
                                                     'showTooltip' => false,
                                                     'link' => false
                                                 ]); ?>
-                                                <span><?= ($marketplace->isTasksMarketplace() ? Yii::t('XcoinModule.product', 'Job by') : Yii::t('XcoinModule.product', 'Product by')) . " <strong>" . Html::encode($product->getSpace()->one()->name) . "</strong>"; ?></span>
+                                                <span><?= Yii::t('XcoinModule.product', 'By') . " <strong>" . Html::encode($product->getSpace()->one()->name) . "</strong>"; ?></span>
                                             <?php else : ?>
                                                 <?= Image::widget([
                                                     'user' => $product->getCreatedBy()->one(),
@@ -170,7 +170,7 @@ Assets::register($this);
                                                     'showTooltip' => false,
                                                     'link' => false
                                                 ]); ?>
-                                                <span><?= ($marketplace->isTasksMarketplace() ? Yii::t('XcoinModule.product', 'Job by') : Yii::t('XcoinModule.product', 'Product by')) . " <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname . " " . $product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?></span>
+                                                <span><?= Yii::t('XcoinModule.product', 'By') . " <strong>" . Html::encode($product->getCreatedBy()->one()->profile->firstname . " " . $product->getCreatedBy()->one()->profile->lastname) . "</strong>"; ?></span>
                                             <?php endif; ?>
                                             <!-- owner image end -->
                                         </div>

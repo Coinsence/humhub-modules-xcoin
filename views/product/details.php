@@ -30,16 +30,13 @@ use yii\web\JsExpression;
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'name')->textInput()
-                ->hint(Yii::t('XcoinModule.product', 'Please enter your product name')) ?>
+            <?= $form->field($model, 'name')->textInput() ?>
         </div>
         <div class="col-md-12">
-            <?= $form->field($model, 'description')->textInput()
-                ->hint(Yii::t('XcoinModule.product', 'Please enter a short description for your product')) ?>
+            <?= $form->field($model, 'description')->textInput() ?>
         </div>
         <div class="col-md-12">
-            <?= $form->field($model, 'content')->widget(RichTextField::class, ['preset' => 'full'])
-                ->hint(Yii::t('XcoinModule.product', 'Please enter a detailed description for your product')) ?>
+            <?= $form->field($model, 'content')->widget(RichTextField::class, ['preset' => 'full']) ?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'country')->widget(Select2::class, [
@@ -51,11 +48,10 @@ use yii\web\JsExpression;
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ],
-            ])->hint(Yii::t('XcoinModule.product', 'Please enter your country')) ?>
+            ]) ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'city')->textInput()
-                ->hint(Yii::t('XcoinModule.product', 'Please enter your city')) ?>
+            <?= $form->field($model, 'city')->textInput() ?>
         </div>
         <div class="col-md-12">
             <?= $form->field($model, 'categories_names')->widget(Select2::class, [
@@ -96,18 +92,16 @@ use yii\web\JsExpression;
                         $('#product-discount').hide();
                      }
                 }"),]
-            ])->hint(Yii::t('XcoinModule.product', 'Please choose the type of you offer')) ?>
+            ]) ?>
 
         </div>
         <div class="col-md-6" id="product-price"
              style="display: <?= $model->hasErrors('price') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" : "none"; ?>">
-            <?= $form->field($model, 'price')->input('number', ['min' => 1])
-                ->hint(Yii::t('XcoinModule.product', 'Please enter a price for your product')) ?>
+            <?= $form->field($model, 'price')->input('number', ['min' => 1]) ?>
         </div>
         <div class="col-md-12" id="product-discount"
              style="display: <?= $model->hasErrors('discount') || $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS ? "block" : "none"; ?>">
-            <?= $form->field($model, 'discount')->input('number', ['min' => 0.01, 'max' => 100])
-                ->hint(Yii::t('XcoinModule.product', 'Please enter the discount in percentage')) ?>
+            <?= $form->field($model, 'discount')->input('number', ['min' => 0.01, 'max' => 100]) ?>
         </div>
         <div class="col-md-12" id="product-payment-type"
              style="display: <?= $model->hasErrors('payment_type') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" : "none"; ?>">
@@ -120,12 +114,11 @@ use yii\web\JsExpression;
                 'pluginOptions' => [
                     'allowClear' => false,
                 ]
-            ])->hint(Yii::t('XcoinModule.product', 'Please choose the payment type for your product')); ?>
+            ]) ?>
         </div>
         <?php if ($model->marketplace->isLinkRequired()) : ?>
             <div class="col-md-12">
-                <?= $form->field($model, 'link')->textInput()
-                    ->hint(Yii::t('XcoinModule.product', 'Please enter your product call to action link')) ?>
+                <?= $form->field($model, 'link')->textInput() ?>
             </div>
         <?php endif; ?>
     </div>
