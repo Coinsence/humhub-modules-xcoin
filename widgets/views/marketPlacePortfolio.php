@@ -56,7 +56,8 @@ Assets::register($this);
     
     <div class="marketPlacePortfolio">
         <div class="headerMarketPlace">
-            <strong><?= Yii::t('XcoinModule.marketplace', 'Marketplace Portfolio ') ?></strong>            <div class="arrows"></div>
+            <h2><?= Yii::t('XcoinModule.marketplace', 'Marketplace Portfolio ') ?></h2>   
+          <div class="arrows"></div>
         </div>
         <div class="marketPlacesSlider">
             <div class="marketPlaceCard createNewMarketPlace">
