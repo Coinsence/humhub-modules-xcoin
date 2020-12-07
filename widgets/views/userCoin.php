@@ -13,10 +13,10 @@ Assets::register($this);
 
 <div class="userCoins <?= $cssClass ?>">
     <div class="coinsHeader">
-        <h2>
-            <span>Coins</span>
+        
+            <strong style="font-size: 18px;">Coins</strong>
             
-        </h2>
+        
         <a href="<?= $user->createUrl('/xcoin/overview') ?>" class="accountDetail">Account Details</a>
     </div>
     <div class="coinsBody">
