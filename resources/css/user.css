@@ -10,6 +10,11 @@ body {
     overflow-x: hidden;
 }
 
+.userProfileContainer {
+    --accent: #456ca8;
+    --accent-lighter: #ced9eb;
+}
+
 .row {
     margin: 0 !important;
 }
@@ -514,7 +519,7 @@ body {
 }
 
 .experience .companyName {
-    color: #3CBEEF;
+    color: var(--accent);
 }
 
 .experience .dateAndPlace {
@@ -839,7 +844,7 @@ margin: 0 auto;
 .projectCard.createNewProject .addProjectCross,.marketPlaceCard.createNewMarketPlace .addMarketPlaceCross{
     width: 50px;
     height: 50px;
-    background: #e3f7ff;
+    background: var(--accent-lighter) ;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -847,7 +852,7 @@ margin: 0 auto;
     margin: 0 auto 20px;
 }
 .projectCard.createNewProject .addProjectCross i,.marketPlaceCard.createNewMarketPlace .addMarketPlaceCross i{
-    color: #3bbeef;
+    color: var(--accent);
     font-size: 18px;
 }
 
@@ -1238,7 +1243,7 @@ margin-bottom: 20px;
     line-height: 16px;
     text-align: center;
     text-decoration-line: underline;
-    color: #3CBEEF;
+    color: var(--accent);
 }
 
 .userCoins .coinsBody {
@@ -1547,8 +1552,6 @@ color: #FFFFFF;
 .contact .editProfile{
     /* width: 152px; */
     height: 45px;
-    background: #3CBEEF !important;
-    border: 1px solid #3CBEEF !important;
     box-sizing: border-box;
     border-radius: 26px;
     font-style: normal;
@@ -1556,7 +1559,6 @@ color: #FFFFFF;
     font-size: 14px;
     line-height: 19px;
     text-align: center;
-    color: #FFFFFF !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1602,7 +1604,7 @@ color: #FFFFFF;
     border: 0.893204px solid #B9B9B9;
     box-sizing: border-box;
     border-radius: 23.2233px;
-    color: #3CBEEF;
+    color: var(--accent);
     font-size: 18px; 
     position: absolute;
     top: 0;
@@ -1633,7 +1635,6 @@ border-radius: 50% !important;
 display: flex !important;
 align-items: center !important;
 justify-content: center !important;
-border: 1px solid #3cbeef !important;
 }
 .editExperience .pencilEdit{
     margin-right: 7px;
