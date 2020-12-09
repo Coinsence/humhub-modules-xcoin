@@ -1,6 +1,4 @@
 <?php
-
-
 use humhub\libs\Iso3166Codes;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\ProfileOfferNeed;
@@ -33,8 +31,6 @@ use yii\helpers\Html;
             <?php endforeach; ?>  
         </p>
         </div>
-        
-    
         <div class="whatWeNeed">
         <h2><?= Yii::t('XcoinModule.needOffre','What I need from the community')?></h2>
         <?php if (!Yii::$app->user->isGuest) {
