@@ -920,22 +920,22 @@ margin-bottom: 20px;
     color: red;
     font-weight: 600;
 }
-.userPost .hideOnEdit .imageContainer{
+.imageContainer{
     margin-bottom: 20px;
     height: 180px;
 }
-.userPost .hideOnEdit .imageContainer> a{
+.imageContainer> a{
     display: block;
     width: 100%;
     height: 100%;
     position: relative;
 }
-.userPost .hideOnEdit .imageContainer img{
+.imageContainer img{
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-.userPost .hideOnEdit .imageContainer h2.moreImages{
+h2.moreImages{
     position: absolute;
     top: 0;
     left: 0;
@@ -947,7 +947,7 @@ margin-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ffffff54;
+    background: #0000008c;
 }
 /*  */
 
