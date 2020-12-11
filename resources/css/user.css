@@ -867,56 +867,56 @@ margin: 0 auto;
     text-align: center;
 }
 /* recent posts */
-.userPost .media{
+ .media{
     display: block;
 }
 
-.userPost .panel-body{
+ .panel-body{
     margin-bottom: 30px;
 }
 
-.userPost .media .media-heading{
+ .media .media-heading{
     display: flex;
 }
 
-.userPost .media .media-heading .labels{
+ .media .media-heading .labels{
     margin-left: 10px;
 }
-.userPost .media .content{
+ .media .content{
     margin: 22px 0;
 }
-.userPost .media .content p{
+ .media .content p{
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 25px;
     color: #000000;
 }
-.userPost .media .hideOnEdit{
+ .media .hideOnEdit{
 margin-bottom: 20px;
 }
-.userPost .media .wall-entry-controls{
+ .media .wall-entry-controls{
     margin: 0;
 }
 
-.userPost .postFooter .wall-entry-controls{
+ .postFooter .wall-entry-controls{
     border-top: 1px solid #E6E6E6;
     padding: 12px 17px;
     margin: 0 -10px -10px;
 }
-.userPost .postFooter .wall-entry-controls a,.userPost .postFooter .wall-entry-controls i{
+ .postFooter .wall-entry-controls a, .postFooter .wall-entry-controls i{
     font-style: normal;
     font-size: 14px;
     line-height: 19px;
     color: #1E1E1E;
 }
-.userPost .postFooter .wall-entry-controls a{
+ .postFooter .wall-entry-controls a{
     font-weight: 600;
 }
-.userPost .postFooter .wall-entry-controls i{
+ .postFooter .wall-entry-controls i{
     margin-right: 10px;
 }
-.userPost .postFooter .wall-entry-controls i.liked{
+ .postFooter .wall-entry-controls i.liked{
     color: red;
     font-weight: 600;
 }
@@ -1574,7 +1574,7 @@ color: #FFFFFF;
     content: none !important;
 }
 @media(max-width:600px){
-    .userPost .hideOnEdit .imageContainer{
+     .hideOnEdit .imageContainer{
         height: 120px;
     }
 }
