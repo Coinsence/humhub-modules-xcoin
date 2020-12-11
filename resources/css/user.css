@@ -1,5 +1,3 @@
-/*  */
-
 * {
     font-family: Open Sans;
     outline: none !important;
@@ -222,6 +220,15 @@ body {
     text-align: center;
 }
 
+.statistics .count+br {
+    display: none;
+}
+.container.space-layout-container .statistics {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
 .statistics .title {
     font-style: normal;
     font-weight: 600;
@@ -1574,7 +1581,7 @@ color: #FFFFFF;
     content: none !important;
 }
 @media(max-width:600px){
-     .hideOnEdit .imageContainer{
+      .imageContainer{
         height: 120px;
     }
 }
