@@ -223,12 +223,7 @@ body {
 .statistics .count+br {
     display: none;
 }
-.container.space-layout-container .statistics {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
+
 .statistics .title {
     font-style: normal;
     font-weight: 600;
@@ -380,6 +375,12 @@ body {
 }
 
 @media (max-width:767px) {
+    .container.space-layout-container .statistics {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
     .userInfo .profilePicture img{
         margin-left: 20px;
     }
