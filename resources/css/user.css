@@ -282,11 +282,18 @@ body {
     display: flex;
     align-items: center;
 }
-
-
+.tabletViewTasks{
+    display: none;
+}
+.panelHeadingCustomBlock span{
+    font-size: 15px;
+}
 /* mobile items */
 
 .userInfo .socialLinks.mobileView, .userInfo .badges.mobileView, .userCoins.tabletView {
+    display: none;
+}
+.userInfo .socialLinks.mobileView, .userInfo .badges.mobileView, .userCoins.tabletViewTasks {
     display: none;
 }
 
@@ -352,6 +359,9 @@ body {
         display: none;
     }
     .userCoins.tabletView {
+        display: block;
+    }
+    .tabletViewTasks{
         display: block;
     }
     .statistics button[data-action-click="ui.modal.load"]{
@@ -501,7 +511,7 @@ body {
     box-sizing: border-box;
     border-radius: 4px;
     padding: 0px 30px;
-    margin: 30px 0;
+    margin: 30px 0 !important;
 
 }
 
