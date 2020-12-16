@@ -32,6 +32,7 @@ class AccountsGridView extends GridView
      * @inheritdoc
      * @throws InvalidConfigException
      */
+    public $listAssetss;
     public function init()
     {
         $this->dataProvider = new ActiveDataProvider([
@@ -118,7 +119,6 @@ class AccountsGridView extends GridView
                         $list[] = '<div class="asset-balance"><strong>' . $model->getAssetBalance($asset) . '</strong>' .
                             SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) . '</div>';
                     }
-
                     return implode('', $list);
                 }
             ],
@@ -249,5 +249,8 @@ class AccountsGridView extends GridView
 
         parent::init();
     }
+   
+    
 
 }
+

@@ -20,6 +20,9 @@ use yii\web\JsExpression;
 /** @var $model Experience */
 
 Assets::register($this);
+
+$model->start_date = $model->start_date ? date('Y-m', strtotime($model->start_date)): '';
+$model->end_date = $model->end_date ? date('Y-m', strtotime($model->end_date)) : '';
 ?>
 
 <style>
@@ -27,23 +30,20 @@ Assets::register($this);
         display: none;
     }
 </style>
-
+<!-- ->hint(Yii::t('XcoinModule.experience', 'Please enter the position')) ?>-->
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.experience', 'Provide experience details'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'experience-form']); ?>
 
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'position')->textInput()
-                ->hint(Yii::t('XcoinModule.experience', 'Please enter the position')) ?>
+            <?= $form->field($model, 'position')->textInput()?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'employer')->textInput()
-                ->hint(Yii::t('XcoinModule.experience', 'Please enter the employer')) ?>
+            <?= $form->field($model, 'employer')->textInput()?>
         </div>
         <div class="col-md-12">
-            <?= $form->field($model, 'description')->textarea(['rows' => 8])
-                ->hint(Yii::t('XcoinModule.experience', 'Please enter a description for this experience')) ?>
+            <?= $form->field($model, 'description')->textarea(['rows' => 8])?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'country')->widget(Select2::class, [
@@ -55,44 +55,22 @@ Assets::register($this);
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ],
-            ])->hint(Yii::t('XcoinModule.experience', 'Please enter the country')) ?>
+            ])?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'city')->textInput()
-                ->hint(Yii::t('XcoinModule.experience', 'Please enter the city')) ?>
+                ?>
         </div>
         <div class="col-md-12">
             <?= $form->field($model, 'actual_position')->checkbox() ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'start_date')->widget(DatePicker::class, [
-                'dateFormat' => 'yyyy-MM',
-                'clientOptions' => [
-                    'yearRange' => "-30:+0",
-                    'changeMonth' => true,
-                    'changeYear' => true,
-                    'showButtonPanel' => true,
-                    'onClose' => new JsExpression("function(dateText, inst) { 
-                         $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-                    }")
-                ],
-                'options' => ['class' => 'form-control', 'autocomplete' => "off"]])
-                ->hint(Yii::t('XcoinModule.experience', 'When was this experience started')) ?>
+            <?= $form->field($model, 'start_date')->textInput(['placeholder' => 'YYYY-MM'])
+               ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'end_date')->widget(DatePicker::class, [
-                'dateFormat' => 'yyyy-MM',
-                'clientOptions' => [
-                    'yearRange' => "-30:+0",
-                    'changeMonth' => true,
-                    'changeYear' => true,
-                    'showButtonPanel' => true,
-                    'onClose' => new JsExpression("function(dateText, inst) { 
-                         $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-                    }")
-                ],
-                'options' => ['class' => 'form-control', 'autocomplete' => "off", 'value' => 'present', 'disabled' => $model->actual_position == 1]])
-                ->hint(Yii::t('XcoinModule.experience', 'When was this experience ended')) ?>
+            <?= $form->field($model, 'end_date')->textInput(['placeholder' => 'YYYY-MM', 'disabled' => $model->actual_position == 1])
+                ?>
         </div>
     </div>
 </div>

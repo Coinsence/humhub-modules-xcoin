@@ -30,4 +30,6 @@ return [
     'Owner' => 'Propriétaire',
     'Save' => 'Enregistre',
     'Transfer' => 'Transfert',
+    'No Coins found '=>'Aucune pièce trouvée',
+    'Account Details' => 'Détails du compte'
 ];

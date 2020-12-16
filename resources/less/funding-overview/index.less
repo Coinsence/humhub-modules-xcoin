@@ -37,21 +37,21 @@
     }
     .add-project .icon {
       display: block;
-      background-color: #e2f7ff;
+      background-color: lighten(@info-color, 40%);
       padding: 20px 30px;
       border-radius: 50%;
     }
     .add-project .icon .cross {
       position: relative;
       display: block;
-      background-color: #3cbeef;
+      background-color: @info-color;
       height: 23px;
       width: 3px;
     }
     .add-project .icon .cross:after {
       position: absolute;
       content: '';
-      background-color: #3cbeef;
+      background-color: @info-color;
       height: 3px;
       width: 23px;
       left: -10px;

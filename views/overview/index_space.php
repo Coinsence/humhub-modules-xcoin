@@ -34,6 +34,7 @@ Assets::register($this);
                 </b>
             </h1>
         </div>
+        
         <?= AccountsGridView::widget(['contentContainer' => $this->context->contentContainer]) ?>
     </div>
 </div>

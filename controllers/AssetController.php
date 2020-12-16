@@ -31,6 +31,7 @@ class AssetController extends ContentContainerController
     public function actionIssue($id)
     {
         $asset = Asset::findOne(['id' => $id, 'space_id' => $this->contentContainer->id]);
+        
         if ($asset === null) {
             throw new HttpException(404);
         }

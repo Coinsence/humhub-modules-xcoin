@@ -35,4 +35,5 @@ return [
     'Select offer type' => 'Sélectionnez le type d\'offre',
     'Select payment type' => 'Sélectionnez le type de paiment',
     'Sell Product' => 'Offrir un produit',
+    'Marketplace Portfolio' =>'Portefeuille du Marketplace'
 ];

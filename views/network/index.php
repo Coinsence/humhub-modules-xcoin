@@ -136,7 +136,7 @@ $count = count($results);
                                 </div>
                                 <div class="panel-footer">
                                     <?= Html::a(
-                                        '<i class="fa fa-user-plus"></i>' . Yii::t('XcoinModule.network', 'Connect'),
+                                        '<i class="fa fa-search"></i>' . Yii::t('XcoinModule.network', 'See Profile'),
                                         $user->getUrl(),
                                         ['class' => 'btn btn-info']
                                     ) ?>

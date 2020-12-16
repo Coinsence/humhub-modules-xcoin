@@ -3,17 +3,17 @@
 namespace humhub\modules\xcoin\widgets;
 
 use humhub\modules\user\models\User;
-use humhub\modules\xcoin\models\Experience;
+use humhub\modules\xcoin\models\ProfileOfferNeed;
 use Yii;
 use yii\base\Widget;
 use yii\db\Expression;
 
 /**
- * UserExperience Widget
+ * profile_offer_need Widget
  *
- * Render user experiences bloc
+ * Render profile_offer_need bloc
  */
-class UserExperience extends Widget
+class UserProfileOfferNeed extends Widget
 {
     /**
      * @var User
@@ -37,10 +37,9 @@ class UserExperience extends Widget
      */
     public function run()
     {
-        return $this->render('@xcoin/widgets/views/user-experience', [
-            'experiences' => Experience::find()
+        return $this->render('@xcoin/widgets/views/user-profile-offer-need', [
+            'profileOfferNeeds' => ProfileOfferNeed::find()
                 ->where(['user_id' => $this->user->id])
-                ->orderBy([ new Expression('end_date IS NULL desc, end_date desc')])
                 ->all(),
             'htmlOptions' => $this->htmlOptions,
             'user' => $this->user
