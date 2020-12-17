@@ -29,8 +29,12 @@ class NetworkController extends Controller
 
         return $this->render('index', [
             'results' => $query->all(),
-            'tags' => Tag::find()->all(),
-            'type' => $type
+            'tags' => Tag::find()
+                ->where(['type' => [Tag::TYPE_SPACE, Tag::TYPE_USER]])
+                ->all(),
+            'type' => $type,
+            'allSpacesTag' => Tag::findOne(['type' => Tag::TYPE_ALL_SPACES]),
+            'allUsersTag' => Tag::findOne(['type' => Tag::TYPE_ALL_USERS]),
         ]);
     }
 }

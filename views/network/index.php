@@ -18,9 +18,11 @@ use \yii\helpers\Url;
 Assets::register($this);
 Select2BootstrapAsset::register($this);
 
-/** @var $tags Tag[] */
 /** @var $results Space[]|User[] */
+/** @var $tags Tag[] */
 /** @var $type string */
+/** @var $allSpacesTag Tag */
+/** @var $allUsersTag Tag */
 
 $count = count($results);
 ?>
@@ -63,28 +65,34 @@ $count = count($results);
                         ]
                     ]);
                     ?>
-                    <label class="category all">
+                    <label class="category <?= $allUsersTag ? '': 'all' ?>">
                         <input type="radio" name="categroy" checked>
                         <a href="<?= Url::to(['/xcoin/network', 'type' => 'user']) ?>">
-                            <span>
-                                <label><?= Yii::t('XcoinModule.network', 'All Users') ?></label>
-                            </span>
+                            <?php if ($allUsersTag) : ?>
+                                <span style="background-image: url('<?= $allUsersTag->getCover() ? $allUsersTag->getCover()->getUrl() : Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-tag-cover.png' ?>'); "></span>
+                            <?php else: ?>
+                                <span>
+                                    <label><?= Yii::t('XcoinModule.network', 'All Users') ?></label>
+                                </span>
+                            <?php endif; ?>
                         </a>
                     </label>
-                    <label class="category all">
+                    <label class="category <?= $allSpacesTag ? '' : 'all' ?>">
                         <input type="radio" name="categroy" checked>
                         <a href="<?= Url::to(['/xcoin/network', 'type' => 'space']) ?>">
-                            <span>
-                                <label><?= Yii::t('XcoinModule.network', 'All Spaces') ?></label>
-                            </span>
+                            <?php if ($allSpacesTag) : ?>
+                                <span style="background-image: url('<?= $allSpacesTag->getCover() ? $allSpacesTag->getCover()->getUrl() : Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-tag-cover.png' ?>'); "></span>
+                            <?php else: ?>
+                                <span>
+                                    <label><?= Yii::t('XcoinModule.network', 'All Spaces') ?></label>
+                                </span>
+                            <?php endif; ?>
                         </a>
                     </label>
                     <?php foreach ($tags as $tag): ?>
                         <label class="category">
                             <a href="<?= Url::to(['/xcoin/network', 'type' => $tag->type == Tag::TYPE_SPACE ? 'space' : 'user', 'tag' => $tag->name]) ?>">
-                                <span style="background-image: url('<?= $tag->getCover() ? $tag->getCover()->getUrl() : Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-tag-cover.png' ?>'); ">
-                                    <label><?= $tag->name ?></label>
-                                </span>
+                                <span style="background-image: url('<?= $tag->getCover() ? $tag->getCover()->getUrl() : Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-tag-cover.png' ?>'); "></span>
                             </a>
                         </label>
                     <?php endforeach; ?>
