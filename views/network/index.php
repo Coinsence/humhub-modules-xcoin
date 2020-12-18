@@ -65,8 +65,8 @@ $count = count($results);
                         ]
                     ]);
                     ?>
-                    <label class="category <?= $allUsersTag ? '': 'all' ?>">
-                        <input type="radio" name="categroy" checked>
+                    <label class="tag <?= $allUsersTag ? '': 'all' ?>">
+                        <input type="radio" name="category" checked>
                         <a href="<?= Url::to(['/xcoin/network', 'type' => 'user']) ?>">
                             <?php if ($allUsersTag) : ?>
                                 <span style="background-image: url('<?= $allUsersTag->getCover() ? $allUsersTag->getCover()->getUrl() : Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-tag-cover.png' ?>'); "></span>
@@ -77,8 +77,8 @@ $count = count($results);
                             <?php endif; ?>
                         </a>
                     </label>
-                    <label class="category <?= $allSpacesTag ? '' : 'all' ?>">
-                        <input type="radio" name="categroy" checked>
+                    <label class="tag <?= $allSpacesTag ? '' : 'all' ?>">
+                        <input type="radio" name="category" checked>
                         <a href="<?= Url::to(['/xcoin/network', 'type' => 'space']) ?>">
                             <?php if ($allSpacesTag) : ?>
                                 <span style="background-image: url('<?= $allSpacesTag->getCover() ? $allSpacesTag->getCover()->getUrl() : Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-tag-cover.png' ?>'); "></span>
@@ -90,7 +90,7 @@ $count = count($results);
                         </a>
                     </label>
                     <?php foreach ($tags as $tag): ?>
-                        <label class="category">
+                        <label class="tag">
                             <a href="<?= Url::to(['/xcoin/network', 'type' => $tag->type == Tag::TYPE_SPACE ? 'space' : 'user', 'tag' => $tag->name]) ?>">
                                 <span style="background-image: url('<?= $tag->getCover() ? $tag->getCover()->getUrl() : Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-tag-cover.png' ?>'); "></span>
                             </a>
