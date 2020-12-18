@@ -47,10 +47,23 @@ class Events
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'marketplace-overview'),
             'sortOrder' => 900,
         ]);
+        $event->sender->addItem([
+            'label' => Yii::t('DashboardModule.base', 'Home'),
+            'id' => 'dashboard',
+            'icon' => '<i class="fa fa-home"></i>',
+            'url' => Url::toRoute('/home'),
+            'sortOrder' => 100,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'dashboard'),
+        ]);
 
         Event::on(TopMenu::class, TopMenu::EVENT_BEFORE_RUN, function ($event) {
             // deactivate directory menu item
             $event->sender->deleteItemByUrl(Url::to(['/directory/directory']));
+            $event->sender->deleteItemByUrl(Url::to(['/dashboard/dashboard']));
+            if (Yii::$app->user->isGuest) {
+                $event->sender->deleteItemByUrl(Url::to(['/xcoin/network']));
+                $event->sender->deleteItemByUrl(Url::to(['/home']));
+            }
         });
     }
 

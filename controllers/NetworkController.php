@@ -19,6 +19,13 @@ class NetworkController extends Controller
     const TYPE_USER = 'user';
     const TYPE_SPACE = 'space';
 
+    public function getAccessRules()
+    {
+        return [
+            ['login']
+        ];
+    }
+
     public function actionIndex($type = self::TYPE_USER, $tag = null)
     {
         $query = $type == self::TYPE_SPACE ? Space::find() : User::find();
