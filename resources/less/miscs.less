@@ -22,7 +22,8 @@
     padding-left: 52px;
   }
 
-  .category {
+  .category,
+  .tag {
     display: block;
     text-align: center;
     height: 110px;
@@ -30,7 +31,8 @@
   .category .regular-radio-button {
     display: none;
   }
-  .category span {
+  .category span,
+  .tag span {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -38,15 +40,19 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    border-radius: 16px;
-    box-shadow: 0 0 6px 2px #ccc;
     padding: 10px;
     cursor: pointer;
   }
-  .category.all span {
+  .category span {
+    border-radius: 16px;
+    box-shadow: 0 0 6px 2px #ccc;
+  }
+  .category.all span,
+  .tag.all span {
     background-color: @info-color;
   }
-  .category span label {
+  .category span label,
+  .tag span label {
     font-size: 14px;
     font-weight: bold;
     color: #fff;
@@ -64,7 +70,8 @@
     opacity: 0.5;
     z-index: 0;
   }
-  .category input:checked + span {
+  .category input:checked + span,
+  .tag input:checked + span {
     background-color: darkblue;
   }
 

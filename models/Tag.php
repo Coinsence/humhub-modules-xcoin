@@ -31,6 +31,8 @@ class Tag extends ActiveRecord
     // tag types
     const TYPE_SPACE = 1;
     const TYPE_USER = 2;
+    const TYPE_ALL_SPACES = 3;
+    const TYPE_ALL_USERS = 4;
 
     public $pictureFile;
 
@@ -48,7 +50,9 @@ class Tag extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'type', 'created_by'], 'required'],
+            [['name', 'type', 'created_by'], 'required', 'when' => function($model) {
+                return !in_array($model->type, [self::TYPE_ALL_SPACES, self::TYPE_ALL_USERS]);
+            }],
             [['type', 'created_by'], 'integer'],
             ['type', 'validateType'],
             [['created_at'], 'safe'],
@@ -60,7 +64,7 @@ class Tag extends ActiveRecord
 
     public function validateType($attribute, $params, $validator)
     {
-        if (!in_array($this->$attribute, [self::TYPE_SPACE, self::TYPE_USER])) {
+        if (!in_array($this->$attribute, [self::TYPE_SPACE, self::TYPE_USER, self::TYPE_ALL_SPACES, self::TYPE_ALL_USERS])) {
             $this->addError($attribute, Yii::t('XcoinModule.tag', 'The type must be either "Space" or "User".'));
         }
     }
