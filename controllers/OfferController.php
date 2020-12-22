@@ -7,6 +7,7 @@ use humhub\modules\xcoin\models\ProfileOfferNeed;
 use Yii;
 use yii\web\HttpException;
 use yii\web\Response;
+use humhub\modules\xcoin\models\Product;
 
 /**
  * Description of OfferController
@@ -48,5 +49,6 @@ class OfferController extends ContentContainerController
         ]);
  
     }
+    
 
 }
