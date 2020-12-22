@@ -160,6 +160,8 @@ class ProductController extends ContentContainerController
         ]);
     }
 
+  
+
     /**
      * @throws HttpException
      * @throws Exception
@@ -254,5 +256,27 @@ class ProductController extends ContentContainerController
             'container' => $this->contentContainer,
             'productId' => $model->id
         ]));
+    }
+
+    /**
+     * @param $productId
+     * @return string
+     * @throws HttpException
+     */
+    public function actionDetails($productId)
+    {
+        $product = Product::findOne(['id' => $productId]);
+        $user = $this->contentContainer;
+
+
+        if (!$product) {
+            throw new HttpException(404);
+        }
+      
+
+        
+        return $this->renderAjax('details_popup', [
+            'product' => $product,
+        ]);
     }
 }

@@ -37,7 +37,7 @@ use yii\helpers\Html;
                 echo Html::a(
                     '<i class="fa fa-pencil editPencil"></i>',
                     [
-                        '/xcoin/need/edit','container' => $user  
+                        '/xcoin/need/edit','container' => $user,'id'=>$user->id   
                     ],
                     [
                         'data-target' => '#globalModal',

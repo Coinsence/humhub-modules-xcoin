@@ -90,13 +90,13 @@ $upload = Upload::forModel($model, $model->pictureFile);
             <?=
             $form->field($model, 'payment_type')->widget(Select2::class, [
                 'data' => Product::getPaymentTypes(),
-                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.marketplace', 'Select payment type') . ' - '],
+                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.marketplace', 'Select unit') . ' - '],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [
                     'allowClear' => false,
                 ]
-            ])->hint(Yii::t('XcoinModule.marketplace', 'Please choose the payment type for your product')) ?>
+            ])->hint(Yii::t('XcoinModule.marketplace', 'Please choose the Offer unit for your product')) ?>
         </div>
         <div class="col-md-12">
             <label class="control-label" for="product-price"><?= Yii::t('XcoinModule.marketplace', 'Picture') ?></label><br>

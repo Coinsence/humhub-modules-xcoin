@@ -66,7 +66,7 @@ Assets::register($this);
                     <span class="addMarketPlaceCross">
                         <i class="fa fa-plus"></i>
                     </span>
-                    <span class="addMarketPlaceText"><?= Yii::t('XcoinModule.marketplace', 'Sell Your Product!') ?></span>
+                    <span class="addMarketPlaceText"><?= Yii::t('XcoinModule.marketplace', 'List your Product/Service!') ?></span>
                 </a>
             </div>
             <?php if (count($products) == 0): ?>
@@ -79,10 +79,14 @@ Assets::register($this);
                 $owner = $product->getCreatedBy()->one();
                 $picture = $product->getPicture();
                 ?>
-                <a href="<?= $owner->createUrl('/xcoin/product/overview', [
+               
+                <?php /*<a href="<?= $owner->createUrl('/xcoin/product/overview', [
                     'productId' => $product->id
-                ]); ?>">
-
+                ]); ?>" */?>
+                <a href="<?= Url::to(['/xcoin/product/details','container' => $user,'productId' => $product->id ])?>" 
+                data-target="#globalModal">
+         
+           
                 <div class="marketPlaceCard">
                     <div class="marketPlaceCardHeader">
                         <!-- product picture start -->

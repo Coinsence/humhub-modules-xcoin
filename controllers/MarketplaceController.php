@@ -35,7 +35,8 @@ class MarketplaceController extends ContentContainerController
             ->all();
 
         return $this->render('index', [
-            'marketplaces' => $marketplaces
+            'marketplaces' => $marketplaces,
+            'user'=>$this->contentContainer
         ]);
     }
 
