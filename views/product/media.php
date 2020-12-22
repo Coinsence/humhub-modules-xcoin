@@ -64,7 +64,7 @@ $upload = Upload::withName();
             <br>
             <?= $upload->progress() ?>
             <p class="help-block">
-                <?= Yii::t('XcoinModule.product', 'Please note that first picture will be used as cover for your product.') ?>
+                <?= Yii::t('XcoinModule.product', 'Please note that first picture will be used as cover.') ?>
             </p>
         </div>
     </div>

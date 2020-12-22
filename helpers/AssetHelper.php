@@ -2,6 +2,8 @@
 
 namespace humhub\modules\xcoin\helpers;
 
+use humhub\modules\content\components\ContentContainerPermissionManager;
+use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use Yii;
 use humhub\modules\space\models\Space;
@@ -80,6 +82,12 @@ class AssetHelper
 
         if ($container instanceof Space) {
             if ($container->isSpaceOwner($user->id)) {
+                return true;
+            }
+
+            $permissionManager = new ContentContainerPermissionManager(['subject' => $user, 'contentContainer' => $container]);
+
+            if ($permissionManager->can(ManageContent::class)){
                 return true;
             }
         }

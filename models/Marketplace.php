@@ -9,6 +9,7 @@
 
 namespace humhub\modules\xcoin\models;
 
+use cornernote\linkall\LinkAllBehavior;
 use Yii;
 use yii\db\ActiveQuery;
 use humhub\components\ActiveRecord;
@@ -30,6 +31,7 @@ use humhub\modules\space\models\Space;
  * @property integer $stopped
  * @property string $action_name
  * @property integer $is_link_required
+ * @property integer $is_tasks_marketplace
  *
  * @property Asset $asset
  * @property User $createdBy
@@ -48,7 +50,12 @@ class Marketplace extends ActiveRecord
     const MARKETPLACE_ACTIVE = 0;
     const MARKETPLACE_STOPPED = 1;
 
+    const TASK_MARKETPLACE_ACTIVE = 1;
+
     public $coverFile;
+
+    // used when creating marketplace
+    public $categories_names;
 
     /**
      * @inheritdoc
@@ -65,6 +72,7 @@ class Marketplace extends ActiveRecord
     {
         return [
             [['space_id', 'asset_id', 'title', 'description', 'created_by', 'is_link_required'], 'required'],
+            ['categories_names', 'required', 'message' => 'Please choose at least a category'],
             [['space_id', 'asset_id', 'created_by', 'is_link_required'], 'integer'],
             [['created_at', 'status', 'stopped'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
@@ -83,7 +91,9 @@ class Marketplace extends ActiveRecord
                 'title',
                 'description',
                 'action_name',
-                'is_link_required'
+                'is_link_required',
+                'categories_names',
+                'is_tasks_marketplace'
             ],
             self::SCENARIO_EDIT => [
                 'asset_id',
@@ -91,7 +101,8 @@ class Marketplace extends ActiveRecord
                 'description',
                 'stopped',
                 'action_name',
-                'is_link_required'
+                'is_link_required',
+                'is_tasks_marketplace'
             ],
             self::SCENARIO_EDIT_ADMIN => [
                 'status',
@@ -114,9 +125,16 @@ class Marketplace extends ActiveRecord
             'created_by' => Yii::t('XcoinModule.marketplace', 'Created By'),
             'action_name' => Yii::t('XcoinModule.marketplace', 'Call to action'),
             'is_link_required' => Yii::t('XcoinModule.marketplace', 'Product call to action link'),
+            'is_tasks_marketplace' => Yii::t('XcoinModule.marketplace', 'Tasks Marketplace'),
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            LinkAllBehavior::class,
+        ];
+    }
 
     public function beforeSave($insert)
     {
@@ -129,6 +147,24 @@ class Marketplace extends ActiveRecord
         }
 
         return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->categories_names) {
+            $categories = [];
+
+            $x = $this->categories_names;
+            foreach ($this->categories_names as $category_name) {
+                $category = Category::getCategoryByName($category_name);
+                if ($category) {
+                    $categories[] = $category;
+                }
+            }
+            $this->linkAll('categories', $categories);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -171,6 +207,12 @@ class Marketplace extends ActiveRecord
         return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
 
+    public function getCategories()
+    {
+        return $this->hasMany(Category::class, ['id' => 'category_id'])
+            ->viaTable('xcoin_marketplace_category', ['marketplace_id' => 'id']);
+    }
+
     public function canDeleteFile()
     {
         $space = Space::findOne(['id' => $this->space_id]);
@@ -208,5 +250,10 @@ class Marketplace extends ActiveRecord
     public function isLinkRequired()
     {
         return $this->is_link_required == 1;
+    }
+
+    public function isTasksMarketplace()
+    {
+        return $this->is_tasks_marketplace == self::TASK_MARKETPLACE_ACTIVE;
     }
 }
