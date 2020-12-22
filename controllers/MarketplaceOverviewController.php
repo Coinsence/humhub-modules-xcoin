@@ -18,6 +18,8 @@ use yii\web\HttpException;
 
 class MarketplaceOverviewController extends Controller
 {
+    
+    
     public function actionIndex($marketplaceId = null)
     {
         $query = Product::find();
@@ -65,6 +67,7 @@ class MarketplaceOverviewController extends Controller
             $space = $marketplace->asset->space;
             $assetsList[$asset->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
         }
+        $user = Yii::$app->user->identity;
 
         $marketplace = Marketplace::findOne(['id' => $marketplaceId]);
 
@@ -74,7 +77,8 @@ class MarketplaceOverviewController extends Controller
             'assetsList' => $assetsList,
             'countriesList' => $countriesList,
             'products' => $query->all(),
-            'marketplacesCarousel' => MarketplaceHelper::getRandomMarketplaces()
+            'marketplacesCarousel' => MarketplaceHelper::getRandomMarketplaces(),
+            'user'=>$user
         ]);
     }
 
@@ -103,7 +107,6 @@ class MarketplaceOverviewController extends Controller
                 if (AssetHelper::getSpaceAsset($space))
                     $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
             }
-
             return $this->renderAjax('../product/spaces-list', [
                 'product' => $model,
                 'spacesList' => $spacesList,

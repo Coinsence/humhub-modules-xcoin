@@ -228,17 +228,18 @@ Select2BootstrapAsset::register($this);
                         <span class="icon">
                             <i class="cross"></i>
                         </span>
-                        <span class="text"><?= Yii::t('XcoinModule.marketplace', 'Sell Your Product!') ?></span>
+                        <span class="text"><?= Yii::t('XcoinModule.marketplace', 'List your Product/Service') ?></span>
                     </a>
                 </div>
                 <?php foreach ($products as $product): ?>
-                    <?php
-                    $owner = $product->isSpaceProduct() ? $product->getSpace()->one() : $product->getCreatedBy()->one();
-                    $picture = $product->getPicture();
-                    ?>
-                    <a href="<?= $owner->createUrl('/xcoin/product/overview', [
-                        'productId' => $product->id
-                    ]); ?>">
+                   <?php
+                        $owner = $product->isSpaceProduct() ? $product->getSpace()->one() : $product->getCreatedBy()->one();
+                        $picture = $product->getPicture();
+                        ?>
+                       
+                     <a href="<?= Url::to(['/xcoin/product/details','container' => $user,'productId' => $product->id ])?>" 
+                data-target="#globalModal">
+         
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="panel">
                                 <div class="panel-heading">

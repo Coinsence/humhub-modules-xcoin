@@ -83,10 +83,14 @@ use yii\web\JsExpression;
                      if(offer_type == 1){
                         $('#product-price').hide();
                         $('#product-payment-type').hide();
+                        $('#first-payemnt').hide();
+                        $('#call-type').hide();
                         $('#product-discount').show();
                      } else {
                         $('#product-price').show();
                         $('#product-payment-type').show();
+                        $('#first-payemnt').show();
+                        $('#call-type').show();
                         $('#product-discount').hide();
                      }
                 }"),]
@@ -108,20 +112,58 @@ use yii\web\JsExpression;
             <?=
             $form->field($model, 'payment_type')->widget(Select2::class, [
                 'data' => Product::getPaymentTypes(),
-                'options' => ['placeholder' => '- Select payment type - '],
+                'options' => ['placeholder' => '- Select unit - '],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [
                     'allowClear' => false,
                 ]
-            ])->hint(Yii::t('XcoinModule.product', 'Please choose the payment type for your product')); ?>
+            ])->hint(Yii::t('XcoinModule.product', 'Please choose the Offer unit for your product')); ?>
         </div>
-        <?php if ($model->marketplace->isLinkRequired()) : ?>
-            <div class="col-md-12">
-                <?= $form->field($model, 'link')->textInput()
-                    ->hint(Yii::t('XcoinModule.product', 'Please enter your product call to action link')) ?>
-            </div>
-        <?php endif; ?>
+        <div class="col-md-6" id="first-payemnt"
+             style="display: <?= $model->hasErrors('request_paytment_first') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" : "none"; ?>">
+             <input type="hidden" value="0" name="Model[request_paytment_first]">
+            <?= $form->field($model, 'request_paytment_first')->checkBox(['label' => 'Request Payment first','data-size'=>'small', 'class'=>'bs_switch'
+
+            ,'style'=>'margin-bottom:4px;', 'id'=>'request_paytment_first']) ?>
+        </div>
+
+        <div class="col-md-12" id="call-type"
+             style="display: <?= $model->hasErrors('type_call') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" : "none"; ?>">
+            <?=
+            $form->field($model, 'type_call')->widget(Select2::class, [
+                'data' => Product::getCallTypes(),
+                'options' => ['placeholder' => '- Select call type after payement - '],
+                'theme' => Select2::THEME_BOOTSTRAP,
+                'hideSearch' => true,
+                'pluginOptions' => [
+                    'allowClear' => false,
+                ],
+                'pluginEvents' => [
+                    "select2:select" => new JsExpression("function() {  
+                     var type_call = $(this).val();
+                     if(type_call == 1){
+                        $('#call-link').hide();
+                        $('#call-message').show();
+                     } else {
+                        $('#call-message').hide();
+                        $('#call-link').show();
+                        
+                     }
+                }"),]
+            ])->hint(Yii::t('XcoinModule.product', 'Please choose the call type after payement ')); ?>
+        </div>
+        <div class="col-md-12" id="call-message"
+             style="display: <?= $model->hasErrors('message') || $model->type_call == Product::TYPE_MESSAGE ? "block" : "none"; ?>">
+            <?= $form->field($model, 'message')->widget(RichTextField::class, ['preset' => 'full'])
+                ->hint(Yii::t('XcoinModule.product', 'Please enter a detailed message')) ?>
+        </div>
+        <div class="col-md-12" id="call-link" 
+            style="display: <?= $model->hasErrors('link') || $model->type_call == Product::TYPE_LINK ? "block" : "none"; ?>">
+            <?= $form->field($model, 'link')->textInput()
+                ->hint(Yii::t('XcoinModule.product', 'Please enter your product call to action link')) ?>
+        </div>
+        
     </div>
 </div>
 <hr>
@@ -133,3 +175,9 @@ use yii\web\JsExpression;
 <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>
 
+<?php 
+/*
+<?php if ($model->marketplace->isLinkRequired()) : ?>
+
+    <?php endif; ?>*/
+?>

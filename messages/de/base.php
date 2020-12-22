@@ -107,4 +107,9 @@ return [
     'Review Public Offers' => '',
     'Allows the user to review Crowdfunding campaigns & Products' => '',
     'Filter' => '',
+    'Request payment first' => '',
+    'Customer call to action after payment' => '',
+    'Detailed message' => '',
+    'Send a message'=> '',
+    'Redirect to a link' => ''
 ];

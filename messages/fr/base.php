@@ -116,4 +116,9 @@ return [
     'Review Public Offers' => 'Examiner les offres publiques',
     'Allows the user to review Crowdfunding campaigns & Products' => 'Permet à l\'utilisateur de verifier les campagnes de financement participatif et les produits',
     'Filter' => 'Filtre',
+    'Request payment first' => '',
+    'Customer call to action after payment' => '',
+    'Detailed message' => '',
+    'Send a message'=> '',
+    'Redirect to a link' => ''
 ];

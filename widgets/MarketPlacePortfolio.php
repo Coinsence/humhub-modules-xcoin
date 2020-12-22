@@ -148,6 +148,7 @@ class MarketPlacePortfolio extends \yii\base\Widget
 
             return $this->render('marketPlacePortfolio', [
                 'products' => $products,
+                'user' => $this->user
             ]);
         }
     }

@@ -1700,3 +1700,34 @@ transform: translateY(-50%);
 .hack-to-fix-wrong-position {
     position: absolute !important;
 }
+
+.space-funding .modal-dialog {
+    max-width: 80% !important;
+    width: 100%;
+}
+
+.contentMargin{
+    margin: 20px;
+}
+.value .nameValue , .location .nameValue, .categories .nameValue{
+    width: 100px;
+    display: inline-block;
+    margin-right: 20px;
+    text-transform: capitalize;
+    color: #7f7f7f;
+    font-size: inherit;
+    font-weight: bold
+}
+.value, .location, .categories, .description{
+    padding: 5px;
+}
+
+.description .nameValue{
+    display: inline-block;
+    display: inline-block;
+    margin-right: 20px;
+    text-transform: capitalize;
+    color: #7f7f7f;
+    font-size: inherit;
+    font-weight: bold
+}
