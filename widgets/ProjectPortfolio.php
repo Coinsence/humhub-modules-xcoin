@@ -58,8 +58,7 @@ class ProjectPortfolio extends \yii\base\Widget
         /**
          * Try to autodetect current user by controller
          */
-      
-       
+
         $allActivities=[];  
       
         $classArray = array(
@@ -73,10 +72,7 @@ class ProjectPortfolio extends \yii\base\Widget
         );
         
         $this->activities=$allActivities;
-        
-        
 
-        
         parent::init();
     }
 

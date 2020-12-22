@@ -116,7 +116,7 @@ class AccountsGridView extends GridView
                     foreach ($model->getAssets() as $asset) {
                         $list[] = '<div class="asset-balance"><strong>' . $model->getAssetBalance($asset) . '</strong>' .
                             SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) . '</div>';
-                        }
+                    }
                     return implode('', $list);
                 }
             ],
