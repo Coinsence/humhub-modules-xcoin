@@ -60,10 +60,6 @@ class Events
             // deactivate directory menu item
             $event->sender->deleteItemByUrl(Url::to(['/directory/directory']));
             $event->sender->deleteItemByUrl(Url::to(['/dashboard/dashboard']));
-            if (Yii::$app->user->isGuest) {
-                $event->sender->deleteItemByUrl(Url::to(['/xcoin/network']));
-                $event->sender->deleteItemByUrl(Url::to(['/home']));
-            }
         });
     }
 
