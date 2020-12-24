@@ -21,6 +21,11 @@ use yii\web\JsExpression;
 
 class AccountField extends InputWidget
 {
+    /** 
+    * @var string
+    */
+    public $to_account;
+    
     public function init()
     {
         parent::init();

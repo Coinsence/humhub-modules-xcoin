@@ -238,9 +238,9 @@ object-fit: contain;
 
     </div>
     <div class="contentMargin"> <!-- product content start -->
-      <?= RichText::output($product->content); ?>
+        <?= RichText::output($product->content); ?>
             <!-- product content end -->
-    </div>
+    </div> 
     <div class="panel-footer">
    
             <!-- product buy action start -->
@@ -255,10 +255,14 @@ object-fit: contain;
                         <?php if ($product->marketplace->isLinkRequired()): ?>
                             <?= Html::a($product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product') , $product->link, ['target' => '_blank']) ?>
                         <?php else : ?>
-                            <?= BuyProductButton::widget([
+                            <?php if($product->offer_type==1): ?>
+                                <?= BuyProductButton::widget([
                                 'guid' => $product->getCreatedBy()->one()->guid,
                                 'label' => $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product')
                             ]) ?>
+                            <?php else:?>
+                           <?= Html::a('Buy this product', ['/xcoin/transaction/select-account-payment', 'container' => $user,'productId'=>$product->id], ['class' => 'btn btn-sm btn-default pull-right', 'style' => 'margin-top:-2px;margin-right:-10px', 'data-target' => '#globalModal', 'data-ui-loader' => '']); ?>
+                            <?php endif ;?>
                         <?php endif ?>
                     <?php endif; ?>
                 </div>

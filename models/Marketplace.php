@@ -64,8 +64,8 @@ class Marketplace extends ActiveRecord
     public function rules()
     {
         return [
-            [['space_id', 'asset_id', 'title', 'description', 'created_by', 'is_link_required'], 'required'],
-            [['space_id', 'asset_id', 'created_by', 'is_link_required'], 'integer'],
+            [['space_id', 'asset_id', 'title', 'description', 'created_by'], 'required'],
+            [['space_id', 'asset_id', 'created_by'], 'integer'],
             [['created_at', 'status', 'stopped'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
