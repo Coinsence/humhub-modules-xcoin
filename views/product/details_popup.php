@@ -27,7 +27,7 @@ Assets::register($this);
  */
 ?>
 
-<div class="space-funding">
+<div class="space-funding" id="mySpaceF">
     <?php
     $cover = $product->getPicture();
     $gallery = $product->getGallery();
@@ -67,6 +67,9 @@ object-fit: contain;
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.product', ''), 'closable' => false],['class'=>'karima']) ?>
     <?php $form = ActiveForm::begin(['id' => 'product-details']); ?>
     <div class="panel">
+        <div class="product-title">
+            <?= Html::encode($product->name); ?>
+        </div>
     <div class="row">
         <div class="panel-heading col-md-6">
            <!-- product cover start -->
@@ -130,10 +133,11 @@ object-fit: contain;
 
     <div class="panel-body col-md-6">
 <!-- product title start -->
-<h4 class="funding-title">
-                <?= Html::encode($product->name); ?>
+<h4 class="funding-title" style="display: flex;
+justify-content: flex-end;">
+                
                 <!-- product review status start -->
-                <small>
+                <small style="margin: 0;">
                     <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
                         <div style="color: orange; display: inline; margin-left: 236px;">
                             ( <i class="fa fa-check-circle-o" 
@@ -226,7 +230,7 @@ object-fit: contain;
             <div class="description row">
             <span class="nameValue"><?= Yii::t('XcoinModule.product', 'Short description') ?></span>
                 <div class="col-md-12">
-                    <p class="media-heading"><?= Html::encode($product->description); ?></p>
+                    <p class="media-heading" style="margin-bottom: 0;"><?= Html::encode($product->description); ?></p>
                 </div>
             </div>
             <!-- product description end -->
