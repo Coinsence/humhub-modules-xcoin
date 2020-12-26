@@ -371,7 +371,6 @@ class Product extends ActiveRecord
 
     public function isNameUnique()
     {
-        var_dump($this->product_type);
         if ($this->product_type == self::TYPE_PERSONAL) {
             return true;
         }
