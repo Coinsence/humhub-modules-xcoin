@@ -59,7 +59,7 @@ class AssetAmount extends Widget
         if ($space === null)
             return;
 
-            return $this->render('assetAmount', ['holder' => $this->holder, 'amount' => $this->getAssetAmount(), 'space' => $space, 'user' => $user]);
+        return $this->render('assetAmount', ['holder' => $this->holder, 'amount' => $this->getAssetAmount(), 'space' => $space, 'user' => $user]);
     }
 
     public function getAssetAmount() {
