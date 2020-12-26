@@ -277,6 +277,7 @@ class ProductController extends ContentContainerController
         
         return $this->renderAjax('details_popup', [
             'product' => $product,
+            'user'=> $user
         ]);
     }
 }

@@ -5,6 +5,7 @@ namespace humhub\modules\xcoin\widgets;
 use humhub\widgets\ModalButton;
 use Yii;
 use humhub\components\Widget;
+use humhub\libs\Html;
 
 class BuyProductButton extends Widget
 {
@@ -13,7 +14,7 @@ class BuyProductButton extends Widget
      * @var string
      */
     public $guid;
-
+    
     /**
      * @var int
      */
@@ -34,6 +35,7 @@ class BuyProductButton extends Widget
      */
     public $label;
 
+
     /**
      * Creates the Wall Widget
      */
@@ -44,7 +46,8 @@ class BuyProductButton extends Widget
             'ajax' => 1,
             'userGuid' => $this->guid
         ])->cssClass('btn-invest');
-
+       
+       
         return $button;
     }
 
