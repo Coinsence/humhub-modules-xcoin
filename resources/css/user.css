@@ -1706,12 +1706,55 @@ transform: translateY(-50%);
     width: 100%;
 }
 
-.contentMargin{
-    margin: 20px;
+#product-popup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+}
+#product-popup .modal-dialog {
+    max-width: 95% !important;
+    width: 100%;
+}
+#product-popup .modal-header {
+    padding: 0;
+    text-align: left;
+}
+#product-popup .modal-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #202020;
+    margin-top: 0;
+    padding: 10px;
+}
+#product-popup .panel {
+    box-shadow: none;
+}
+#product-popup .panel .panel-heading .img-container img{
+    height: 400px;
+}
+#product-popup .modal-dialog {
+    margin: auto;
+}
+#product-popup .panel .panel-body{
+    margin-bottom: 0;
+}
+#product-popup .panel .panel-body .description p {
     margin-top: 0;
 }
-.value .nameValue , .location .nameValue, .categories .nameValue, .description .nameValue{
-    width: 125px;
+#product-popup .panel .product-content {
+    padding: 24px;
+}
+#product-popup .value,
+#product-popup .location,
+#product-popup .categories,
+#product-popup .description {
+    padding: 5px;
+}
+#product-popup .value .nameValue ,
+#product-popup .location .nameValue,
+#product-popup .categories .nameValue,
+#product-popup .description .nameValue {
     display: inline-block;
     margin-right: 20px;
     text-transform: capitalize;
@@ -1719,30 +1762,18 @@ transform: translateY(-50%);
     font-size: inherit;
     font-weight: bold
 }
-.value, .location, .categories, .description{
-    padding: 5px;
-}
 
-#mySpaceF .panel .panel-heading .img-container img{
-    height: 400px;
+@media (min-width: 992px) {
+    #product-popup .panel .panel-body {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    #product-popup .panel .product-content {
+        padding: 48px 24px;
+    }
 }
-#mySpaceF .modal-dialog {
-    margin: auto;
-}
-#mySpaceF .panel .panel-body{
-    margin-bottom: 0;
-}
-
-
-.product-title{
-    font-size: 16px;
-font-weight: bold;
-color: #202020;
-padding: 10px;
-}
-@media (max-width:575px) {
-    #mySpaceF .panel .panel-heading .img-container img{
+@media (max-width: 575px) {
+    #product-popup .panel .panel-heading .img-container img{
         height: 180px;
     }
-
 }
