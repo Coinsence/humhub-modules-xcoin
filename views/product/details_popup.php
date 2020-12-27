@@ -135,7 +135,7 @@ object-fit: contain;
                 </div>
                 <!-- product description end -->
 
-                <div class="value">
+                <h6 class="value">
                     <span class="nameValue"><?= Yii::t('XcoinModule.product', 'Created by') ?></span>
                     <span>
                         <!-- owner image start -->
@@ -158,7 +158,7 @@ object-fit: contain;
                         <?php endif; ?>
                         <!-- owner image end -->
                     </span>
-                </div>
+                </h6>
 
                 <!-- product pricing start -->
                 <h6 class="value">
