@@ -18,8 +18,14 @@ use yii\web\HttpException;
 
 class MarketplaceOverviewController extends Controller
 {
-    
-    
+
+    public function getAccessRules()
+    {
+        return [
+            ['login']
+        ];
+    }
+
     public function actionIndex($marketplaceId = null)
     {
         $query = Product::find();
