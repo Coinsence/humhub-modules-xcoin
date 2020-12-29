@@ -53,7 +53,15 @@ $upload = Upload::forModel($model, $model->coverFile);
                 ->hint(Yii::t('XcoinModule.marketplace', 'Please enter product call to action button name, default is "Buy Product"'))
             ?>
         </div>
-       
+        <div class="col-md-12">
+            <?=
+            $form->field($model, 'selling_option')->widget(Select2::class, [
+                'data' => Marketplace::getOptions(),
+                'theme' => Select2::THEME_BOOTSTRAP,
+                'hideSearch' => true,
+            ]);
+            ?>
+        </div>
         <div class="col-md-12">
             <?=
             $form->field($model, 'stopped')->widget(Select2::class, [
