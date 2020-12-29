@@ -1773,6 +1773,9 @@ transform: translateY(-50%);
     }
 }
 @media (max-width: 575px) {
+    #product-popup .modal-dialog {
+        width: 100% !important;
+    }
     #product-popup .panel .panel-heading .img-container img{
         height: 180px;
     }
