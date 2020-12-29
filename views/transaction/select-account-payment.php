@@ -13,7 +13,7 @@ if (!isset($disableAccount)) {
 ?>
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.transaction', '<strong>Select</strong> sender account'), 'closable' => false]) ?>
 <div class="modal-body">
-   
+
 <?= SenderAccountGridView::widget([
     'contentContainer' => $contentContainer, 
     'nextRoute' => $nextRoute,

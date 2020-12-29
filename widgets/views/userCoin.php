@@ -15,8 +15,7 @@ Assets::register($this);
 
 <div class="userCoins <?= $cssClass ?>">
     <div class="coinsHeader">
-        
-            <strong style="font-size: 18px;">Coins</strong>
+    <h2><?= Yii::t('XcoinModule.account', 'Coins') ?></h2>
             
         
         <a href="<?= $user->createUrl('/xcoin/overview') ?>" class="accountDetail"><?= Yii::t('XcoinModule.account','Account Details')?></a>
