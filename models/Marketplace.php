@@ -30,7 +30,7 @@ use humhub\modules\space\models\Space;
  * @property integer $status
  * @property integer $stopped
  * @property string $action_name
- * @property integer $is_link_required
+ * @property integer $selling_option
  * @property integer $is_tasks_marketplace
  *
  * @property Asset $asset
@@ -39,7 +39,6 @@ use humhub\modules\space\models\Space;
  */
 class Marketplace extends ActiveRecord
 {
-
     const SCENARIO_CREATE = 'screate';
     const SCENARIO_EDIT = 'sedit';
     const SCENARIO_EDIT_ADMIN = 'seditadmin';
@@ -49,6 +48,10 @@ class Marketplace extends ActiveRecord
     const MARKETPLACE_STATUS_ENABLED = 1;
     const MARKETPLACE_ACTIVE = 0;
     const MARKETPLACE_STOPPED = 1;
+
+    // options
+    const OPTION_SEND_MESSAGE = 0;
+    const OPTION_REDIRECT_TO_LINK = 1;
 
     const TASK_MARKETPLACE_ACTIVE = 1;
 
@@ -91,7 +94,7 @@ class Marketplace extends ActiveRecord
                 'title',
                 'description',
                 'action_name',
-                'is_link_required',
+                'selling_option',
                 'categories_names',
                 'is_tasks_marketplace'
             ],
@@ -101,7 +104,7 @@ class Marketplace extends ActiveRecord
                 'description',
                 'stopped',
                 'action_name',
-                'is_link_required',
+                'selling_option',
                 'is_tasks_marketplace'
             ],
             self::SCENARIO_EDIT_ADMIN => [
@@ -124,7 +127,7 @@ class Marketplace extends ActiveRecord
             'created_at' => Yii::t('XcoinModule.marketplace', 'Created At'),
             'created_by' => Yii::t('XcoinModule.marketplace', 'Created By'),
             'action_name' => Yii::t('XcoinModule.marketplace', 'Call to action'),
-            'is_link_required' => Yii::t('XcoinModule.marketplace', 'Product call to action link'),
+            'selling_option' => Yii::t('XcoinModule.marketplace', 'Options'),
             'is_tasks_marketplace' => Yii::t('XcoinModule.marketplace', 'Tasks Marketplace'),
         ];
     }
@@ -247,13 +250,21 @@ class Marketplace extends ActiveRecord
         return $this->status == self::MARKETPLACE_STATUS_DISABLED;
     }
 
-    public function isLinkRequired()
+    public function shouldRedirectToLink()
     {
-        return $this->is_link_required == 1;
+        return $this->selling_option == self::OPTION_REDIRECT_TO_LINK;
     }
 
     public function isTasksMarketplace()
     {
         return $this->is_tasks_marketplace == self::TASK_MARKETPLACE_ACTIVE;
+    }
+
+    public static function getOptions()
+    {
+        return [
+            self::OPTION_SEND_MESSAGE => Yii::t('XcoinModule.base', 'Send a message to buyer'),
+            self::OPTION_REDIRECT_TO_LINK => Yii::t('XcoinModule.base', 'Redirect to a link'),
+        ];
     }
 }

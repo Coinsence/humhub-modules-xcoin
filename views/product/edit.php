@@ -81,10 +81,12 @@ $upload = Upload::withName();
                      if(offer_type == 1){
                         $('#product-price').hide();
                         $('#product-payment-type').hide();
+                        $('#payment_first_container').hide();
                         $('#product-discount').show();
                      } else {
                         $('#product-price').show();
                         $('#product-payment-type').show();
+                        $('#payment_first_container').show();
                         $('#product-discount').hide();
                      }
                 }"),]
@@ -109,9 +111,28 @@ $upload = Upload::withName();
                 ]
             ]) ?>
         </div>
-        <?php if ($model->marketplace->isLinkRequired()) : ?>
+        <div class="col-md-6" id="payment_first_container"
+             style="display: <?= $model->hasErrors('payment_first') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" : "none"; ?>">
+            <input type="hidden" value="0" name="Model[payment_first]">
+            <?= $form->field($model, 'payment_first')
+                ->checkBox([
+                    'label' => 'Request Payment first',
+                    'data-size' => 'small',
+                    'class' => 'bs_switch',
+                    'style' => 'margin-bottom:4px;',
+                    'id' => 'payment_first'
+                ])
+            ?>
+        </div>
+        <?php if ($model->marketplace->shouldRedirectToLink()) : ?>
             <div class="col-md-12">
-                <?= $form->field($model, 'link')->textInput() ?>
+                <?= $form->field($model, 'link')->textInput()
+                    ->hint(Yii::t('XcoinModule.product', 'Please enter your product call to action link')) ?>
+            </div>
+        <?php else : ?>
+            <div class="col-md-12" id="buy-message">
+                <?= $form->field($model, 'buy_message')->widget(RichTextField::class, ['preset' => 'full'])
+                    ->hint(Yii::t('XcoinModule.product', 'Please enter a message to be sent when customer wants to buy your product')) ?>
             </div>
         <?php endif; ?>
         <div class="col-md-12">

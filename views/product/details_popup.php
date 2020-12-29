@@ -63,14 +63,14 @@ Assets::register($this);
     width: 80%;
     height: 100%;
 object-fit: contain;
---> 
-<?php ModalDialog::begin(['header' => Html::encode($product->name), 'closable' => false, 'class' => 'karima']) ?>
+-->
+    <?php ModalDialog::begin(['header' => Html::encode($product->name), 'closable' => false, 'class' => 'karima']) ?>
     <?php $form = ActiveForm::begin(['id' => 'product-details']); ?>
     <div class="panel">
         <div class="row">
             <div class="panel-heading col-md-6">
-               <!-- product cover start -->
-               <div class="img-container">
+                <!-- product cover start -->
+                <div class="img-container">
 
                     <?php if ($cover) : ?>
                         <?php if (count($carouselItems) > 1): ?>
@@ -79,7 +79,7 @@ object-fit: contain;
                             ]) ?>
                         <?php else: ?>
                             <div class="bg"
-                                style="background-image: url('<?= $cover->getUrl() ?>')"></div>
+                                 style="background-image: url('<?= $cover->getUrl() ?>')"></div>
                             <?= Html::img($cover->getUrl(), [
                                 'width' => '100%',
 
@@ -87,7 +87,7 @@ object-fit: contain;
                         <?php endif; ?>
                     <?php else : ?>
                         <div class="bg"
-                            style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png' ?>')"></div>
+                             style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png' ?>')"></div>
                         <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png', [
                             'width' => '100%',
 
@@ -126,7 +126,7 @@ object-fit: contain;
                     <?php endif; ?>
                 <?php endif; ?>
                 <!-- product review button end -->
-        </div>
+            </div>
             <div class="panel-body col-md-6">
 
                 <!-- product description start -->
@@ -163,7 +163,8 @@ object-fit: contain;
                 <!-- product pricing start -->
                 <h6 class="value">
                     <span class="nameValue">  <?= Yii::t('XcoinModule.marketplace', 'Price') ?>
-                            <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?><small> <?= $product->getPaymentType() ?> </small><?php endif;?> </span>
+                        <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
+                            <small> <?= $product->getPaymentType() ?> </small><?php endif; ?> </span>
                     <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
                         <b><?= $product->price ?></b>
                         <?= SpaceImage::widget([
@@ -194,7 +195,8 @@ object-fit: contain;
 
 
                 <!-- product categories start -->
-                <h6 class="categories"><span class="nameValue"><?= Yii::t('XcoinModule.product', 'Categories') ?></span></h6>
+                <h6 class="categories"><span class="nameValue"><?= Yii::t('XcoinModule.product', 'Categories') ?></span>
+                </h6>
                 <ul>
                     <?php foreach ($product->getCategories()->all() as $category) : ?>
                         <li>
@@ -208,35 +210,45 @@ object-fit: contain;
         </div>
         <div class="product-content"> <!-- product content start -->
             <?= RichText::output($product->content); ?>
-                <!-- product content end -->
+            <!-- product content end -->
         </div>
         <div class="panel-footer">
-
-                <!-- product buy action start -->
-                <?php if ($product->status == Product::STATUS_UNAVAILABLE || $product->isOwner(Yii::$app->user->identity)): ?>
-                <div class="invest-btn disabled">
+            <!-- product buy action start -->
+            <?php if ($product->status == Product::STATUS_UNAVAILABLE || $product->isOwner(Yii::$app->user->identity)): ?>
+            <div class="invest-btn disabled">
+                <?php else: ?>
+                <div class="invest-btn">
+                    <?php endif; ?>
+                    <?php if (Yii::$app->user->isGuest): ?>
+                        <?= Html::a(Yii::t('XcoinModule.product', 'Buy this product'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                     <?php else: ?>
-                    <div class="invest-btn">
-                        <?php endif; ?>
-                        <?php if (Yii::$app->user->isGuest): ?>
-                            <?= Html::a(Yii::t('XcoinModule.product', 'Buy this product'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
-                        <?php else: ?>
-                            <?php if ($product->marketplace->isLinkRequired()): ?>
-                                <?= Html::a($product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product') , $product->link, ['target' => '_blank']) ?>
+                        <?php if ($product->isPaymentFirst()) : ?>
+                            <?= Html::a(
+                                $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product'),
+                                ['/xcoin/transaction/select-account', 'container' => Yii::$app->user->identity, 'productId' => $product->id],
+                                ['class' => 'btn btn-sm btn-default pull-right', 'data-target' => '#globalModal', 'data-ui-loader' => '']
+                            ); ?>
+                        <?php else : ?>
+                            <?php if ($product->marketplace->shouldRedirectToLink()): ?>
+                                <?= Html::a(
+                                    $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product'),
+                                    $product->link,
+                                    ['target' => '_blank']
+                                ) ?>
                             <?php else : ?>
-                                <?php if($product->offer_type==1): ?>
-                                    <?= BuyProductButton::widget([
-                                    'guid' => $product->getCreatedBy()->one()->guid,
-                                    'label' => $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product')
-                                ]) ?>
-                                <?php else:?>
-                               <?= Html::a('Buy this product', ['/xcoin/transaction/select-account-payment', 'container' => $user,'productId'=>$product->id], ['class' => 'btn btn-sm btn-default pull-right', 'data-target' => '#globalModal', 'data-ui-loader' => '']); ?>
-                                <?php endif ;?>
-                            <?php endif ?>
+                                <?= Html::a(
+                                    $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product'),
+                                    ['/xcoin/product/buy', 'container' => Yii::$app->user->identity, 'productId' => $product->id],
+                                    ['data-ui-loader' => true]
+                                ) ?>
+                            <?php endif; ?>
                         <?php endif; ?>
-                    </div>
-                    <!-- product buy action end -->
+                    <?php endif; ?>
                 </div>
+            </div>
+            <!-- product buy action end -->
+        </div>
     </div>
-    <?php ActiveForm::end(); ?>
+</div>
+<?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>

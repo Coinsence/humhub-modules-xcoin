@@ -10,7 +10,6 @@ use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
 use humhub\modules\user\models\User;
-use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\Utils;
 use Yii;
 use yii\db\ActiveQuery;
@@ -37,9 +36,8 @@ use yii\web\HttpException;
  * @property string $country
  * @property string $city
  * @property string $link
- * @property integer $type_call
- * @property string $message
- * @property integer $request_paytment_first
+ * @property string $buy_message
+ * @property integer $payment_first
  *
  * @property Marketplace $marketplace
  * @property User $owner
@@ -55,15 +53,8 @@ class Product extends ActiveRecord
     const TYPE_PERSONAL = 1;
     const TYPE_SPACE = 2;
 
-    // call type
-    const TYPE_MESSAGE = 1;
-    const TYPE_LINK = 2;
-
-    // Payment first 
-    const PAYMENT_FIRST = 0;
-    const PAYMENT_NOT_FIRST = 1;
-
-
+    // Payment Options
+    const PAYMENT_FIRST = 1;
 
     // Product offer type
     const OFFER_DISCOUNT_FOR_COINS = 1;
@@ -104,20 +95,19 @@ class Product extends ActiveRecord
         return [
             [['name', 'description', 'content', 'marketplace_id', 'offer_type', 'city', 'country'], 'required'],
             ['categories_names', 'required', 'message' => 'Please choose at least a category'],
-            [['price', 'payment_type','type_call','request_paytment_first'], 'required', 'when' => function ($model) {
+            [['price', 'payment_type'], 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS;
             }],
-            
             [['discount'], 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS;
             }],
-            [['message'], 'required', 'when' => function ($model) {
-                return $model->type_call == Product::TYPE_MESSAGE;
-            }],
             [['link'], 'required', 'when' => function ($model) {
-                return $model->type_call == Product::TYPE_LINK;
+                return $model->marketplace->shouldRedirectToLink();
             }],
-            [['marketplace_id', 'created_by', 'product_type', 'type_call','request_paytment_first','space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
+            [['buy_message'], 'required', 'when' => function ($model) {
+                return !$model->marketplace->shouldRedirectToLink();
+            }],
+            [['marketplace_id', 'created_by', 'product_type','payment_first','space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
             [['price'], 'number', 'min' => '0'],
             [['discount'], 'number', 'min' => '0', 'max' => '100'],
             [['created_at'], 'safe'],
@@ -125,7 +115,7 @@ class Product extends ActiveRecord
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['name', 'description'], 'string', 'max' => 255],
-            [['content', 'link'], 'string'],
+            [['content', 'link', 'buy_message'], 'string'],
             [['pictureFile'], 'safe'],
             [['link'], 'url'],
         ];
@@ -156,9 +146,8 @@ class Product extends ActiveRecord
                 'city',
                 'product_type',
                 'link',
-                'type_call',
-                'message',
-                'request_paytment_first'
+                'buy_message',
+                'payment_first'
             ],
             self::SCENARIO_EDIT => [
                 'name',
@@ -172,9 +161,8 @@ class Product extends ActiveRecord
                 'country',
                 'city',
                 'link',
-                'type_call',
-                'message',
-                'request_paytment_first'
+                'buy_message',
+                'payment_first'
             ],
         ];
     }
@@ -200,9 +188,8 @@ class Product extends ActiveRecord
             'country' => Yii::t('XcoinModule.base', 'Country'),
             'city' => Yii::t('XcoinModule.base', 'City'),
             'link' => Yii::t('XcoinModule.base', 'Call to action link'),
-            'message'=> Yii::t('XcoinModule.base', 'Detailed message'),
-            'type_call' => Yii::t('XcoinModule.base', 'Customer call to action after payment'),
-            'request_paytment_first' => Yii::t('XcoinModule.base', 'Request payment first'),
+            'buy_message'=> Yii::t('XcoinModule.base', 'Message to be sent to the buyer'),
+            'payment_first' => Yii::t('XcoinModule.base', 'Request payment first'),
         ];
     }
 
@@ -306,18 +293,6 @@ class Product extends ActiveRecord
             self::OFFER_TOTAL_PRICE_IN_COINS => Yii::t('XcoinModule.base', 'Total price in coins'),
         ];
     }
-    public static function getCallTypes()
-    {
-        return [
-            self::TYPE_MESSAGE => Yii::t('XcoinModule.base', 'Send a message'),
-            self::TYPE_LINK => Yii::t('XcoinModule.base', 'Redirect to a link'),
-        ];
-    }
-    public function getTypeCallList()
-    {
-        return static::getCallTypes()[$this->type_call];
-    }
-
 
     public static function getStatuses()
     {
@@ -400,9 +375,14 @@ class Product extends ActiveRecord
                 $this->offer_type
             ) || strlen($this->description) > 255 ||
             ($this->offer_type == self::OFFER_DISCOUNT_FOR_COINS && empty($this->discount)) ||
-            ($this->offer_type == self::OFFER_TOTAL_PRICE_IN_COINS && (empty($this->price) || empty($this->payment_type) || empty($this->message) || empty($this->type_call) || empty($this->request_paytment_first)) ||
-            ($this->type_call==self::TYPE_LINK && empty($this->link)) ||
-            ($this->type_call==self::TYPE_MESSAGE && empty($this->message)));
+            ($this->offer_type == self::OFFER_TOTAL_PRICE_IN_COINS && (empty($this->price) || empty($this->payment_type))) ||
+            ($this->marketplace->shouldRedirectToLink() && empty($this->link)) ||
+            (!$this->marketplace->shouldRedirectToLink() && empty($this->buy_message)) ;
+    }
+
+    public function isPaymentFirst()
+    {
+        return $this->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS && $this->payment_first == Product::PAYMENT_FIRST;
     }
 
     private function AttachSpace()
