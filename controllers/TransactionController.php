@@ -18,17 +18,31 @@ use yii\web\HttpException;
  * Description of AccountController
  *
  * @author Luke
+ * @author gdaly <daly.ghaith@gmail.com>
  */
 class TransactionController extends ContentContainerController
 {
-    protected $idProductttt;
     public function actionIndex()
     {
         return $this->actionSelectAccount();
     }
 
-    public function actionSelectAccount()
+    public function actionSelectAccount($productId = null)
     {
+        if ($productId !== null) {
+            $product = Product::findOne(['id' => $productId]);
+            if ($product === null) {
+                throw new HttpException(404);
+            }
+
+            return $this->renderAjax('select-account', [
+                'contentContainer' => $this->contentContainer,
+                'requireAsset' => $product->marketplace->asset,
+                'product' => $product,
+                'nextRoute' => ['/xcoin/transaction/pay', 'contentContainer' => $this->contentContainer]
+            ]);
+        }
+
         return $this->renderAjax('select-account', [
             'contentContainer' => $this->contentContainer,
             'nextRoute' => ['/xcoin/transaction/transfer', 'contentContainer' => $this->contentContainer]
@@ -95,30 +109,9 @@ class TransactionController extends ContentContainerController
         ]);
     }
 
-    public function actionDetails($id)
+    public function actionPay($accountId, $productId)
     {
-        $transaction = Transaction::findOne(['id' => $id]);
-
-        return $this->renderAjax('details', ['transaction' => $transaction]);
-    }
-
-    public function actionSelectAccountPayment($productId)
-    {
-        
-     
-        return $this->renderAjax('select-account-payment', [
-            'contentContainer' => $this->contentContainer,
-            'dataPro'=>$productId,
-            'nextRoute' => ['/xcoin/transaction/transfer1', 'contentContainer' => $this->contentContainer,'id'=>$productId]
-        ]);
-    }
-
-    public function actionTransfer1($accountId,$id)
-    {
-       
         $fromAccount = Account::findOne(['id' => $accountId]);
-        $product = Product::findOne(['id' => $id]);
-        
         if ($fromAccount === null) {
             throw new HttpException(404);
         }
@@ -127,57 +120,62 @@ class TransactionController extends ContentContainerController
             throw new HttpException(401);
         }
 
-        $accountAssetList = [];
-        foreach ($fromAccount->getAssets() as $asset) {
-            $max = $fromAccount->getAssetBalance($asset);
-            if (!empty($max)) {
-                $accountAssetList[$asset->id] = SpaceImage::widget([
-                        'space' => $asset->space,
-                        'width' => 16,
-                        'showTooltip' => true,
-                        'link' => true])
-                    . ' ' . $asset->space->name . '<small class="pull-rightx"> - max. ' . $max . '</small>';
-            }
+        $product = Product::findOne(['id' => $productId]);
+        if ($product === null) {
+            throw new HttpException(404);
         }
 
-        if (empty($accountAssetList)) {
-            throw new HttpException(404, 'No assets available on this account!');
+        $seller = $product->getCreatedBy()->one();
+
+        if ($product->isSpaceProduct()) {
+            $toAccount = Account::findOne(['space_id' => $product->space->id, 'account_type' => Account::TYPE_DEFAULT]);
+        } else {
+            $toAccount = Account::findOne(['user_id' => $seller->id, 'account_type' => Account::TYPE_DEFAULT, 'space_id' => null]);
+        }
+        
+        if ($toAccount === null) {
+            throw new HttpException(404);
         }
 
         $transaction = new Transaction();
         $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
         $transaction->from_account_id = $fromAccount->id;
-        $transaction->asset_id = array_keys($accountAssetList)[0];
+        $transaction->to_account_id = $toAccount->id;
+        $transaction->asset_id = $product->marketplace->asset_id;
+        $transaction->amount = $product->price;
 
-        if ($transaction->load(Yii::$app->request->post())) {
+        if (Yii::$app->request->isPost) {
 
-            // disable transfer to ISSUE ACCOUNT
-            if ($this->contentContainer instanceof Space) {
-                if (AccountHelper::getIssueAccount($this->contentContainer)->id == Account::findOne(['id' => $transaction->to_account_id])->id) {
-                    throw new HttpException(401, 'Can\'t transfer back coins to ISSUE ACCOUNT');
-                }
+            if ($fromAccount->getAssetBalance($product->marketplace->asset) < $product->price) {
+                $this->view->error(Yii::t('XcoinModule.transaction', 'Insufficient balance.'));
+
+                return $this->htmlRedirect($seller->createUrl('/xcoin/product/overview', ['productId' => $product->id]));
             }
 
             $transaction->save();
-
             $this->view->saved();
 
-            return $this->htmlRedirect([
-                '/xcoin/account',
-                'id' => $transaction->from_account_id,
-                'container' => $this->contentContainer
-            ]);
+            if ($product->marketplace->shouldRedirectToLink()) {
+                if ($product->link) {
+                    return $this->redirect($product->link);
+                }
+
+                return $this->htmlRedirect($seller->createUrl('/xcoin/product/overview', ['productId' => $product->id]));
+            }
+
+            return $this->redirect(['/xcoin/product/buy', 'container' => Yii::$app->user->identity, 'productId' => $product->id]);
         }
 
-        return $this->renderAjax('transfer1', [
+        return $this->renderAjax('pay', [
             'transaction' => $transaction,
-            'fromAccount' => $fromAccount,
-            'accountAssetList' => $accountAssetList,
-            'idProduct1'=>$id,
-            'product'=>$product
+            'product' => $product
         ]);
     }
 
+    public function actionDetails($id)
+    {
+        $transaction = Transaction::findOne(['id' => $id]);
 
-
+        return $this->renderAjax('details', ['transaction' => $transaction]);
+    }
 }
