@@ -1714,7 +1714,7 @@ transform: translateY(-50%);
 }
 #product-popup .modal-dialog {
     max-width: 95% !important;
-    width: 100%;
+    width: 70%;
 }
 #product-popup .modal-header {
     padding: 0;
