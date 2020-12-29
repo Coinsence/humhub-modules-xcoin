@@ -68,7 +68,7 @@ object-fit: contain;
     <?php $form = ActiveForm::begin(['id' => 'product-details']); ?>
     <div class="panel">
         <div class="row">
-            <div class="panel-heading col-md-6">
+            <div class="panel-heading col-md-8">
                 <!-- product cover start -->
                 <div class="img-container">
 
@@ -127,7 +127,7 @@ object-fit: contain;
                 <?php endif; ?>
                 <!-- product review button end -->
             </div>
-            <div class="panel-body col-md-6">
+            <div class="panel-body col-md-4">
 
                 <!-- product description start -->
                 <div class="description">
