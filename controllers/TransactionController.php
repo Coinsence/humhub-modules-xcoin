@@ -9,6 +9,8 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Transaction;
+use humhub\modules\xcoin\models\Product;
+
 use Yii;
 use yii\web\HttpException;
 
@@ -102,12 +104,12 @@ class TransactionController extends ContentContainerController
 
     public function actionSelectAccountPayment($productId)
     {
-        $this->idProductttt=$productId;
+        
      
         return $this->renderAjax('select-account-payment', [
             'contentContainer' => $this->contentContainer,
-            'id'=>$this->idProductttt.'11',
-            'nextRoute' => ['/xcoin/transaction/transfer1', 'contentContainer' => $this->contentContainer,'id'=>$this->idProductttt]
+            'dataPro'=>$productId,
+            'nextRoute' => ['/xcoin/transaction/transfer1', 'contentContainer' => $this->contentContainer,'id'=>$productId]
         ]);
     }
 
@@ -115,12 +117,7 @@ class TransactionController extends ContentContainerController
     {
        
         $fromAccount = Account::findOne(['id' => $accountId]);
-        $dbCommand = Yii::$app->db->createCommand("
-        select *
-         from xcoin_product 
-        where id=".$id.";");
-        $data = $dbCommand->queryAll();//output
-        
+        $product = Product::findOne(['id' => $id]);
         
         if ($fromAccount === null) {
             throw new HttpException(404);
@@ -177,7 +174,7 @@ class TransactionController extends ContentContainerController
             'fromAccount' => $fromAccount,
             'accountAssetList' => $accountAssetList,
             'idProduct1'=>$id,
-            'product'=>$data
+            'product'=>$product
         ]);
     }
 

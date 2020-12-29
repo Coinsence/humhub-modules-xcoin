@@ -64,7 +64,7 @@ Assets::register($this);
     height: 100%;
 object-fit: contain;
 --> 
-<?php ModalDialog::begin(['header' => Html::encode($product->name), 'closable' => false, 'class' => 'karima']) ?>
+<?php ModalDialog::begin(['header' => Html::encode($product->name), 'closable' => false]) ?>
     <?php $form = ActiveForm::begin(['id' => 'product-details']); ?>
     <div class="panel">
         <div class="row">
@@ -163,7 +163,7 @@ object-fit: contain;
                 <!-- product pricing start -->
                 <h6 class="value">
                     <span class="nameValue">  <?= Yii::t('XcoinModule.marketplace', 'Price') ?>
-                            <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?><small> <?= $product->getPaymentType() ?> </small><?php endif;?> </span>
+                    <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?><small> <?= $product->getPaymentType() ?> </small><?php endif;?> </span>
                     <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
                         <b><?= $product->price ?></b>
                         <?= SpaceImage::widget([
