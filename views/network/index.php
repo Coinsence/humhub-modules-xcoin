@@ -40,25 +40,31 @@ $count = count($results);
                         'pluginOptions' => [
                             'responsive' => [
                                 0 => [
+                                    'items' => 1
+                                ],
+                                275 => [
                                     'items' => 2
                                 ],
-                                520 => [
+                                375 => [
                                     'items' => 3
                                 ],
-                                768 => [
+                                520 => [
                                     'items' => 4
                                 ],
-                                1192 => [
+                                768 => [
                                     'items' => 5
                                 ],
-                                1366 => [
+                                1192 => [
                                     'items' => 6
                                 ],
+                                1366 => [
+                                    'items' => 7
+                                ],
                                 1556 => [
-                                    'items' => 8
+                                    'items' => 10
                                 ],
                             ],
-                            'margin' => 10,
+                            'margin' => 30,
                             'nav' => true,
                             'dots' => false,
                             'navText' => ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>']
@@ -71,10 +77,9 @@ $count = count($results);
                             <?php if ($allUsersTag) : ?>
                                 <span style="background-image: url('<?= $allUsersTag->getCover() ? $allUsersTag->getCover()->getUrl() : Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-tag-cover.png' ?>'); "></span>
                             <?php else: ?>
-                                <span>
-                                    <label><?= Yii::t('XcoinModule.network', 'All Users') ?></label>
-                                </span>
+                                <span></span>
                             <?php endif; ?>
+                            <label><?= Yii::t('XcoinModule.network', 'All Users') ?></label>
                         </a>
                     </label>
                     <label class="tag <?= $allSpacesTag ? '' : 'all' ?>">
@@ -83,16 +88,16 @@ $count = count($results);
                             <?php if ($allSpacesTag) : ?>
                                 <span style="background-image: url('<?= $allSpacesTag->getCover() ? $allSpacesTag->getCover()->getUrl() : Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-tag-cover.png' ?>'); "></span>
                             <?php else: ?>
-                                <span>
-                                    <label><?= Yii::t('XcoinModule.network', 'All Spaces') ?></label>
-                                </span>
+                                <span></span>
                             <?php endif; ?>
+                            <label><?= Yii::t('XcoinModule.network', 'All Spaces') ?></label>
                         </a>
                     </label>
                     <?php foreach ($tags as $tag): ?>
                         <label class="tag">
                             <a href="<?= Url::to(['/xcoin/network', 'type' => $tag->type == Tag::TYPE_SPACE ? 'space' : 'user', 'tag' => $tag->name]) ?>">
                                 <span style="background-image: url('<?= $tag->getCover() ? $tag->getCover()->getUrl() : Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-tag-cover.png' ?>'); "></span>
+                                <label><?= $tag->name ?></label>
                             </a>
                         </label>
                     <?php endforeach; ?>
