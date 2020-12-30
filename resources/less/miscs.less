@@ -27,14 +27,14 @@
     display: block;
     text-align: center;
   }
+  .category {
+    height: 110px;
+  }
   .category .regular-radio-button {
     display: none;
   }
   .category span,
   .tag span {
-    width: 48px;
-    height: 48px;
-    margin: 10px auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,6 +43,14 @@
     background-size: cover;
     padding: 10px;
     cursor: pointer;
+  }
+  .category span {
+    height: 100%;
+  }
+  .tag span {
+    width: 48px;
+    height: 48px;
+    margin: 10px auto;
   }
   .category span {
     border-radius: 16px;
@@ -56,9 +64,14 @@
   .tag label {
     font-size: 14px;
     font-weight: bold;
-    color: #000;
     cursor: pointer;
     z-index: 1;
+  }
+  .category span label {
+    color: #fff;
+  }
+  .tag label {
+    color: #000;
   }
   .category:not(.all) span:after {
     content: '';
