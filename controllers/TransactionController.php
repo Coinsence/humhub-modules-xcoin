@@ -8,8 +8,9 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\models\Account;
-use humhub\modules\xcoin\models\Product;
 use humhub\modules\xcoin\models\Transaction;
+use humhub\modules\xcoin\models\Product;
+
 use Yii;
 use yii\web\HttpException;
 

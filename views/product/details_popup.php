@@ -63,8 +63,8 @@ Assets::register($this);
     width: 80%;
     height: 100%;
 object-fit: contain;
--->
-    <?php ModalDialog::begin(['header' => Html::encode($product->name), 'closable' => false, 'class' => 'karima']) ?>
+--> 
+<?php ModalDialog::begin(['header' => Html::encode($product->name), 'closable' => false]) ?>
     <?php $form = ActiveForm::begin(['id' => 'product-details']); ?>
     <div class="panel">
         <div class="row">
