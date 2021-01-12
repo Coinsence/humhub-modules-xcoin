@@ -18,13 +18,13 @@
  */
 return [
     '<strong>Asset</strong> distribution' => ' توزيع الأصول',
-    '<strong>Latest transactions</strong> of all space owned accounts' => 'أحدث المعاملات لجميع الحسابات المملوكة للمساحة',
+    '<strong>Latest transactions</strong> of all space owned accounts' => 'أحدث المعاملات لجميع الحسابات المملوكة للفضاء',
     '<strong>Latest transactions</strong> of all user accounts' => 'أحدث المعاملات لجميع حسابات المستخدمين',
     '<strong>Latest transactions</strong> of space assets' => 'أحدث المعاملات للأصول',
     '<strong>Latest</strong> transactions' => 'أحدث المعاملات',
     '<strong>Latest</strong> transactions in your accounts' => 'أحدث المعاملات في حساباتك',
     '<strong>Shareholder</strong> listing' => 'قائمة المساهمين',
-    'Accounts of this space' => 'حسابات هذه المساحة',
+    'Accounts of this space' => 'حسابات هذا الفضاء',
     'Accounts of this user' => 'حسابات هذا المستخدم',
     'Back to overview' => 'الرجوع إلى النظرة العامة',
     'Create account' => 'إنشاء حساب',

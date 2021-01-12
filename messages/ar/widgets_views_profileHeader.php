@@ -20,5 +20,5 @@ return [
     'Followers' => 'المتابعون',
     'Following' => 'متابعة',
     'Friends' => 'الأصدقاء',
-    'Spaces' => 'المساحات',
+    'Spaces' => 'الفضاءات',
 ];

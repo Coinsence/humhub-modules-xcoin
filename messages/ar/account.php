@@ -17,16 +17,19 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Account managed by the actual Space owner' => '',
+    'Account Details' => 'تفاصيل الحساب',
+    'Account managed by the actual Space owner' => 'الحساب يديره مالك الفضاء',
+    'Coins' => 'عملات',
+    'No Coins found' => 'لم يتم العثور على عملات',
+    'No assets available' => 'لا توجد أصول',
     'Account overview:' => 'ملخص الحساب',
     'Account summary' => 'ملخص الحساب',
     'Back to overview' => 'الرجوع',
     'Balance' => 'الرصيد',
     'Create/Edit Account' => 'إصنع حساب',
     'Edit' => 'تعديل',
-    'Ethereum Address' => 'عنوان Ethereum',
+    'Ethereum Address' => 'عنوان إيثيريوم',
     'Manager' => 'مدير الحساب ',
-    'No assets available' => '',
     'Owner' => 'صاحب الحساب',
     'Save' => 'حفظ',
     'Transfer' => 'تحويل',
