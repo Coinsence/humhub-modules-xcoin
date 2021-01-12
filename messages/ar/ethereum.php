@@ -19,9 +19,9 @@
 return [
     'Coin Address' => 'عنوان العملة',
     'Dao Address' => 'عنوان داو',
-    'Enable ethereum' => 'تمكين ethereum ',
-    'Ethereum' => '',
-    'Ethereum summary' => 'ملخص Ethereum',
+    'Enable ethereum' => 'تفعيل  إيثيريوم',
+    'Ethereum' => 'إيثيريوم',
+    'Ethereum summary' => 'ملخص  إيثيريوم',
     'Migrate missing transactions' => 'دمج المعاملات المفقودة',
     'Space Ethereum migration is in progress ! This could take some minutes.' => 'دمج المعاملات المفقودة قيد التقدم',
     'Synchronize Balances' => 'مزامنة الأرصدة',

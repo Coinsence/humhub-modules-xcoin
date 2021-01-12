@@ -17,13 +17,17 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Insufficient balance.' => 'رصيد غير كاف',
+    'Pay for product' => 'الدفع مقابل المنتج',
+    'Recipient account' => 'حساب المستلم',
+    'Requested amount' => 'المبلغ المطلوب',
     '<strong>Select</strong> sender account' => 'حدد حساب المرسل',
     '<strong>Transfer</strong> asset' => 'تحويل الأصول',
     '<strong>Transfer</strong> details' => 'تفاصيل التحويل',
     'Amount' => 'المبلغ',
     'Comment' => 'تعليق',
     'Date' => 'التاريخ',
-    'Ethereum transaction Hash' => 'تجزئة معاملات Ethereum',
+    'Ethereum transaction Hash' => 'تجزئة معاملات إيثيريوم',
     'Select asset' => 'تحديد الأصل',
     'Sender account' => 'حساب المرسل',
     'Target account' => 'حساب المستلم',

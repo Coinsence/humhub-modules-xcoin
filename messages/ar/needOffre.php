@@ -17,10 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Crowdfunding' => 'التمويل الجماعي',
-    'ID' => 'المعرف',
-    'Marketplace' => 'السوق',
-    'Name' => 'الاسم',
-    'The type must be either "Crowdfunding" or "Marketplace".' => 'يجب أن يكون النوع إما تمويل جماعي أو سوق',
-    'the combination {attributes} is already used ' => 'مستخدمة {attributes} التركيب',
+    'What I need from the community' => 'ما أحتاجه من أعضاء الشبكة',
+    'What I offer to the community' => 'ما أقدمه لأعضاء الشبكة',
 ];

@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Please enter What I need from the community' => 'الرجاء إدخال ما أحتاجه من المجتمع',
-    'Please enter What I offer to the community' => 'الرجاء إدخال ما أقدمه للمجتمع',
+    'Please enter What I need from the community' => 'الرجاء إدخال ما أحتاجه من أعضاء الشبكة',
+    'Please enter What I offer to the community' => 'الرجاء إدخال ما أقدمه لأعضاء الشبكة',
     'Provide Profile details' => 'تقديم تفاصيل الموقع الشخصي',
     'Save' => 'حفظ',
 ];
