@@ -92,7 +92,7 @@ class SenderAccountGridView extends GridView
                         $disabled = true;
                     }
 
-                    return Html::a('Select', $route, ['class' => 'btn btn-sm btn-success', 'data-target' => '#globalModal', 'data-ui-loader' => '', 'disabled' => $disabled]);
+                    return Html::a(Yii::t('XcoinModule.base', 'Select'), $route, ['class' => 'btn btn-sm btn-success', 'data-target' => '#globalModal', 'data-ui-loader' => '', 'disabled' => $disabled]);
                 }
             ],
         ];
