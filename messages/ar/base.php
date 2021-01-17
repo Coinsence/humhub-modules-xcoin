@@ -109,6 +109,7 @@ return [
     'Requested Coins' => 'العملات المطلوبة',
     'Revert Funding Invest' => 'عكس استثمار التمويل',
     'Review Submitted Projects' => 'مراجعة المشاريع المقدمة',
+    'Select' => 'اختيار',
     'Sell Product on behalf of this space' => 'بيع المنتج نيابة عن هذه المساحة',
     'Send a message to buyer' => '',
     'Sender' => 'المرسل',

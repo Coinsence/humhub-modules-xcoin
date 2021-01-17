@@ -72,9 +72,10 @@ use yii\helpers\Html;
                </div>
             <?php endif; ?>
         <h3 class="dateAndPlace">
-          <span class="date"> <?= Yii::$app->formatter->asDate(strtotime($experience->start_date), 'php:F, Y') ?>
-                    <?= ' - ' . ($experience->end_date ? date('F, Y', strtotime($experience->end_date)) : Yii::t('XcoinModule.experience', 'Today')) ?>
-                  <b>.</b> 
+          <span class="date">
+              <?= Yii::$app->formatter->asDate($experience->start_date, 'php:F, Y') ?>
+              <?= ' - ' . ($experience->end_date ? Yii::$app->formatter->asDate($experience->end_date, 'php:F, Y') : Yii::t('XcoinModule.experience', 'Today')) ?>
+              <b>.</b>
           </span>
           <span class="place"><?= Html::encode($experience->city) ?><?= ($experience->city && $experience->country) ? ', ' : ' ' ?><?= Iso3166Codes::country($experience->country) ?>
           </span>
