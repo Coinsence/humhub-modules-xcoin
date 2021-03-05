@@ -44,7 +44,7 @@ Assets::register($this);
         <div class="pull-right">
             <?= Html::a(Yii::t('XcoinModule.overview', 'Shareholder list'), ['/xcoin/overview/shareholder-list', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
             <?= Html::a(Yii::t('XcoinModule.overview', 'Latest asset transactions'), ['/xcoin/overview/latest-asset-transactions', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
-            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) && Yii::$app->user->isAdmin() && $asset !== null): ?>
+            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) && $asset !== null): ?>
                 <?= Html::a(Yii::t('XcoinModule.overview', 'Issue new assets'), ['/xcoin/asset/issue', 'id' => $asset->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']); ?>
             <?php endif; ?>
         </div>
