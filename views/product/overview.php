@@ -218,11 +218,8 @@ Assets::register($this);
             <!-- product content start -->
             <?= RichText::output($product->content); ?>
             <!-- product content end -->
-
-
         </div>
         <div class="panel-footer">
-
             <!-- product buy action start -->
             <?php if ($product->status == Product::STATUS_UNAVAILABLE || $product->isOwner(Yii::$app->user->identity)): ?>
             <div class="invest-btn disabled">
@@ -232,18 +229,31 @@ Assets::register($this);
                     <?php if (Yii::$app->user->isGuest): ?>
                         <?= Html::a(Yii::t('XcoinModule.product', 'Buy this product'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                     <?php else: ?>
-                        <?php if ($product->marketplace->isLinkRequired()): ?>
-                            <?= Html::a($product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product') , $product->link, ['target' => '_blank']) ?>
+                        <?php if ($product->isPaymentFirst()) : ?>
+                            <?= Html::a(
+                                $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product'),
+                                ['/xcoin/transaction/select-account', 'container' => Yii::$app->user->identity, 'productId' => $product->id],
+                                ['class' => 'btn btn-sm btn-default pull-right', 'data-target' => '#globalModal', 'data-ui-loader' => '']
+                            ); ?>
                         <?php else : ?>
-                            <?= BuyProductButton::widget([
-                                'guid' => $product->getCreatedBy()->one()->guid,
-                                'label' => $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product')
-                            ]) ?>
-                        <?php endif ?>
+                            <?php if ($product->marketplace->shouldRedirectToLink()): ?>
+                                <?= Html::a(
+                                    $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product'),
+                                    $product->link,
+                                    ['target' => '_blank']
+                                ) ?>
+                            <?php else : ?>
+                                <?= Html::a(
+                                    $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product'),
+                                    ['/xcoin/product/buy', 'container' => Yii::$app->user->identity, 'productId' => $product->id],
+                                    ['data-ui-loader' => true]
+                                ) ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
-                <!-- product buy action end -->
             </div>
+            <!-- product buy action end -->
         </div>
     </div>
 </div>

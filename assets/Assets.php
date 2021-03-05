@@ -21,9 +21,13 @@ class Assets extends AssetBundle
 
     public $css = [
         'css/xcoin.css',
+        'css/user.css',
+        'css/slick.css',
+        'css/slick-theme.css',
     ];
 
     public $js = [
+        'js/slick.js',
         'js/xcoin.js',
     ];
 }

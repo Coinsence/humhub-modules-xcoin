@@ -10,7 +10,6 @@ use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
 use humhub\modules\user\models\User;
-use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\Utils;
 use Yii;
 use yii\db\ActiveQuery;
@@ -37,6 +36,8 @@ use yii\web\HttpException;
  * @property string $country
  * @property string $city
  * @property string $link
+ * @property string $buy_message
+ * @property integer $payment_first
  *
  * @property Marketplace $marketplace
  * @property User $owner
@@ -51,6 +52,9 @@ class Product extends ActiveRecord
     // Product type
     const TYPE_PERSONAL = 1;
     const TYPE_SPACE = 2;
+
+    // Payment Options
+    const PAYMENT_FIRST = 1;
 
     // Product offer type
     const OFFER_DISCOUNT_FOR_COINS = 1;
@@ -98,9 +102,12 @@ class Product extends ActiveRecord
                 return $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS;
             }],
             [['link'], 'required', 'when' => function ($model) {
-                return $model->marketplace->isLinkRequired();
+                return $model->marketplace->shouldRedirectToLink();
             }],
-            [['marketplace_id', 'created_by', 'product_type', 'space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
+            [['buy_message'], 'required', 'when' => function ($model) {
+                return !$model->marketplace->shouldRedirectToLink();
+            }],
+            [['marketplace_id', 'created_by', 'product_type','payment_first','space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
             [['price'], 'number', 'min' => '0'],
             [['discount'], 'number', 'min' => '0', 'max' => '100'],
             [['created_at'], 'safe'],
@@ -108,7 +115,7 @@ class Product extends ActiveRecord
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['name', 'description'], 'string', 'max' => 255],
-            [['content', 'link'], 'string'],
+            [['content', 'link', 'buy_message'], 'string'],
             [['pictureFile'], 'safe'],
             [['link'], 'url'],
         ];
@@ -138,7 +145,9 @@ class Product extends ActiveRecord
                 'country',
                 'city',
                 'product_type',
-                'link'
+                'link',
+                'buy_message',
+                'payment_first'
             ],
             self::SCENARIO_EDIT => [
                 'name',
@@ -151,7 +160,9 @@ class Product extends ActiveRecord
                 'payment_type',
                 'country',
                 'city',
-                'link'
+                'link',
+                'buy_message',
+                'payment_first'
             ],
         ];
     }
@@ -173,10 +184,12 @@ class Product extends ActiveRecord
             'offer_type' => Yii::t('XcoinModule.base', 'Offer Type'),
             'status' => Yii::t('XcoinModule.base', 'Status'),
             'discount' => Yii::t('XcoinModule.base', 'Discount in %'),
-            'payment_type' => Yii::t('XcoinModule.base', 'Payment Type'),
+            'payment_type' => Yii::t('XcoinModule.base', 'Offer unit'),
             'country' => Yii::t('XcoinModule.base', 'Country'),
             'city' => Yii::t('XcoinModule.base', 'City'),
             'link' => Yii::t('XcoinModule.base', 'Call to action link'),
+            'buy_message'=> Yii::t('XcoinModule.base', 'Message to be sent to the buyer'),
+            'payment_first' => Yii::t('XcoinModule.base', 'Request payment first'),
         ];
     }
 
@@ -333,7 +346,6 @@ class Product extends ActiveRecord
 
     public function isNameUnique()
     {
-        var_dump($this->product_type);
         if ($this->product_type == self::TYPE_PERSONAL) {
             return true;
         }
@@ -363,7 +375,14 @@ class Product extends ActiveRecord
                 $this->offer_type
             ) || strlen($this->description) > 255 ||
             ($this->offer_type == self::OFFER_DISCOUNT_FOR_COINS && empty($this->discount)) ||
-            ($this->offer_type == self::OFFER_TOTAL_PRICE_IN_COINS && (empty($this->price) || empty($this->payment_type)));
+            ($this->offer_type == self::OFFER_TOTAL_PRICE_IN_COINS && (empty($this->price) || empty($this->payment_type))) ||
+            ($this->marketplace->shouldRedirectToLink() && empty($this->link)) ||
+            (!$this->marketplace->shouldRedirectToLink() && empty($this->buy_message)) ;
+    }
+
+    public function isPaymentFirst()
+    {
+        return $this->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS && $this->payment_first == Product::PAYMENT_FIRST;
     }
 
     private function AttachSpace()

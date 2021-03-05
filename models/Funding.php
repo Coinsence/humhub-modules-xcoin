@@ -233,6 +233,9 @@ class Funding extends ActiveRecord
         $fundingAccount = $this->getFundingAccount();
 
         $fundingAccount->revertTransactions();
+        $fundingAccount->archived = Account::ACCOUNT_ARCHIVED;
+
+        $fundingAccount->save();
 
         return parent::beforeDelete();
     }

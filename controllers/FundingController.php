@@ -27,6 +27,22 @@ class FundingController extends ContentContainerController
     /**
      * @inheritdoc
      */
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        if (!$this->module->isCrowdfundingEnabled()) {
+            throw new HttpException(403, Yii::t('XcoinModule.base', 'Crowdfunding is not enabled'));
+        }
+
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public $validContentContainerClasses = [Space::class];
 
     public function actionIndex()

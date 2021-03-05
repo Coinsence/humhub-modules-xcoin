@@ -30,6 +30,8 @@ $upload = Upload::withName();
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'product_type')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'link')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'buy_message')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'payment_first')->hiddenInput()->label(false)?>
 
 <?php if ($model->categories_names): ?>
     <?= $form->field($model, 'categories_names')->hiddenInput(['value' => implode(",", $model->categories_names)])->label(false) ?>
@@ -60,7 +62,7 @@ $upload = Upload::withName();
             <br>
             <?= $upload->progress() ?>
             <p class="help-block">
-                <?= Yii::t('XcoinModule.product', 'Please note that first picture will be used as cover for your product.') ?>
+                <?= Yii::t('XcoinModule.product', 'Please note that first picture will be used as cover.') ?>
             </p>
         </div>
     </div>

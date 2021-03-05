@@ -1,23 +1,28 @@
 <?php
 
+use humhub\modules\content\models\ContentContainer;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\modules\xcoin\grids\SenderAccountGridView;
 
-if (!isset($requireAsset)) {
-    $requireAsset = null;
-}
-if (!isset($disableAccount)) {
-    $disableAccount = null;
-}
+/** @var ContentContainer $contentContainer */
+/** @var array $nextRoute */
 ?>
+
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.transaction', '<strong>Select</strong> sender account'), 'closable' => false]) ?>
 <div class="modal-body">
-<?= SenderAccountGridView::widget(['contentContainer' => $contentContainer, 'nextRoute' => $nextRoute, 'requireAsset' => $requireAsset, 'disableAccount' => $disableAccount]) ?>
+    <?= SenderAccountGridView::widget([
+        'contentContainer' => $contentContainer,
+        'nextRoute' => $nextRoute,
+        'requireAsset' => isset($requireAsset) ? $requireAsset : null,
+        'disableAccount' => isset($disableAccount) ? $disableAccount : null,
+        'product' => isset($product) ? $product : null,
+    ])
+    ?>
 </div>
 
 <div class="modal-footer">
-<?= ModalButton::cancel(); ?>
+    <?= ModalButton::cancel(); ?>
 </div>
 
 <?php ModalDialog::end() ?>

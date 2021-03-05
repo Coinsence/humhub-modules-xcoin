@@ -25,6 +25,7 @@ use yii\db\Expression;
  * @property string $ethereum_address
  * @property integer $funding_id
  * @property integer $investor_id
+ * @property integer $archived
  *
  * @property Space $space
  * @property User $user
@@ -42,6 +43,8 @@ class Account extends ActiveRecord
     const TYPE_DEFAULT = 4;
     const TYPE_TASK = 5;
     const TYPE_COMMUNITY_INVESTOR = 6;
+
+    const ACCOUNT_ARCHIVED = 1;
 
     /** @var Event this event is dispatched when account with
      * TYPE_DEFAULT is created for space in order to create ethereum DAO
@@ -271,7 +274,28 @@ class Account extends ActiveRecord
 
     public function disable()
     {
-        $this->revertTransactions();
-        // TODO disable account
+        // send coin to default account rather than issue account
+        $defaultAccount = Account::findOne([
+            'space_id' => $this->getSpace()->one()->id,
+            'account_type' => Account::TYPE_DEFAULT
+        ]);
+
+        // send all coins to default account
+        foreach ($this->getAssets() as $asset) {
+            $transferTransaction = new Transaction();
+
+            $transferTransaction->asset_id = $asset->id;
+            $transferTransaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
+            $transferTransaction->amount = $this->getAssetBalance($asset);
+            $transferTransaction->comment = "Disabling Account";
+            $transferTransaction->from_account_id = $this->id;
+            $transferTransaction->to_account_id = $defaultAccount->id;
+
+            $transferTransaction->save();
+        }
+
+        $this->archived = self::ACCOUNT_ARCHIVED;
+
+        $this->save();
     }
 }

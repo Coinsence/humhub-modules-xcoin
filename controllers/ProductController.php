@@ -4,8 +4,13 @@ namespace humhub\modules\xcoin\controllers;
 
 use Exception;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\mail\models\forms\CreateMessage;
+use humhub\modules\mail\models\Message;
+use humhub\modules\mail\models\MessageEntry;
+use humhub\modules\mail\models\UserMessage;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
@@ -160,6 +165,8 @@ class ProductController extends ContentContainerController
         ]);
     }
 
+  
+
     /**
      * @throws HttpException
      * @throws Exception
@@ -254,5 +261,58 @@ class ProductController extends ContentContainerController
             'container' => $this->contentContainer,
             'productId' => $model->id
         ]));
+    }
+
+    /**
+     * @param $productId
+     * @return string
+     * @throws HttpException
+     */
+    public function actionDetails($productId)
+    {
+        $product = Product::findOne(['id' => $productId]);
+
+        if (!$product) {
+            throw new HttpException(404);
+        }
+
+        return $this->renderAjax('details_popup', [
+            'product' => $product,
+        ]);
+    }
+
+    public function actionBuy($productId)
+    {
+        $product = Product::findOne(['id' => $productId]);
+
+        if (!$product) {
+            throw new HttpException(404);
+        }
+
+        $message = new Message(['title' => Yii::t('XcoinModule.product', "Sales discussion for : {$product->name}")]);
+        $message->save();
+
+        /** @var User $buyer */
+        $buyer = $this->contentContainer;
+
+        /** @var User $seller */
+        $seller = $product->getCreatedBy()->one();
+
+
+        $message->addRecepient($seller, true);
+        $message->addRecepient($buyer);
+
+        MessageEntry::createForMessage($message, $seller, $product->buy_message)->save();
+
+        // notify the buyer
+        try {
+            $message->notify($buyer);
+        } catch (\Exception $e) {
+            Yii::error('Could not send notification e-mail to: ' . $buyer->username . ". Error:" . $e->getMessage());
+        }
+
+        $this->view->info(Yii::t('XcoinModule.product', "You have a new message from {$seller->profile->firstname} {$seller->profile->lastname}"));
+
+        return $this->htmlRedirect('/mail/mail/index');
     }
 }

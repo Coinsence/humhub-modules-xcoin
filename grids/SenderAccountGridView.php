@@ -23,6 +23,7 @@ class SenderAccountGridView extends GridView
     public $nextRoute;
     public $requireAsset;
     public $disableAccount;
+    public $product;
 
     /**
      * @inheritdoc
@@ -78,6 +79,9 @@ class SenderAccountGridView extends GridView
                 'value' => function ($model) use ($contentContainer) {
                     $route = $this->nextRoute;
                     $route['accountId'] = $model->id;
+                    if ($this->product) {
+                        $route['productId'] = $this->product->id;
+                    }
 
                     $disabled = $model->isEmpty();
                     if ($this->disableAccount !== null && $model->id == $this->disableAccount->id) {
@@ -88,7 +92,7 @@ class SenderAccountGridView extends GridView
                         $disabled = true;
                     }
 
-                    return Html::a('Select', $route, ['class' => 'btn btn-sm btn-success', 'data-target' => '#globalModal', 'data-ui-loader' => '', 'disabled' => $disabled]);
+                    return Html::a(Yii::t('XcoinModule.base', 'Select'), $route, ['class' => 'btn btn-sm btn-success', 'data-target' => '#globalModal', 'data-ui-loader' => '', 'disabled' => $disabled]);
                 }
             ],
         ];

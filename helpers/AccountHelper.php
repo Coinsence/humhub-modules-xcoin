@@ -57,7 +57,8 @@ class AccountHelper
         if ($container instanceof Space) {
             $query = Account::find()
                 ->andWhere(['space_id' => $container->id])
-                ->andWhere(['!=', 'account_type', Account::TYPE_ISSUE]);
+                ->andWhere(['!=', 'account_type', Account::TYPE_ISSUE])
+                ->andWhere(['archived' => 0]);
 
             if ($asset) {
                 $query
@@ -70,7 +71,10 @@ class AccountHelper
 
             return $query;
         } elseif ($container instanceof User) {
-            $query = Account::find()->andWhere(['user_id' => $container->id]);
+            $query = Account::find()
+                ->andWhere(['user_id' => $container->id])
+                ->andWhere(['not in', 'account_type', [Account::TYPE_ISSUE, Account::TYPE_TASK]])
+                ->andWhere(['archived' => 0]);
 
             if ($asset) {
                 $query
@@ -161,7 +165,7 @@ class AccountHelper
             return true;
         }
 
-        if ($account->user_id === null && $account->space !== null && $account->space->isAdmin($user->id)) {
+        if ($account->space !== null && $account->space->isAdmin($user->id)) {
             return true;
         }
 

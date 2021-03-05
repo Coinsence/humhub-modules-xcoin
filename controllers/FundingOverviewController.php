@@ -18,6 +18,30 @@ use yii\web\HttpException;
 
 class FundingOverviewController extends Controller
 {
+
+    public function getAccessRules()
+    {
+        return [
+            ['login']
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        if (!$this->module->isCrowdfundingEnabled()) {
+            throw new HttpException(403, Yii::t('XcoinModule.base', 'Crowdfunding is not enabled'));
+        }
+
+        return true;
+    }
+
     public function actionIndex($challengeId = null)
     {
         $query = Funding::find();

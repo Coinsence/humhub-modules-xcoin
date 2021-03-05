@@ -55,12 +55,8 @@ $upload = Upload::forModel($model, $model->coverFile);
         </div>
         <div class="col-md-12">
             <?=
-            $form->field($model, 'is_link_required')->widget(Select2::class, [
-                'data' => [
-                    0 => Yii::t('XcoinModule.marketplace', 'Optional'),
-                    1 => Yii::t('XcoinModule.marketplace', 'Required')
-                ],
-                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.marketplace', 'Select product call to action link option') . ' - '],
+            $form->field($model, 'selling_option')->widget(Select2::class, [
+                'data' => Marketplace::getOptions(),
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
             ]);
@@ -78,6 +74,9 @@ $upload = Upload::forModel($model, $model->coverFile);
                 'hideSearch' => true,
             ])->label(Yii::t('XcoinModule.marketplace', 'Status'));
             ?>
+        </div>
+        <div class="col-md-12">
+            <?= $form->field($model, 'is_tasks_marketplace')->checkbox() ?>
         </div>
         <div class="col-md-12">
             <label class="control-label"><?= Yii::t('XcoinModule.marketplace', 'Marketplace Image') ?></label><br>

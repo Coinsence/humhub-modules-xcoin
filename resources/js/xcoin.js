@@ -8,6 +8,7 @@
 humhub.module('xcoin', function (module, require, $) {
 
     var client = require('client');
+    var event = require('event');
 
     $('body')
         .on('click', '#ether-enable-btn' ,function () {
@@ -89,5 +90,54 @@ humhub.module('xcoin', function (module, require, $) {
     $('body').on('click', '#submit-personal-product', function (e) {
        $("#personal-product").val('1');
     });
+
+   // experience widget
+    $('body').on('click', '#experience-actual_position', function () {
+        let $end_date_input = $('#experience-end_date');
+
+        if($(this).is(':checked')){
+            $end_date_input.prop('disabled', true);
+            $end_date_input.val('')
+        } else {
+            $end_date_input.prop('disabled', false);
+        }
+    });
+
+    // fix datepicker wrong position
+    $.extend($.datepicker,{_checkOffset:function(inst,offset,isFixed){return offset}});
+
+    event.on('humhub:modules:client:pjax:success', function (evt, events, update) {
+        initProfileCarousels();
+    });
+
+    initProfileCarousels();
+
 });
 
+
+function imageError(e,color){
+    e.style.backgroundColor=color;
+    e.classList.add('myCoinName')
+	// e.setAttribute("c","error.png");
+	e.removeAttribute("onError");
+    e.removeAttribute("onclick");
+}
+function initProfileCarousels() {
+
+    // user profile slicked widgets
+    $('.marketPlacesSlider').slick({
+        infinite: false,
+        slidesToShow: 1,
+        variableWidth: true,
+        appendArrows: $('.marketPlacePortfolio .arrows'),
+    });
+    $('.projectsSlider').slick({
+        infinite: false,
+        slidesToShow: 1,
+        variableWidth: true,
+        appendArrows: $('.projectsPortfolio .arrows'),
+    });
+    $('.slick-prev').append('<i class="fa fa-angle-left"></i>');
+    $('.slick-next').append('<i class="fa fa-angle-right"></i>');
+
+}
