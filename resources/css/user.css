@@ -9,8 +9,8 @@ body {
 }
 
 .userProfileContainer {
-    --accent: #1C9C7F;
-    --accent-lighter: #7ec7b6;
+    --accent: #456ca8;
+    --accent-lighter: #ced9eb;
 }
 
 .row {
@@ -270,8 +270,8 @@ body {
 
 .userInfo .contact .connect,.userInfo .contact .disconnect  {
 
-    background: #1C9C7F;
-    border: 1px solid #1C9C7F;
+    background: #456CA8;
+    border: 1px solid #456CA8;
     box-sizing: border-box;
     border-radius: 26px;
     font-style: normal;
@@ -1798,7 +1798,7 @@ transform: translateY(-50%);
 }
 
 .styleState .caret{
-    color: #1C9C7F;
+    color: #456ca8;
 }
 .userProfileContainer .row .layout-sidebar-container .members .panel-heading strong, .userProfileContainer .row .layout-sidebar-container .follower .panel-heading strong{
     color: black;
