@@ -54,106 +54,108 @@ Assets::register($this);
 </style>
 <div class="content">
     
-    <div class="marketPlacePortfolio">
-        <div class="headerMarketPlace">
-            <h2><?= Yii::t('XcoinModule.marketplace', 'Marketplace Portfolio ') ?></h2>   
-          <div class="arrows"></div>
+    <div class="marketPlacePortfolio panel panel-default">
+        <div class="panel-heading">
+            <span><?= Yii::t('XcoinModule.marketplace', '<strong>Marketplace</strong> Portfolio ') ?></span>
+            <div class="arrows"></div>
         </div>
-        <div class="marketPlacesSlider">
-            <div class="marketPlaceCard createNewMarketPlace">
-                <a class="add-project " href="<?= Url::to(['/xcoin/marketplace-overview/new']) ?>"
-                data-target="#globalModal">
+        <div class="panel-body">
+            <div class="marketPlacesSlider">
+                <div class="marketPlaceCard createNewMarketPlace">
+                    <a class="add-project " href="<?= Url::to(['/xcoin/marketplace-overview/new']) ?>"
+                       data-target="#globalModal">
                     <span class="addMarketPlaceCross">
                         <i class="fa fa-plus"></i>
                     </span>
-                    <span class="addMarketPlaceText"><?= Yii::t('XcoinModule.marketplace', 'List your Product/Service!') ?></span>
-                </a>
-            </div>
-            <?php if (count($products) == 0): ?>
-                <p class="alert alert-warning col-md-12">
-                    <?= Yii::t('XcoinModule.product', 'Currently you are not offering any product.') ?>
-                </p>
-            <?php endif; ?>
-            <?php foreach ($products as $product): ?>
-                <?php
-                $owner = $product->getCreatedBy()->one();
-                $picture = $product->getPicture();
-                ?>
-               
-                <?php /*<a href="<?= $owner->createUrl('/xcoin/product/overview', [
+                        <span class="addMarketPlaceText"><?= Yii::t('XcoinModule.marketplace', 'List your Product/Service!') ?></span>
+                    </a>
+                </div>
+                <?php if (count($products) == 0): ?>
+                    <p class="alert alert-warning col-md-12">
+                        <?= Yii::t('XcoinModule.product', 'Currently you are not offering any product.') ?>
+                    </p>
+                <?php endif; ?>
+                <?php foreach ($products as $product): ?>
+                    <?php
+                    $owner = $product->getCreatedBy()->one();
+                    $picture = $product->getPicture();
+                    ?>
+
+                    <?php /*<a href="<?= $owner->createUrl('/xcoin/product/overview', [
                     'productId' => $product->id
                 ]); ?>" */?>
-                <a href="<?= Url::to(['/xcoin/product/details','container' => $user,'productId' => $product->id ])?>" 
-                data-target="#globalModal">
-         
-           
-                <div class="marketPlaceCard">
-                    <div class="marketPlaceCardHeader">
-                        <!-- product picture start -->
-                        <?php if ($picture) : ?>
-                            <div class="bg" style="background-image: url('<?= $picture->getUrl() ?>')"></div>
-                            <?= Html::img($picture->getUrl(), ['height' => '140']) ?>
-                        <?php else : ?>
-                            <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png' ?>')"></div>
-                            <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png', [
-                                'height' => '140',
-                                'width' => '320'
-                            ]) ?>
-                        <?php endif ?>
-                        <!-- product picture end -->
-                            
-                    
-                    </div>
-                    <div class="marketPlaceCardBody">
-                    <div class="project-owner projectOwner">
-                            <!-- user image start -->
-                            <?= Image::widget([
-                                'user' => $product->getCreatedBy()->one(),
-                                'width' => 34,
-                                'showTooltip' => false,
-                                'link' => false,
-                            ]); ?>
-                            <!-- user image end -->
+                    <a href="<?= Url::to(['/xcoin/product/details','container' => $user,'productId' => $product->id ])?>"
+                       data-target="#globalModal">
+
+
+                        <div class="marketPlaceCard">
+                            <div class="marketPlaceCardHeader">
+                                <!-- product picture start -->
+                                <?php if ($picture) : ?>
+                                    <div class="bg" style="background-image: url('<?= $picture->getUrl() ?>')"></div>
+                                    <?= Html::img($picture->getUrl(), ['height' => '140']) ?>
+                                <?php else : ?>
+                                    <div class="bg" style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png' ?>')"></div>
+                                    <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png', [
+                                        'height' => '140',
+                                        'width' => '320'
+                                    ]) ?>
+                                <?php endif ?>
+                                <!-- product picture end -->
+
+
+                            </div>
+                            <div class="marketPlaceCardBody">
+                                <div class="project-owner projectOwner">
+                                    <!-- user image start -->
+                                    <?= Image::widget([
+                                        'user' => $product->getCreatedBy()->one(),
+                                        'width' => 34,
+                                        'showTooltip' => false,
+                                        'link' => false,
+                                    ]); ?>
+                                    <!-- user image end -->
+                                </div>
+                                <h4 class="marketPlaceName" rel="tooltip" title="<?= str_replace('"', '&quot;',$product->name) ?>">
+                                    <?= Html::encode($product->shortenName()); ?>
+                                    <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
+                                        <div style="color: orange; display: inline">
+                                            <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.product', 'Under review') ?>"></i>
+                                        </div>
+                                    <?php else: ?>
+                                        <div style="color: dodgerblue; display: inline">
+                                            <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.product', 'Verified') ?>"></i>
+                                        </div>
+                                    <?php endif; ?>
+                                </h4>
+                                <p class="description">
+                                    <?= Html::encode($product->shortenDescription()); ?>
+                                </p>
+                            </div>
+                            <div class="marketPlaceCardFooter">
+                                <!-- product pricing & discount start -->
+                                <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
+                                    <?= Yii::t('XcoinModule.product', 'Price') ?> : <b><?= $product->price ?></b>
+                                    <?= SpaceImage::widget([
+                                        'space' => $product->marketplace->asset->space,
+                                        'width' => 24,
+                                        'showTooltip' => true,
+                                        'link' => false
+                                    ]); ?>
+                                    <small> <?= $product->getPaymentType() ?> </small>
+                                <?php else : ?>
+                                    <?= $product->discount ?> % <?= Yii::t('XcoinModule.product', 'Discount') ?>
+                                <?php endif; ?>
+
+                                <!-- product pricing & discount end -->
+
+                            </div>
                         </div>
-                        <h4 class="marketPlaceName" rel="tooltip" title="<?= str_replace('"', '&quot;',$product->name) ?>">
-                            <?= Html::encode($product->shortenName()); ?>
-                            <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
-                                <div style="color: orange; display: inline">
-                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.product', 'Under review') ?>"></i>
-                                </div>
-                            <?php else: ?>
-                                <div style="color: dodgerblue; display: inline">
-                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.product', 'Verified') ?>"></i>
-                                </div>
-                            <?php endif; ?>
-                        </h4>
-                        <p class="description">
-                            <?= Html::encode($product->shortenDescription()); ?>
-                        </p>
-                    </div>
-                    <div class="marketPlaceCardFooter">
-                        <!-- product pricing & discount start -->
-                            <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
-                                <?= Yii::t('XcoinModule.product', 'Price') ?> : <b><?= $product->price ?></b>
-                                <?= SpaceImage::widget([
-                                    'space' => $product->marketplace->asset->space,
-                                    'width' => 24,
-                                    'showTooltip' => true,
-                                    'link' => false
-                                ]); ?>
-                                <small> <?= $product->getPaymentType() ?> </small>
-                            <?php else : ?>
-                                <?= $product->discount ?> % <?= Yii::t('XcoinModule.product', 'Discount') ?>
-                            <?php endif; ?>
-                        
-                        <!-- product pricing & discount end -->
-                    
-                    </div>
-                </div>
-    
-                </a>
-            <?php endforeach; ?>
-            
+
+                    </a>
+                <?php endforeach; ?>
+
+            </div>
         </div>
      
     </div>
