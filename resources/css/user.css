@@ -201,37 +201,6 @@ body {
     border-top: 1px solid #E6E6E6;
 }
 
-.userInfo .social .statistics {
-    display: flex;
-}
-
-.userInfo .social .statistics>div:not(:last-child) {
-    margin-right: 20%
-}
-
-.statistics .count {
-    font-style: normal !important;
-    font-weight: bold !important;
-    font-size: 18px !important;
-    line-height: 16px;
-    color: #1E1E1E !important;
-    display: block;
-    text-align: center;
-}
-
-.statistics .count+br {
-    display: none;
-}
-
-.statistics .title {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    /* identical to box height */
-    /* Grey */
-    color: #B9B9B9;
-    text-align: center;
-}
 .userInfo .contact {
     display: flex;
 }
@@ -345,9 +314,6 @@ body {
     .userInfo .contact button.connect {
         height: 45px;
     }
-    .userInfo .social .statistics>div:not(:last-child) {
-        margin-right: 12%
-    }
     .projectsPortfolio .headerProjects>.arrows, .marketPlacePortfolio .headerMarketPlace>.arrows {
         display: none;
     }
@@ -363,15 +329,6 @@ body {
     .tabletViewTasks{
         display: block;
     }
-    .statistics button[data-action-click="ui.modal.load"]{
-        padding: 0 !important;
-        width: 45px;
-        height: 45px;
-        text-indent: 73%;
-        white-space: nowrap;
-        overflow: hidden;
-        color: white !important;
-    }
     .userInfo .followButton
     .userInfo .unfollowButton {
         padding: 0 !important;
@@ -385,12 +342,6 @@ body {
 }
 
 @media (max-width:767px) {
-    .container.space-layout-container .statistics {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 15px;
-    }
     .userInfo .profilePicture img{
         margin-left: 20px;
     }
@@ -447,10 +398,6 @@ body {
     .userInfo .social {
         border: none;
         padding: 22px 15px;
-    }
-    .userInfo .social .statistics {
-        width: 100%;
-        justify-content: space-between;
     }
     .userInfo .contact button img {
         height: 15px;
@@ -1506,12 +1453,6 @@ color: #FFFFFF;
     }
 }
 
-@media (max-width: 587px){
-    .panel-profile .statistics .entry {
-        padding: 0 !important;
-    }
-}
-
 .editPencil{
     width: 40px;
     height: 40px;
@@ -1565,12 +1506,6 @@ justify-content: center !important;
 
 .userProfileContainer{
     max-width: 100% !important;
-}
-
-@media (min-width:992px) and (max-width:1090px){
-    .panel-profile .statistics .entry{
-        padding: 13px 24px 13px 0px !important;
-    }
 }
 
 .userCoins .coinsBody {
