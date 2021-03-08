@@ -1118,12 +1118,6 @@ h2.moreImages{
     margin: 0px 10px 10px 0;
 }
 
-.userCoins .panel-body .coin img {
-    width: 32px;
-    height: 32px;
-    margin-right: 10px;
-}
-
 .userCoins .panel-body .coin span {
     font-style: normal;
     font-weight: 600;
