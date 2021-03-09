@@ -19,22 +19,10 @@ Assets::register($this);
         <small><a href="<?= $user->createUrl('/xcoin/overview') ?>" class="accountDetail"><?= Yii::t('XcoinModule.account','Account Details')?></a></small>
     </div>
     <div class="panel-body">
-        <?php if(sizeof($coins) === 0) :?>
+        <?php if($coins === '') :?>
         <span><?= Yii::t('XcoinModule.account', 'No Coins found')?>.<span>
         <?php else: ?>
-            <?php foreach($coins as $coin) : ?>
-                <div class="coin">
-                    <?= SpaceImage::widget([
-                        'space' => $coin['space'],
-                        'width' => 24,
-                        'showTooltip' => true,
-                        'link' => true
-                    ]); ?>
-                    <span class="amountCoin">
-                        <?= round($coin['coin']['balance'],1)?>
-                    </span>
-                </div>
-            <?php endforeach;?>
+            <?= $coins ?>
         <?php endif;?>
     </div>
 </div>

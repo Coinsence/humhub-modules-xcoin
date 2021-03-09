@@ -1,6 +1,10 @@
 <?php
 
 namespace humhub\modules\xcoin\widgets;
+
+use humhub\modules\xcoin\models\Account;
+use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -30,26 +34,22 @@ class UserCoin extends \yii\base\Widget
  
     public function run()
     {
-        $dbCommand = Yii::$app->db->createCommand("
-        select xcoin_v_account_balance.balance, space.*
-        from xcoin_v_account_balance 
-        left join xcoin_account on xcoin_account.id=xcoin_v_account_balance.account_id left join xcoin_asset on xcoin_asset.id=xcoin_v_account_balance.asset_id 
-        left join space on space.id=xcoin_asset.space_id 
-        where xcoin_account.user_id=". $this->user->id." and xcoin_v_account_balance.balance !=0;");
-        $spacesD = $dbCommand->queryAll();//output
-       //$listlike= Like::find()->where(['created_by'=>13])->all();
-       //print_r($listlike);
         $coins = [];
-        foreach($spacesD as $spaceD) {
-            $space = Space::findOne(['url' => $spaceD['url']]);
-            array_push($coins, [
-                'coin' => $spaceD,
-                'space' => $space
-            ]);
+        foreach (AccountHelper::getAccounts($this->user) as $account) {
+            if ($account->account_type !== Account::TYPE_DEFAULT) {
+                continue;
+            }
+            foreach ($account->getAssets() as $asset) {
+                $coins[] = '<div class="coin">' .
+                    SpaceImage::widget(['space' => $asset->space, 'width' => 24, 'showTooltip' => true, 'link' => true]) .
+                    '<span class="amountCoin">' . $account->getAssetBalance($asset) . '</span>' .
+                '</div>';
+            }
         }
+
         return $this->render('userCoin', [
             'user' => $this->user, 
-            'coins' => $coins,
+            'coins' => implode('', $coins),
             'cssClass' => $this->cssClass
         ]);
     }
