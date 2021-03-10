@@ -36,7 +36,7 @@ Assets::register($this);
                         data-target="#globalModal">
         
                         <div class="col-sm-6 col-md-4">
-                            <div class="panel">
+                        <div class="panel">
                                 <div class="panel-heading">
                                     <!-- product picture start -->
                                     <?php if ($picture) : ?>
@@ -51,23 +51,14 @@ Assets::register($this);
                                     <?php endif ?>
                                     <!-- product picture end -->
                                     <div class="project-owner">
-                                        <!-- owner image start -->
-                                        <?php if($product->isSpaceProduct()): ?>
-                                            <?= SpaceImage::widget([
-                                                'space' => $product->getSpace()->one(),
-                                                'width' => 34,
-                                                'showTooltip' => false,
-                                                'link' => false
-                                            ]); ?>
-                                        <?php else : ?>
-                                            <?= Image::widget([
-                                                'user' => $product->getCreatedBy()->one(),
-                                                'width' => 34,
-                                                'showTooltip' => false,
-                                                'link' => false
-                                            ]); ?>
-                                        <?php endif; ?>
-                                        <!-- owner image end -->
+                                        <!-- user image start -->
+                                        <?= Image::widget([
+                                            'user' => $product->getCreatedBy()->one(),
+                                            'width' => 34,
+                                            'showTooltip' => false,
+                                            'link' => false
+                                        ]); ?>
+                                        <!-- user image end -->
                                     </div>
                                 </div>
                                 <div class="panel-body">
@@ -107,14 +98,7 @@ Assets::register($this);
                                                     ]); ?>
                                                     <small> <?= $product->getPaymentType() ?> </small>
                                                 <?php else : ?>
-                                                    <?= $product->discount ?> %
-                                                    <?= SpaceImage::widget([
-                                                        'space' => $product->marketplace->asset->space,
-                                                        'width' => 24,
-                                                        'showTooltip' => true,
-                                                        'link' => false
-                                                    ]); ?>
-                                                    <?= Yii::t('XcoinModule.product', 'Discount') ?>
+                                                    <?= $product->discount ?> % <?= Yii::t('XcoinModule.product', 'Discount') ?>
                                                 <?php endif; ?>
                                             </div>
                                             <!-- product pricing & discount end -->
