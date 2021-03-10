@@ -13,6 +13,16 @@ body {
     --accent-lighter: #ced9eb;
 }
 
+.userProfileContainer .panel-heading a {
+    font-size:0.9em;
+    color:#3cbeef;
+}
+
+.userProfileContainer .panel-heading a {
+    font-size:0.9em;
+    color:#3cbeef;
+}
+
 .row {
     margin: 0 !important;
 }
@@ -314,9 +324,6 @@ body {
     .userInfo .contact button.connect {
         height: 45px;
     }
-    .projectsPortfolio .headerProjects>.arrows, .marketPlacePortfolio .headerMarketPlace>.arrows {
-        display: none;
-    }
     .ongoingprojects, .offersMayLike, .peopleMayLike {
         display: none;
     }
@@ -500,300 +507,7 @@ body {
     color: #1E1E1E;
 }
 
-.projectsPortfolio .headerProjects,
-.marketPlacePortfolio .panel-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 35px;
-}
-
-/* .projectsPortfolio .slick-slider .slick-track {
-    padding: 20px 0;
-} */
-
-.projectsPortfolio .slick-track>a,.marketPlacePortfolio .slick-track>a{
-    width: unset !important;
-}
-
-.projectsPortfolio .slick-arrow, .marketPlacePortfolio .slick-arrow {
-    width: 35px;
-    height: 35px;
-    border: 1px solid #B9B9B9;
-    border-radius: 50%;
-    box-sizing: border-box;
-    position: relative;
-    display: inline-block;
-    left: unset;
-    right: unset;
-    top: unset;
-    bottom: unset;
-    transform: unset;
-}
-
-.projectsPortfolio .slick-prev, .marketPlacePortfolio .slick-prev {
-    margin-right: 10px;
-}
-
-.projectsPortfolio .slick-arrow::before, .marketPlacePortfolio .slick-arrow::before, .imageViewerSlider .slick-arrow::before {
-    content: ""
-}
-
-.projectsPortfolio .slick-arrow i, .marketPlacePortfolio .slick-arrow i {
-    color: black;
-    font-size: 22px;
-}
-
-.projectsPortfolio .slick-arrow.slick-disabled i, .marketPlacePortfolio .slick-arrow.slick-disabled i {
-    color: #c9c7c7;
-}
-
-.projectCard, .marketPlaceCard {
-    width: 314px !important;
-    height: 401px !important;
-    border: solid 2px #ece6e6;
-    border-radius: 4px;
-    transition: transform 0.5s ease;
-    margin: 0 20px;
-}
-
-.projectCard:first-child, .marketPlaceCard:first-child {
-    margin-left: 0;
-}
-
-/* .projectCard:hover {
-    transform: translateY(-10px);
-    border: none;
-    padding: 2px;
-    box-shadow: 0px 0px 9px 0px grey;
-}
-
-.projectCard:hover .projectCardHeader {
-    margin: -2px;
-} */
-
-.projectCard .projectCardHeader {
-    height: 40%;
-    border-radius: 4px;
-    margin: -1px;
-}
-
-.marketPlaceCard .marketPlaceCardHeader {
-    height: 50%;
-    border-radius: 4px;
-    margin: -1px;
-    border-bottom: solid 2px #8080805e;
-}
-
-.projectCard .projectCardHeader img, .marketPlaceCard .marketPlaceCardHeader img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.projectCard .projectCardBody {
-    height: 48%;
-    padding-left: 10px;
-    padding-right: 10px;
-    position: relative;
-    text-align: center;
-}
-.projectCard .projectCardBody .space-acronym{
-    position: relative;
-    top: -15px;
-}
-.marketPlaceCardBody > img{
-    width: 40px;
-height: 40px;
-border-radius: 50%;
-position: relative;
-top: -15px;
-margin: 0 auto;
-}
-.marketPlaceCard .marketPlaceCardBody {
-    height: 40%;
-    padding-left: 10px;
-    padding-right: 10px;
-    text-align: center;
-}
-
-.projectCard .projectCardBody .projectImage, .marketPlaceCard .marketPlaceCardBody .projectImage {
-    width: 50px !important;
-    height: 50px !important;
-    object-fit: cover;
-    border-radius: 50% !important;
-    position: relative;
-    top: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: -15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-.marketPlaceCard .marketPlaceCardFooter .projectImage{
-    margin: 0 6px;
-}
-.projectCard .projectName, .marketPlaceCard .marketPlaceName {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 13px;
-    margin-bottom: 6px;
-    color: #000000;
-    letter-spacing: -0.2px;
-    text-align: center;
-}
-
-.projectCard .description, .marketPlaceCard .description {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
-    margin-bottom: 6px;
-    color: #000000;
-    letter-spacing: -0.3px;
-    text-align: center;
-    display: block;
-    display: -webkit-box;
-    margin: 0 auto;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.projectCard .accumulation {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 11px;
-    margin-bottom: 6px;
-    color: #5a5757;
-    text-align: left;
-    width: 70%;
-    margin: auto;
-    position: absolute;
-    bottom: 7px;
-    left: 15%;
-}
-.projectCard .accumulation .progress{
-    margin-bottom: 3px;
-}
-.projectCard
-.addProjectCross{
-    width: 50px;
-    height: 50px;
-    background: #e3f7ff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.projectCard .accumulationProgression {
-    width: 100%;
-    height: 5px;
-    display: block;
-    background: #c9c9c96e;
-    border-radius: 6px;
-    margin: 10px auto 7px;
-}
-
-.accumulated {
-    height: 100%;
-    width: 70%;
-    display: block;
-    border-radius: 6px;
-    background: #acddac;
-}
-
-.projectCardFooter {
-    height: 12%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top: solid 2px #ece6e6;
-}
-
-.marketPlaceCard .marketPlaceCardFooter {
-    height: 10%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top: solid 2px #ece6e6;
-    font-weight: 600;
-    font-size: 13px;
-    margin-bottom: 6px;
-    color: #000000;
-    letter-spacing: -0.2px;
-    text-align: center;
-}
-
-.projectCardFooter .requesting {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    letter-spacing: -0.5px;
-    text-transform: uppercase;
-    color: #6d6d6d;
-}
-
-.projectCardFooter .amount {
-    font-style: normal;
-    font-size: 14px;
-    text-transform: uppercase;
-    color: #6d6d6d;
-    margin: 0 7px;
-}
-
-.marketPlaceCardFooter .discount {
-    font-size: 15px;
-    margin-right: 8px;
-}
-
-.projectCardFooter .coinImage, .marketPlaceCard .coinImage {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-}
-
-
-.projectCard .remainingDaysClockRed{
-    color: red;
-}
-
-
-.projectCard.createNewProject,.marketPlaceCard.createNewMarketPlace{
-    border: dotted 2px #ece6e6;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-}
-.projectCard.createNewProject .addProjectCross,.marketPlaceCard.createNewMarketPlace .addMarketPlaceCross{
-    width: 50px;
-    height: 50px;
-    background: var(--accent-lighter) ;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-}
-.projectCard.createNewProject .addProjectCross i,.marketPlaceCard.createNewMarketPlace .addMarketPlaceCross i{
-    color: var(--accent);
-    font-size: 18px;
-}
-
-.projectCard.createNewProject .addProjectText,.marketPlaceCard.createNewMarketPlace .addMarketPlaceText{
-    font-style: normal;
-    font-weight: 600;
-    font-size: 13px;
-    margin-bottom: 6px;
-    color: #000000;
-    letter-spacing: -0.2px;
-    text-align: center;
-}
-
- .postFooter .wall-entry-controls{
+.postFooter .wall-entry-controls{
     border-top: 1px solid #E6E6E6;
     padding: 12px 17px;
     margin: 0 -10px -10px;
@@ -1092,6 +806,7 @@ h2.moreImages{
 .whatWeOffer .edit-btn i,.whatWeNeed .edit-btn i{
     margin-left: auto;
 }
+
 /* coins */
 
 .userCoins {
@@ -1105,10 +820,6 @@ h2.moreImages{
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-}
-.userCoins .panel-heading a {
-    font-size:0.9em;
-    color:#3cbeef;
 }
 
 .userCoins .panel-body .coin {

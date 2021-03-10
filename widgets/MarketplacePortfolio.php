@@ -9,20 +9,7 @@
 namespace humhub\modules\xcoin\widgets;
 
 use humhub\modules\user\models\User;
-use Yii;
-
-use humhub\modules\space\widgets\Image as SpaceImage;
-use humhub\modules\xcoin\helpers\AssetHelper;
-use humhub\modules\xcoin\helpers\MarketplaceHelper;
-use humhub\modules\xcoin\helpers\SpaceHelper;
-use humhub\modules\xcoin\models\Challenge;
-use humhub\components\Controller;
-use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
-use humhub\modules\xcoin\models\ProductFilter;
-use humhub\modules\xcoin\widgets\MarketplaceImage;
-use yii\db\Expression;
-use yii\web\HttpException;
 use humhub\modules\space\models\Space;
 
 /**
@@ -31,7 +18,7 @@ use humhub\modules\space\models\Space;
  * @since 0.5
  * @author Luke
  */
-class MarketPlacePortfolio extends \yii\base\Widget
+class MarketplacePortfolio extends \yii\base\Widget
 {
 
     /**
@@ -81,7 +68,7 @@ class MarketPlacePortfolio extends \yii\base\Widget
                 'product_type' => Product::TYPE_PERSONAL
             ])->all();
 
-            return $this->render('marketPlacePortfolio', [
+            return $this->render('marketplacePortfolio', [
                 'products' => $products,
                 'user' => $this->user
             ]);

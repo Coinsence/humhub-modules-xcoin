@@ -16,10 +16,6 @@ use yii\helpers\Html;
 /** @var $experiences Experience[] */
 /** @var $htmlOptions [] */
 ?>
- 
-<!-- // TODO move styling in less files -->
-
-<?= Html::beginTag('div') ?>
 
 <div class="experience panel panel-default" style="align-items: baseline;position: relative;">
     <div class="panel-heading">
@@ -89,4 +85,3 @@ use yii\helpers\Html;
         </ul>
     </div>
 </div>
-<?= Html::endTag('div') ?>
