@@ -14,7 +14,7 @@ Assets::register($this);
 <!-- TODO move styles to less files -->
 <style>
     .add-challenge {
-        height: 325px;
+        height: 300px;
         display: flex;
         justify-content: center;
         align-items: center;
