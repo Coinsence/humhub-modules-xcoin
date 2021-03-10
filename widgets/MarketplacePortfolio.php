@@ -60,7 +60,7 @@ class MarketplacePortfolio extends \yii\base\Widget
             $products = Product::find()->where(['space_id' => $this->user->id])->all();
 
             return $this->render('marketPlacePortfolio', [
-                'products' => $products,
+                'products' => array_slice($products, 0, 3),
             ]);
         } else {
             $products = Product::find()->where([
@@ -69,7 +69,7 @@ class MarketplacePortfolio extends \yii\base\Widget
             ])->all();
 
             return $this->render('marketplacePortfolio', [
-                'products' => $products,
+                'products' => array_slice($products, 0, 3),
                 'user' => $this->user
             ]);
         }
