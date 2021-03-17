@@ -95,7 +95,7 @@ class AssetHelper
         return false;
     }
 
-    public static function getAllAssets(Space $excludedSpace = null)
+    public static function getAllAssets(Space $excludedSpace = null, $issuedOnly = true)
     {
         $assets = [];
 
@@ -104,7 +104,8 @@ class AssetHelper
             $query->andWhere(['!=', 'id', self::getSpaceAsset($excludedSpace)->id]);
 
         foreach ($query->all() as $asset) {
-            $assets[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
+            if ( !$issuedOnly || $asset->getIssuedAmount() > 0 )
+                $assets[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
         }
 
         return $assets;
