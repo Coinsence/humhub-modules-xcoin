@@ -41,6 +41,7 @@ use yii\bootstrap\Html; ?>
                     ?>
                 <?php endif; ?>
             <?php endif; ?>
+            <?= Html::a(Yii::t('XcoinModule.overview', 'Back to overview'), ['/xcoin/overview', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
         </div>
     </div>
     <div class="panel-body">
