@@ -80,15 +80,6 @@ class Events
             ]);
 
             if (Yii::$app->getModule('xcoin')->isCrowdfundingEnabled()) {
-                $event->sender->addItem([
-                    'label' => Yii::t('XcoinModule.base', 'Ethereum'),
-                    'url' => $space->createUrl('/xcoin/ethereum'),
-                    'icon' => '<i class="ether-icon-menu"></i>',
-                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'ethereum'),
-                    'sortOrder' => 20000,
-                ]);
-
-
                 if (AssetHelper::canManageAssets($space) || Funding::find()->count() > 0) {
                     $event->sender->addItemGroup([
                         'id' => 'crowdfunding',
