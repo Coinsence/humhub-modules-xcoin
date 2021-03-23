@@ -251,6 +251,24 @@ class FundingController extends ContentContainerController
         ]));
     }
 
+    /**
+     * @param $fundingId
+     * @return string
+     * @throws HttpException
+     */
+    public function actionDetails($fundingId)
+    {
+        $funding = Funding::findOne(['id' => $fundingId]);
+
+        if (!$funding) {
+            throw new HttpException(404);
+        }
+
+        return $this->renderAjax('details_popup', [
+            'funding' => $funding,
+        ]);
+    }
+
     public function actionAccept($id)
     {
         if (!AssetHelper::canManageAssets($this->contentContainer)) {

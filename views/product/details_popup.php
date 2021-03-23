@@ -1,6 +1,5 @@
 <?php
 
-use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
 
@@ -9,7 +8,6 @@ use humhub\modules\user\widgets\Image;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Product;
-use humhub\modules\xcoin\widgets\BuyProductButton;
 use humhub\modules\xcoin\widgets\MarketplaceImage;
 use yii\bootstrap\Carousel;
 use humhub\libs\Html;
@@ -27,7 +25,7 @@ Assets::register($this);
  */
 ?>
 
-<div class="space-funding" id="product-popup">
+<div class="space-funding details-popup" id="product-popup">
     <?php
     $cover = $product->getPicture();
     $gallery = $product->getGallery();
@@ -195,7 +193,8 @@ object-fit: contain;
 
 
                 <!-- product categories start -->
-                <h6 class="categories"><span class="nameValue"><?= Yii::t('XcoinModule.product', 'Categories') ?></span>
+                <h6 class="categories">
+                    <span class="nameValue"><?= Yii::t('XcoinModule.product', 'Categories') ?></span>
                 </h6>
                 <ul>
                     <?php foreach ($product->getCategories()->all() as $category) : ?>

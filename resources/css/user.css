@@ -1250,55 +1250,55 @@ transform: translateY(-50%);
     width: 100%;
 }
 
-#product-popup {
+.details-popup {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100%;
 }
-#product-popup .modal-dialog {
+.details-popup .modal-dialog {
     max-width: 95% !important;
-    width: 70%;
+    width: 70% !important;
 }
-#product-popup .modal-header {
+.details-popup .modal-header {
     padding: 0;
     text-align: left;
 }
-#product-popup .modal-title {
+.details-popup .modal-title {
     font-size: 16px;
     font-weight: bold;
     color: #202020;
     margin-top: 0;
     padding: 10px;
 }
-#product-popup .panel {
+.details-popup .panel {
     box-shadow: none;
 }
-#product-popup .panel .panel-heading .img-container img{
+.details-popup .panel .panel-heading .img-container img{
     height: 400px;
 }
-#product-popup .modal-dialog {
+.details-popup .modal-dialog {
     margin: auto;
 }
-#product-popup .panel .panel-body{
+.details-popup .panel .panel-body{
     margin-bottom: 0;
 }
-#product-popup .panel .panel-body .description p {
+.details-popup .panel .panel-body .description p {
     margin-top: 0;
 }
-#product-popup .panel .product-content {
+.details-popup .panel .product-content {
     padding: 24px;
 }
-#product-popup .value,
-#product-popup .location,
-#product-popup .categories,
-#product-popup .description {
+.details-popup .value,
+.details-popup .location,
+.details-popup .categories,
+.details-popup .description {
     padding: 5px;
 }
-#product-popup .value .nameValue ,
-#product-popup .location .nameValue,
-#product-popup .categories .nameValue,
-#product-popup .description .nameValue {
+.details-popup .value .nameValue ,
+.details-popup .location .nameValue,
+.details-popup .categories .nameValue,
+.details-popup .description .nameValue {
     display: inline-block;
     margin-right: 20px;
     text-transform: capitalize;
@@ -1308,19 +1308,19 @@ transform: translateY(-50%);
 }
 
 @media (min-width: 992px) {
-    #product-popup .panel .panel-body {
+    .details-popup .panel .panel-body {
         padding-top: 0;
         padding-bottom: 0;
     }
-    #product-popup .panel .product-content {
+    .details-popup .panel .product-content {
         padding: 48px 24px;
     }
 }
 @media (max-width: 575px) {
-    #product-popup .modal-dialog {
+    .details-popup .modal-dialog {
         width: 100% !important;
     }
-    #product-popup .panel .panel-heading .img-container img{
+    .details-popup .panel .panel-heading .img-container img{
         height: 180px;
     }
 }
