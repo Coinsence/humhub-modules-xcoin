@@ -238,7 +238,7 @@ Select2BootstrapAsset::register($this);
                         ?>
                        
                      <a href="<?= Url::to(['/xcoin/product/details','container' => $user,'productId' => $product->id ])?>" 
-                data-target="#globalModal">
+                        data-target="#globalModal">
          
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="panel">

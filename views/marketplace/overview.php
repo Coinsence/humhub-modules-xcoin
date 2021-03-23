@@ -133,9 +133,10 @@ Assets::register($this);
                         $owner = $product->isSpaceProduct() ? $product->getSpace()->one() : $product->getCreatedBy()->one();
                         $picture = $product->getPicture();
                         ?>
-                        <a href="<?= $owner->createUrl('/xcoin/product/overview', [
+                        <a href="<?= $owner->createUrl('/xcoin/product/details', [
                             'productId' => $product->id
-                        ]); ?>">
+                        ]); ?>"
+                            data-target="#globalModal">
                             <div class="col-sm-6 col-md-4 col-lg-3">
                                 <div class="panel">
                                     <div class="panel-heading">

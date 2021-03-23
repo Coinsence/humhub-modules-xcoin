@@ -30,10 +30,11 @@ Assets::register($this);
                     $space = $funding->getSpace()->one();
                     $cover = $funding->getCover();
                     ?>
-                    <a href="<?= $space->createUrl('/xcoin/funding/overview', [
+                    <a href="<?= $space->createUrl('/xcoin/funding/details', [
                         'container' => $this->context->contentContainer,
                         'fundingId' => $funding->id
-                    ]); ?>">
+                    ]); ?>"
+                        data-target="#globalModal">
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="panel">
                                 <div class="panel-heading">
