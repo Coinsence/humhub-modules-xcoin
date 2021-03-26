@@ -330,10 +330,10 @@ body {
     .userCoins.tabletView {
         display: block;
     }
-    .tabletViewTasks{
+    .tabletViewTasks {
         display: block;
     }
-    .userInfo .followButton
+    .userInfo .followButton,
     .userInfo .unfollowButton {
         padding: 0 !important;
         width: 45px !important;
