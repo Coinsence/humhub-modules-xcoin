@@ -79,6 +79,8 @@ class Events
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && !in_array(Yii::$app->controller->id, ['funding', 'product', 'ethereum', 'challenge', 'marketplace'])),
             ]);
 
+            // TODO: conditions here
+            
             if (Yii::$app->getModule('xcoin')->isCrowdfundingEnabled()) {
                 if (AssetHelper::canManageAssets($space) || Funding::find()->count() > 0) {
                     $event->sender->addItemGroup([
@@ -94,17 +96,20 @@ class Events
                         'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'challenge'),
                         'sortOrder' => 30000,
                     ]);
-                    $event->sender->addItem([
-                        'label' => Yii::t('XcoinModule.base', 'Submitted Proposals'),
-                        'group' => 'crowdfunding',
-                        'url' => $space->createUrl('/xcoin/funding'),
-                        'icon' => '<i class="fa fa-leaf"></i>',
-                        'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'funding'),
-                        'sortOrder' => 30000,
-                    ]);
+                    if (Funding::find()->where(['space_id' => $space->id])->count() > 0) {
+                        $event->sender->addItem([
+                            'label' => Yii::t('XcoinModule.base', 'Submitted Proposals'),
+                            'group' => 'crowdfunding',
+                            'url' => $space->createUrl('/xcoin/funding'),
+                            'icon' => '<i class="fa fa-leaf"></i>',
+                            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'funding'),
+                            'sortOrder' => 30000,
+                        ]);
+                    }
                 }
             }
 
+            // TODO: conditions here
             if (AssetHelper::canManageAssets($space) || Product::find()->count() > 0) {
                 $event->sender->addItemGroup([
                     'id' => 'marketplace',
@@ -119,14 +124,16 @@ class Events
                     'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'marketplace'),
                     'sortOrder' => 40000,
                 ]);
-                $event->sender->addItem([
-                    'label' => Yii::t('XcoinModule.base', 'Offered products'),
-                    'group' => 'marketplace',
-                    'url' => $space->createUrl('/xcoin/product'),
-                    'icon' => '<i class="fa fa-product-hunt"></i>',
-                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'product'),
-                    'sortOrder' => 40000,
-                ]);
+                if (Product::find()->where(['space_id' => $space->id])->count() > 0) {
+                    $event->sender->addItem([
+                        'label' => Yii::t('XcoinModule.base', 'Offered products'),
+                        'group' => 'marketplace',
+                        'url' => $space->createUrl('/xcoin/product'),
+                        'icon' => '<i class="fa fa-product-hunt"></i>',
+                        'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'product'),
+                        'sortOrder' => 40000,
+                    ]);
+                }
             }
         }
     }
