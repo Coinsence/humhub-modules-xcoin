@@ -6,7 +6,9 @@ use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Account;
+use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
 use humhub\modules\xcoin\models\Transaction;
 use humhub\widgets\TopMenu;
@@ -79,15 +81,19 @@ class Events
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && !in_array(Yii::$app->controller->id, ['funding', 'product', 'ethereum', 'challenge', 'marketplace'])),
             ]);
 
-            // TODO: conditions here
-            
-            if (Yii::$app->getModule('xcoin')->isCrowdfundingEnabled()) {
-                if (AssetHelper::canManageAssets($space) || Funding::find()->count() > 0) {
-                    $event->sender->addItemGroup([
-                        'id' => 'crowdfunding',
-                        'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', Yii::t('XcoinModule.base', 'Crowdfunding')),
-                        'sortOrder' => 30000,
-                    ]);
+            $isChallengesActive = AssetHelper::canManageAssets($space) || Challenge::find()->where(['space_id' => $space->id])->count() > 0;
+            $isFundingsActive = AssetHelper::canManageAssets($space) || Funding::find()->where(['space_id' => $space->id])->count() > 0;
+            $isMarketplacesActive = AssetHelper::canManageAssets($space) || Marketplace::find()->where(['space_id' => $space->id])->count() > 0;
+            $isProductsActive = AssetHelper::canManageAssets($space) || Product::find()->where(['space_id' => $space->id])->count() > 0;
+
+            if (Yii::$app->getModule('xcoin')->isCrowdfundingEnabled() && ($isChallengesActive || $isFundingsActive)) {
+                $event->sender->addItemGroup([
+                    'id' => 'crowdfunding',
+                    'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', Yii::t('XcoinModule.base', 'Crowdfunding')),
+                    'sortOrder' => 30000,
+                ]);
+
+                if ($isChallengesActive) {
                     $event->sender->addItem([
                         'label' => Yii::t('XcoinModule.base', 'Space Challenges'),
                         'group' => 'crowdfunding',
@@ -96,35 +102,39 @@ class Events
                         'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'challenge'),
                         'sortOrder' => 30000,
                     ]);
-                    if (Funding::find()->where(['space_id' => $space->id])->count() > 0) {
-                        $event->sender->addItem([
-                            'label' => Yii::t('XcoinModule.base', 'Submitted Proposals'),
-                            'group' => 'crowdfunding',
-                            'url' => $space->createUrl('/xcoin/funding'),
-                            'icon' => '<i class="fa fa-leaf"></i>',
-                            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'funding'),
-                            'sortOrder' => 30000,
-                        ]);
-                    }
+                }
+
+                if ($isFundingsActive) {
+                    $event->sender->addItem([
+                        'label' => Yii::t('XcoinModule.base', 'Submitted Proposals'),
+                        'group' => 'crowdfunding',
+                        'url' => $space->createUrl('/xcoin/funding'),
+                        'icon' => '<i class="fa fa-leaf"></i>',
+                        'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'funding'),
+                        'sortOrder' => 30000,
+                    ]);
                 }
             }
 
-            // TODO: conditions here
-            if (AssetHelper::canManageAssets($space) || Product::find()->count() > 0) {
+            if ($isMarketplacesActive || $isProductsActive) {
                 $event->sender->addItemGroup([
                     'id' => 'marketplace',
                     'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', Yii::t('XcoinModule.base', 'Marketplace')),
                     'sortOrder' => 40000,
                 ]);
-                $event->sender->addItem([
-                    'label' => Yii::t('XcoinModule.base', 'Space marketplaces'),
-                    'group' => 'marketplace',
-                    'url' => $space->createUrl('/xcoin/marketplace'),
-                    'icon' => '<i class="fa fa-shopping-basket"></i>',
-                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'marketplace'),
-                    'sortOrder' => 40000,
-                ]);
-                if (Product::find()->where(['space_id' => $space->id])->count() > 0) {
+
+                if ($isMarketplacesActive) {
+                    $event->sender->addItem([
+                        'label' => Yii::t('XcoinModule.base', 'Space marketplaces'),
+                        'group' => 'marketplace',
+                        'url' => $space->createUrl('/xcoin/marketplace'),
+                        'icon' => '<i class="fa fa-shopping-basket"></i>',
+                        'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'marketplace'),
+                        'sortOrder' => 40000,
+                    ]);
+                }
+
+                if ($isProductsActive) {
                     $event->sender->addItem([
                         'label' => Yii::t('XcoinModule.base', 'Offered products'),
                         'group' => 'marketplace',
@@ -134,7 +144,9 @@ class Events
                         'sortOrder' => 40000,
                     ]);
                 }
+
             }
+
         }
     }
 
