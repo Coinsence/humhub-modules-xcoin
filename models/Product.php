@@ -79,6 +79,9 @@ class Product extends ActiveRecord
     // used when creating product
     public $categories_names;
 
+    // used to select between user and space product
+    public $account;
+
     /**
      * @inheritdoc
      */
@@ -132,6 +135,7 @@ class Product extends ActiveRecord
     {
         return [
             self::SCENARIO_CREATE => [
+                'account',
                 'name',
                 'space_id',
                 'description',
@@ -174,6 +178,7 @@ class Product extends ActiveRecord
     {
         return [
             'id' => Yii::t('XcoinModule.base', 'ID'),
+            'account' => Yii::t('XcoinModule.base', 'Account'),
             'marketplace_id' => Yii::t('XcoinModule.base', 'Marketplace'),
             'price' => Yii::t('XcoinModule.base', 'Price'),
             'created_at' => Yii::t('XcoinModule.base', 'Created At'),
