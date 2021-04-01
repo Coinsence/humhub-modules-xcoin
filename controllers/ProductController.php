@@ -71,14 +71,14 @@ class ProductController extends ContentContainerController
 
             $accountsList = [];
 
-            $accountsList[0] = UserImage::widget(['user' => $user, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' Default';
+            $accountsList[Product::PRODUCT_USER_DEFAULT_ACCOUNT] = UserImage::widget(['user' => $user, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' Default';
 
             foreach ($spaces as $space) {
                 if (AssetHelper::getSpaceAsset($space))
                     $accountsList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
             }
 
-            $model->account = 0;
+            $model->account = Product::PRODUCT_USER_DEFAULT_ACCOUNT;
 
             return $this->renderAjax('../product/details', [
                 'model' => $model,
@@ -96,7 +96,7 @@ class ProductController extends ContentContainerController
                 throw new HttpException(401);
             }
 
-            if ($model->account == '0') {
+            if ($model->account == Product::PRODUCT_USER_DEFAULT_ACCOUNT) {
                 $model->space_id = null;
                 $model->product_type = Product::TYPE_PERSONAL;
             } else {

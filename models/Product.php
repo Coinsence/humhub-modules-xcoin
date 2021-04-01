@@ -74,6 +74,9 @@ class Product extends ActiveRecord
     const PRODUCT_NOT_REVIEWED = 0;
     const PRODUCT_REVIEWED = 1;
 
+    // Product user default account index
+    const PRODUCT_USER_DEFAULT_ACCOUNT = 0;
+
     public $pictureFile;
 
     // used when creating product
