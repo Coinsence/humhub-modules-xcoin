@@ -9,6 +9,7 @@ namespace humhub\modules\xcoin\controllers;
 
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
+use humhub\modules\xcoin\models\SpaceModuleAppearanceSettings;
 use humhub\modules\xcoin\models\SpaceModuleBasicSettings;
 use humhub\modules\xcoin\models\SpaceModuleManualSettings;
 use humhub\modules\xcoin\models\SpaceModuleScheduleSettings;
@@ -62,6 +63,21 @@ class ConfigController extends ContentContainerController
         }
 
         return $this->render('manual', [
+            'model' => $model,
+            'space' => $space
+        ]);
+    }
+
+    public function actionAppearance()
+    {
+        $space = $this->getSpace();
+
+        $model = new SpaceModuleAppearanceSettings(['space' => $space]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->view->saved();
+        }
+
+        return $this->render('appearance', [
             'model' => $model,
             'space' => $space
         ]);
