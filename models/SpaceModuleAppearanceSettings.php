@@ -25,7 +25,11 @@ class SpaceModuleAppearanceSettings extends Model
     public function init() {
 
         $module = Yii::$app->getModule('xcoin');
-        $this->partiallyHideCover = $module->settings->space()->get('partiallyHideCover');
+
+        if (null !== $partiallyHideCover = $module->settings->space()->get('partiallyHideCover'))
+            $this->partiallyHideCover = $partiallyHideCover;
+        else
+            $this->partiallyHideCover = 1;
 
     }
 
