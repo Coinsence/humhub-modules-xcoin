@@ -80,13 +80,15 @@ class ProductController extends ContentContainerController
 
             $model->account = Product::PRODUCT_USER_DEFAULT_ACCOUNT;
 
-            return $this->renderAjax('../product/details', [
-                'model' => $model,
-                'accountsList' => $accountsList
-            ]);
+            if (!Yii::$app->request->isPost) {
+                return $this->renderAjax('../product/details', [
+                    'model' => $model,
+                    'accountsList' => $accountsList
+                ]);
+            }
         }
 
-        // Try Save Step 2
+        // Step 3: Gallery
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
             if ($model->marketplace->isStopped()) {
                 throw new HttpException(403, 'You can`t sell a product in a closed marketplace!');
@@ -104,15 +106,15 @@ class ProductController extends ContentContainerController
                 $model->product_type = Product::TYPE_SPACE;
             }
 
-            // Step 3: Gallery
             return $this->renderAjax('../product/media', ['model' => $model]);
         }
 
-        // Try Save Step 3
+        // Try Saving
         if (
             Yii::$app->request->isPost &&
             Yii::$app->request->post('step') == '3' &&
             $model->isNameUnique() &&
+            $model->validate() &&
             $model->save()
         ) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
@@ -130,6 +132,16 @@ class ProductController extends ContentContainerController
                 ]);
 
             return $this->redirect($url);
+        }
+
+        // Check validation
+        if ($model->hasErrors() && $model->isSecondStep()) {
+
+            return $this->renderAjax('../product/details', [
+                'model' => $model,
+                'accountsList' => $accountsList
+            ]);
+
         }
     }
 
