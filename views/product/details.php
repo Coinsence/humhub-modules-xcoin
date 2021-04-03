@@ -14,7 +14,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\JsExpression;
 
 /** @var $model Product */
-/** @var $myAsset Asset */
+/** @var $accountsList array */
 
 ?>
 
@@ -24,11 +24,22 @@ use yii\web\JsExpression;
 <?= Html::hiddenInput('step', '2'); ?>
 
 <?= $form->field($model, 'marketplace_id')->hiddenInput()->label(false) ?>
-<?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
-<?= $form->field($model, 'product_type')->hiddenInput()->label(false) ?>
 
     <div class="modal-body">
         <div class="row">
+            <div class="col-md-12">
+                <?= $form->field($model, 'account')->widget(Select2::class, [
+                    'data' => $accountsList,
+                    'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.product', 'Select Account') . ' - '],
+                    'theme' => Select2::THEME_BOOTSTRAP,
+                    'hideSearch' => false,
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'escapeMarkup' => new JsExpression("function(m) { return m; }"),
+                    ],
+                    'value' => 0,
+                ])->label(Yii::t('XcoinModule.product', 'Account')) ?>
+            </div>
             <div class="col-md-12">
                 <?= $form->field($model, 'name')->textInput() ?>
             </div>

@@ -4,22 +4,18 @@ namespace humhub\modules\xcoin\controllers;
 
 use Exception;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\mail\models\forms\CreateMessage;
 use humhub\modules\mail\models\Message;
 use humhub\modules\mail\models\MessageEntry;
-use humhub\modules\mail\models\UserMessage;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\user\models\User;
-use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Asset;
-use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
-use humhub\modules\xcoin\widgets\MarketplaceImage;
 use Throwable;
 use Yii;
 use yii\web\HttpException;
@@ -66,34 +62,34 @@ class ProductController extends ContentContainerController
         $model->marketplace_id = $marketplace->id;
         $model->scenario = Product::SCENARIO_CREATE;
 
-        if (empty(Yii::$app->request->post('step'))) {
+        $model->load(Yii::$app->request->post());
+
+        // Step 2: Details
+        if ($model->isSecondStep()) {
 
             $spaces = SpaceHelper::getSellerSpaces($user);
 
-            $spacesList = [];
+            $accountsList = [];
+
+            $accountsList[Product::PRODUCT_USER_DEFAULT_ACCOUNT] = UserImage::widget(['user' => $user, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' Default';
+
             foreach ($spaces as $space) {
                 if (AssetHelper::getSpaceAsset($space))
-                    $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+                    $accountsList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
             }
 
-            return $this->renderAjax('../product/spaces-list', [
-                'product' => $model,
-                'spacesList' => $spacesList,
-            ]);
+            $model->account = Product::PRODUCT_USER_DEFAULT_ACCOUNT;
+
+            if (!Yii::$app->request->isPost) {
+                return $this->renderAjax('../product/details', [
+                    'model' => $model,
+                    'accountsList' => $accountsList
+                ]);
+            }
         }
 
-        if (Yii::$app->request->post('personal-product') == '1') {
-            $model->space_id = null;
-            $model->product_type = Product::TYPE_PERSONAL;
-        } else {
-            $model->product_type = Product::TYPE_SPACE;
-        }
-
-        $model->load(Yii::$app->request->post());
-
-        // Try Save Step 2
+        // Step 3: Gallery
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
-
             if ($model->marketplace->isStopped()) {
                 throw new HttpException(403, 'You can`t sell a product in a closed marketplace!');
             }
@@ -102,21 +98,28 @@ class ProductController extends ContentContainerController
                 throw new HttpException(401);
             }
 
-            // Step 3: Gallery
+            if ($model->account == Product::PRODUCT_USER_DEFAULT_ACCOUNT) {
+                $model->space_id = null;
+                $model->product_type = Product::TYPE_PERSONAL;
+            } else {
+                $model->space_id = $model->account;
+                $model->product_type = Product::TYPE_SPACE;
+            }
+
             return $this->renderAjax('../product/media', ['model' => $model]);
         }
 
-        // Try Save Step 3
+        // Try Saving
         if (
             Yii::$app->request->isPost &&
-            Yii::$app->request->post('step') == '3'
-            && $model->isNameUnique()
-            && $model->save()
+            Yii::$app->request->post('step') == '3' &&
+            $model->isNameUnique() &&
+            $model->validate() &&
+            $model->save()
         ) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
             $this->view->saved();
-
 
             $url = $model->isSpaceProduct() ?
                 $model->space->createUrl('/xcoin/product/overview', [
@@ -136,15 +139,10 @@ class ProductController extends ContentContainerController
 
             return $this->renderAjax('../product/details', [
                 'model' => $model,
-                'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null
+                'accountsList' => $accountsList
             ]);
-        }
 
-        // Step 2: Details
-        return $this->renderAjax('../product/details', [
-            'model' => $model,
-            'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null
-        ]);
+        }
     }
 
     /**
