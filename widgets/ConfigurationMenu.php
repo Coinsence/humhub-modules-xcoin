@@ -11,7 +11,6 @@
 namespace humhub\modules\xcoin\widgets;
 
 use Yii;
-use yii\helpers\Url;
 
 /**
  * Module Configuration Menu
@@ -49,6 +48,13 @@ class ConfigurationMenu extends \humhub\widgets\BaseMenu
             'url' => $this->space->createUrl('/xcoin/config/manual'),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'manual'),
+        ]);
+
+        $this->addItem([
+            'label' => Yii::t('XcoinModule.config', 'Appearance'),
+            'url' => $this->space->createUrl('/xcoin/config/appearance'),
+            'sortOrder' => 100,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'appearance'),
         ]);
 
 
