@@ -98,8 +98,8 @@ class ChallengeController extends ContentContainerController
         $defaultAsset = AssetHelper::getDefaultAsset();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            echo($model->getSpecificSelectProjectAsset());die;
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
-
             $this->view->saved();
 
             return $this->htmlRedirect($currentSpace->createUrl('/xcoin/challenge/index', [
