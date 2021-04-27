@@ -37,7 +37,7 @@ SwitchInputAsset::register($this);
             <?= $form->field($model, 'description')->widget(RichTextField::class, ['preset' => 'full'])
                 ->hint(Yii::t('XcoinModule.challenge', 'Please enter your challenge description')) ?>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <?=
             $form->field($model, 'asset_id')->widget(Select2::class, [
                 'data' => $assets,
@@ -51,47 +51,51 @@ SwitchInputAsset::register($this);
             ])->label(Yii::t('XcoinModule.funding', 'Requested coin'));
             ?>
         </div>
-        <div class="col-md-6">
-            <?=
-            $form->field($model, 'selectedReward')->widget(SwitchInput::class, [
-                'name' => 'selected_reward',
-                'type' => SwitchInput::RADIO,
-                'items' => [
-                    ['label' => 'Any project Issued Coin', 'value' => 'any_project_coin', 'id' => 'any_project_coin'],
-                    ['label' => 'No rewarding', 'value' => 'no_rewarding'],
-                    ['label' => 'Project must Offer', 'value' => 'specific_project_coin'],
-                ],
-                'inlineLabel' => 'true',
-                'pluginEvents' => [
-                    "switchChange.bootstrapSwitch" => new JsExpression("function() {  
-                     var offer_type = $(this).val();
-                     if(offer_type == 'specific_project_coin'){
-                        $('#challenge-exchange_rate,input#challenge-exchange_rate').show();
-                        $('#challenge-specific_project_coin').show();
-                     } else {
-                        $('#challenge-exchange_rate,#challenge-exchange_rate').hide();
-                        $('#select2-challenge-specific_project_coin-container').hide();
-                     }
-                }"),]
+        <div class="col-md-12">
+            <?= $form->field($model, 'any_reward_asset')->radio(['onclick' => 'document.getElementById("challenge-no_rewarding").checked = false;
+                document.getElementById("challenge-specific_reward_asset").checked = false; 
+                document.getElementById("challenge-label_exchange_rate").style.visibility = "hidden"; 
+                document.getElementById("challenge-exchange_rate").style.visibility = "hidden"; 
+                document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "hidden";
+                ',
             ]);
             ?>
-            <?= $form->field($model, 'exchange_rate')
-                ->widget(AmountField::class)
-                ->label(Yii::t('XcoinModule.challenge', 'Project must offer')
-                );
+            <?= $form->field($model, 'no_rewarding')->radio(['onclick' => 'document.getElementById("challenge-any_reward_asset").checked = false;
+                document.getElementById("challenge-specific_reward_asset").checked = false; 
+                document.getElementById("challenge-label_exchange_rate").style.visibility = "hidden"; 
+                document.getElementById("challenge-exchange_rate").style.visibility = "hidden"; 
+                document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "hidden";
+
+                '
+            ]);
             ?>
+            <?= $form->field($model, 'specific_reward_asset')->radio(['onclick' => 'document.getElementById("challenge-any_reward_asset").checked = false;
+                document.getElementById("challenge-no_rewarding").checked = false; 
+                document.getElementById("challenge-label_exchange_rate").style.visibility = "visible"; 
+                document.getElementById("challenge-exchange_rate").style.visibility = "visible"; 
+                document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "visible";
+                 '
+            ]);
+            ?>
+            <label class ="control-label "for="challenge-exchange_rate" style="visibility:hidden" id ="challenge-label_exchange_rate">Exchange rate </label>
+            <?= $form->field($model, 'exchange_rate')->textInput(['maxlength' => true, 'style' => 'visibility:hidden'
+            ])->label(false) ?>
+
             <?=
-            $form->field($model, 'selected_coin_id')->widget(Select2::class, [
+            $form->field($model, 'specific_reward_asset_id')->widget(Select2::class, [
                 'data' => $assets,
-                'id'=>'test',
-                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.challenge', 'Select coin') . ' - ', 'value' => ($defaultAsset) ? $defaultAsset->id : '','class'=>'hide'],
+                'options' => [
+                    'placeholder' => '- ' . Yii::t('XcoinModule.challenge', 'Select coin') . ' - ', 'value' => ($defaultAsset) ? $defaultAsset->id : '',
+                    'class' => 'hide',
+                    'style' => 'visibility:hidden'
+                ],
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'hideSearch' => true,
                 'pluginOptions' => [
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ],
-            ])->label(Yii::t('XcoinModule.funding', 'Requested coin'));
+            ])->label(false);
             ?>
         </div>
         <div class="col-md-12">

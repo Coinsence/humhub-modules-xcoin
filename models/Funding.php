@@ -197,7 +197,10 @@ class Funding extends ActiveRecord
                 $this->AttachSpace();
             }
         }
-
+        $challenge = Challenge::getChallengeById($this->challenge_id);
+        if ($challenge->acceptSpecificRewardingAsset()) {
+            $this->exchange_rate = $challenge->exchange_rate;
+        }
         return parent::beforeSave($insert);
     }
 
