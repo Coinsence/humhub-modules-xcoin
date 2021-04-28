@@ -62,9 +62,11 @@ class OverviewController extends ContentContainerController
                 'account_type' => Account::TYPE_DEFAULT
             ]);
             $data = [
+                'fullName' => $this->contentContainer->displayName,
+                'coin' => 'coinsence',
                 'amount' => intval($amountModel->amount),
-                'wallet_address' => $defaultAccount->ethereum_address,
-                'redirect_url' => Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true),
+                'pAddress' => $defaultAccount->ethereum_address,
+                'rediectUrl' => Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success',
             ];
             $jsonData = json_encode($data);
             $encodedData = base64_encode($jsonData);
