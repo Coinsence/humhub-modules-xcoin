@@ -55,6 +55,7 @@ SwitchInputAsset::register($this);
             <?= $form->field($model, 'any_reward_asset')->radio(['onclick' => 'document.getElementById("challenge-no_rewarding").checked = false;
                 document.getElementById("challenge-specific_reward_asset").checked = false; 
                 document.getElementById("challenge-label_exchange_rate").style.visibility = "hidden"; 
+                document.getElementById("challenge-label_specific_reward_asset").style.visibility = "hidden"; 
                 document.getElementById("challenge-exchange_rate").style.visibility = "hidden"; 
                 document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "hidden";
                 ',
@@ -63,6 +64,7 @@ SwitchInputAsset::register($this);
             <?= $form->field($model, 'no_rewarding')->radio(['onclick' => 'document.getElementById("challenge-any_reward_asset").checked = false;
                 document.getElementById("challenge-specific_reward_asset").checked = false; 
                 document.getElementById("challenge-label_exchange_rate").style.visibility = "hidden"; 
+                document.getElementById("challenge-label_specific_reward_asset").style.visibility = "hidden"; 
                 document.getElementById("challenge-exchange_rate").style.visibility = "hidden"; 
                 document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "hidden";
 
@@ -74,29 +76,42 @@ SwitchInputAsset::register($this);
                 document.getElementById("challenge-label_exchange_rate").style.visibility = "visible"; 
                 document.getElementById("challenge-exchange_rate").style.visibility = "visible"; 
                 document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "visible";
+                document.getElementById("challenge-label_specific_reward_asset").style.visibility = "visible"; 
+
                  '
             ]);
             ?>
-            <label class ="control-label "for="challenge-exchange_rate" style="visibility:hidden" id ="challenge-label_exchange_rate">Exchange rate </label>
-            <?= $form->field($model, 'exchange_rate')->textInput(['maxlength' => true, 'style' => 'visibility:hidden'
-            ])->label(false) ?>
-
-            <?=
-            $form->field($model, 'specific_reward_asset_id')->widget(Select2::class, [
-                'data' => $assets,
-                'options' => [
-                    'placeholder' => '- ' . Yii::t('XcoinModule.challenge', 'Select coin') . ' - ', 'value' => ($defaultAsset) ? $defaultAsset->id : '',
-                    'class' => 'hide',
-                    'style' => 'visibility:hidden'
-                ],
-                'theme' => Select2::THEME_BOOTSTRAP,
-                'hideSearch' => true,
-                'pluginOptions' => [
-                    'allowClear' => false,
-                    'escapeMarkup' => new JsExpression("function(m) { return m; }"),
-                ],
-            ])->label(false);
-            ?>
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <?= $form->field($model, 'exchange_rate')->textInput(['maxlength' => true, 'style' => 'visibility:hidden'
+                        , 'placeholder' => 'Set Number'])->label(false) ?>
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label " for="challenge-exchange_rate" style="visibility:hidden "
+                           id="challenge-label_exchange_rate">of</label>
+                </div>
+                <div class="col-md-4">
+                    <?=
+                    $form->field($model, 'specific_reward_asset_id')->widget(Select2::class, [
+                        'data' => $assets,
+                        'options' => [
+                            'placeholder' => '- ' . Yii::t('XcoinModule.challenge', 'Select coin') . ' - ', 'value' => ($defaultAsset) ? $defaultAsset->id : '',
+                            'class' => 'hide',
+                        ],
+                        'theme' => Select2::THEME_BOOTSTRAP,
+                        'hideSearch' => true,
+                        'pluginOptions' => [
+                            'allowClear' => false,
+                            'escapeMarkup' => new JsExpression("function(m) { return m; }"),
+                        ],
+                    ])->label(false);
+                    ?>
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label " style="visibility:hidden"
+                           id="challenge-label_specific_reward_asset">for each invested COIN </label>
+                </div>
+            </div>
         </div>
         <div class="col-md-12">
             <label class="control-label"><?= Yii::t('XcoinModule.challenge', 'Challenge Image') ?></label><br>
@@ -131,3 +146,8 @@ SwitchInputAsset::register($this);
 
 <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>
+<script>
+    $(document).ready(function () {
+        document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "hidden";
+    });
+</script>

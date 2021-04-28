@@ -18,15 +18,19 @@ Select2BootstrapAsset::register($this);
 <?php $form = ActiveForm::begin(['id' => 'asset-form']); ?>
 <div class="modal-body">
     <?= SenderAccountField::widget(['backRoute' => ['/xcoin/funding/invest', 'fundingId' => $funding->id, 'container' => $this->context->contentContainer], 'senderAccount' => $fromAccount]); ?>
-    <br />
+    <br/>
 
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($model, 'amountPay')->widget(AmountField::classname(), ['asset' => $model->getPayAsset()]); ?>
         </div>
-        <div class = "col-md-6">
-            <?= $form->field($model, 'amountBuy')->widget(AmountField::classname(), ['asset' => $model->getBuyAsset(), 'readonly' => true]); ?>
-        </div>
+        <?php if ($model->getBuyAsset()): ?>
+            <div class="col-md-6">
+                <?= $form->field($model, 'amountBuy')->widget(AmountField::classname(), ['asset' => $model->getBuyAsset(), 'readonly' => true]); ?>
+            </div>
+        <?php endif; ?>
+
+
     </div>
 </div>
 
@@ -44,6 +48,7 @@ Select2BootstrapAsset::register($this);
     });
 
     reCalc();
+
     function reCalc() {
         $val = $('#fundinginvest-amountpay').val();
         $val = $val * <?= $model->funding->exchange_rate; ?>;

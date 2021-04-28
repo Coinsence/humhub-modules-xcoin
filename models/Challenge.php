@@ -53,7 +53,7 @@ class Challenge extends ActiveRecord
 
 
     // challenges investor reward options
-    const CHALLENGE_REWARDING_ASSET_ENABLED = 1;
+    const CHALLENGE_ACCEPT_ANY_REWARDING_ASSET_ENABLED = 1;
     const CHALLENGE_REWARDING_ASSET_DISABLED = 0;
     const CHALLENGE_NO_REWARDING_ENABLED = 1;
     const CHALLENGE_NO_REWARDING_DISABLED = 0;
@@ -246,7 +246,7 @@ class Challenge extends ActiveRecord
 
     public function acceptAnyRewardingAsset()
     {
-        return $this->any_reward_asset == self::CHALLENGE_REWARDING_ASSET_ENABLED;
+        return $this->any_reward_asset == self::CHALLENGE_ACCEPT_ANY_REWARDING_ASSET_ENABLED;
     }
 
     public static function getChallengeById($challengeId)
