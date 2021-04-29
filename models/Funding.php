@@ -355,6 +355,20 @@ class Funding extends ActiveRecord
             ) || strlen($this->description) > 255;
     }
 
+    public function isThirdStep()
+    {
+        return Utils::mempty(
+                $this->amount,
+                $this->exchange_rate,
+                $this->title,
+                $this->description,
+                $this->content,
+                $this->deadline,
+                $this->country,
+                $this->city
+            ) || strlen($this->description) > 255;
+    }
+
     public function canDeleteFile()
     {
         $space = Space::findOne(['id' => $this->space_id]);
@@ -387,7 +401,11 @@ class Funding extends ActiveRecord
 
     public function canInvest()
     {
-        return $this->getAvailableAmount() > 0 && $this->getRemainingDays() > 0;
+        if ($this->challenge->acceptAnyRewardingAsset()) {
+            return $this->getAvailableAmount() > 0 && $this->getRemainingDays() > 0;
+        } else {
+            return true;
+        }
     }
 
     public function isNameUnique()
@@ -466,15 +484,17 @@ class Funding extends ActiveRecord
 
         $issueAccount = AccountHelper::getIssueAccount($this->space);
 
-        $transaction = new Transaction();
-        $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
-        $transaction->asset_id = $asset->id;
-        $transaction->from_account_id = $issueAccount->id;
-        $transaction->to_account_id = $account->id;
-        $transaction->amount = $this->amount * $this->exchange_rate;
+        if ($this->challenge->acceptAnyRewardingAsset()) {
+            $transaction = new Transaction();
+            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
+            $transaction->asset_id = $asset->id;
+            $transaction->from_account_id = $issueAccount->id;
+            $transaction->to_account_id = $account->id;
+            $transaction->amount = $this->amount * $this->exchange_rate;
 
-        if (!$transaction->save()) {
-            throw new Exception('Could not create issue transaction for funding account');
+            if (!$transaction->save()) {
+                throw new Exception('Could not create issue transaction for funding account');
+            }
         }
     }
 

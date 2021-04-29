@@ -20,7 +20,7 @@ class m210423_015635_add_investor_reward_challenge extends Migration
 
         // add foreign key
 
-        $this->addForeignKey('fk_reward_asset', 'xcoin_challenge', 'reward_asset_id', 'xcoin_asset', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk_reward_asset', 'xcoin_challenge', 'specific_reward_asset_id', 'xcoin_asset', 'id', 'CASCADE', 'CASCADE');
 
     }
 

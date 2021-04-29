@@ -129,11 +129,10 @@ class FundingInvest extends Model
         if (!$this->validate()) {
             return false;
         }
-
         $fundingAccount = $this->funding->getFundingAccount();
 
         // Buy transaction only when the challenge accepts specific reward asset or any reward asset
-        if ($this->amountBuy !== null) {
+        if ($this->amountBuy) {
             // Buy Transaction
             $transaction = new Transaction();
             $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
@@ -153,6 +152,12 @@ class FundingInvest extends Model
             }
         }
         // Pay Transaction
+
+        // check if funding challenge gives specific rewarding asset
+        if ($this->funding->challenge->acceptSpecificRewardingAsset()) {
+            //TODO
+        }
+
         $transaction = new Transaction();
         $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
         $transaction->asset_id = $this->getPayAsset()->id;

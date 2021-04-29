@@ -7,7 +7,12 @@ use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
 
 $upload = Upload::withName();
-
+/**
+ * @var $test string
+ */
+/**
+ * @var $lastStepEnabled boolean
+ */
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Gallery'), 'closable' => false]) ?>
@@ -60,11 +65,17 @@ $upload = Upload::withName();
     </div>
 </div>
 <hr>
-<div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Save')); ?>
-    <?= ModalButton::cancel(); ?>
-</div>
-
+<?php if ($lastStepEnabled): ?>
+    <div class="modal-footer">
+        <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Next')); ?>
+        <?= ModalButton::cancel(); ?>
+    </div>
+<?php else: ?>
+    <div class="modal-footer">
+        <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'save')); ?>
+        <?= ModalButton::cancel(); ?>
+    </div>
+<?php endif; ?>
 <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>
 

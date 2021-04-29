@@ -116,6 +116,14 @@ class FundingController extends ContentContainerController
             throw new HttpException(403, 'You can`t submit a funding to a stopped challenge!');
         }
 
+        /**
+         *  adding a new account to funding when alternative challenge
+         */
+        if ($challenge->acceptSpecificRewardingAsset()) {
+            $lastStepEnabled = true;
+        } else {
+            $lastStepEnabled = false;
+        }
 
         /** @var Space $currentSpace */
         $currentSpace = $this->contentContainer;
@@ -152,23 +160,32 @@ class FundingController extends ContentContainerController
             if ($model->space && !SpaceHelper::canSubmitProject($model->space)) {
                 throw new HttpException(401);
             }
-
             // Step 3: Gallery
-            return $this->renderAjax('media', ['model' => $model]);
+            return $this->renderAjax('media', ['model' => $model, 'lastStepEnabled' => $lastStepEnabled]);
         }
 
         // Try Save Step 3
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
+            if ($lastStepEnabled) {
+                return $this->renderAjax('add-specific-account', ['model' => $model]);
+            } else {
+                $this->view->saved();
 
+                return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
+                    'container' => $model->space,
+                    'fundingId' => $model->id
+                ]));
+            }
+        }
+        //try save step 4
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
             $this->view->saved();
-
             return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
                 'container' => $model->space,
                 'fundingId' => $model->id
             ]));
         }
-
         // Check validation
         if ($model->hasErrors() && $model->isSecondStep()) {
 
