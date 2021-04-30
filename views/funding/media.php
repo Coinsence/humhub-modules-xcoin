@@ -8,9 +8,6 @@ use humhub\widgets\ActiveForm;
 
 $upload = Upload::withName();
 /**
- * @var $test string
- */
-/**
  * @var $lastStepEnabled boolean
  */
 ?>
@@ -67,7 +64,7 @@ $upload = Upload::withName();
 <hr>
 <?php if ($lastStepEnabled): ?>
     <div class="modal-footer">
-        <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Next')); ?>
+        <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'next')); ?>
         <?= ModalButton::cancel(); ?>
     </div>
 <?php else: ?>

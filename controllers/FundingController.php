@@ -127,8 +127,6 @@ class FundingController extends ContentContainerController
 
         /** @var Space $currentSpace */
         $currentSpace = $this->contentContainer;
-
-
         $user = Yii::$app->user->identity;
 
         $model = new Funding();
@@ -168,31 +166,33 @@ class FundingController extends ContentContainerController
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             if ($lastStepEnabled) {
-                return $this->renderAjax('add-specific-account', ['model' => $model]);
+                return $this->renderAjax('add-specific-account', [
+                    'model' => $model,
+                    'spaceId' => $challenge->space_id
+                ]);
             } else {
                 $this->view->saved();
-
                 return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
                     'container' => $model->space,
                     'fundingId' => $model->id
                 ]));
             }
         }
+        // Check validation
+        if ($model->hasErrors() && $model->isSecondStep()) {
+            return $this->renderAjax('overview', [
+                'model' => $model,
+                'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
+            ]);
+        }
         //try save step 4
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '4' && $model->save()) {
+
             $this->view->saved();
             return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
                 'container' => $model->space,
                 'fundingId' => $model->id
             ]));
-        }
-        // Check validation
-        if ($model->hasErrors() && $model->isSecondStep()) {
-
-            return $this->renderAjax('details', [
-                'model' => $model,
-                'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
-            ]);
         }
 
         // Step 2: Details

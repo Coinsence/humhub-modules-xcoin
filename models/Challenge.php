@@ -32,7 +32,7 @@ use humhub\modules\space\models\Space;
  * @property integer $any_reward_asset
  * @property integer $specific_reward_asset
  * @property integer $exchange_rate
- * @property integer specific_reward_asset_id
+ * @property integer $specific_reward_asset_id
  * @property Asset $asset
  * @property Asset $specificRewardAsset
  * @property User $createdBy

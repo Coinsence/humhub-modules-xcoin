@@ -181,7 +181,11 @@ class AccountHelper
     public static function getFundingAccountBalance(Funding $funding, $requested = true)
     {
         if ($requested) {
-            $asset = Asset::findOne(['id' => $funding->getChallenge()->one()->asset_id]);
+            if ($funding->challenge->acceptSpecificRewardingAsset()) {
+                $asset = Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id]);
+            } else {
+                $asset = Asset::findOne(['id' => $funding->getChallenge()->one()->asset_id]);
+            }
         } else {
             $asset = AssetHelper::getSpaceAsset($funding->space);
         }

@@ -38,10 +38,12 @@ use yii\web\HttpException;
  * @property integer $status
  * @property string $country
  * @property string $city
+ * @property integer specific_sender_account_id
  *
  * @property Challenge $challenge
  * @property User $createdBy
  * @property Space $space
+ * @property Account $specificSenderAccount
  */
 class Funding extends ActiveRecord
 {
@@ -92,12 +94,13 @@ class Funding extends ActiveRecord
                 'required'
             ],
             ['categories_names', 'required', 'message' => 'Please choose at least a category'],
-            [['space_id', 'challenge_id', 'amount', 'created_by'], 'integer'],
+            [['space_id', 'challenge_id', 'amount', 'created_by','specific_sender_account_id'], 'integer'],
             [['amount'], 'number', 'min' => '1'],
             [['exchange_rate'], 'number', 'min' => '0.1'],
             [['created_at'], 'safe'],
             [['challenge_id'], 'exist', 'skipOnError' => true, 'targetClass' => Challenge::class, 'targetAttribute' => ['challenge_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
+            [['specific_sender_account_id'], 'exist', 'skipOnError' => true, 'targetClass' => Account::class, 'targetAttribute' => ['specific_sender_account_id' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['title', 'description', 'city'], 'string', 'max' => 255],
             [['country'], 'string', 'max' => 2],
@@ -127,7 +130,8 @@ class Funding extends ActiveRecord
                 'exchange_rate',
                 'country',
                 'city',
-                'categories_names'
+                'categories_names',
+                'specific_sender_account_id'
             ],
             self::SCENARIO_EDIT => [
                 'amount',
@@ -136,7 +140,7 @@ class Funding extends ActiveRecord
                 'content',
                 'deadline',
                 'country',
-                'city'
+                'city',
             ],
         ];
     }
@@ -160,6 +164,7 @@ class Funding extends ActiveRecord
             'deadline' => Yii::t('XcoinModule.base', 'Deadline'),
             'country' => Yii::t('XcoinModule.base', 'Country'),
             'city' => Yii::t('XcoinModule.base', 'City'),
+            'specific_sender_account_id' => Yii::t('XcoinModule.base', 'Account sender'),
         ];
     }
 
@@ -249,6 +254,13 @@ class Funding extends ActiveRecord
     public function getChallenge()
     {
         return $this->hasOne(Challenge::class, ['id' => 'challenge_id']);
+    }
+    /**
+     * @return ActiveQuery
+     */
+    public function getSpecificAccountSender()
+    {
+        return $this->hasOne(Account::class, ['id' => 'specific_sender_account_id']);
     }
 
     public function getCategories()
@@ -354,21 +366,6 @@ class Funding extends ActiveRecord
                 $this->city
             ) || strlen($this->description) > 255;
     }
-
-    public function isThirdStep()
-    {
-        return Utils::mempty(
-                $this->amount,
-                $this->exchange_rate,
-                $this->title,
-                $this->description,
-                $this->content,
-                $this->deadline,
-                $this->country,
-                $this->city
-            ) || strlen($this->description) > 255;
-    }
-
     public function canDeleteFile()
     {
         $space = Space::findOne(['id' => $this->space_id]);

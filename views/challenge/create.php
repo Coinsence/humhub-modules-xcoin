@@ -4,7 +4,6 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\widgets\Upload;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Challenge;
-use humhub\modules\xcoin\widgets\AmountField;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
@@ -12,7 +11,6 @@ use humhub\assets\Select2BootstrapAsset;
 use kartik\switchinput\SwitchInputAsset;
 use yii\web\JsExpression;
 use kartik\widgets\Select2;
-use kartik\widgets\SwitchInput;
 
 /** @var $model Challenge */
 /** @var $assets Asset[] */
