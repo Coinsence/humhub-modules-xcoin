@@ -89,7 +89,7 @@ class FundingInvest extends Model
         $left = $this->funding->getAvailableAmount();
         // Check max amount of current account
         if ($this->funding->specific_sender_account_id) {
-            $account = Account::findOne(['id'=>$this->funding->specific_sender_account_id]);
+            $account = Account::findOne(['id' => $this->funding->specific_sender_account_id]);
             $accountLeft = $account->getAssetBalance($this->funding->challenge->asset);
         } else {
             $accountLeft = $this->fromAccount->getAssetBalance($this->funding->challenge->asset);
@@ -138,13 +138,14 @@ class FundingInvest extends Model
         if ($this->amountBuy) {
             // Buy Transaction
             $transaction = new Transaction();
-            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
             $transaction->asset_id = $this->getBuyAsset()->id;
+            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
+            $transaction->to_account_id = $this->fromAccount->id;
             if ($this->funding->specific_sender_account_id) {
-                $transaction->to_account_id = $this->funding->specific_sender_account_id;
+                $transaction->from_account_id = $this->funding->specific_sender_account_id;
             } else {
-                $transaction->to_account_id = $this->fromAccount->id;
-            }   $transaction->from_account_id = $fundingAccount->id;
+                $transaction->from_account_id = $fundingAccount->id;
+            }
             $transaction->amount = $this->getBuyAmount();
             $transaction->comment = Yii::t('XcoinModule.base', 'Funding Invest');
             if (!$transaction->save()) {
@@ -158,8 +159,6 @@ class FundingInvest extends Model
             }
         }
         // Pay Transaction
-
-
         $transaction = new Transaction();
         $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
         $transaction->asset_id = $this->getPayAsset()->id;
