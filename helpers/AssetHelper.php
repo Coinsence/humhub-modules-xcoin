@@ -47,12 +47,12 @@ class AssetHelper
     /**
      *  Return a specific reward asset when enabled from challenge
      *
-     * @param Challenge $challenge
+     * @param $id
      * @return Asset|null
      */
-    public static function getChallengeSpecificRewardAsset(Challenge $challenge)
+    public static function getChallengeSpecificRewardAsset($id)
     {
-        return Asset::findOne(['id' => $challenge->specific_reward_asset_id]);
+        return Asset::findOne(['id' => $id]);
     }
 
     public static function getAssetsDropDown(ContentContainerActiveRecord $container)
@@ -115,8 +115,9 @@ class AssetHelper
             $query->andWhere(['!=', 'id', self::getSpaceAsset($excludedSpace)->id]);
 
         foreach ($query->all() as $asset) {
-            if (!$issuedOnly || $asset->getIssuedAmount() > 0)
+            if (!$issuedOnly || $asset->getIssuedAmount() > 0) {
                 $assets[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
+            }
         }
 
         return $assets;

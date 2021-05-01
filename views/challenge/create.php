@@ -8,18 +8,19 @@ use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
 use humhub\assets\Select2BootstrapAsset;
-use kartik\switchinput\SwitchInputAsset;
 use yii\web\JsExpression;
 use kartik\widgets\Select2;
+use humhub\modules\xcoin\assets\Assets;
 
 /** @var $model Challenge */
 /** @var $assets Asset[] */
 /** @var $defaultAsset Asset */
 
 Select2BootstrapAsset::register($this);
+Assets::register($this);
 
 $upload = Upload::forModel($model, $model->coverFile);
-SwitchInputAsset::register($this);
+
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.challenge', 'Create Challenge'), 'closable' => false]) ?>
@@ -50,35 +51,9 @@ SwitchInputAsset::register($this);
             ?>
         </div>
         <div class="col-md-12">
-            <?= $form->field($model, 'any_reward_asset')->radio(['onclick' => 'document.getElementById("challenge-no_rewarding").checked = false;
-                document.getElementById("challenge-specific_reward_asset").checked = false; 
-                document.getElementById("challenge-label_exchange_rate").style.visibility = "hidden"; 
-                document.getElementById("challenge-label_specific_reward_asset").style.visibility = "hidden"; 
-                document.getElementById("challenge-exchange_rate").style.visibility = "hidden"; 
-                document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "hidden";
-                ',
-            ]);
-            ?>
-            <?= $form->field($model, 'no_rewarding')->radio(['onclick' => 'document.getElementById("challenge-any_reward_asset").checked = false;
-                document.getElementById("challenge-specific_reward_asset").checked = false; 
-                document.getElementById("challenge-label_exchange_rate").style.visibility = "hidden"; 
-                document.getElementById("challenge-label_specific_reward_asset").style.visibility = "hidden"; 
-                document.getElementById("challenge-exchange_rate").style.visibility = "hidden"; 
-                document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "hidden";
-
-                '
-            ]);
-            ?>
-            <?= $form->field($model, 'specific_reward_asset')->radio(['onclick' => 'document.getElementById("challenge-any_reward_asset").checked = false;
-                document.getElementById("challenge-no_rewarding").checked = false; 
-                document.getElementById("challenge-label_exchange_rate").style.visibility = "visible"; 
-                document.getElementById("challenge-exchange_rate").style.visibility = "visible"; 
-                document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "visible";
-                document.getElementById("challenge-label_specific_reward_asset").style.visibility = "visible"; 
-
-                 '
-            ]);
-            ?>
+            <?= $form->field($model, 'any_reward_asset')->radio(); ?>
+            <?= $form->field($model, 'no_rewarding')->radio(); ?>
+            <?= $form->field($model, 'specific_reward_asset')->radio(); ?>
             <div class="col-md-12">
                 <div class="col-md-4">
                     <?= $form->field($model, 'exchange_rate')->textInput(['maxlength' => true, 'style' => 'visibility:hidden'
@@ -144,8 +119,3 @@ SwitchInputAsset::register($this);
 
 <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>
-<script>
-    $(document).ready(function () {
-        document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "hidden";
-    });
-</script>

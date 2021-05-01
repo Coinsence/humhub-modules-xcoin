@@ -53,20 +53,16 @@ class Challenge extends ActiveRecord
 
 
     // challenges investor reward options
+    const CHALLENGE_ACCEPT_ANY_REWARDING_ASSET_DISABLED = 0;
     const CHALLENGE_ACCEPT_ANY_REWARDING_ASSET_ENABLED = 1;
-    const CHALLENGE_REWARDING_ASSET_DISABLED = 0;
-    const CHALLENGE_NO_REWARDING_ENABLED = 1;
     const CHALLENGE_NO_REWARDING_DISABLED = 0;
-    const CHALLENGE_ACCEPT_SPECIFIC_REWARD_ASSET_ENABLED = 1;
+    const CHALLENGE_NO_REWARDING_ENABLED = 1;
     const CHALLENGE_ACCEPT_SPECIFIC_REWARD_ASSET_DISABLED = 0;
+    const CHALLENGE_ACCEPT_SPECIFIC_REWARD_ASSET_ENABLED = 1;
 
 
     public $coverFile;
 
-    public $selectedReward;
-    /**
-     * @var int
-     */
 
     /**
      * @inheritdoc

@@ -19,7 +19,6 @@ Select2BootstrapAsset::register($this);
 <div class="modal-body">
     <?= SenderAccountField::widget(['backRoute' => ['/xcoin/funding/invest', 'fundingId' => $funding->id, 'container' => $this->context->contentContainer], 'senderAccount' => $fromAccount]); ?>
     <br/>
-
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($model, 'amountPay')->widget(AmountField::classname(), ['asset' => $model->getPayAsset()]); ?>
@@ -29,32 +28,23 @@ Select2BootstrapAsset::register($this);
                 <?= $form->field($model, 'amountBuy')->widget(AmountField::classname(), ['asset' => $model->getBuyAsset(), 'readonly' => true]); ?>
             </div>
         <?php endif; ?>
-
-
     </div>
 </div>
-
 <div class="modal-footer">
     <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Pay now')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
-
 <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>
-
 <script>
     $('#fundinginvest-amountpay').on('input', function (e) {
         reCalc();
     });
-
     reCalc();
-
     function reCalc() {
         $val = $('#fundinginvest-amountpay').val();
         $val = $val * <?= $model->funding->exchange_rate; ?>;
         $val = (parseFloat($val).toPrecision(6));
         $('#fundinginvest-amountbuy').val($val);
-
     }
-
 </script>

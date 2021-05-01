@@ -116,9 +116,9 @@ class FundingInvest extends Model
             return null;
         } else if ($this->funding->challenge->acceptAnyRewardingAsset()) {
             return AssetHelper::getSpaceAsset($this->funding->space);
-        } else {
-            return AssetHelper::getChallengeSpecificRewardAsset($this->funding->challenge);
         }
+        return AssetHelper::getChallengeSpecificRewardAsset($this->funding->challenge->specific_reward_asset_id);
+
     }
 
     public function getBuyAmount()

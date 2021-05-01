@@ -32,17 +32,18 @@ use yii\web\JsExpression;
             <?= $form->field($model, 'amount')->widget(AmountField::class, ['asset' => $model->challenge->asset])->label(Yii::t('XcoinModule.funding', 'Requested amount')); ?>
         </div>
         <?php if ($model->challenge->acceptAnyRewardingAsset()): ?>
-        <div class="row col-md-12">
-            <div class="col-md-5">
-                <?= $form->field($model, 'exchange_rate')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.base', 'Provided Coins')); ?>
+            <div class="row col-md-12">
+                <div class="col-md-5">
+                    <?= $form->field($model, 'exchange_rate')->widget(AmountField::class, ['asset' => $myAsset])->label(Yii::t('XcoinModule.base', 'Provided Coins')); ?>
+                </div>
+                <div class="col-md-2 text-center">
+                    <i class="fa fa-exchange colorSuccess" style="font-size:28px;padding-top:24px"
+                       aria-hidden="true"></i>
+                </div>
+                <div class="col-md-5">
+                    <?= $form->field($model, 'rate')->widget(AmountField::class, ['asset' => $model->challenge->asset, 'readonly' => true])->label(Yii::t('XcoinModule.base', 'Requested Coins')); ?>
+                </div>
             </div>
-            <div class="col-md-2 text-center">
-                <i class="fa fa-exchange colorSuccess" style="font-size:28px;padding-top:24px" aria-hidden="true"></i>
-            </div>
-            <div class="col-md-5">
-                <?= $form->field($model, 'rate')->widget(AmountField::class, ['asset' => $model->challenge->asset, 'readonly' => true])->label(Yii::t('XcoinModule.base', 'Requested Coins')); ?>
-            </div>
-        </div>
         <?php endif; ?>
         <div class="col-md-6">
             <?= $form->field($model, 'title')->textInput()
