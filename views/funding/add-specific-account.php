@@ -36,10 +36,10 @@ $upload = Upload::withName();
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12">
-                    <?= $form->field($model, 'specific_sender_account_id')->widget(Select2::className(), [
-                        'attribute' => 'Sender Account',
-                        'data' => ArrayHelper::map(Account::find()->where(['space_id' => $spaceId])->all(), 'id', 'title'),
-                    ])->label(true); ?>
+            <?= $form->field($model, 'specific_sender_account_id')->widget(Select2::className(), [
+                'attribute' => 'Sender Account',
+                'data' => ArrayHelper::map(Account::find()->where(['space_id' => $spaceId])->all(), 'id', 'title'),
+            ])->label(true); ?>
         </div>
     </div>
 </div>

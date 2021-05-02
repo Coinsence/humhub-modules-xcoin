@@ -94,7 +94,7 @@ class Funding extends ActiveRecord
                 'required'
             ],
             ['categories_names', 'required', 'message' => 'Please choose at least a category'],
-            [['space_id', 'challenge_id', 'amount', 'created_by','specific_sender_account_id'], 'integer'],
+            [['space_id', 'challenge_id', 'amount', 'created_by', 'specific_sender_account_id'], 'integer'],
             [['amount'], 'number', 'min' => '1'],
             [['exchange_rate'], 'number', 'min' => '0.1'],
             [['created_at'], 'safe'],
@@ -255,6 +255,7 @@ class Funding extends ActiveRecord
     {
         return $this->hasOne(Challenge::class, ['id' => 'challenge_id']);
     }
+
     /**
      * @return ActiveQuery
      */
@@ -366,6 +367,7 @@ class Funding extends ActiveRecord
                 $this->city
             ) || strlen($this->description) > 255;
     }
+
     public function canDeleteFile()
     {
         $space = Space::findOne(['id' => $this->space_id]);
@@ -398,11 +400,10 @@ class Funding extends ActiveRecord
 
     public function canInvest()
     {
-        if ($this->challenge->acceptAnyRewardingAsset()) {
+        if ($this->challenge->acceptAnyRewardingAsset() || $this->challenge->acceptSpecificRewardingAsset()) {
             return $this->getAvailableAmount() > 0 && $this->getRemainingDays() > 0;
-        } else {
-            return true;
         }
+        return true;
     }
 
     public function isNameUnique()

@@ -116,9 +116,7 @@ class FundingController extends ContentContainerController
             throw new HttpException(403, 'You can`t submit a funding to a stopped challenge!');
         }
 
-        /**
-         *  adding a new account to funding when alternative challenge
-         */
+        //adding a new account to funding when alternative challenge
         if ($challenge->acceptSpecificRewardingAsset()) {
             $lastStepEnabled = true;
         } else {
@@ -159,13 +157,13 @@ class FundingController extends ContentContainerController
                 throw new HttpException(401);
             }
             // Step 3: Gallery
-            return $this->renderAjax('media', ['model' => $model, 'lastStepEnabled' => $lastStepEnabled]);
+            return $this->renderAjax('media', ['model' => $model, 'lastStepEnabled' => $challenge->acceptSpecificRewardingAsset(),]);
         }
 
         // Try Save Step 3
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
-            if ($lastStepEnabled) {
+            if ($challenge->acceptSpecificRewardingAsset()) {
                 return $this->renderAjax('add-specific-account', [
                     'model' => $model,
                     'spaceId' => $challenge->space_id
