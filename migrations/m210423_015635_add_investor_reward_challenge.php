@@ -29,11 +29,11 @@ class m210423_015635_add_investor_reward_challenge extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk_reward_asset', 'xcoin_challenge');
         $this->dropColumn('xcoin_challenge', 'any_reward_asset');
         $this->dropColumn('xcoin_challenge', 'no_rewarding');
         $this->dropColumn('xcoin_challenge', 'exchange_rate');
         $this->dropColumn('xcoin_challenge', 'specific_reward_asset');
         $this->dropColumn('xcoin_challenge', 'specific_reward_asset_id');
-        $this->dropForeignKey('fk_reward_asset', 'xcoin_challenge');
     }
 }
