@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\file\widgets\Upload;
+use humhub\modules\xcoin\grids\SenderAccountGridView;
 use humhub\modules\xcoin\models\Account;
 use kartik\select2\Select2;
 use yii\bootstrap\Html;
@@ -33,20 +34,24 @@ $upload = Upload::withName();
 <?= $form->field($model, 'city')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'deadline')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'specific_sender_account_id')->hiddenInput()->label(false) ?>
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'specific_sender_account_id')->widget(Select2::className(), [
-                'attribute' => 'Sender Account',
-                'data' => ArrayHelper::map(Account::find()->where(['space_id' => $spaceId])->all(), 'id', 'title'),
-            ])->label(true); ?>
+            <?= SenderAccountGridView::widget([
+                'contentContainer' => $contentContainer,
+                'nextRoute' => $nextRoute,
+                'requireAsset' => isset($requireAsset) ? $requireAsset : null,
+                'disableAccount' => isset($disableAccount) ? $disableAccount : null,
+                'product' => isset($product) ? $product : null,
+            ])
+            ?>
         </div>
     </div>
 </div>
 <hr>
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'save')); ?>
-    <?= ModalButton::cancel(); ?>
+    <?= ModalButton::cancel('allocate later'); ?>
 </div>
 <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>

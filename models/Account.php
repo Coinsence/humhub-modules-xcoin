@@ -191,7 +191,6 @@ class Account extends ActiveRecord
     {
         $plus = Transaction::find()->where(['to_account_id' => $this->id])->andWhere(['asset_id' => $asset->id])->sum('amount');
         $minus = Transaction::find()->where(['from_account_id' => $this->id])->andWhere(['asset_id' => $asset->id])->sum('amount');
-
         return round($plus, 4) - round($minus, 4);
     }
 

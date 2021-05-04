@@ -61,7 +61,7 @@ $upload = Upload::forModel($model, $model->coverFile);
                 </div>
                 <div class="col-md-2">
                     <label class="control-label " for="challenge-exchange_rate" style="visibility:hidden "
-                           id="challenge-label_exchange_rate">of</label>
+                           id="challenge-label_exchange_rate"><?= Yii::t('XcoinModule.challenge', 'of' ) ?></label>
                 </div>
                 <div class="col-md-4">
                     <?=
@@ -82,7 +82,7 @@ $upload = Upload::forModel($model, $model->coverFile);
                 </div>
                 <div class="col-md-2">
                     <label class="control-label " style="visibility:hidden"
-                           id="challenge-label_specific_reward_asset">for each invested COIN </label>
+                           id="challenge-label_specific_reward_asset"><?= Yii::t('XcoinModule.challenge', 'for each invested COIN' ) ?></label>
                 </div>
             </div>
         </div>

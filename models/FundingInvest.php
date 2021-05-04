@@ -88,16 +88,13 @@ class FundingInvest extends Model
     {
         $left = $this->funding->getAvailableAmount();
         // Check max amount of current account
-        if ($this->funding->specific_sender_account_id) {
-            $account = Account::findOne(['id' => $this->funding->specific_sender_account_id]);
-            $accountLeft = $account->getAssetBalance($this->funding->challenge->asset);
-        } else {
-            $accountLeft = $this->fromAccount->getAssetBalance($this->funding->challenge->asset);
+        $accountLeft = $this->fromAccount->getAssetBalance($this->funding->challenge->asset);
+        if ($this->funding->challenge->acceptNoRewarding()) {
+            return $accountLeft;
         }
         if ($accountLeft < $left) {
             return $accountLeft;
         }
-
         return $left;
     }
 
@@ -135,17 +132,13 @@ class FundingInvest extends Model
         $fundingAccount = $this->funding->getFundingAccount();
 
         // Buy transaction only when the challenge accepts specific reward asset or any reward asset
-        if ($this->amountBuy) {
+        if (!$this->funding->challenge->acceptNoRewarding()) {
             // Buy Transaction
             $transaction = new Transaction();
             $transaction->asset_id = $this->getBuyAsset()->id;
             $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
             $transaction->to_account_id = $this->fromAccount->id;
-            if ($this->funding->specific_sender_account_id) {
-                $transaction->from_account_id = $this->funding->specific_sender_account_id;
-            } else {
-                $transaction->from_account_id = $fundingAccount->id;
-            }
+            $transaction->from_account_id = $fundingAccount->id;
             $transaction->amount = $this->getBuyAmount();
             $transaction->comment = Yii::t('XcoinModule.base', 'Funding Invest');
             if (!$transaction->save()) {

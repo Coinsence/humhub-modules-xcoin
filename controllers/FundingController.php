@@ -2,9 +2,12 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\helpers\SpaceHelper;
+use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Challenge;
+use humhub\modules\xcoin\models\Transaction;
 use Throwable;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
@@ -14,7 +17,9 @@ use humhub\modules\xcoin\models\Funding;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\FundingInvest;
+use yii\base\Model;
 use yii\web\HttpException;
+use Exception;
 
 /**
  * Description of AccountController
@@ -116,13 +121,6 @@ class FundingController extends ContentContainerController
             throw new HttpException(403, 'You can`t submit a funding to a stopped challenge!');
         }
 
-        //adding a new account to funding when alternative challenge
-        if ($challenge->acceptSpecificRewardingAsset()) {
-            $lastStepEnabled = true;
-        } else {
-            $lastStepEnabled = false;
-        }
-
         /** @var Space $currentSpace */
         $currentSpace = $this->contentContainer;
         $user = Yii::$app->user->identity;
@@ -161,20 +159,23 @@ class FundingController extends ContentContainerController
         }
 
         // Try Save Step 3
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3') {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
+            $model->save();
+            $this->view->saved();
             if ($challenge->acceptSpecificRewardingAsset()) {
                 return $this->renderAjax('add-specific-account', [
                     'model' => $model,
-                    'spaceId' => $challenge->space_id
+                    'nextRoute' => ['/xcoin/funding/allocate', 'fundingId' => $model->id, 'container' => $this->contentContainer],
+                    'contentContainer' => $user,
+                    'spaceId' => $challenge->space_id,
                 ]);
-            } else {
-                $this->view->saved();
-                return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
-                    'container' => $model->space,
-                    'fundingId' => $model->id
-                ]));
             }
+            return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
+                'container' => $model->space,
+                'fundingId' => $model->id
+            ]));
+
         }
         // Check validation
         if ($model->hasErrors() && $model->isSecondStep()) {
@@ -185,8 +186,6 @@ class FundingController extends ContentContainerController
         }
         //try save step 4
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '4' && $model->save()) {
-
-            $this->view->saved();
             return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
                 'container' => $model->space,
                 'fundingId' => $model->id
@@ -313,5 +312,22 @@ class FundingController extends ContentContainerController
             'container' => $this->contentContainer,
             'fundingId' => $model->id
         ]);
+    }
+
+    public function actionAllocate($accountId, $fundingId)
+    {
+        $funding = Funding::findOne(['id' => $fundingId]);
+        $transaction = new Transaction();
+        $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ALLOCATE;
+        $transaction->asset_id = Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id])->id;
+        $transaction->from_account_id = $accountId;
+        $transaction->to_account_id = Account::findOne(['funding_id' => $fundingId])->id;
+        $transaction->amount = $funding->amount * $funding->exchange_rate;
+
+        if (!$transaction->save()) {
+            throw new Exception('Could not create issue transaction for funding account');
+        }
+        return $this->htmlRedirect(['index', 'container' => $this->contentContainer]);
+
     }
 }

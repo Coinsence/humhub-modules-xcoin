@@ -38,12 +38,10 @@ use yii\web\HttpException;
  * @property integer $status
  * @property string $country
  * @property string $city
- * @property integer specific_sender_account_id
  *
  * @property Challenge $challenge
  * @property User $createdBy
  * @property Space $space
- * @property Account $specificSenderAccount
  */
 class Funding extends ActiveRecord
 {
@@ -94,13 +92,12 @@ class Funding extends ActiveRecord
                 'required'
             ],
             ['categories_names', 'required', 'message' => 'Please choose at least a category'],
-            [['space_id', 'challenge_id', 'amount', 'created_by', 'specific_sender_account_id'], 'integer'],
+            [['space_id', 'challenge_id', 'amount', 'created_by'], 'integer'],
             [['amount'], 'number', 'min' => '1'],
             [['exchange_rate'], 'number', 'min' => '0.1'],
             [['created_at'], 'safe'],
             [['challenge_id'], 'exist', 'skipOnError' => true, 'targetClass' => Challenge::class, 'targetAttribute' => ['challenge_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
-            [['specific_sender_account_id'], 'exist', 'skipOnError' => true, 'targetClass' => Account::class, 'targetAttribute' => ['specific_sender_account_id' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['title', 'description', 'city'], 'string', 'max' => 255],
             [['country'], 'string', 'max' => 2],
@@ -131,7 +128,6 @@ class Funding extends ActiveRecord
                 'country',
                 'city',
                 'categories_names',
-                'specific_sender_account_id'
             ],
             self::SCENARIO_EDIT => [
                 'amount',
@@ -164,7 +160,6 @@ class Funding extends ActiveRecord
             'deadline' => Yii::t('XcoinModule.base', 'Deadline'),
             'country' => Yii::t('XcoinModule.base', 'Country'),
             'city' => Yii::t('XcoinModule.base', 'City'),
-            'specific_sender_account_id' => Yii::t('XcoinModule.base', 'Account sender'),
         ];
     }
 
@@ -256,14 +251,6 @@ class Funding extends ActiveRecord
         return $this->hasOne(Challenge::class, ['id' => 'challenge_id']);
     }
 
-    /**
-     * @return ActiveQuery
-     */
-    public function getSpecificAccountSender()
-    {
-        return $this->hasOne(Account::class, ['id' => 'specific_sender_account_id']);
-    }
-
     public function getCategories()
     {
         return $this->hasMany(Category::class, ['id' => 'category_id'])
@@ -304,7 +291,7 @@ class Funding extends ActiveRecord
      */
     public function getRaisedAmount()
     {
-        return AccountHelper::getFundingAccountBalance($this);
+        return AccountHelper::getFundingRequestedAccountBalance($this);
     }
 
     /**
@@ -400,7 +387,7 @@ class Funding extends ActiveRecord
 
     public function canInvest()
     {
-        if ($this->challenge->acceptAnyRewardingAsset() || $this->challenge->acceptSpecificRewardingAsset()) {
+        if (!$this->challenge->acceptNoRewarding()) {
             return $this->getAvailableAmount() > 0 && $this->getRemainingDays() > 0;
         }
         return true;

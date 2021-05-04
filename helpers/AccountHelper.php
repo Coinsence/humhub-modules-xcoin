@@ -120,6 +120,16 @@ class AccountHelper
         return $account;
     }
 
+    public static function getFundingAccountById($fundId)
+    {
+        $account = Account::findOne(['funding_id' => $fundId]);
+        if ($account === null) {
+            throw new HttpException(404);
+        }
+
+        return $account;
+    }
+
     public static function getIssueAccount(Space $space)
     {
         $issueAccount = Account::findOne(['space_id' => $space->id, 'account_type' => Account::TYPE_ISSUE]);
@@ -189,8 +199,18 @@ class AccountHelper
         } else {
             $asset = AssetHelper::getSpaceAsset($funding->space);
         }
-
         return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
+    }
+
+    public function getFundingRequestedAccountBalance(Funding $funding, $requested = true)
+    {
+        if ($requested) {
+            $asset = Asset::findOne(['id' => $funding->challenge->asset_id]);
+        } else {
+            $asset = AssetHelper::getSpaceAsset($funding->space);
+        }
+        return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
+
     }
 
     public static function getAssetsList(Account $account)
