@@ -34,7 +34,6 @@ $upload = Upload::withName();
 <?= $form->field($model, 'city')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'deadline')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
-<?= $form->field($model, 'specific_sender_account_id')->hiddenInput()->label(false) ?>
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12">
