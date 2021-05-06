@@ -197,7 +197,11 @@ class AccountHelper
                 $asset = Asset::findOne(['id' => $funding->challenge->asset_id]);
             }
         } else {
-            $asset = AssetHelper::getSpaceAsset($funding->space);
+            if ($funding->challenge->acceptSpecificRewardingAsset()) {
+                $asset = Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id]);
+            } else {
+                $asset = AssetHelper::getSpaceAsset($funding->space);
+            }
         }
         return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
     }
