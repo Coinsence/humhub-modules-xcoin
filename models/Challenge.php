@@ -79,7 +79,8 @@ class Challenge extends ActiveRecord
     {
         return [
             [['space_id', 'asset_id', 'title', 'description', 'created_by'], 'required'],
-            [['space_id', 'asset_id', 'created_by', 'no_rewarding', 'any_reward_asset', 'specific_reward_asset', 'exchange_rate', 'specific_reward_asset_id'], 'integer'],
+            [['exchange_rate'], 'number', 'min' => '0.1'],
+            [['space_id', 'asset_id', 'created_by', 'no_rewarding', 'any_reward_asset', 'specific_reward_asset', 'specific_reward_asset_id'], 'integer'],
             [['created_at', 'status', 'stopped'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['specific_reward_asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['specific_reward_asset_id' => 'id']],
