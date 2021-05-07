@@ -5,6 +5,7 @@ namespace humhub\modules\xcoin\controllers;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\helpers\SpaceHelper;
+use humhub\modules\xcoin\models\AccountBalance;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\Transaction;
@@ -317,17 +318,25 @@ class FundingController extends ContentContainerController
     public function actionAllocate($accountId, $fundingId)
     {
         $funding = Funding::findOne(['id' => $fundingId]);
+        $balance = AccountBalance::findOne(['account_id' => $accountId, 'asset_id' => Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id])->id]);
         $transaction = new Transaction();
         $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ALLOCATE;
         $transaction->asset_id = Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id])->id;
         $transaction->from_account_id = $accountId;
         $transaction->to_account_id = Account::findOne(['funding_id' => $fundingId])->id;
-        $transaction->amount = $funding->amount * $funding->exchange_rate;
+        if ($balance->balance - ($funding->amount * $funding->exchange_rate ) > 0) {
+            $transaction->amount = $funding->amount * $funding->exchange_rate;
+        } else {
+            $transaction->amount = round($balance->balance, 1);
+        }
 
         if (!$transaction->save()) {
             throw new Exception('Could not create issue transaction for funding account');
         }
-        return $this->htmlRedirect(['index', 'container' => $this->contentContainer]);
 
+        return $this->htmlRedirect(['overview',
+            'container' => $funding->space,
+            'fundingId' => $fundingId
+        ]);
     }
 }
