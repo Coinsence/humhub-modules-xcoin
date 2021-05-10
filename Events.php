@@ -13,6 +13,7 @@ use humhub\modules\xcoin\models\Product;
 use humhub\modules\xcoin\models\Transaction;
 use humhub\widgets\TopMenu;
 use Yii;
+use yii\base\BaseObject;
 use yii\base\Event;
 use yii\base\Exception;
 use yii\helpers\Url;
@@ -269,6 +270,8 @@ class Events
         if (!$issueTransaction->save()) {
             throw new HttpException(500, "can't issue this Amount !");
         }
+
+        \humhub\components\Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $issueTransaction]));
 
         //New member account transaction
         $transferTransaction = new Transaction();

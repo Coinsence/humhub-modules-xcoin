@@ -10,6 +10,8 @@
 namespace humhub\modules\xcoin\jobs;
 
 
+use humhub\components\Event;
+use humhub\modules\space\models\Space;
 use Yii;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\xcoin\helpers\Utils;
@@ -17,12 +19,13 @@ use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Transaction;
+use yii\base\BaseObject;
 
 class IssueScheduledTransactions extends ActiveJob
 {
 
     /**
-     * @var \humhub\modules\space\models\Space Space on which these settings are for
+     * @var Space Space on which these settings are for
      */
     public $space;
 
@@ -76,6 +79,8 @@ class IssueScheduledTransactions extends ActiveJob
             if (!$issueTransaction->save()) {
                 Yii::error("can't issue this Amount !, transaction: " . json_encode($issueTransaction));
             }
+
+            Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $issueTransaction]));
 
             // New member account transaction
             $transferTransaction = new Transaction();

@@ -250,7 +250,7 @@ class Account extends ActiveRecord
             $revertTransaction = new Transaction();
 
             $revertTransaction->asset_id = $transaction->asset_id;
-            $revertTransaction->transaction_type = $transaction->transaction_type;
+            $revertTransaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
             $revertTransaction->amount = $transaction->amount;
             $revertTransaction->comment = $transaction->comment ? "$transaction->comment - Transaction Reverted" : "Campaign issue transaction reverted";
             $revertTransaction->from_account_id = $transaction->to_account_id;

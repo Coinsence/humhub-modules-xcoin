@@ -7,7 +7,11 @@
 namespace humhub\modules\xcoin\models;
 
 
+use humhub\components\Event;
+use humhub\modules\space\models\Space;
+use self;
 use Yii;
+use yii\base\BaseObject;
 use yii\base\Model;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\AccountHelper;
@@ -26,7 +30,7 @@ class SpaceModuleManualSettings extends Model
     public $selectedMembers;
 
     /**
-     * @var \humhub\modules\space\models\Space Space on which these settings are for
+     * @var Space Space on which these settings are for
      */
     public $space;
 
@@ -36,7 +40,7 @@ class SpaceModuleManualSettings extends Model
 
     /**
      * Static initializer
-     * @return \self
+     * @return self
      */
     public static function instantiate()
     {
@@ -133,6 +137,8 @@ class SpaceModuleManualSettings extends Model
             if (!$issueTransaction->save()) {
                 Yii::error("can't issue this Amount !, transaction: " . json_encode($issueTransaction));
             }
+
+            Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $issueTransaction]));
 
             // New member account transaction
             $transferTransaction = new Transaction();

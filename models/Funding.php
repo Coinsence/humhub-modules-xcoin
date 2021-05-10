@@ -7,6 +7,7 @@ use cornernote\linkall\LinkAllBehavior;
 use DateTime;
 use Exception;
 use humhub\components\ActiveRecord;
+use humhub\components\Event;
 use humhub\libs\DbDateValidator;
 use humhub\modules\file\models\File;
 use humhub\modules\space\components\UrlValidator;
@@ -17,6 +18,7 @@ use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\Utils;
 use Yii;
+use yii\base\BaseObject;
 use yii\db\ActiveQuery;
 use yii\web\HttpException;
 
@@ -473,6 +475,8 @@ class Funding extends ActiveRecord
         if (!$transaction->save()) {
             throw new Exception('Could not create issue transaction for funding account');
         }
+
+        Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $transaction]));
     }
 
     private function adjustIssuesAmount()
@@ -503,6 +507,10 @@ class Funding extends ActiveRecord
 
         if (!$transaction->save()) {
             throw new Exception('Could not create issue transaction for funding account');
+        }
+
+        if ($transaction->transaction_type === Transaction::TRANSACTION_TYPE_ISSUE) {
+            Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $transaction]));
         }
     }
 }
