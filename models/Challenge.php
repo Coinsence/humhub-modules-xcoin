@@ -28,8 +28,13 @@ use humhub\modules\space\models\Space;
  * @property integer $created_by
  * @property integer $status
  * @property integer $stopped
- *
+ * @property integer $no_rewarding
+ * @property integer $any_reward_asset
+ * @property integer $specific_reward_asset
+ * @property integer $exchange_rate
+ * @property integer $specific_reward_asset_id
  * @property Asset $asset
+ * @property Asset $specificRewardAsset
  * @property User $createdBy
  * @property Space $space
  */
@@ -46,7 +51,18 @@ class Challenge extends ActiveRecord
     const CHALLENGE_ACTIVE = 0;
     const CHALLENGE_STOPPED = 1;
 
+
+    // challenges investor reward options
+    const CHALLENGE_ACCEPT_ANY_REWARDING_ASSET_DISABLED = 0;
+    const CHALLENGE_ACCEPT_ANY_REWARDING_ASSET_ENABLED = 1;
+    const CHALLENGE_NO_REWARDING_DISABLED = 0;
+    const CHALLENGE_NO_REWARDING_ENABLED = 1;
+    const CHALLENGE_ACCEPT_SPECIFIC_REWARD_ASSET_DISABLED = 0;
+    const CHALLENGE_ACCEPT_SPECIFIC_REWARD_ASSET_ENABLED = 1;
+
+
     public $coverFile;
+
 
     /**
      * @inheritdoc
@@ -63,9 +79,11 @@ class Challenge extends ActiveRecord
     {
         return [
             [['space_id', 'asset_id', 'title', 'description', 'created_by'], 'required'],
-            [['space_id', 'asset_id', 'created_by'], 'integer'],
+            [['exchange_rate'], 'number', 'min' => '0.1'],
+            [['space_id', 'asset_id', 'created_by', 'no_rewarding', 'any_reward_asset', 'specific_reward_asset', 'specific_reward_asset_id'], 'integer'],
             [['created_at', 'status', 'stopped'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
+            [['specific_reward_asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['specific_reward_asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['title'], 'string', 'max' => 255],
@@ -77,6 +95,11 @@ class Challenge extends ActiveRecord
     {
         return [
             self::SCENARIO_CREATE => [
+                'any_reward_asset',
+                'specific_reward_asset',
+                'exchange_rate',
+                'no_rewarding',
+                'specific_reward_asset_id',
                 'asset_id',
                 'title',
                 'description'
@@ -105,17 +128,19 @@ class Challenge extends ActiveRecord
             'title' => Yii::t('XcoinModule.challenge', 'Title'),
             'description' => Yii::t('XcoinModule.challenge', 'Description'),
             'created_at' => Yii::t('XcoinModule.challenge', 'Created At'),
-            'created_by' => Yii::t('XcoinModule.challenge', 'Created By')
+            'created_by' => Yii::t('XcoinModule.challenge', 'Created By'),
+            'any_project_asset' => Yii::t('XcoinModule.challenge', 'Any project Issued COIN'),
+            'specific_reward_asset' => Yii::t('XcoinModule.challenge', 'Project Must offer'),
+            'no_rewarding' => Yii::t('XcoinModule.challenge', 'No rewarding'),
+            'specific_reward_asset_id' => Yii::t('XcoinModule.challenge', 'Requested coin'),
         ];
     }
-
 
     public function beforeSave($insert)
     {
         if ($this->isNewRecord) {
             $this->status = self::CHALLENGE_STATUS_DISABLED;
         }
-
         return parent::beforeSave($insert);
     }
 
@@ -133,6 +158,14 @@ class Challenge extends ActiveRecord
     public function getAsset()
     {
         return $this->hasOne(Asset::class, ['id' => 'asset_id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getSpecificSelectProjectAsset()
+    {
+        return $this->hasOne(Asset::class, ['id' => 'specific_reward_asset_id']);
     }
 
     /**
@@ -192,4 +225,25 @@ class Challenge extends ActiveRecord
     {
         return $this->status == self::CHALLENGE_STATUS_DISABLED;
     }
+
+    public function acceptNoRewarding()
+    {
+        return $this->no_rewarding == self::CHALLENGE_NO_REWARDING_ENABLED;
+    }
+
+    public function acceptSpecificRewardingAsset()
+    {
+        return $this->specific_reward_asset == self::CHALLENGE_ACCEPT_SPECIFIC_REWARD_ASSET_ENABLED;
+    }
+
+    public function acceptAnyRewardingAsset()
+    {
+        return $this->any_reward_asset == self::CHALLENGE_ACCEPT_ANY_REWARDING_ASSET_ENABLED;
+    }
+
+    public static function getChallengeById($challengeId)
+    {
+        return Challenge::find()->where(['id' => $challengeId])->one();
+    }
+
 }

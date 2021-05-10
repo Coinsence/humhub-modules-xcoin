@@ -5,6 +5,7 @@ namespace humhub\modules\xcoin\helpers;
 use humhub\modules\content\components\ContentContainerPermissionManager;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\modules\xcoin\models\Challenge;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -43,6 +44,16 @@ class AssetHelper
         return Asset::findOne(['space_id' => $space->id]);
     }
 
+    /**
+     *  Return a specific reward asset when enabled from challenge
+     *
+     * @param $id
+     * @return Asset|null
+     */
+    public static function getChallengeSpecificRewardAsset($id)
+    {
+        return Asset::findOne(['id' => $id]);
+    }
 
     public static function getAssetsDropDown(ContentContainerActiveRecord $container)
     {
@@ -87,7 +98,7 @@ class AssetHelper
 
             $permissionManager = new ContentContainerPermissionManager(['subject' => $user, 'contentContainer' => $container]);
 
-            if ($permissionManager->can(ManageContent::class)){
+            if ($permissionManager->can(ManageContent::class)) {
                 return true;
             }
         }
@@ -104,8 +115,9 @@ class AssetHelper
             $query->andWhere(['!=', 'id', self::getSpaceAsset($excludedSpace)->id]);
 
         foreach ($query->all() as $asset) {
-            if ( !$issuedOnly || $asset->getIssuedAmount() > 0 )
+            if (!$issuedOnly || $asset->getIssuedAmount() > 0) {
                 $assets[$asset->id] = SpaceImage::widget(['space' => $asset->space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $asset->space->name;
+            }
         }
 
         return $assets;

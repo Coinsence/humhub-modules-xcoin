@@ -2,9 +2,13 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\helpers\SpaceHelper;
+use humhub\modules\xcoin\models\AccountBalance;
+use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Challenge;
+use humhub\modules\xcoin\models\Transaction;
 use Throwable;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
@@ -14,7 +18,9 @@ use humhub\modules\xcoin\models\Funding;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\FundingInvest;
+use yii\base\Model;
 use yii\web\HttpException;
+use Exception;
 
 /**
  * Description of AccountController
@@ -116,11 +122,8 @@ class FundingController extends ContentContainerController
             throw new HttpException(403, 'You can`t submit a funding to a stopped challenge!');
         }
 
-
         /** @var Space $currentSpace */
         $currentSpace = $this->contentContainer;
-
-
         $user = Yii::$app->user->identity;
 
         $model = new Funding();
@@ -152,30 +155,42 @@ class FundingController extends ContentContainerController
             if ($model->space && !SpaceHelper::canSubmitProject($model->space)) {
                 throw new HttpException(401);
             }
-
             // Step 3: Gallery
-            return $this->renderAjax('media', ['model' => $model]);
+            return $this->renderAjax('media', ['model' => $model, 'lastStepEnabled' => $challenge->acceptSpecificRewardingAsset(),]);
         }
 
         // Try Save Step 3
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3') {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
-
+            $model->save();
             $this->view->saved();
-
+            if ($challenge->acceptSpecificRewardingAsset()) {
+                return $this->renderAjax('add-specific-account', [
+                    'model' => $model,
+                    'nextRoute' => ['/xcoin/funding/allocate', 'fundingId' => $model->id, 'container' => $this->contentContainer],
+                    'contentContainer' => $user,
+                    'spaceId' => $challenge->space_id,
+                ]);
+            }
             return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
                 'container' => $model->space,
                 'fundingId' => $model->id
             ]));
-        }
 
+        }
         // Check validation
         if ($model->hasErrors() && $model->isSecondStep()) {
-
-            return $this->renderAjax('details', [
+            return $this->renderAjax('overview', [
                 'model' => $model,
                 'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
             ]);
+        }
+        //try save step 4
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '4' && $model->save()) {
+            return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
+                'container' => $model->space,
+                'fundingId' => $model->id
+            ]));
         }
 
         // Step 2: Details
@@ -297,6 +312,31 @@ class FundingController extends ContentContainerController
         return $this->htmlRedirect(['overview',
             'container' => $this->contentContainer,
             'fundingId' => $model->id
+        ]);
+    }
+
+    public function actionAllocate($accountId, $fundingId)
+    {
+        $funding = Funding::findOne(['id' => $fundingId]);
+        $balance = AccountBalance::findOne(['account_id' => $accountId, 'asset_id' => Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id])->id]);
+        $transaction = new Transaction();
+        $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ALLOCATE;
+        $transaction->asset_id = Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id])->id;
+        $transaction->from_account_id = $accountId;
+        $transaction->to_account_id = Account::findOne(['funding_id' => $fundingId])->id;
+        if ($balance->balance - ($funding->amount * $funding->exchange_rate ) > 0) {
+            $transaction->amount = $funding->amount * $funding->exchange_rate;
+        } else {
+            $transaction->amount = round($balance->balance, 1);
+        }
+
+        if (!$transaction->save()) {
+            throw new Exception('Could not create issue transaction for funding account');
+        }
+
+        return $this->htmlRedirect(['overview',
+            'container' => $funding->space,
+            'fundingId' => $fundingId
         ]);
     }
 }

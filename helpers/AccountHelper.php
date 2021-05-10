@@ -120,6 +120,16 @@ class AccountHelper
         return $account;
     }
 
+    public static function getFundingAccountById($fundId)
+    {
+        $account = Account::findOne(['funding_id' => $fundId]);
+        if ($account === null) {
+            throw new HttpException(404);
+        }
+
+        return $account;
+    }
+
     public static function getIssueAccount(Space $space)
     {
         $issueAccount = Account::findOne(['space_id' => $space->id, 'account_type' => Account::TYPE_ISSUE]);
@@ -181,12 +191,30 @@ class AccountHelper
     public static function getFundingAccountBalance(Funding $funding, $requested = true)
     {
         if ($requested) {
-            $asset = Asset::findOne(['id' => $funding->getChallenge()->one()->asset_id]);
+            if ($funding->challenge->acceptSpecificRewardingAsset()) {
+                $asset = Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id]);
+            } else {
+                $asset = Asset::findOne(['id' => $funding->challenge->asset_id]);
+            }
+        } else {
+            if ($funding->challenge->acceptSpecificRewardingAsset()) {
+                $asset = Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id]);
+            } else {
+                $asset = AssetHelper::getSpaceAsset($funding->space);
+            }
+        }
+        return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
+    }
+
+    public function getFundingRequestedAccountBalance(Funding $funding, $requested = true)
+    {
+        if ($requested) {
+            $asset = Asset::findOne(['id' => $funding->challenge->asset_id]);
         } else {
             $asset = AssetHelper::getSpaceAsset($funding->space);
         }
-
         return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
+
     }
 
     public static function getAssetsList(Account $account)
