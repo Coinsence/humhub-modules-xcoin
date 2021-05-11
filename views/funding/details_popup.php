@@ -202,7 +202,7 @@ Assets::register($this);
     <?php ModalDialog::end() ?>
 </div>
 <script>
-    $('.social-share .btn-h-i-s').on('click', function(e) {
+    $('.social-share .sharer').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         let sharer = $(this).data('sharer');
