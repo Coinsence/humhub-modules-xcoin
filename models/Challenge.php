@@ -179,6 +179,15 @@ class Challenge extends ActiveRecord
     /**
      * @return ActiveQuery
      */
+    public function getContactButtons()
+    {
+        return $this->hasMany(ChallengeContactButton::class, ['id' => 'challenge_id'])
+            ->viaTable('xcoin_challenge_contact_button', ['challenge_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
     public function getCreatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'created_by']);

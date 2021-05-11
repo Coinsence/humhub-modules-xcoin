@@ -160,15 +160,15 @@ class FundingController extends ContentContainerController
         }
 
         // Try Save Step 3
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3') {
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
-            $model->save();
             $this->view->saved();
             if ($challenge->acceptSpecificRewardingAsset()) {
                 return $this->renderAjax('add-specific-account', [
                     'model' => $model,
                     'nextRoute' => ['/xcoin/funding/allocate', 'fundingId' => $model->id, 'container' => $this->contentContainer],
                     'contentContainer' => $user,
+                    'requiredAsset' => AssetHelper::getChallengeSpecificRewardAsset($challenge->specific_reward_asset_id),
                     'spaceId' => $challenge->space_id,
                 ]);
             }
@@ -324,7 +324,7 @@ class FundingController extends ContentContainerController
         $transaction->asset_id = Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id])->id;
         $transaction->from_account_id = $accountId;
         $transaction->to_account_id = Account::findOne(['funding_id' => $fundingId])->id;
-        if ($balance->balance - ($funding->amount * $funding->exchange_rate ) > 0) {
+        if ($balance->balance - ($funding->amount * $funding->exchange_rate) > 0) {
             $transaction->amount = $funding->amount * $funding->exchange_rate;
         } else {
             $transaction->amount = round($balance->balance, 1);
