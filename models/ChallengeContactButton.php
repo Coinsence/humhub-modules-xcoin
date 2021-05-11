@@ -51,11 +51,13 @@ class ChallengeContactButton extends ActiveRecord
                 'button_title',
                 'popup_text',
                 'receiver',
-                'challenge_id'
+                'challenge_id',
+                'status'
             ],
             self::SCENARIO_EDIT => [
                 'button_title',
                 'popup_text',
+                'status'
             ],
         ];
     }
