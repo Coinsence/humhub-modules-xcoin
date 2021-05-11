@@ -482,9 +482,9 @@ class Funding extends ActiveRecord
             if (!$transaction->save()) {
                 throw new Exception('Could not create issue transaction for funding account');
             }
-        }
 
-        Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $transaction]));
+            Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $transaction]));
+        }
     }
 
     private function adjustIssuesAmount()
