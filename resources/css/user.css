@@ -29,7 +29,7 @@ body {
 #contentFormBody .contentForm_options .btn_container .label-public{
     right: 50px;
 }
-
+/*
 .modal-content .modal-header .close {
     margin-top: 2px;
     margin-right: 5px;
@@ -61,6 +61,7 @@ body {
         margin: 30px auto !important;
     }
 }
+*/
 .activities li .media {
     display: flex;
     align-items: center;
@@ -1242,11 +1243,14 @@ transform: translateY(-50%);
     position: absolute !important;
 }
 
+/*
 .space-funding .modal-dialog {
     max-width: 80% !important;
     width: 100%;
 }
+*/
 
+/*
 .details-popup {
     display: flex;
     justify-content: center;
@@ -1321,6 +1325,7 @@ transform: translateY(-50%);
         height: 180px;
     }
 }
+*/
 
 @media (max-width: 991px) {
     .styleState .stateFriend{

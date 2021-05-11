@@ -1,0 +1,272 @@
+// main: ../build.less
+/* ----------------------------------------------- */
+/* Space funding (submitted) details popup styling */
+/* ----------------------------------------------- */
+
+// Variables
+@modal-title-color: #353535;
+@modal-subtitle-color: #4F4F4F;
+@modal-side-widget-border-color: #E3E3E3;
+@modal-text-color: #353535;
+@modal-icons-color: #828282;
+@modal-progressbar-color: #47CC8C;
+@modal-action-btn-color: #3CBEEF;
+
+
+.funding-details-popup {
+
+    .modal-dialog {
+        width: 80%;
+    }
+    .modal-content {
+        border-radius: 14px;
+    }
+
+    .modal-header {
+        text-align: left;
+        border-bottom: none;
+        .modal-title {
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 1.36;
+            letter-spacing: -0.04em;
+            color: @modal-title-color;
+            margin-top: 0;
+            padding: 25px 20px 0;
+        }
+    }
+
+    .modal-container {
+        padding: 0 40px;
+    }
+
+    .modal-heading {
+        margin-bottom: 38px;
+    }
+
+    .modal-subtitle {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-top: -4px;
+        margin-bottom: 30px;
+
+        .text {
+            font-size: 16px;
+            line-height: 1.36;
+            color: @modal-subtitle-color;
+        }
+        .sharer {
+            display: inline-grid;
+            place-items: center;
+            height: 36px;
+            width: 36px;
+            margin-left: 10px;
+            border-radius: 50%;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            i {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .img-container {
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+        border-radius: 18px;
+        .bg {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            z-index: -1;
+            background-size: 1px 1px;
+        }
+        img {
+            height: 610px;
+            object-fit: contain;
+        }
+        &:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.36) 100%);
+            pointer-events: none;
+        }
+    }
+
+    .text-content {
+        padding-right: 6%;
+        margin-bottom: 32px;
+        .text-heading {
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 1.36;
+            letter-spacing: -0.04em;
+        }
+        .funding-content {
+            margin: 16px 0 64px;
+        }
+    }
+
+    .side-widget {
+        padding: 22px 28px;
+        margin-bottom: 32px;
+        border-radius: 17px;
+        border: 1px solid @modal-side-widget-border-color;
+        hr {
+            margin: 0;
+        }
+        .info {
+            display: grid;
+            grid-template-columns: auto auto;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            color: @modal-text-color;
+            > label, > span {
+                padding: 10px 0;
+            }
+            > label {
+                font-size: 14px;
+                line-height: 1.36;
+            }
+            > span {
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 1.36;
+                text-align: right;
+            }
+            .requesting {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+            .requesting strong {
+                margin-right: 8px;
+            }
+        }
+        .funding-progress {
+            .progress-info {
+                display: flex;
+                padding: 32px 0 16px;
+            }
+            .progress-info > :not(:first-child) {
+                margin-left: 24px;
+            }
+            .progress-info i {
+                font-size: 34px;
+                color: @modal-icons-color;
+            }
+            .progress-info > * {
+                display: flex;
+                align-items: center;
+            }
+            .progress-info .infos {
+                margin-left: 10px;
+                color: @modal-text-color;
+            }
+            .progress-info strong {
+                font-size: 14px;
+                line-height: 1.36;
+            }
+            .progress-info h6 {
+                font-size: 12px;
+                line-height: 1.36;
+                margin: 0;
+                text-transform: uppercase;
+            }
+
+            .progress-value {
+                margin-bottom: 26px;
+            }
+            .progress-value .progress {
+                height: 6px;
+                border-radius: 12px;
+            }
+            .progress-value .progress-bar {
+                background-color: @modal-progressbar-color;
+            }
+        }
+        .contributors {
+            padding: 16px 0;
+            h6 {
+                font-size: 14px;
+                line-height: 1.36;
+                color: @modal-text-color;
+            }
+            > span {
+                display: inline-block;
+                margin-right: 7px;
+                margin-bottom: 7px;
+            }
+        }
+        .actions {
+            padding-top: 22px;
+            .invest-btn a {
+                display: block;
+                font-size: 14px;
+                line-height: 1.36;
+                padding: 16px 10px;
+                border-radius: 8px;
+                text-align: center;
+                color: white;
+                background-color: @modal-action-btn-color;
+            }
+            .invest-btn a:hover {
+                background-color: darken(@modal-action-btn-color, 10%)
+            }
+            .invest-btn.disabled a {
+                background-color: lighten(@modal-action-btn-color, 10%);
+                pointer-events: none;
+            }
+        }
+    }
+
+    @media screen and (max-width: 980px) {
+        
+        .modal-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-info > div:first-child {
+            order: 1;
+        }
+        .modal-dialog {
+            padding: 0;
+            margin: auto;
+        }
+        .modal-content {
+            border-radius: 0;
+        }
+        .modal-container {
+            padding: 0 24px;
+        }
+        .social-share .text {
+            display: none;
+        }
+    }
+    @media screen and (max-width: 768px) {
+        .modal-header .modal-title {
+            padding: 25px 0 0;
+        }
+        .social-share .text + .sharer {
+            margin-left: 0;
+        }
+        .social-share .text + .sharer {
+            margin-top: 10px;
+        }
+        .modal-subtitle {
+            display: block;
+            margin-top: 10px;
+        }
+        .img-container {
+            margin: 0 -24px;
+            border-radius: 0;
+        }
+    }
+
+}
