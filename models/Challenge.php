@@ -37,6 +37,7 @@ use humhub\modules\space\models\Space;
  * @property Asset $specificRewardAsset
  * @property User $createdBy
  * @property Space $space
+ * @property ChallengeContactButton $challenge_contact_button1
  */
 class Challenge extends ActiveRecord
 {
@@ -62,7 +63,7 @@ class Challenge extends ActiveRecord
 
 
     public $coverFile;
-
+    public $challenge_contact_button1;
 
     /**
      * @inheritdoc
@@ -142,8 +143,8 @@ class Challenge extends ActiveRecord
             $this->status = self::CHALLENGE_STATUS_DISABLED;
         }
         return parent::beforeSave($insert);
-    }
 
+    }
     /**
      * @inheritdoc
      */

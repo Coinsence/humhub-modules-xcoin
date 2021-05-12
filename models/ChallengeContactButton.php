@@ -31,6 +31,14 @@ class ChallengeContactButton extends ActiveRecord
     const SCENARIO_CREATE = 'screate';
     const SCENARIO_EDIT = 'sedit';
 
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'xcoin_challenge_contact_button';
+    }
+
     public function rules()
     {
 
@@ -41,24 +49,6 @@ class ChallengeContactButton extends ActiveRecord
             [['button_title'], 'string', 'max' => 255],
             [['receiver'], 'string', 'max' => 255],
             [['popup_text'], 'string'],
-        ];
-    }
-
-    public function scenarios()
-    {
-        return [
-            self::SCENARIO_CREATE => [
-                'button_title',
-                'popup_text',
-                'receiver',
-                'challenge_id',
-                'status'
-            ],
-            self::SCENARIO_EDIT => [
-                'button_title',
-                'popup_text',
-                'status'
-            ],
         ];
     }
 

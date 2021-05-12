@@ -13,6 +13,7 @@ use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Challenge;
+use humhub\modules\xcoin\models\ChallengeContactButton;
 use Yii;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -73,7 +74,7 @@ class ChallengeController extends ContentContainerController
 
         return $this->render('overview', [
             'challenge' => $challenge,
-            'fundings'  => $fundings
+            'fundings' => $fundings
         ]);
     }
 
@@ -93,15 +94,18 @@ class ChallengeController extends ContentContainerController
         $model = new Challenge();
         $model->scenario = Challenge::SCENARIO_CREATE;
         $model->space_id = $this->contentContainer->id;
-
+        $model->challenge_contact_button1 = new ChallengeContactButton();
         $assets = AssetHelper::getAllAssets();
         $defaultAsset = AssetHelper::getDefaultAsset();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
-
             $this->view->saved();
-
+            if (isset($_POST['firstButton'])) {
+                $this->createButton($model->id, $_POST['firstButtonTitle'], $_POST['firstButtonText'], $_POST['firstButtonReceiver']);
+            }
+            if (isset($_POST['secondButton'])) {
+                $this->createButton($model->id, $_POST['secondButtonTitle'], $_POST['secondButtonText'], $_POST['secondButtonReceiver']);
+            }
             return $this->htmlRedirect($currentSpace->createUrl('/xcoin/challenge/index', [
                 'challengeId' => $model->id
             ]));
@@ -113,6 +117,17 @@ class ChallengeController extends ContentContainerController
                 'defaultAsset' => $defaultAsset,
             ]
         );
+    }
+
+    private function createButton($challengeId, $buttonTitle, $popupText, $receiver)
+    {
+        $button = new ChallengeContactButton();
+        $button->status = true;
+        $button->challenge_id = $challengeId;
+        $button->receiver = $receiver;
+        $button->button_title = $buttonTitle;
+        $button->popup_text = $popupText;
+        $button->save();
     }
 
     /**
