@@ -20,7 +20,7 @@ Assets::register($this);
  */
 ?>
 
-<div class="space-funding funding-details-popup" id="funding-popup">
+<div class="funding-details-popup" id="funding-popup">
 <?php
     $space = $funding->getSpace()->one();
     $cover = $funding->getCover();
