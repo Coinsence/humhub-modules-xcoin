@@ -6,13 +6,9 @@ use humhub\widgets\ActiveForm;
 
 use humhub\modules\user\widgets\Image;
 use humhub\modules\xcoin\assets\Assets;
-use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Product;
-use humhub\modules\xcoin\widgets\MarketplaceImage;
 use yii\bootstrap\Carousel;
 use humhub\libs\Html;
-use humhub\modules\xcoin\helpers\AssetHelper;
-use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\libs\Iso3166Codes;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -128,7 +124,7 @@ Assets::register($this);
                                 <small> <?= $product->getPaymentType() ?> </small>
                             <?php endif; ?>
                         </label>
-                        <span class="requesting">
+                        <span class="price">
                             <?php if ($product->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS) : ?>
                                 <strong><?= $product->price ?></strong>
                                 <?= SpaceImage::widget([
@@ -145,7 +141,7 @@ Assets::register($this);
                                     'showTooltip' => true,
                                     'link' => true
                                 ]); ?>
-                                <?= Yii::t('XcoinModule.product', 'Discount') ?>
+                                <span><?= Yii::t('XcoinModule.product', 'Discount') ?></span>
                             <?php endif; ?>
                         </span>
 
