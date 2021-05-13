@@ -94,7 +94,6 @@ class ChallengeController extends ContentContainerController
         $model = new Challenge();
         $model->scenario = Challenge::SCENARIO_CREATE;
         $model->space_id = $this->contentContainer->id;
-        $model->challenge_contact_button1 = new ChallengeContactButton();
         $assets = AssetHelper::getAllAssets();
         $defaultAsset = AssetHelper::getDefaultAsset();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

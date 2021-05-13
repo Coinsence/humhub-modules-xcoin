@@ -13,7 +13,6 @@ use kartik\widgets\Select2;
 use humhub\modules\xcoin\assets\Assets;
 
 /** @var $model Challenge */
-/** @var $secondModel \humhub\modules\xcoin\models\ChallengeContactButton */
 /** @var $assets Asset[] */
 /** @var $defaultAsset Asset */
 
@@ -154,14 +153,9 @@ $upload = Upload::forModel($model, $model->coverFile);
 </div>
 
 <div class="modal-footer">
-    <button type="submit" class="btn btn-primary" data-action-click="ui.modal.submit" onsubmit=test()>save</button>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.challenge', 'Save')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 
 <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>
-<script>
-    function test() {
-        alert('azeazeaze')
-    }
-</script>

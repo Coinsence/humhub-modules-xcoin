@@ -72,4 +72,5 @@ class ChallengeContactButton extends ActiveRecord
     {
         return $this->hasOne(Challenge::class, ['id' => 'challenge_id']);
     }
+
 }

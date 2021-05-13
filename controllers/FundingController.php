@@ -2,12 +2,15 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\mail\models\forms\CreateMessage;
+use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\AccountBalance;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Challenge;
+use humhub\modules\xcoin\models\ChallengeContactButton;
 use humhub\modules\xcoin\models\Transaction;
 use Throwable;
 use Yii;
@@ -19,8 +22,10 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\FundingInvest;
 use yii\base\Model;
+use yii\rbac\Item;
 use yii\web\HttpException;
 use Exception;
+use yii\web\UploadedFile;
 
 /**
  * Description of AccountController
@@ -72,7 +77,7 @@ class FundingController extends ContentContainerController
 
         return $this->render('overview', [
             'funding' => $funding,
-        ]);
+            'contactButtons' => ChallengeContactButton::findAll(['challenge_id' => $funding->challenge_id])]);
     }
 
     /**
@@ -338,5 +343,50 @@ class FundingController extends ContentContainerController
             'container' => $funding->space,
             'fundingId' => $fundingId
         ]);
+    }
+
+    /**
+     * @param $fundingId
+     * @return string
+     * @throws HttpException
+     */
+    public function actionContact($fundingId, $contactButtonId)
+    {
+
+        $funding = Funding::findOne(['id' => $fundingId, 'space_id' => $this->contentContainer->id]);
+        if ($funding === null) {
+            throw new HttpException(404, 'Funding not found!');
+        }
+        $contactButton = ChallengeContactButton::findOne(['id' => $contactButtonId]);
+        if ($contactButton === null) {
+            throw new HttpException(404, 'Contact Button not found!');
+        }
+        if (Yii::$app->request->post()) {
+
+            $uploadedFile = uploadedFile::getInstanceByName('file');
+            $filePath = Yii::$app->basePath . '/../uploads/';
+            if (!empty($uploadedFile)) {
+                $uploadedFile->saveAs($filePath . $uploadedFile->name);
+            }
+            $message = $_POST['message'];
+            $model = new CreateMessage();
+            $model->message = $message;
+            if ($contactButton->receiver == "challenge") {
+                $user = User::findOne(['id' => $funding->challenge->created_by]);
+            } else {
+                $user = User::findOne(['id' => $funding->created_by]);
+            }
+            $model->recipient = [$user->guid];
+            if ($model->save()) {
+                return $this->htmlRedirect(['index', 'id' => $model->messageInstance->id]);
+            }
+            return $this->htmlRedirect(['overview',
+                'container' => $this->contentContainer,
+                'fundingId' => $funding->id
+            ]);
+        }
+
+        return $this->renderAjax('contact', ['funding' => $funding,
+            'contactButton' => $contactButton,]);
     }
 }
