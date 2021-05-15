@@ -11,13 +11,6 @@ use humhub\modules\xcoin\widgets\ChallengeContactButton as contactButtonWidget;
 /** @var $funding Funding */
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.Funding', $contactButton->button_title), 'closable' => false]) ?>
-<div class="modal-body">
-    <?= contactButtonWidget::widget(['funding' => $funding, 'contactButton' => $contactButton]) ?>
+<?= contactButtonWidget::widget(['funding' => $funding, 'contactButton' => $contactButton,'model'=>$model]) ?>
 
-</div>
 
-<div class="modal-footer">
-</div>
-
-<?php ModalDialog::end() ?>

@@ -3,6 +3,10 @@
 namespace humhub\modules\xcoin\controllers;
 
 use humhub\modules\mail\models\forms\CreateMessage;
+use humhub\modules\mail\models\Message;
+use humhub\modules\mail\models\MessageEntry;
+use humhub\modules\mail\models\UserMessage;
+use humhub\modules\user\models\fieldtype\DateTime;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
@@ -347,6 +351,7 @@ class FundingController extends ContentContainerController
 
     /**
      * @param $fundingId
+     * @param $contactButtonId
      * @return string
      * @throws HttpException
      */
@@ -361,32 +366,16 @@ class FundingController extends ContentContainerController
         if ($contactButton === null) {
             throw new HttpException(404, 'Contact Button not found!');
         }
-        if (Yii::$app->request->post()) {
-
-            $uploadedFile = uploadedFile::getInstanceByName('file');
-            $filePath = Yii::$app->basePath . '/../uploads/';
-            if (!empty($uploadedFile)) {
-                $uploadedFile->saveAs($filePath . $uploadedFile->name);
-            }
-            $message = $_POST['message'];
-            $model = new CreateMessage();
-            $model->message = $message;
-            if ($contactButton->receiver == "challenge") {
-                $user = User::findOne(['id' => $funding->challenge->created_by]);
-            } else {
-                $user = User::findOne(['id' => $funding->created_by]);
-            }
-            $model->recipient = [$user->guid];
-            if ($model->save()) {
-                return $this->htmlRedirect(['index', 'id' => $model->messageInstance->id]);
-            }
-            return $this->htmlRedirect(['overview',
-                'container' => $this->contentContainer,
-                'fundingId' => $funding->id
-            ]);
+        $model = new CreateMessage();
+        if ($contactButton->receiver == "challenge") {
+            $model->recipient = User::findOne(['id' => $funding->challenge->created_by])->guid;
+        } else {
+            $model->recipient->user_id = User::findOne(['id' => $funding->created_by])->id;
         }
-
-        return $this->renderAjax('contact', ['funding' => $funding,
-            'contactButton' => $contactButton,]);
+        return $this->renderAjax('contact', [
+            'funding' => $funding,
+            'contactButton' => $contactButton,
+            'model' => $model,
+        ]);
     }
 }

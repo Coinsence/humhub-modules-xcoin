@@ -9,6 +9,7 @@ namespace humhub\modules\xcoin\widgets;
 
 
 use humhub\components\Widget;
+use humhub\modules\mail\models\forms\CreateMessage;
 use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\Funding;
 use yii\base\DynamicModel;
@@ -27,7 +28,14 @@ class ChallengeContactButton extends Widget
      */
     public $contactButton;
 
-    public function init(){
+
+    /**
+     * @var CreateMessage
+     */
+    public $model;
+
+    public function init()
+    {
         parent::init();
 
     }
@@ -36,7 +44,8 @@ class ChallengeContactButton extends Widget
     {
         return $this->render('@xcoin/widgets/views/challenge-contact-button', [
             'contactButton' => $this->contactButton,
-            'funding'=>$this->funding,
+            'funding' => $this->funding,
+            'model' => $this->model,
         ]);
     }
 }
