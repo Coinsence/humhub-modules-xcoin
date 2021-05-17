@@ -11,14 +11,12 @@ use humhub\components\Event;
 use humhub\libs\DbDateValidator;
 use humhub\modules\file\models\File;
 use humhub\modules\space\components\UrlValidator;
-use humhub\modules\space\Module;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\Utils;
 use Yii;
-use yii\base\BaseObject;
 use yii\db\ActiveQuery;
 use yii\web\HttpException;
 
@@ -40,6 +38,7 @@ use yii\web\HttpException;
  * @property integer $status
  * @property string $country
  * @property string $city
+ * @property string $youtube_link
  *
  * @property Challenge $challenge
  * @property User $createdBy
@@ -129,7 +128,8 @@ class Funding extends ActiveRecord
                 'exchange_rate',
                 'country',
                 'city',
-                'categories_names'
+                'categories_names',
+                'youtube_link',
             ],
             self::SCENARIO_EDIT => [
                 'amount',
@@ -138,7 +138,8 @@ class Funding extends ActiveRecord
                 'content',
                 'deadline',
                 'country',
-                'city'
+                'city',
+                'youtube_link',
             ],
         ];
     }
@@ -162,6 +163,7 @@ class Funding extends ActiveRecord
             'deadline' => Yii::t('XcoinModule.base', 'Deadline'),
             'country' => Yii::t('XcoinModule.base', 'Country'),
             'city' => Yii::t('XcoinModule.base', 'City'),
+            'youtube_link' => Yii::t('XcoinModule.base', 'YouTube Video'),
         ];
     }
 
@@ -350,7 +352,8 @@ class Funding extends ActiveRecord
                 $this->content,
                 $this->deadline,
                 $this->country,
-                $this->city
+                $this->city,
+                $this->youtube_link
             ) || strlen($this->description) > 255;
     }
 

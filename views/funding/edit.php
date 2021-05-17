@@ -2,10 +2,8 @@
 
 use humhub\libs\Iso3166Codes;
 use humhub\modules\content\widgets\richtext\RichTextField;
-use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\widgets\AmountField;
 use kartik\widgets\Select2;
-use yii\bootstrap\Html;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
@@ -60,6 +58,10 @@ $upload = Upload::withName();
         <div class="col-md-12">
             <?= $form->field($model, 'content')->widget(RichTextField::class, ['preset' => 'full'])
                 ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign needs & commitments')) ?>
+        </div>
+        <div class="col-md-12">
+            <?= $form->field($model, 'youtube_link')->textInput()
+                ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign YouTube video link')) ?>
         </div>
         <div class="col-md-12">
             <label class="control-label" for="funding-content"><?= Yii::t('XcoinModule.base', 'Gallery')?></label>

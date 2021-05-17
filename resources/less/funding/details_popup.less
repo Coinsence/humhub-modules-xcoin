@@ -111,6 +111,24 @@
         .funding-content {
             margin: 16px 0 64px;
         }
+        .funding-video {
+            overflow: hidden;
+            position: relative;
+            width:100%;
+            border-radius: 17px;
+        }
+        .funding-video::after {
+            padding-top: 56.25%;
+            display: block;
+            content: '';
+        }
+        .funding-video iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
     }
 
     .side-widget {
@@ -245,6 +263,9 @@
         }
         .modal-container {
             padding: 0 24px;
+        }
+        .text-content {
+            padding-right: 0;
         }
         .social-share .text {
             display: none;
