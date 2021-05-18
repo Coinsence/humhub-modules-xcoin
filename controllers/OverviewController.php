@@ -61,6 +61,7 @@ class OverviewController extends ContentContainerController
                 'user_id' => $this->contentContainer->id,
                 'account_type' => Account::TYPE_DEFAULT
             ]);
+
             $data = [
                 'fullName' => $this->contentContainer->displayName,
                 'coin' => 'coinsence',
@@ -68,6 +69,7 @@ class OverviewController extends ContentContainerController
                 'pAddress' => $defaultAccount->ethereum_address,
                 'rediectUrl' => Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success',
             ];
+            
             $jsonData = json_encode($data);
             $encodedData = base64_encode($jsonData);
             $this->redirect($bridge . '?data=' . $encodedData);
