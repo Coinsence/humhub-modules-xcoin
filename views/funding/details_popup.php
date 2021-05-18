@@ -68,27 +68,33 @@ Assets::register($this);
                     <span class="sharer" data-sharer="in" data-link="<?= $fundingUrl ?>"><i class="fa fa-linkedin-square"></i></span>
                 </div>
             </div>
-            <div class="img-container">
-                <?php if ($cover) : ?>
-                    <?php if (count($carouselItems) > 1): ?>
-                        <?= Carousel::widget([
-                            'items' => $carouselItems,
-                        ]) ?>
-                    <?php else: ?>
+            <?php if (!empty($funding->youtube_link)): ?>
+                <div class="funding-video">
+                    <iframe id="player" type="text/html" width="640" height="390" src="<?= FundingHelper::getYoutubeEmbedUrl($funding->youtube_link) ?>" frameborder="0"></iframe>
+                </div>
+            <?php else: ?>
+                <div class="img-container">
+                    <?php if ($cover) : ?>
+                        <?php if (count($carouselItems) > 1): ?>
+                            <?= Carousel::widget([
+                                'items' => $carouselItems,
+                            ]) ?>
+                        <?php else: ?>
+                            <div class="bg"
+                                style="background-image: url('<?= $cover->getUrl() ?>')"></div>
+                            <?= Html::img($cover->getUrl(), [
+                                'width' => '100%'
+                            ]) ?>
+                        <?php endif; ?>
+                    <?php else : ?>
                         <div class="bg"
-                            style="background-image: url('<?= $cover->getUrl() ?>')"></div>
-                        <?= Html::img($cover->getUrl(), [
+                            style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
+                        <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
                             'width' => '100%'
                         ]) ?>
-                    <?php endif; ?>
-                <?php else : ?>
-                    <div class="bg"
-                        style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
-                    <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
-                        'width' => '100%'
-                    ]) ?>
-                <?php endif ?>
-            </div>
+                    <?php endif ?>
+                </div>
+            <?php endif; ?>
         </div>
         <div class="modal-info row">
             <div class="col-md-8">
@@ -97,11 +103,6 @@ Assets::register($this);
                     <div class="funding-content">
                         <?= RichText::output($funding->content); ?>
                     </div>
-                    <?php if (!empty($funding->youtube_link)): ?>
-                        <div class="funding-video">
-                            <iframe id="player" type="text/html" width="640" height="390" src="<?= FundingHelper::getYoutubeEmbedUrl($funding->youtube_link) ?>" frameborder="0"></iframe>
-                        </div>
-                    <?php endif; ?>
                 </div>
             </div>
             <div class="info col-md-4">
