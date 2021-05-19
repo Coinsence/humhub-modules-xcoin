@@ -77,11 +77,11 @@ class SpaceHelper
         return $spaces;
     }
 
-    public static function canAddSpaceToList(Challenge $challenge, Space $space, $specific = true)
+    public static function canAddSpaceToListForProject(Challenge $challenge, Space $space, $specific = false)
     {
         if ($specific) {
-            return $challenge->acceptSpecificRewardingAsset() && AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->specific_reward_asset_id;
+            return $challenge->acceptAnyRewardingAsset() && AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id;
         }
-        return $challenge->acceptAnyRewardingAsset() && AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id;
+        return $challenge->acceptSpecificRewardingAsset() && AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->specific_reward_asset_id;
     }
 }
