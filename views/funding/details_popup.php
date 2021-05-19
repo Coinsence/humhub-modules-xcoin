@@ -2,7 +2,7 @@
 
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
-
+use humhub\modules\xcoin\models\ChallengeContactButton as ChallengeContactButtonAlias;
 use humhub\modules\xcoin\assets\Assets;
 use yii\bootstrap\Carousel;
 use humhub\libs\Html;
@@ -17,6 +17,7 @@ Assets::register($this);
 
 /**
  * @var $funding Funding
+ * @var $contactButtons ChallengeContactButton[]
  */
 ?>
 
@@ -186,6 +187,22 @@ Assets::register($this);
                     </div>
                     <hr/>
                     <div class="actions">
+                        <?php foreach ($contactButtons as $contactButton): ?>
+                            <?php if (Yii::$app->user->isGuest): ?>
+                                <div class="custom-btn">
+                                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="custom-btn">
+                                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [
+                                        'contact',
+                                        'fundingId' => $funding->id,
+                                        'contactButtonId' => $contactButton->id,
+                                        'container' => $funding->getSpace()->one(),
+                                    ], ['data-target' => '#globalModal']); ?>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                         <!-- campaign invest action start -->
                         <div class="invest-btn <?= !$funding->canInvest() ? 'disabled' : '' ?>">
                             <?php if (Yii::$app->user->isGuest): ?>
@@ -194,7 +211,7 @@ Assets::register($this);
                                 <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
                                     'invest',
                                     'fundingId' => $funding->id,
-                                    'container' => $this->context->contentContainer
+                                    'container' => $funding->getSpace()->one()
                                 ], ['data-target' => '#globalModal']); ?>
                             <?php endif; ?>
                         </div>

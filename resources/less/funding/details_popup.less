@@ -230,12 +230,6 @@
         .actions {
             padding-top: 22px;
             .invest-btn a {
-                display: block;
-                font-size: 14px;
-                line-height: 1.36;
-                padding: 16px 10px;
-                border-radius: 8px;
-                text-align: center;
                 color: white;
                 background-color: @modal-action-btn-color;
             }
@@ -245,6 +239,25 @@
             .invest-btn.disabled a {
                 background-color: lighten(@modal-action-btn-color, 10%);
                 pointer-events: none;
+            }
+            .custom-btn a {
+                color: @modal-title-color;
+                background: linear-gradient(180deg, #FFFFFF 0%, #CACACA 155.94%);
+                border: 1px solid rgba(53, 53, 53, 0.5);
+            }
+            .custom-btn a:hover {
+                background: linear-gradient(180deg, #CACACA -60%, #FFFFFF 100%);
+            }
+            .invest-btn a,
+            .custom-btn a {
+                display: block;
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 1.36;
+                padding: 16px 10px;
+                border-radius: 8px;
+                text-align: center;
+                margin-bottom: 12px;
             }
         }
     }
