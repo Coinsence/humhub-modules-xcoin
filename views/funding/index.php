@@ -11,6 +11,7 @@ Assets::register($this);
 
 /** @var $fundings Funding[] */
 
+
 ?>
 
 <div class="space-fundings">
@@ -26,15 +27,15 @@ Assets::register($this);
                     </p>
                 <?php endif; ?>
                 <?php foreach ($fundings as $funding): ?>
+                    <?php if (in_array($funding->id, [])): continue; endif; ?>
+                    <?php if ($funding->id < 10): continue; endif; ?>
                     <?php
                     $space = $funding->getSpace()->one();
                     $cover = $funding->getCover();
                     ?>
-                    <a href="<?= $space->createUrl('/xcoin/funding/details', [
-                        'container' => $this->context->contentContainer,
-                        'fundingId' => $funding->id
-                    ]); ?>"
-                        data-target="#globalModal">
+                    <a href="<?= $space->createUrl('/xcoin/funding/overview', [
+                            'fundingId' => $funding->id
+                        ]); ?>">
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="panel">
                                 <div class="panel-heading">
