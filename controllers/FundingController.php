@@ -369,6 +369,7 @@ class FundingController extends ContentContainerController
         }
 
         $model = new CreateMessage();
+        $model->title = $contactButton->button_title ." - ".$funding->title;
         if ($contactButton->receiver == "challenge") {
             $model->recipient = User::findOne(['id' => $funding->challenge->created_by])->guid;
         } else {
