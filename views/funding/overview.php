@@ -2,6 +2,7 @@
 
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\helpers\SpaceHelper;
+use humhub\modules\xcoin\models\ChallengeContactButton as ChallengeContactButtonAlias;
 use humhub\modules\xcoin\models\Funding;
 use humhub\modules\xcoin\widgets\ChallengeImage;
 use yii\bootstrap\Carousel;
@@ -18,6 +19,9 @@ Assets::register($this);
 
 /**
  * @var $funding Funding
+ */
+/**
+ * @var $contactButtons ChallengeContactButtonAlias[]
  */
 ?>
 
@@ -300,5 +304,24 @@ Assets::register($this);
 
             </div>
         </div>
+        <?php foreach ($contactButtons
+
+                       as $contactButton): ?>
+            <?php if (Yii::$app->user->isGuest): ?>
+                <div class="panel-footer">
+                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+                </div>
+            <?php else: ?>
+                <div class="panel-footer">
+                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [
+                        'contact',
+                        'fundingId' => $funding->id,
+                        'contactButtonId' => $contactButton->id,
+                        'container' => $this->context->contentContainer,
+                    ], ['data-target' => '#globalModal']); ?>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
     </div>
 </div>

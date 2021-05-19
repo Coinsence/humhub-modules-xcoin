@@ -178,3 +178,27 @@ $(document).ready(function () {
         document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "hidden";
     }
 });
+
+$('body').on('change', '#firstButton', function () {
+    if ($(this).prop('checked')) {
+        $("#firstButtonTitle").attr("required",true);
+        $("#firstButtonText").attr("required", true);
+        $("#firstButtonReceiver").attr("required", true);
+    } else {
+        $("#firstButtonTitle").attr("required", false);
+        $("#firstButtonText").attr("required", false);
+        $("#firstButtonReceiver").attr("required", false);
+    }
+});
+
+$('body').on('change', '#secondButton', function () {
+    if ($(this).prop('checked')) {
+        $("#secondButtonTitle").attr("required",true);
+        $("#secondButtonText").attr("required", true);
+        $("#secondButtonReceiver").attr("required", true);
+    } else {
+        $("#secondButtonTitle").attr("required", false);
+        $("#secondButtonText").attr("required", false);
+        $("#secondButtonReceiver").attr("required", false);
+    }
+});

@@ -63,7 +63,6 @@ class Challenge extends ActiveRecord
 
     public $coverFile;
 
-
     /**
      * @inheritdoc
      */
@@ -142,8 +141,8 @@ class Challenge extends ActiveRecord
             $this->status = self::CHALLENGE_STATUS_DISABLED;
         }
         return parent::beforeSave($insert);
-    }
 
+    }
     /**
      * @inheritdoc
      */
@@ -174,6 +173,15 @@ class Challenge extends ActiveRecord
     public function getFundings()
     {
         return $this->hasMany(Funding::class, ['challenge_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getContactButtons()
+    {
+        return $this->hasMany(ChallengeContactButton::class, ['id' => 'challenge_id'])
+            ->viaTable('xcoin_challenge_contact_button', ['challenge_id' => 'id']);
     }
 
     /**

@@ -7,6 +7,7 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\Account;
+use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\permissions\ReviewSubmittedProjects;
 use humhub\modules\xcoin\permissions\SellSpaceProducts;
 use humhub\modules\xcoin\permissions\SubmitSpaceProjects;
@@ -21,7 +22,7 @@ class SpaceHelper
 {
     public static function generateRandomSpaceName($length = 10)
     {
-        return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+        return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))), 1, $length);
     }
 
     public static function allowDirectCoinTransfer(Account $account)
@@ -50,11 +51,12 @@ class SpaceHelper
         return $container->permissionManager->can(new ReviewSubmittedProjects());
     }
 
-    public static function getSubmitterSpaces(User $user){
+    public static function getSubmitterSpaces(User $user)
+    {
         $spaces = [];
 
-        foreach(Membership::find()->where(['user_id'  => $user->id])->all() as $membership) {
-            if(self::canSubmitProject($membership->space)){
+        foreach (Membership::find()->where(['user_id' => $user->id])->all() as $membership) {
+            if (self::canSubmitProject($membership->space)) {
                 $spaces[] = $membership->space;
             }
         }
@@ -62,15 +64,24 @@ class SpaceHelper
         return $spaces;
     }
 
-    public static function getSellerSpaces(User $user){
+    public static function getSellerSpaces(User $user)
+    {
         $spaces = [];
 
-        foreach(Membership::find()->where(['user_id'  => $user->id])->all() as $membership) {
-            if(self::canSellProduct($membership->space)){
+        foreach (Membership::find()->where(['user_id' => $user->id])->all() as $membership) {
+            if (self::canSellProduct($membership->space)) {
                 $spaces[] = $membership->space;
             }
         }
 
         return $spaces;
+    }
+
+    public static function canAddSpaceToListForProject(Challenge $challenge, Space $space, $specific = false)
+    {
+        if ($specific) {
+            return $challenge->acceptAnyRewardingAsset() && AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id;
+        }
+        return $challenge->acceptSpecificRewardingAsset() && AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->specific_reward_asset_id;
     }
 }

@@ -61,7 +61,7 @@ $upload = Upload::forModel($model, $model->coverFile);
                 </div>
                 <div class="col-md-2">
                     <label class="control-label " for="challenge-exchange_rate" style="visibility:hidden "
-                           id="challenge-label_exchange_rate"><?= Yii::t('XcoinModule.challenge', 'of' ) ?></label>
+                           id="challenge-label_exchange_rate"><?= Yii::t('XcoinModule.challenge', 'of') ?></label>
                 </div>
                 <div class="col-md-4">
                     <?=
@@ -82,8 +82,48 @@ $upload = Upload::forModel($model, $model->coverFile);
                 </div>
                 <div class="col-md-2">
                     <label class="control-label " style="visibility:hidden"
-                           id="challenge-label_specific_reward_asset"><?= Yii::t('XcoinModule.challenge', 'for each invested COIN' ) ?></label>
+                           id="challenge-label_specific_reward_asset"><?= Yii::t('XcoinModule.challenge', 'for each invested COIN') ?></label>
                 </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-1">
+                <input type="checkbox" id="firstButton" name="firstButton">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="firstButtonTitle" name="firstButtonTitle"
+                       placeholder="Botton title">
+            </div>
+            <div class="col-md-4">
+                <input type="text" id="firstButtonText" class="form-control" name="firstButtonText"
+                       placeholder="Text for popup">
+            </div>
+            <div class="col-md-3">
+                <select name="firstButtonReceiver" class="form-control select2" id="firstButtonReceiver">
+                    <option value="" disabled selected>Send message to</option>
+                    <option value="challenge">Challenge owner</option>
+                    <option value="project">Project owner</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-1">
+                <input type="checkbox" id="secondButton" name="secondButton">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="secondButtonTitle" name="secondButtonTitle"
+                       placeholder="Botton title">
+            </div>
+            <div class="col-md-4">
+                <input type="text" id="secondButtonText" class="form-control" name="secondButtonText"
+                       placeholder="Text for popup">
+            </div>
+            <div class="col-md-3">
+                <select name="secondButtonReceiver" class="form-control select2" id="secondButtonReceiver" required>
+                    <option value="" disabled selected>Send message to</option>
+                    <option value="challenge">Challenge owner</option>
+                    <option value="project">Project owner</option>
+                </select>
             </div>
         </div>
         <div class="col-md-12">
