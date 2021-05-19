@@ -147,9 +147,9 @@ class FundingController extends ContentContainerController
             $spacesList = [];
             foreach ($spaces as $space) {
                 if (SpaceHelper::canSubmitProject($space))
-                    if ($challenge->acceptSpecificRewardingAsset() && AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->specific_reward_asset_id) {
+                    if (SpaceHelper::canAddSpaceToList($challenge, $space)) {
                         $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
-                    } else if ($challenge->acceptAnyRewardingAsset() && AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id) {
+                    } else if (SpaceHelper::canAddSpaceToList($challenge, $space, false)) {
                         $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
                     } else if ($challenge->acceptNoRewarding()) {
                         $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
