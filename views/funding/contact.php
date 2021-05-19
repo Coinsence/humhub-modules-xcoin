@@ -12,5 +12,3 @@ use humhub\modules\xcoin\widgets\ChallengeContactButton as contactButtonWidget;
 ?>
 
 <?= contactButtonWidget::widget(['funding' => $funding, 'contactButton' => $contactButton,'model'=>$model]) ?>
-
-

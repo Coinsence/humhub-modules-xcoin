@@ -362,20 +362,24 @@ class FundingController extends ContentContainerController
         if ($funding === null) {
             throw new HttpException(404, 'Funding not found!');
         }
+
         $contactButton = ChallengeContactButton::findOne(['id' => $contactButtonId]);
         if ($contactButton === null) {
             throw new HttpException(404, 'Contact Button not found!');
         }
+
         $model = new CreateMessage();
         if ($contactButton->receiver == "challenge") {
             $model->recipient = User::findOne(['id' => $funding->challenge->created_by])->guid;
         } else {
-            $model->recipient->user_id = User::findOne(['id' => $funding->created_by])->id;
+            $model->recipient = User::findOne(['id' => $funding->created_by])->guid;
         }
+
         return $this->renderAjax('contact', [
             'funding' => $funding,
             'contactButton' => $contactButton,
             'model' => $model,
         ]);
     }
+
 }

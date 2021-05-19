@@ -178,6 +178,7 @@ $(document).ready(function () {
         document.getElementById("challenge-specific_reward_asset_id").parentElement.style.visibility = "hidden";
     }
 });
+
 $('body').on('change', '#firstButton', function () {
     if ($(this).prop('checked')) {
         $("#firstButtonTitle").attr("required",true);
@@ -189,6 +190,7 @@ $('body').on('change', '#firstButton', function () {
         $("#firstButtonReceiver").attr("required", false);
     }
 });
+
 $('body').on('change', '#secondButton', function () {
     if ($(this).prop('checked')) {
         $("#secondButtonTitle").attr("required",true);

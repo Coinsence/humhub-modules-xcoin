@@ -40,7 +40,7 @@ $upload = Upload::withName();
             <?= SenderAccountGridView::widget([
                 'contentContainer' => $contentContainer,
                 'nextRoute' => $nextRoute,
-                'requireAsset' =>$requiredAsset,
+                'requireAsset' => $requiredAsset,
                 'disableAccount' => isset($disableAccount) ? $disableAccount : null,
                 'product' => isset($product) ? $product : null,
             ])
