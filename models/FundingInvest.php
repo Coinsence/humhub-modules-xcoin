@@ -87,14 +87,14 @@ class FundingInvest extends Model
     protected function getMaxBuyAmount()
     {
         $left = $this->funding->getAvailableAmount();
-
         // Check max amount of current account
         $accountLeft = $this->fromAccount->getAssetBalance($this->funding->challenge->asset);
-
+        if ($this->funding->challenge->acceptNoRewarding()) {
+            return $accountLeft;
+        }
         if ($accountLeft < $left) {
             return $accountLeft;
         }
-
         return $left;
     }
 
@@ -109,11 +109,17 @@ class FundingInvest extends Model
      */
     public function getBuyAsset()
     {
-        return AssetHelper::getSpaceAsset($this->funding->space);
+        if ($this->funding->challenge->acceptNoRewarding()) {
+            return null;
+        } else if ($this->funding->challenge->acceptAnyRewardingAsset()) {
+            return AssetHelper::getSpaceAsset($this->funding->space);
+        }
+        return AssetHelper::getChallengeSpecificRewardAsset($this->funding->challenge->specific_reward_asset_id);
+
     }
 
-
-    public function getBuyAmount() {
+    public function getBuyAmount()
+    {
         return $this->amountPay * $this->funding->exchange_rate;
     }
 
@@ -123,27 +129,28 @@ class FundingInvest extends Model
         if (!$this->validate()) {
             return false;
         }
-
         $fundingAccount = $this->funding->getFundingAccount();
 
-        // Buy Transaction
-        $transaction = new Transaction();
-        $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
-        $transaction->asset_id = $this->getBuyAsset()->id;
-        $transaction->to_account_id = $this->fromAccount->id;
-        $transaction->from_account_id = $fundingAccount->id;
-        $transaction->amount = $this->getBuyAmount();
-        $transaction->comment = Yii::t('XcoinModule.base', 'Funding Invest');
-        if (!$transaction->save()) {
-            Yii::error(Yii::t('XcoinModule.base','Buy transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', [
-                print_r($transaction->getErrors(), 1),
-                $this->getBuyAmount(),
-                $this->getBuyAsset()->id,
-                $this->fromAccount->id
-            ]), 'xcoin.base');
-            throw new HttpException(Yii::t('XcoinModule.base', 'Transaction failed!'));
+        // Buy transaction only when the challenge accepts specific reward asset or any reward asset
+        if (!$this->funding->challenge->acceptNoRewarding()) {
+            // Buy Transaction
+            $transaction = new Transaction();
+            $transaction->asset_id = $this->getBuyAsset()->id;
+            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
+            $transaction->to_account_id = $this->fromAccount->id;
+            $transaction->from_account_id = $fundingAccount->id;
+            $transaction->amount = $this->getBuyAmount();
+            $transaction->comment = Yii::t('XcoinModule.base', 'Funding Invest');
+            if (!$transaction->save()) {
+                Yii::error(Yii::t('XcoinModule.base', 'Buy transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', [
+                    print_r($transaction->getErrors(), 1),
+                    $this->getBuyAmount(),
+                    $this->getBuyAsset()->id,
+                    $this->fromAccount->id
+                ]), 'xcoin.base');
+                throw new HttpException(Yii::t('XcoinModule.base', 'Transaction failed!'));
+            }
         }
-
         // Pay Transaction
         $transaction = new Transaction();
         $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
@@ -153,7 +160,7 @@ class FundingInvest extends Model
         $transaction->amount = $this->amountPay;
         $transaction->comment = Yii::t('XcoinModule.base', 'Funding Invest');
         if (!$transaction->save()) {
-            Yii::error(Yii::t('XcoinModule.base','Pay transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', [
+            Yii::error(Yii::t('XcoinModule.base', 'Pay transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', [
                 print_r($transaction->getErrors(), 1),
                 $this->amountpay,
                 $this->getPayAsset()->id,

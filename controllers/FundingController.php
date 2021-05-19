@@ -2,9 +2,20 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\mail\models\forms\CreateMessage;
+use humhub\modules\mail\models\Message;
+use humhub\modules\mail\models\MessageEntry;
+use humhub\modules\mail\models\UserMessage;
+use humhub\modules\user\models\fieldtype\DateTime;
+use humhub\modules\user\models\User;
+use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\helpers\SpaceHelper;
+use humhub\modules\xcoin\models\AccountBalance;
+use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Challenge;
+use humhub\modules\xcoin\models\ChallengeContactButton;
+use humhub\modules\xcoin\models\Transaction;
 use Throwable;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
@@ -14,7 +25,11 @@ use humhub\modules\xcoin\models\Funding;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\FundingInvest;
+use yii\base\Model;
+use yii\rbac\Item;
 use yii\web\HttpException;
+use Exception;
+use yii\web\UploadedFile;
 
 /**
  * Description of AccountController
@@ -66,7 +81,7 @@ class FundingController extends ContentContainerController
 
         return $this->render('overview', [
             'funding' => $funding,
-        ]);
+            'contactButtons' => ChallengeContactButton::findAll(['challenge_id' => $funding->challenge_id])]);
     }
 
     /**
@@ -116,11 +131,8 @@ class FundingController extends ContentContainerController
             throw new HttpException(403, 'You can`t submit a funding to a stopped challenge!');
         }
 
-
         /** @var Space $currentSpace */
         $currentSpace = $this->contentContainer;
-
-
         $user = Yii::$app->user->identity;
 
         $model = new Funding();
@@ -134,8 +146,14 @@ class FundingController extends ContentContainerController
 
             $spacesList = [];
             foreach ($spaces as $space) {
-                if (AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id && SpaceHelper::canSubmitProject($space))
-                    $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+                if (SpaceHelper::canSubmitProject($space))
+                    if (SpaceHelper::canAddSpaceToListForProject($challenge, $space,true)) {
+                        $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+                    } else if (SpaceHelper::canAddSpaceToListForProject($challenge, $space)) {
+                        $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+                    } else if ($challenge->acceptNoRewarding()) {
+                        $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+                    }
             }
 
             return $this->renderAjax('spaces-list', [
@@ -152,30 +170,42 @@ class FundingController extends ContentContainerController
             if ($model->space && !SpaceHelper::canSubmitProject($model->space)) {
                 throw new HttpException(401);
             }
-
             // Step 3: Gallery
-            return $this->renderAjax('media', ['model' => $model]);
+            return $this->renderAjax('media', ['model' => $model, 'lastStepEnabled' => $challenge->acceptSpecificRewardingAsset(),]);
         }
 
         // Try Save Step 3
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
-
             $this->view->saved();
-
+            if ($challenge->acceptSpecificRewardingAsset()) {
+                return $this->renderAjax('add-specific-account', [
+                    'model' => $model,
+                    'nextRoute' => ['/xcoin/funding/allocate', 'fundingId' => $model->id, 'container' => $this->contentContainer],
+                    'contentContainer' => $user,
+                    'requiredAsset' => AssetHelper::getChallengeSpecificRewardAsset($challenge->specific_reward_asset_id),
+                    'spaceId' => $challenge->space_id,
+                ]);
+            }
             return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
                 'container' => $model->space,
                 'fundingId' => $model->id
             ]));
-        }
 
+        }
         // Check validation
         if ($model->hasErrors() && $model->isSecondStep()) {
-
-            return $this->renderAjax('details', [
+            return $this->renderAjax('overview', [
                 'model' => $model,
                 'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
             ]);
+        }
+        //try save step 4
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '4' && $model->save()) {
+            return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
+                'container' => $model->space,
+                'fundingId' => $model->id
+            ]));
         }
 
         // Step 2: Details
@@ -299,4 +329,64 @@ class FundingController extends ContentContainerController
             'fundingId' => $model->id
         ]);
     }
+
+    public function actionAllocate($accountId, $fundingId)
+    {
+        $funding = Funding::findOne(['id' => $fundingId]);
+        $balance = AccountBalance::findOne(['account_id' => $accountId, 'asset_id' => Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id])->id]);
+        $transaction = new Transaction();
+        $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ALLOCATE;
+        $transaction->asset_id = Asset::findOne(['id' => $funding->challenge->specific_reward_asset_id])->id;
+        $transaction->from_account_id = $accountId;
+        $transaction->to_account_id = Account::findOne(['funding_id' => $fundingId])->id;
+        if ($balance->balance - ($funding->amount * $funding->exchange_rate) > 0) {
+            $transaction->amount = $funding->amount * $funding->exchange_rate;
+        } else {
+            $transaction->amount = round($balance->balance, 1);
+        }
+
+        if (!$transaction->save()) {
+            throw new Exception('Could not create issue transaction for funding account');
+        }
+
+        return $this->htmlRedirect(['overview',
+            'container' => $funding->space,
+            'fundingId' => $fundingId
+        ]);
+    }
+
+    /**
+     * @param $fundingId
+     * @param $contactButtonId
+     * @return string
+     * @throws HttpException
+     */
+    public function actionContact($fundingId, $contactButtonId)
+    {
+
+        $funding = Funding::findOne(['id' => $fundingId, 'space_id' => $this->contentContainer->id]);
+        if ($funding === null) {
+            throw new HttpException(404, 'Funding not found!');
+        }
+
+        $contactButton = ChallengeContactButton::findOne(['id' => $contactButtonId]);
+        if ($contactButton === null) {
+            throw new HttpException(404, 'Contact Button not found!');
+        }
+
+        $model = new CreateMessage();
+        $model->title = $contactButton->button_title . " - " . $funding->title;
+        if ($contactButton->receiver == "challenge") {
+            $model->recipient = User::findOne(['id' => $funding->challenge->created_by])->guid;
+        } else {
+            $model->recipient = User::findOne(['id' => $funding->created_by])->guid;
+        }
+
+        return $this->renderAjax('contact', [
+            'funding' => $funding,
+            'contactButton' => $contactButton,
+            'model' => $model,
+        ]);
+    }
+
 }

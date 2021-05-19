@@ -65,11 +65,15 @@ Assets::register($this);
                             <?= Yii::t('XcoinModule.challenge', 'This challenge is stopped') ?>
                         </div>
                     <?php else: ?>
-                        <?= Html::a(Yii::t('XcoinModule.challenge', 'Add Your Project'), [
-                            '/xcoin/funding/new',
-                            'challengeId' => $challenge->id,
-                            'container' => $this->context->contentContainer
-                        ], ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']); ?>
+                        <?php if (Yii::$app->user->isGuest): ?>
+                            <?= Html::a(Yii::t('XcoinModule.challenge', 'Add Your Project'), Yii::$app->user->loginUrl, ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']) ?>
+                        <?php else: ?>
+                            <?= Html::a(Yii::t('XcoinModule.challenge', 'Add Your Project'), [
+                                '/xcoin/funding/new',
+                                'challengeId' => $challenge->id,
+                                'container' => $this->context->contentContainer
+                            ], ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']); ?>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
                 <p class="challenge-description"><?= RichText::output($challenge->description); ?></p>

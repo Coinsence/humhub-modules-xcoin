@@ -201,7 +201,10 @@ class Funding extends ActiveRecord
                 $this->AttachSpace();
             }
         }
-
+        $challenge = Challenge::getChallengeById($this->challenge_id);
+        if ($challenge->acceptSpecificRewardingAsset()) {
+            $this->exchange_rate = $challenge->exchange_rate;
+        }
         return parent::beforeSave($insert);
     }
 
@@ -292,7 +295,7 @@ class Funding extends ActiveRecord
      */
     public function getRaisedAmount()
     {
-        return AccountHelper::getFundingAccountBalance($this);
+        return AccountHelper::getFundingRequestedAccountBalance($this);
     }
 
     /**
@@ -422,7 +425,10 @@ class Funding extends ActiveRecord
 
     public function canInvest()
     {
-        return $this->getAvailableAmount() > 0 && $this->getRemainingDays() > 0;
+        if (!$this->challenge->acceptNoRewarding()) {
+            return $this->getAvailableAmount() > 0 && $this->getRemainingDays() > 0;
+        }
+        return true;
     }
 
     public function isNameUnique()
@@ -501,18 +507,20 @@ class Funding extends ActiveRecord
 
         $issueAccount = AccountHelper::getIssueAccount($this->space);
 
-        $transaction = new Transaction();
-        $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
-        $transaction->asset_id = $asset->id;
-        $transaction->from_account_id = $issueAccount->id;
-        $transaction->to_account_id = $account->id;
-        $transaction->amount = $this->amount * $this->exchange_rate;
+        if ($this->challenge->acceptAnyRewardingAsset()) {
+            $transaction = new Transaction();
+            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
+            $transaction->asset_id = $asset->id;
+            $transaction->from_account_id = $issueAccount->id;
+            $transaction->to_account_id = $account->id;
+            $transaction->amount = $this->amount * $this->exchange_rate;
 
-        if (!$transaction->save()) {
-            throw new Exception('Could not create issue transaction for funding account');
+            if (!$transaction->save()) {
+                throw new Exception('Could not create issue transaction for funding account');
+            }
+
+            Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $transaction]));
         }
-
-        Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $transaction]));
     }
 
     private function adjustIssuesAmount()

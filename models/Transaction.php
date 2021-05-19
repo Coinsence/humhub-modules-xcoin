@@ -32,6 +32,7 @@ class Transaction extends ActiveRecord
     const TRANSACTION_TYPE_ISSUE = 2;
     const TRANSACTION_TYPE_TASK_PAYMENT = 3;
     const TRANSACTION_TYPE_REVERT = 4;
+    const TRANSACTION_TYPE_ALLOCATE = 5 ;
 
     /** @var Event this event is dispatched a transaction with TRANSACTION_TYPE_ISSUE is triggered
      */
