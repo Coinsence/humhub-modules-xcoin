@@ -304,9 +304,13 @@ Assets::register($this);
 
             </div>
         </div>
-        <?php foreach ($contactButtons as $contactButton): ?>
+        <?php foreach ($contactButtons
+
+                       as $contactButton): ?>
             <?php if (Yii::$app->user->isGuest): ?>
-                <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+                <div class="panel-footer">
+                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+                </div>
             <?php else: ?>
                 <div class="panel-footer">
                     <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [

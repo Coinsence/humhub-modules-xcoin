@@ -146,7 +146,7 @@ class FundingController extends ContentContainerController
 
             $spacesList = [];
             foreach ($spaces as $space) {
-                if (AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id && SpaceHelper::canSubmitProject($space))
+                if (SpaceHelper::canSubmitProject($space))
                     $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
             }
 
