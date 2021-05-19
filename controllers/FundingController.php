@@ -147,7 +147,16 @@ class FundingController extends ContentContainerController
             $spacesList = [];
             foreach ($spaces as $space) {
                 if (SpaceHelper::canSubmitProject($space))
-                    $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+                    if ($challenge->acceptSpecificRewardingAsset() && AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->specific_reward_asset_id) {
+                        $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+                        var_dump("specific");
+                        die;
+
+                    } else if ($challenge->acceptAnyRewardingAsset() && AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id) {
+                        $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+                    } else if ($challenge->acceptNoRewarding()) {
+                        $spacesList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+                    }
             }
 
             return $this->renderAjax('spaces-list', [
@@ -369,7 +378,7 @@ class FundingController extends ContentContainerController
         }
 
         $model = new CreateMessage();
-        $model->title = $contactButton->button_title ." - ".$funding->title;
+        $model->title = $contactButton->button_title . " - " . $funding->title;
         if ($contactButton->receiver == "challenge") {
             $model->recipient = User::findOne(['id' => $funding->challenge->created_by])->guid;
         } else {
