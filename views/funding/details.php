@@ -90,6 +90,10 @@ use yii\web\JsExpression;
             <?= $form->field($model, 'content')->widget(RichTextField::class, ['preset' => 'full'])
                 ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign needs & commitments')) ?>
         </div>
+        <div class="col-md-12">
+            <?= $form->field($model, 'youtube_link')->textInput()
+                ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign YouTube video link. Note: no pictures will be shown if you add a video link.')) ?>
+        </div>
         <?php if (!$model->isNewRecord): ?>
             <div class="row">
                 <div class="col-md-6 text-center">

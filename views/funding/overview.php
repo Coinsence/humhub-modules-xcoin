@@ -13,7 +13,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\libs\Iso3166Codes;
 use yii\bootstrap\Progress;
 use humhub\modules\content\widgets\richtext\RichText;
-
+use humhub\modules\xcoin\helpers\FundingHelper;
 
 Assets::register($this);
 
@@ -279,6 +279,28 @@ Assets::register($this);
             <?= RichText::output($funding->content); ?>
             <!-- campaign content end -->
 
+            <?php if (!empty($funding->youtube_link)): ?>
+                <div class="youtube-video">
+                    <iframe id="player" type="text/html" width="640" height="390" src="<?= FundingHelper::getYoutubeEmbedUrl($funding->youtube_link) ?>" frameborder="0"></iframe>
+                </div>
+            <?php endif; ?>
+
+            <?php foreach ($contactButtons as $contactButton): ?>
+                <?php if (Yii::$app->user->isGuest): ?>
+                    <div>
+                        <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+                    </div>
+                <?php else: ?>
+                    <div>
+                        <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [
+                            'contact',
+                            'fundingId' => $funding->id,
+                            'contactButtonId' => $contactButton->id,
+                            'container' => $funding->getSpace()->one(),
+                        ], ['data-target' => '#globalModal']); ?>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
 
         </div>
         <div class="panel-footer">
@@ -304,24 +326,5 @@ Assets::register($this);
 
             </div>
         </div>
-        <?php foreach ($contactButtons
-
-                       as $contactButton): ?>
-            <?php if (Yii::$app->user->isGuest): ?>
-                <div class="panel-footer">
-                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
-                </div>
-            <?php else: ?>
-                <div class="panel-footer">
-                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [
-                        'contact',
-                        'fundingId' => $funding->id,
-                        'contactButtonId' => $contactButton->id,
-                        'container' => $this->context->contentContainer,
-                    ], ['data-target' => '#globalModal']); ?>
-                </div>
-            <?php endif; ?>
-        <?php endforeach; ?>
-
     </div>
 </div>

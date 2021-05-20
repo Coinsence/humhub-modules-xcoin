@@ -26,6 +26,7 @@ $upload = Upload::withName();
 <?= $form->field($model, 'country')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'city')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'deadline')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'youtube_link')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
 <?php if ($model->categories_names): ?>
     <?= $form->field($model, 'categories_names')->hiddenInput(['value' => implode(",", $model->categories_names)])->label(false) ?>

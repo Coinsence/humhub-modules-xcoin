@@ -296,6 +296,7 @@ class FundingController extends ContentContainerController
 
         return $this->renderAjax('details_popup', [
             'funding' => $funding,
+            'contactButtons' => ChallengeContactButton::findAll(['challenge_id' => $funding->challenge_id])
         ]);
     }
 

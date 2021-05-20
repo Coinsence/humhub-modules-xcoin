@@ -11,14 +11,12 @@ use humhub\components\Event;
 use humhub\libs\DbDateValidator;
 use humhub\modules\file\models\File;
 use humhub\modules\space\components\UrlValidator;
-use humhub\modules\space\Module;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\Utils;
 use Yii;
-use yii\base\BaseObject;
 use yii\db\ActiveQuery;
 use yii\web\HttpException;
 
@@ -40,6 +38,7 @@ use yii\web\HttpException;
  * @property integer $status
  * @property string $country
  * @property string $city
+ * @property string $youtube_link
  *
  * @property Challenge $challenge
  * @property User $createdBy
@@ -130,6 +129,7 @@ class Funding extends ActiveRecord
                 'country',
                 'city',
                 'categories_names',
+                'youtube_link',
             ],
             self::SCENARIO_EDIT => [
                 'amount',
@@ -139,6 +139,7 @@ class Funding extends ActiveRecord
                 'deadline',
                 'country',
                 'city',
+                'youtube_link',
             ],
         ];
     }
@@ -162,6 +163,7 @@ class Funding extends ActiveRecord
             'deadline' => Yii::t('XcoinModule.base', 'Deadline'),
             'country' => Yii::t('XcoinModule.base', 'Country'),
             'city' => Yii::t('XcoinModule.base', 'City'),
+            'youtube_link' => Yii::t('XcoinModule.base', 'YouTube Video'),
         ];
     }
 
@@ -353,7 +355,8 @@ class Funding extends ActiveRecord
                 $this->content,
                 $this->deadline,
                 $this->country,
-                $this->city
+                $this->city,
+                $this->youtube_link
             ) || strlen($this->description) > 255;
     }
 
@@ -380,6 +383,39 @@ class Funding extends ActiveRecord
         $remainingDays = $deadline->diff($now)->format("%a");
 
         return intval($remainingDays);
+    }
+
+    public function getContributors()
+    {
+        $result = [];
+
+        $targetAmount = $this->getRequestedAmount();
+        $fundingAccount = $this->getFundingAccount();
+
+        foreach (Transaction::findAll([
+            'to_account_id' => $fundingAccount->id,
+            'transaction_type' => Transaction::TRANSACTION_TYPE_TRANSFER
+        ]) as $transaction) {
+            $account = $transaction->getFromAccount()->one();
+
+            $contentContainer = $account->user;
+            $id = $contentContainer->contentContainerRecord->id;
+
+
+            if (!isset($result[$id])) {
+                $result[$id]['record'] = $contentContainer;
+                $result[$id]['balance'] = 0;
+            }
+
+            $result[$id]['balance'] += $transaction->amount;
+            $result[$id]['percent'] = round(($result[$id]['balance'] / $targetAmount)*100, 4);            
+        }
+
+        usort($result, function ($a, $b) {
+            return $b['balance'] - $a['balance'];
+        });
+        
+        return $result;
     }
 
     public function shortenDescription()
