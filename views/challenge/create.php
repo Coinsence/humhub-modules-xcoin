@@ -37,6 +37,9 @@ $upload = Upload::forModel($model, $model->coverFile);
                 ->hint(Yii::t('XcoinModule.challenge', 'Please enter your challenge description')) ?>
         </div>
         <div class="col-md-12">
+            <?= $form->field($model, 'hide_unverified_submissions')->checkbox(); ?>
+        </div>
+        <div class="col-md-12">
             <?=
             $form->field($model, 'asset_id')->widget(Select2::class, [
                 'data' => $assets,

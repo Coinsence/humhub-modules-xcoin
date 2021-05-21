@@ -28,6 +28,7 @@ use humhub\modules\space\models\Space;
  * @property integer $created_by
  * @property integer $status
  * @property integer $stopped
+ * @property integer $hide_unverified_submissions
  * @property integer $no_rewarding
  * @property integer $any_reward_asset
  * @property integer $specific_reward_asset
@@ -60,6 +61,10 @@ class Challenge extends ActiveRecord
     const CHALLENGE_ACCEPT_SPECIFIC_REWARD_ASSET_DISABLED = 0;
     const CHALLENGE_ACCEPT_SPECIFIC_REWARD_ASSET_ENABLED = 1;
 
+    // unreviewed submissions options
+
+    const UNREVIEWED_SUBMISSIONS_VISIBLE = 0;
+    const UNREVIEWED_SUBMISSIONS_UNVISIBLE = 1;
 
     public $coverFile;
 
@@ -79,7 +84,7 @@ class Challenge extends ActiveRecord
         return [
             [['space_id', 'asset_id', 'title', 'description', 'created_by'], 'required'],
             [['exchange_rate'], 'number', 'min' => '0.1'],
-            [['space_id', 'asset_id', 'created_by', 'no_rewarding', 'any_reward_asset', 'specific_reward_asset', 'specific_reward_asset_id'], 'integer'],
+            [['space_id', 'asset_id', 'created_by', 'no_rewarding', 'any_reward_asset', 'specific_reward_asset', 'specific_reward_asset_id', 'hide_unverified_submissions'], 'integer'],
             [['created_at', 'status', 'stopped'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['specific_reward_asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['specific_reward_asset_id' => 'id']],
@@ -101,13 +106,15 @@ class Challenge extends ActiveRecord
                 'specific_reward_asset_id',
                 'asset_id',
                 'title',
-                'description'
+                'description',
+                'hide_unverified_submissions'
             ],
             self::SCENARIO_EDIT => [
                 'asset_id',
                 'title',
                 'description',
-                'stopped'
+                'stopped',
+                'hide_unverified_submissions'
             ],
             self::SCENARIO_EDIT_ADMIN => [
                 'status',
@@ -132,6 +139,7 @@ class Challenge extends ActiveRecord
             'specific_reward_asset' => Yii::t('XcoinModule.challenge', 'Project Must offer'),
             'no_rewarding' => Yii::t('XcoinModule.challenge', 'No rewarding'),
             'specific_reward_asset_id' => Yii::t('XcoinModule.challenge', 'Requested coin'),
+            'hide_unverified_submissions' => Yii::t('XcoinModule.challenge', 'Hide unverified Submissions'),
         ];
     }
 
@@ -143,6 +151,7 @@ class Challenge extends ActiveRecord
         return parent::beforeSave($insert);
 
     }
+
     /**
      * @inheritdoc
      */
@@ -252,6 +261,16 @@ class Challenge extends ActiveRecord
     public static function getChallengeById($challengeId)
     {
         return Challenge::find()->where(['id' => $challengeId])->one();
+    }
+
+    public function hideUnreviewedSubmissions()
+    {
+        return $this->hide_unverified_submissions == self::UNREVIEWED_SUBMISSIONS_UNVISIBLE;
+    }
+
+    public function showUnreviewedSubmissions()
+    {
+        return $this->hide_unverified_submissions == self::UNREVIEWED_SUBMISSIONS_VISIBLE;
     }
 
 }

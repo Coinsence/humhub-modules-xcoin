@@ -13,6 +13,7 @@ use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Marketplace;
+use humhub\modules\xcoin\models\Product;
 use Yii;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -36,7 +37,7 @@ class MarketplaceController extends ContentContainerController
 
         return $this->render('index', [
             'marketplaces' => $marketplaces,
-            'user'=>$this->contentContainer
+            'user' => $this->contentContainer
         ]);
     }
 
@@ -53,11 +54,15 @@ class MarketplaceController extends ContentContainerController
             throw new HttpException(404);
         }
 
-        $products = $marketplace->getProducts()->all();
+        if ($marketplace->showUnreviewedSubmissions() || Space::findOne(['id' => $marketplace->space_id])->isAdmin(Yii::$app->user->identity)) {
+            $products = $marketplace->getProducts()->all();
+        } else {
+            $products = Product::findAll(['marketplace_id' => $marketplace->id, 'review_status' => 1]);
+        }
 
         return $this->render('overview', [
             'marketplace' => $marketplace,
-            'products'  => $products
+            'products' => $products
         ]);
     }
 
