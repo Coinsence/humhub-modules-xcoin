@@ -13,13 +13,15 @@ Assets::register($this);
     <div class="panel-heading">
         <?php if ($isOwner): ?>
             <strong><?= Yii::t('XcoinModule.overview', 'Your accounts') ?></strong>
-            <?= PurchaseCoin::widget(['contentContainer' => $this->context->contentContainer]) ?>
+            <div class="purchase-container" style="float: right">
+                <?= PurchaseCoin::widget() ?>
+            </div>
         <?php else: ?>
             <strong><?= Yii::t('XcoinModule.overview', 'Accounts of this user') ?></strong>
         <?php endif; ?>
     </div>
 
-    <div class="panel-body"> 
+    <div class="panel-body">
         <?= AccountsGridView::widget(['contentContainer' => $this->context->contentContainer]) ?>
     </div>
 </div>

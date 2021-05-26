@@ -10,6 +10,7 @@
 namespace humhub\modules\xcoin\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -17,8 +18,6 @@ use Yii;
  */
 class PurchaseCoin extends Widget
 {
-    public $contentContainer;
-
     /**
      * @inheritdoc
      */
@@ -30,9 +29,16 @@ class PurchaseCoin extends Widget
             !array_key_exists('bridge', Yii::$app->params['coinPurchase'])
         )
             return;
+        
+        $identity = Yii::$app->user->identity;
+
+        if ($identity === null)
+            return;
+
+        $user = User::findIdentity($identity->id);
 
         return $this->render('@xcoin/widgets/views/purchase-coin', [
-            'contentContainer' => $this->contentContainer,
+            'contentContainer' => $user,
             'name' => Yii::$app->params['coinPurchase']['coin']
         ]);
     }
