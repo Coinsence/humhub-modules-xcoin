@@ -12,7 +12,7 @@ class m210521_151255_add_hide_unverified_submissions_to_challenge_table extends 
      */
     public function safeUp()
     {
-        $this->addColumn('xcoin_marketplace', 'hide_unverified_submissions', $this->integer()->defaultValue(0));
+        $this->addColumn('xcoin_challenge', 'hide_unverified_submissions', $this->integer()->defaultValue(0));
     }
 
     /**
@@ -20,6 +20,6 @@ class m210521_151255_add_hide_unverified_submissions_to_challenge_table extends 
      */
     public function safeDown()
     {
-        $this->dropColumn('xcoin_marketplace', 'hide_unverified_submissions');
+        $this->dropColumn('xcoin_challenge', 'hide_unverified_submissions');
     }
 }
