@@ -23,7 +23,7 @@ use humhub\modules\xcoin\widgets\PurchaseCoin;
 </div>
 
 <div class="modal-footer">
-    <?= PurchaseCoin::widget() ?>
+    <?= PurchaseCoin::widget(['assetName' => $requireAsset->getSpace()->one()->name]) ?>
     <?= ModalButton::cancel(); ?>
 </div>
 

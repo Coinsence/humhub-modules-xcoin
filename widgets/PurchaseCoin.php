@@ -18,6 +18,8 @@ use Yii;
  */
 class PurchaseCoin extends Widget
 {
+    public $assetName;
+
     /**
      * @inheritdoc
      */
@@ -26,8 +28,12 @@ class PurchaseCoin extends Widget
         if (
             !array_key_exists('coinPurchase', Yii::$app->params) ||
             !array_key_exists('coin', Yii::$app->params['coinPurchase']) ||
+            !array_key_exists('space', Yii::$app->params['coinPurchase']) ||
             !array_key_exists('bridge', Yii::$app->params['coinPurchase'])
         )
+            return;
+        
+        if (isset($this->assetName) && $this->assetName !== Yii::$app->params['coinPurchase']['space'])
             return;
         
         $identity = Yii::$app->user->identity;
