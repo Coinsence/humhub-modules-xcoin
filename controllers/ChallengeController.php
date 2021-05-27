@@ -12,8 +12,10 @@ namespace humhub\modules\xcoin\controllers;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\ChallengeContactButton;
+use humhub\modules\xcoin\models\Funding;
 use Yii;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -70,7 +72,11 @@ class ChallengeController extends ContentContainerController
             throw new HttpException(404);
         }
 
-        $fundings = $challenge->getFundings()->all();
+        if ($challenge->showUnreviewedSubmissions() || Space::findOne(['id'=>$challenge->space_id])->isAdmin(Yii::$app->user->identity)) {
+            $fundings = $challenge->getFundings()->all();
+        } else {
+            $fundings = Funding::findAll(['challenge_id' => $challenge->id, 'review_status' => 1]);
+        }
 
         return $this->render('overview', [
             'challenge' => $challenge,

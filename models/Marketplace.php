@@ -27,6 +27,7 @@ use humhub\modules\space\models\Space;
  * @property string $description
  * @property string $created_at
  * @property integer $created_by
+ * @property integer $hide_unverified_submissions
  * @property integer $status
  * @property integer $stopped
  * @property string $action_name
@@ -55,6 +56,11 @@ class Marketplace extends ActiveRecord
 
     const TASK_MARKETPLACE_ACTIVE = 1;
 
+    // unreviewed submissions options
+
+    const UNREVIEWED_SUBMISSIONS_VISIBLE = 0;
+    const UNREVIEWED_SUBMISSIONS_UNVISIBLE = 1;
+
     public $coverFile;
 
     // used when creating marketplace
@@ -76,7 +82,7 @@ class Marketplace extends ActiveRecord
         return [
             [['space_id', 'asset_id', 'title', 'description', 'created_by'], 'required'],
             ['categories_names', 'required', 'message' => 'Please choose at least a category'],
-            [['space_id', 'asset_id', 'created_by'], 'integer'],
+            [['space_id', 'asset_id', 'created_by', 'hide_unverified_submissions'], 'integer'],
             [['created_at', 'status', 'stopped'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
@@ -96,7 +102,8 @@ class Marketplace extends ActiveRecord
                 'action_name',
                 'selling_option',
                 'categories_names',
-                'is_tasks_marketplace'
+                'is_tasks_marketplace',
+                'hide_unverified_submissions'
             ],
             self::SCENARIO_EDIT => [
                 'asset_id',
@@ -105,7 +112,8 @@ class Marketplace extends ActiveRecord
                 'stopped',
                 'action_name',
                 'selling_option',
-                'is_tasks_marketplace'
+                'is_tasks_marketplace',
+                'hide_unverified_submissions'
             ],
             self::SCENARIO_EDIT_ADMIN => [
                 'status',
@@ -129,6 +137,7 @@ class Marketplace extends ActiveRecord
             'action_name' => Yii::t('XcoinModule.marketplace', 'Call to action'),
             'selling_option' => Yii::t('XcoinModule.marketplace', 'Options'),
             'is_tasks_marketplace' => Yii::t('XcoinModule.marketplace', 'Tasks Marketplace'),
+            'hide_unverified_submissions' => Yii::t('XcoinModule.marketplace', 'Hide unverified Submissions'),
         ];
     }
 
@@ -266,5 +275,15 @@ class Marketplace extends ActiveRecord
             self::OPTION_SEND_MESSAGE => Yii::t('XcoinModule.base', 'Send a message to buyer'),
             self::OPTION_REDIRECT_TO_LINK => Yii::t('XcoinModule.base', 'Redirect to a link'),
         ];
+    }
+
+    public function hideUnreviewedSubmissions()
+    {
+        return $this->hide_unverified_submissions == self::UNREVIEWED_SUBMISSIONS_UNVISIBLE;
+    }
+
+    public function showUnreviewedSubmissions()
+    {
+        return $this->hide_unverified_submissions == self::UNREVIEWED_SUBMISSIONS_VISIBLE;
     }
 }
