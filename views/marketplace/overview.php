@@ -130,7 +130,7 @@ Assets::register($this);
                     <?php endif; ?>
                     <?php foreach ($products as $product): ?>
                         <?php
-                        $owner = $product->isSpaceProduct() ? $product->getSpace()->one() : $product->getCreatedBy()->one();
+                        $owner = $marketplace->getSpace()->one();
                         $picture = $product->getPicture();
                         ?>
                         <a href="<?= $owner->createUrl('/xcoin/product/details', [

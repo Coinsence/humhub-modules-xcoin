@@ -113,7 +113,7 @@ class Product extends ActiveRecord
             [['buy_message'], 'required', 'when' => function ($model) {
                 return !$model->marketplace->shouldRedirectToLink();
             }],
-            [['marketplace_id', 'created_by', 'product_type','payment_first','space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
+            [['marketplace_id', 'created_by', 'product_type', 'payment_first', 'space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
             [['price'], 'number', 'min' => '0'],
             [['discount'], 'number', 'min' => '0', 'max' => '100'],
             [['created_at'], 'safe'],
@@ -196,7 +196,7 @@ class Product extends ActiveRecord
             'country' => Yii::t('XcoinModule.base', 'Country'),
             'city' => Yii::t('XcoinModule.base', 'City'),
             'link' => Yii::t('XcoinModule.base', 'Call to action link'),
-            'buy_message'=> Yii::t('XcoinModule.base', 'Message to be sent to the buyer'),
+            'buy_message' => Yii::t('XcoinModule.base', 'Message to be sent to the buyer'),
             'payment_first' => Yii::t('XcoinModule.base', 'Request payment first'),
         ];
     }
@@ -349,7 +349,10 @@ class Product extends ActiveRecord
 
     public function isOwner($user)
     {
-        return $user->id == $this->getCreatedBy()->one()->id;
+        if ($user instanceof User) {
+            return $user->id == $this->getCreatedBy()->one()->id;
+        }
+        return false;
     }
 
     public function isNameUnique()
@@ -385,7 +388,7 @@ class Product extends ActiveRecord
             ($this->offer_type == self::OFFER_DISCOUNT_FOR_COINS && empty($this->discount)) ||
             ($this->offer_type == self::OFFER_TOTAL_PRICE_IN_COINS && (empty($this->price) || empty($this->payment_type))) ||
             ($this->marketplace->shouldRedirectToLink() && empty($this->link)) ||
-            (!$this->marketplace->shouldRedirectToLink() && empty($this->buy_message)) ;
+            (!$this->marketplace->shouldRedirectToLink() && empty($this->buy_message));
     }
 
     public function isPaymentFirst()
