@@ -145,10 +145,14 @@ class MarketplaceController extends ContentContainerController
             ]
         );
     }
+
     public function actionReviewProduct($id, $status)
     {
 
         $model = Product::findOne(['id' => $id]);
+        if ($model == null) {
+            throw new HttpException(404,'Product Not found');
+        }
 
         if (!SpaceHelper::canReviewProject($model->marketplace->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {
             throw new HttpException(401);

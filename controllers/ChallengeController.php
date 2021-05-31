@@ -178,6 +178,9 @@ class ChallengeController extends ContentContainerController
     public function actionReviewFunding($id, $status)
     {
         $model = Funding::findOne(['id' => $id]);
+        if ($model == null) {
+            throw new HttpException(404,'Funding Not found');
+        }
 
         if (!SpaceHelper::canReviewProject($model->challenge->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {
             throw new HttpException(401);
