@@ -112,7 +112,8 @@ class FundingController extends ContentContainerController
         $model->amountPay = 1;
         if ($model->load(Yii::$app->request->post()) && $model->invest()) {
             $challenge = $funding->getChallenge()->one();
-            return $this->htmlRedirect(['/xcoin/challenge/overview', 'challengeId' => $challenge->id, 'container' => $this->contentContainer]);
+            $challengeSpace = $challenge->getSpace()->one();
+            return $this->htmlRedirect(['/xcoin/challenge/overview', 'challengeId' => $challenge->id, 'container' => $challengeSpace]);
         }
 
         return $this->renderAjax('invest', [
