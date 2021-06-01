@@ -2,14 +2,12 @@
 
 namespace humhub\modules\xcoin\controllers;
 
-use humhub\components\Event;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Account;
-use yii\base\DynamicModel;
+use humhub\modules\xcoin\models\forms\PurchaseForm;
 use yii\helpers\Url;
 
 /**
@@ -51,11 +49,11 @@ class OverviewController extends ContentContainerController
 
     public function actionPurchaseCoin()
     {
-        $amountModel = new DynamicModel(['amount']);
-        $amountModel->addRule(['amount'], 'integer', ['min' => 0]);
-        $amountModel->addRule(['amount'], 'required');
+        $form = new PurchaseForm();
 
-        if ($amountModel->load(Yii::$app->request->post()) && $amountModel->validate()) {
+        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
+            $this->view->saved();
+            
             $bridge = Yii::$app->params['coinPurchase']['bridge'];
             $defaultAccount = Account::findOne([
                 'user_id' => $this->contentContainer->id,
@@ -64,21 +62,27 @@ class OverviewController extends ContentContainerController
 
             $data = [
                 'fullName' => $this->contentContainer->displayName,
-                'coin' => 'coinsence',
-                'amount' => intval($amountModel->amount),
+                'email' => $this->contentContainer->email,
+                'address' => $form->address,
+                'state' => $form->state,
+                'city' => $form->city,
+                'postCode' => $form->zip,
+                'country' => $form->country,
+                'coin' => $form->coin,
+                'amount' => intval($form->amount),
                 'pAddress' => $defaultAccount->ethereum_address,
                 'rediectUrl' => Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success',
             ];
             
             $jsonData = json_encode($data);
+            
             $encodedData = base64_encode($jsonData);
             $this->redirect($bridge . '?data=' . $encodedData);
         }
-        $coin = Yii::$app->params['coinPurchase']['coin'];
 
         return $this->renderAjax('purchase-coin-prompt', [
-            'coin' => $coin,
-            'model' => $amountModel
+            'coin' => $form->coin,
+            'model' => $form
         ]); 
     }
 }
