@@ -116,7 +116,7 @@ class PurchaseForm extends Model
      */
     public function save()
     {
-        $profile = Profile::find(['user_id' => $this->user->getId()])->one();
+        $profile = Profile::findOne(['user_id' => $this->user->getId()]);
         
         $profile->street = $this->address;
         $profile->state = $this->state;
@@ -124,6 +124,6 @@ class PurchaseForm extends Model
         $profile->zip = $this->zip;
         $profile->country = $this->country;
 
-        return $profile->save();
+        return $profile->validate() && $profile->save();
     }
 }
