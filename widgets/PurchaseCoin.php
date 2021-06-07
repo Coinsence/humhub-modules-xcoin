@@ -18,6 +18,7 @@ use Yii;
  */
 class PurchaseCoin extends Widget
 {
+    public $style;
     public $assetName;
 
     /**
@@ -44,6 +45,7 @@ class PurchaseCoin extends Widget
         $user = User::findIdentity($identity->id);
 
         return $this->render('@xcoin/widgets/views/purchase-coin', [
+            'style' => $this->style,
             'contentContainer' => $user,
             'name' => Yii::$app->params['coinPurchase']['coin']
         ]);

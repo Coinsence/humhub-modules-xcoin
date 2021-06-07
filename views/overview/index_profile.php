@@ -13,9 +13,7 @@ Assets::register($this);
     <div class="panel-heading">
         <?php if ($isOwner): ?>
             <strong><?= Yii::t('XcoinModule.overview', 'Your accounts') ?></strong>
-            <div class="purchase-container" style="float: right">
-                <?= PurchaseCoin::widget() ?>
-            </div>
+            <?= PurchaseCoin::widget(['style' => 'float: right; margin-bottom: 12px;']) ?>
         <?php else: ?>
             <strong><?= Yii::t('XcoinModule.overview', 'Accounts of this user') ?></strong>
         <?php endif; ?>
