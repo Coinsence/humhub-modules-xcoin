@@ -4,6 +4,7 @@ use humhub\modules\content\models\ContentContainer;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\modules\xcoin\grids\SenderAccountGridView;
+use humhub\modules\xcoin\widgets\PurchaseCoin;
 
 /** @var ContentContainer $contentContainer */
 /** @var array $nextRoute */
@@ -22,6 +23,7 @@ use humhub\modules\xcoin\grids\SenderAccountGridView;
 </div>
 
 <div class="modal-footer">
+    <?= PurchaseCoin::widget(['assetName' => $requireAsset->getSpace()->one()->name]) ?>
     <?= ModalButton::cancel(); ?>
 </div>
 

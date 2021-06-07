@@ -1,10 +1,9 @@
 <?php
 
 use humhub\modules\xcoin\assets\Assets;
-use yii\bootstrap\Html;
 use humhub\modules\xcoin\grids\LatestTransactionsGridView;
 use humhub\modules\xcoin\grids\AccountsGridView;
-use humhub\modules\xcoin\helpers\AccountHelper;
+use humhub\modules\xcoin\widgets\PurchaseCoin;
 
 Assets::register($this);
 
@@ -14,12 +13,13 @@ Assets::register($this);
     <div class="panel-heading">
         <?php if ($isOwner): ?>
             <strong><?= Yii::t('XcoinModule.overview', 'Your accounts') ?></strong>
+            <?= PurchaseCoin::widget(['style' => 'float: right; margin-bottom: 12px;']) ?>
         <?php else: ?>
             <strong><?= Yii::t('XcoinModule.overview', 'Accounts of this user') ?></strong>
         <?php endif; ?>
     </div>
 
-    <div class="panel-body"> 
+    <div class="panel-body">
         <?= AccountsGridView::widget(['contentContainer' => $this->context->contentContainer]) ?>
     </div>
 </div>
@@ -37,4 +37,3 @@ Assets::register($this);
         <?= LatestTransactionsGridView::widget(['contentContainer' => $this->context->contentContainer]) ?>
     </div>
 </div>
-

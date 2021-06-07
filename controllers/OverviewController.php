@@ -2,12 +2,13 @@
 
 namespace humhub\modules\xcoin\controllers;
 
-use humhub\components\Event;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\models\Account;
+use humhub\modules\xcoin\models\forms\PurchaseForm;
+use yii\helpers\Url;
 
 /**
  * Description of AccountController
@@ -44,5 +45,44 @@ class OverviewController extends ContentContainerController
     public function actionShareholderList()
     {
         return $this->render('shareholder-list', ['asset' => AssetHelper::getSpaceAsset($this->contentContainer)]);
+    }
+
+    public function actionPurchaseCoin()
+    {
+        $form = new PurchaseForm();
+
+        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
+            $this->view->saved();
+            
+            $bridge = Yii::$app->params['coinPurchase']['bridge'];
+            $defaultAccount = Account::findOne([
+                'user_id' => $this->contentContainer->id,
+                'account_type' => Account::TYPE_DEFAULT
+            ]);
+
+            $data = [
+                'fullName' => $this->contentContainer->displayName,
+                'email' => $this->contentContainer->email,
+                'address' => $form->address,
+                'state' => $form->state,
+                'city' => $form->city,
+                'postCode' => $form->zip,
+                'country' => $form->country,
+                'coin' => $form->coin,
+                'amount' => intval($form->amount),
+                'pAddress' => $defaultAccount->ethereum_address,
+                'rediectUrl' => Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success',
+            ];
+            
+            $jsonData = json_encode($data);
+            
+            $encodedData = base64_encode($jsonData);
+            $this->redirect($bridge . '?data=' . $encodedData);
+        }
+
+        return $this->renderAjax('purchase-coin-prompt', [
+            'coin' => $form->coin,
+            'model' => $form
+        ]); 
     }
 }
