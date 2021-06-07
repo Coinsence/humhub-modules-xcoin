@@ -12,6 +12,7 @@ use humhub\libs\Iso3166Codes;
 use yii\bootstrap\Progress;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\xcoin\helpers\FundingHelper;
+use humhub\modules\xcoin\models\Asset;
 
 Assets::register($this);
 
@@ -24,6 +25,7 @@ Assets::register($this);
 <div class="funding-details-popup" id="funding-popup">
 <?php
     $space = $funding->getSpace()->one();
+    $challenge = $funding->getChallenge()->one();
     $cover = $funding->getCover();
     $gallery = $funding->getGallery();
 
@@ -118,7 +120,7 @@ Assets::register($this);
                                 <?= $funding->getRequestedAmount() ?>
                             </strong>
                             <?= SpaceImage::widget([
-                                'space' => $funding->getChallenge()->one()->asset->space,
+                                'space' => $challenge->asset->space,
                                 'width' => 24,
                                 'showTooltip' => true,
                                 'link' => true
@@ -126,7 +128,29 @@ Assets::register($this);
                         </span>
 
                         <label><?= Yii::t('XcoinModule.funding', 'Rewarding') ?></label>
-                        <span></span>
+                        <span>
+                            <?php if ($challenge->acceptAnyRewardingAsset()): ?>
+                                <strong><?= $funding->exchange_rate ?></strong>
+                                <?= SpaceImage::widget([
+                                    'space' => $space,
+                                    'width' => 24,
+                                    'showTooltip' => true,
+                                    'link' => true
+                                ]); ?>
+                                <?= Yii::t('XcoinModule.funding', 'per invested coin') ?>
+                            <?php elseif ($challenge->acceptSpecificRewardingAsset()): ?>
+                                <strong><?= $challenge->exchange_rate ?></strong>
+                                <?= SpaceImage::widget([
+                                    'space' => Asset::findOne(['id' => $challenge->specific_reward_asset_id])->getSpace()->one(),
+                                    'width' => 24,
+                                    'showTooltip' => true,
+                                    'link' => true
+                                ]); ?>
+                                <?= Yii::t('XcoinModule.funding', 'per invested coin') ?>
+                            <?php else: ?>
+                                <?= Yii::t('XcoinModule.funding', 'no COIN rewarding') ?>
+                            <?php endif; ?>
+                        </span>
 
                         <label><?= Yii::t('XcoinModule.funding', 'Location') ?></label>
                         <span><strong><?= Iso3166Codes::country($funding->country) . ', ' . $funding->city ?></strong></span>
