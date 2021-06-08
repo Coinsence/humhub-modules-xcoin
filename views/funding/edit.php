@@ -31,7 +31,9 @@ $upload = Upload::withName();
         <div class="col-md-6">
             <?= $form->field($model, 'deadline')->widget(DatePicker::class, [
                 'dateFormat' => Yii::$app->params['formatter']['defaultDateFormat'],
-                'clientOptions' => ['minDate' => '+1d'],
+                'clientOptions' => ['minDate' => '+1d', 'beforeShow' => new JsExpression("function( input, inst ){
+                    $(inst.dpDiv).addClass('hack-to-fix-wrong-position');
+                }")],
                 'options' => ['class' => 'form-control', 'autocomplete' => "off"]])
                 ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign deadline')) ?>
         </div>
