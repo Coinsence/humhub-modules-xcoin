@@ -95,6 +95,7 @@ Assets::register($this);
                         $space = $funding->getSpace()->one();
                         $cover = $funding->getCover();
                         ?>
+
                         <div style="position: relative">
                             <div class="col-sm-6 col-md-4 col-lg-3">
                                 <a href="<?= $space->createUrl('/xcoin/funding/details', [
@@ -185,9 +186,9 @@ Assets::register($this);
                                                 <div class="col-md-12">
                                                     <!-- campaign requesting start -->
                                                     <span>
-                                    <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
-                                    <strong><?= $funding->getRequestedAmount() ?></strong>
-                                </span>
+                                                        <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
+                                                        <strong><?= $funding->getRequestedAmount() ?></strong>
+                                                    </span>
                                                     <?= SpaceImage::widget([
                                                         'space' => $challenge->asset->space,
                                                         'width' => 16,
@@ -202,13 +203,12 @@ Assets::register($this);
                                 </a>
                                 <?php if (SpaceHelper::canReviewProject($funding->challenge->space) || PublicOffersHelper::canReviewSubmittedProjects()): ?>
                                     <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
-                                        <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Set to Verified'), ['/xcoin/challenge/review-funding', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['style' => ["position" => "absolute", "top" => "20px", "right" => "30px"]]) ?>
+                                        <?= Html::a('<i class="fa fa-check"></i>', ['/xcoin/challenge/review-funding', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted']) ?>
                                     <?php else : ?>
-                                        <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('XcoinModule.funding', 'Set to not verified'), ['/xcoin/challenge/review-funding', 'id' => $funding->id, 'status' => Funding::FUNDING_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['style' => ["position" => "absolute", "top" => "20px", "right" => "30px"]]) ?>
+                                        <?= Html::a('<i class="fa fa-close"></i>', ['/xcoin/challenge/review-funding', 'id' => $funding->id, 'status' => Funding::FUNDING_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted']) ?>
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </div>
-
                         </div>
 
                     <?php endforeach; ?>
