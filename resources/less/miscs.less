@@ -1,4 +1,4 @@
-
+// main: ./build.less
 /* -------------------------------------------- */
 /* Miscellaneous styling */
 /* -------------------------------------------- */
@@ -297,6 +297,41 @@ i.ether-icon-menu {
     font-size: 10px;
   }
 
+}
+
+// trust / untrust buttons
+.received-funding .panels {
+  .review-btn-trusted,
+  .review-btn-untrusted {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    opacity: .5;
+    font-weight: bold;
+    border-radius: 20px;
+    font-size: 14px;
+    padding: 4px 12px;
+    box-shadow: @overview-action-btn-shadow;
+    transition:
+      box-shadow @overview-action-btn-transition,
+      opacity @overview-action-btn-transition;
+  }
+  .review-btn-trusted {
+    color: white;
+    background: #4ac309;
+  }
+  .review-btn-untrusted {
+    color: white;
+    background: #d60000;
+  }
+  .review-btn-trusted:hover,
+  .review-btn-untrusted:hover,
+  .review-btn-trusted:active,
+  .review-btn-untrusted:active {
+    box-shadow: @overview-action-btn-shadow-transitioned;
+    opacity: 1;
+    z-index: 1;
+  }
 }
 
 /* -------------------------------------------- */
