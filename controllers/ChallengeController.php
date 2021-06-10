@@ -12,6 +12,7 @@ namespace humhub\modules\xcoin\controllers;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\ChallengeContactButton;
@@ -173,5 +174,28 @@ class ChallengeController extends ContentContainerController
                 'assets' => $assets
             ]
         );
+    }
+    public function actionReviewFunding($id, $status)
+    {
+        $model = Funding::findOne(['id' => $id]);
+        if ($model == null) {
+            throw new HttpException(404,'Funding Not found');
+        }
+
+        if (!SpaceHelper::canReviewProject($model->challenge->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {
+            throw new HttpException(401);
+        }
+
+        $model->scenario = Funding::SCENARIO_EDIT;
+        $model->review_status = $status;
+
+        $model->save();
+
+        $this->view->saved();
+
+        return $this->redirect($this->contentContainer->createUrl('/xcoin/challenge/overview', [
+            'container' => $this->contentContainer,
+            'challengeId' =>$model->challenge_id
+        ]));
     }
 }

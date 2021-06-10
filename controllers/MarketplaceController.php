@@ -12,6 +12,8 @@ namespace humhub\modules\xcoin\controllers;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\helpers\PublicOffersHelper;
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
 use Yii;
@@ -142,5 +144,30 @@ class MarketplaceController extends ContentContainerController
                 'assets' => $assets
             ]
         );
+    }
+
+    public function actionReviewProduct($id, $status)
+    {
+
+        $model = Product::findOne(['id' => $id]);
+        if ($model == null) {
+            throw new HttpException(404,'Product Not found');
+        }
+
+        if (!SpaceHelper::canReviewProject($model->marketplace->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {
+            throw new HttpException(401);
+        }
+
+        $model->scenario = Product::SCENARIO_EDIT;
+        $model->review_status = $status;
+
+        $model->save();
+
+        $this->view->saved();
+
+        return $this->redirect($this->contentContainer->createUrl('/xcoin/marketplace/overview', [
+            'container' => $this->contentContainer,
+            'marketplaceId' => $model->marketplace->id
+        ]));
     }
 }
