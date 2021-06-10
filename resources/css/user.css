@@ -352,7 +352,7 @@ body {
     }
     .profile-layout-container {
         max-width: 100% !important;
-        padding: 0 !important;
+        padding: 0 15px !important;
     }
     .userInfo>div>div:not(:last-child) {
         padding: 0 15px !important;
