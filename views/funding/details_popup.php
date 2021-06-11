@@ -133,6 +133,7 @@ Assets::register($this);
                         <span>
                             <?php if ($challenge->acceptAnyRewardingAsset()): ?>
                                 <?php if ($funding->canInvest()) : ?>
+                                    <?= Yii::t('XcoinModule.funding', 'Per invested coin') ?>
                                     <strong><?= $funding->exchange_rate ?></strong>
                                 <?php endif; ?>
                                 <?= SpaceImage::widget([
@@ -141,11 +142,9 @@ Assets::register($this);
                                     'showTooltip' => true,
                                     'link' => true
                                 ]); ?>
-                                <?php if ($funding->canInvest()) : ?>
-                                    <?= Yii::t('XcoinModule.funding', 'per invested coin') ?>
-                                <?php endif; ?>
                             <?php elseif ($challenge->acceptSpecificRewardingAsset()): ?>
                                 <?php if ($funding->canInvest()) : ?>
+                                    <?= Yii::t('XcoinModule.funding', 'Per invested coin') ?>
                                     <strong><?= $challenge->exchange_rate ?></strong>
                                 <?php endif; ?>
                                 <?= SpaceImage::widget([
@@ -154,9 +153,6 @@ Assets::register($this);
                                     'showTooltip' => true,
                                     'link' => true
                                 ]); ?>
-                                <?php if ($funding->canInvest()) : ?>
-                                    <?= Yii::t('XcoinModule.funding', 'per invested coin') ?>
-                                <?php endif; ?>
                             <?php else: ?>
                                 <?= Yii::t('XcoinModule.funding', 'no COIN rewarding') ?>
                             <?php endif; ?>
