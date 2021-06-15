@@ -13,7 +13,6 @@ use Yii;
 use yii\db\ActiveQuery;
 
 
-
 /**
  * This is the model class for table "xcoin_challenge_contact_button".
  *
@@ -23,13 +22,14 @@ use yii\db\ActiveQuery;
  * @property string $button_title
  * @property string $popup_text
  * @property string $receiver
-
  * @property Challenge $challenge
  */
 class ChallengeContactButton extends ActiveRecord
 {
     const SCENARIO_CREATE = 'screate';
     const SCENARIO_EDIT = 'sedit';
+    const CONTACT_BUTTON_DISABLED = 0;
+    const CONTACT_BUTTON_ENABLED = 1;
 
     /**
      * @inheritdoc
@@ -43,8 +43,8 @@ class ChallengeContactButton extends ActiveRecord
     {
 
         return [
-            [['challenge_id', 'button_title', 'popup_text', 'receiver','status'], 'required'],
-            [['challenge_id','status'], 'integer'],
+            [['challenge_id', 'status'], 'required'],
+            [['challenge_id', 'status'], 'integer'],
             [['challenge_id'], 'exist', 'skipOnError' => true, 'targetClass' => Challenge::class, 'targetAttribute' => ['challenge_id' => 'id']],
             [['button_title'], 'string', 'max' => 255],
             [['receiver'], 'string', 'max' => 255],
@@ -65,6 +65,7 @@ class ChallengeContactButton extends ActiveRecord
         ];
 
     }
+
     /**
      * @return ActiveQuery
      */
@@ -73,4 +74,8 @@ class ChallengeContactButton extends ActiveRecord
         return $this->hasOne(Challenge::class, ['id' => 'challenge_id']);
     }
 
+    public function isButtonEnabled()
+    {
+        return $this->status == self::CONTACT_BUTTON_ENABLED;
+    }
 }
