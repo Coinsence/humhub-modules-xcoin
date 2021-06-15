@@ -35,21 +35,21 @@ class Events
         }
 
         $event->sender->addItem([
-            'label' => Yii::t('XcoinModule.base', 'Network'),
-            'url' => Url::to(['/xcoin/network']),
-            'icon' => '<i class="fa fa-users"></i>',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'network'),
-            'sortOrder' => 900,
-        ]);
-
-
-        $event->sender->addItem([
             'label' => Yii::t('XcoinModule.base', 'Marketplace'),
             'url' => Url::to(['/xcoin/marketplace-overview']),
             'icon' => '<i class="fa fa-shopping-basket"></i>',
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'marketplace-overview'),
             'sortOrder' => 900,
         ]);
+
+        $event->sender->addItem([
+            'label' => Yii::t('XcoinModule.base', 'Search'),
+            'url' => Url::to(['/search']),
+            'icon' => '<i class="fa fa-search"></i>',
+            'isActive' => (Yii::$app->controller->id == 'search'),
+            'sortOrder' => 900,
+        ]);
+
         $event->sender->addItem([
             'label' => Yii::t('DashboardModule.base', 'Home'),
             'id' => 'dashboard',
