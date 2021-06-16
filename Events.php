@@ -59,6 +59,32 @@ class Events
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'dashboard'),
         ]);
 
+        $event->sender->addItem([
+            'label' => Yii::t('DashboardModule.base', 'People'),
+            'id' => 'dashboard',
+            'icon' => '<i class="fa fa-user"></i>',
+            'url' => Url::toRoute('/directory/members'),
+            'sortOrder' => 200,
+            'isActive' => (
+                Yii::$app->controller->module &&
+                Yii::$app->controller->module->id == 'directory' &&
+                Yii::$app->controller->action->id == 'members'
+            ),
+        ]);
+        
+        $event->sender->addItem([
+            'label' => Yii::t('DashboardModule.base', 'Spaces'),
+            'id' => 'dashboard',
+            'icon' => '<i class="fa fa-connectdevelop"></i>',
+            'url' => Url::toRoute('/directory/spaces'),
+            'sortOrder' => 200,
+            'isActive' => (
+                Yii::$app->controller->module &&
+                Yii::$app->controller->module->id == 'directory' &&
+                Yii::$app->controller->action->id == 'spaces'
+            ),
+        ]);
+
         Event::on(TopMenu::class, TopMenu::EVENT_BEFORE_RUN, function ($event) {
             // deactivate directory menu item
             $event->sender->deleteItemByUrl(Url::to(['/directory/directory']));
