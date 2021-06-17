@@ -45,6 +45,7 @@ class Account extends ActiveRecord
     const TYPE_COMMUNITY_INVESTOR = 6;
 
     const ACCOUNT_ARCHIVED = 1;
+    const ACCOUNT_DELETED = 2;
 
     /** @var Event this event is dispatched when account with
      * TYPE_DEFAULT is created for space in order to create ethereum DAO
@@ -254,7 +255,7 @@ class Account extends ActiveRecord
             $revertTransaction->comment = $transaction->comment ? "$transaction->comment - Transaction Reverted" : "Campaign issue transaction reverted";
             $revertTransaction->from_account_id = $transaction->to_account_id;
 
-            if($transaction->transaction_type == Transaction::TRANSACTION_TYPE_ISSUE){
+            if ($transaction->transaction_type == Transaction::TRANSACTION_TYPE_ISSUE) {
                 // send coin to default account rather than issue account
                 $defaultAccount = Account::findOne([
                     'space_id' => $this->getSpace()->one()->id,
@@ -293,7 +294,7 @@ class Account extends ActiveRecord
             $transferTransaction->save();
         }
 
-        $this->archived = self::ACCOUNT_ARCHIVED;
+        $this->archived = self::ACCOUNT_DELETED;
 
         $this->save();
     }
