@@ -26,5 +26,4 @@ class m210615_190804_update_challenge_contact_buttons_table extends Migration
 
         return false;
     }
-
 }

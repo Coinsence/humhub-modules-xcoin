@@ -107,13 +107,22 @@ class ChallengeController extends ContentContainerController
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
             if (isset($_POST['firstButton'])) {
-                $this->createButton($model->id, 1,$_POST['firstButtonTitle'], $_POST['firstButtonText'], $_POST['firstButtonReceiver']);
+                $this->createButton(
+                    $model->id,
+                    ChallengeContactButton::CONTACT_BUTTON_ENABLED,
+                    $_POST['firstButtonTitle'], $_POST['firstButtonText'],
+                    $_POST['firstButtonReceiver']);
             } else {
                 $this->createButton($model->id);
             }
             if (isset($_POST['secondButton'])) {
-                $this->createButton($model->id, 1,$_POST['secondButtonTitle'], $_POST['secondButtonText'], $_POST['secondButtonReceiver']);
-            }else {
+                $this->createButton(
+                    $model->id,
+                    ChallengeContactButton::CONTACT_BUTTON_ENABLED,
+                    $_POST['secondButtonTitle'],
+                    $_POST['secondButtonText'],
+                    $_POST['secondButtonReceiver']);
+            } else {
                 $this->createButton($model->id);
             }
             return $this->htmlRedirect($currentSpace->createUrl('/xcoin/challenge/index', [
@@ -129,7 +138,13 @@ class ChallengeController extends ContentContainerController
         );
     }
 
-    private function createButton($challengeId, $status = 0 ,$buttonTitle = null, $popupText=null, $receiver=null)
+    private function createButton(
+        $challengeId,
+        $status = ChallengeContactButton::CONTACT_BUTTON_DISABLED,
+        $buttonTitle = null,
+        $popupText = null,
+        $receiver = null
+    )
     {
         $button = new ChallengeContactButton();
         $button->challenge_id = $challengeId;
@@ -166,24 +181,26 @@ class ChallengeController extends ContentContainerController
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
             if (isset($_POST['firstButton'])) {
-                $contactButtons[0]->status = 1;
-                $contactButtons[0]->receiver = $_POST['firstButtonReceiver'];
-                $contactButtons[0]->button_title = $_POST['firstButtonTitle'];
-                $contactButtons[0]->popup_text = $_POST['firstButtonText'];
-                $contactButtons[0]->save();
+                $this->updateButton(
+                    $contactButtons[0],
+                    $_POST['firstButtonReceiver'],
+                    $_POST['firstButtonTitle'],
+                    $_POST['firstButtonText'],
+                    ChallengeContactButton::CONTACT_BUTTON_ENABLED
+                );
             } else {
-                $contactButtons[0]->status = 0;
-                $contactButtons[0]->save();
+                $this->disableButton($contactButtons[0]);
             }
             if (isset($_POST['secondButton'])) {
-                $contactButtons[1]->status = 1;
-                $contactButtons[1]->receiver = $_POST['secondButtonReceiver'];
-                $contactButtons[1]->button_title = $_POST['secondButtonTitle'];
-                $contactButtons[1]->popup_text = $_POST['secondButtonText'];
-                $contactButtons[1]->save();
+                $this->updateButton(
+                    $contactButtons[1],
+                    $_POST['secondButtonReceiver'],
+                    $_POST['secondButtonTitle'],
+                    $_POST['secondButtonText'],
+                    ChallengeContactButton::CONTACT_BUTTON_ENABLED
+                );
             } else {
-                $contactButtons[1]->status = 0;
-                $contactButtons[1]->save();
+                $this->disableButton($contactButtons[1]);
             }
             return $this->htmlRedirect($currentSpace->createUrl('/xcoin/challenge/overview', [
                 'challengeId' => $model->id,
@@ -192,9 +209,29 @@ class ChallengeController extends ContentContainerController
         return $this->renderAjax('edit', [
                 'model' => $model,
                 'assets' => $assets,
-                'contactButtons'=>$contactButtons,
+                'contactButtons' => $contactButtons,
             ]
         );
+    }
+
+    private function updateButton(
+        ChallengeContactButton $button,
+        $receiver, $button_title,
+        $popup_text,
+        $status
+    )
+    {
+        $button->receiver = $receiver;
+        $button->button_title = $button_title;
+        $button->popup_text = $popup_text;
+        $button->status = $status;
+        $button->save();
+    }
+
+    private function disableButton(ChallengeContactButton $button)
+    {
+        $button->status = ChallengeContactButton::CONTACT_BUTTON_DISABLED;
+        $button->save();
     }
 
     public function actionReviewFunding($id, $status)

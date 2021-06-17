@@ -7,11 +7,9 @@
 
 namespace humhub\modules\xcoin\models;
 
-
 use humhub\components\ActiveRecord;
 use Yii;
 use yii\db\ActiveQuery;
-
 
 /**
  * This is the model class for table "xcoin_challenge_contact_button".
@@ -28,8 +26,13 @@ class ChallengeContactButton extends ActiveRecord
 {
     const SCENARIO_CREATE = 'screate';
     const SCENARIO_EDIT = 'sedit';
+
     const CONTACT_BUTTON_DISABLED = 0;
     const CONTACT_BUTTON_ENABLED = 1;
+
+    const PROJECT_OWNER_RECEIVER = "project";
+    const CHALLENGE_OWNER_RECEIVER = "challenge";
+
 
     /**
      * @inheritdoc
@@ -78,4 +81,6 @@ class ChallengeContactButton extends ActiveRecord
     {
         return $this->status == self::CONTACT_BUTTON_ENABLED;
     }
+
+
 }
