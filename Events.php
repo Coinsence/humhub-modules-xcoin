@@ -35,21 +35,21 @@ class Events
         }
 
         $event->sender->addItem([
-            'label' => Yii::t('XcoinModule.base', 'Network'),
-            'url' => Url::to(['/xcoin/network']),
-            'icon' => '<i class="fa fa-users"></i>',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'network'),
-            'sortOrder' => 900,
-        ]);
-
-
-        $event->sender->addItem([
             'label' => Yii::t('XcoinModule.base', 'Marketplace'),
             'url' => Url::to(['/xcoin/marketplace-overview']),
             'icon' => '<i class="fa fa-shopping-basket"></i>',
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id == 'marketplace-overview'),
             'sortOrder' => 900,
         ]);
+
+        $event->sender->addItem([
+            'label' => Yii::t('XcoinModule.base', 'Search'),
+            'url' => Url::to(['/search']),
+            'icon' => '<i class="fa fa-search"></i>',
+            'isActive' => (Yii::$app->controller->id == 'search'),
+            'sortOrder' => 900,
+        ]);
+
         $event->sender->addItem([
             'label' => Yii::t('DashboardModule.base', 'Home'),
             'id' => 'dashboard',
@@ -57,6 +57,32 @@ class Events
             'url' => Url::toRoute('/home'),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'dashboard'),
+        ]);
+
+        $event->sender->addItem([
+            'label' => Yii::t('DashboardModule.base', 'People'),
+            'id' => 'dashboard',
+            'icon' => '<i class="fa fa-user"></i>',
+            'url' => Url::toRoute('/directory/members'),
+            'sortOrder' => 200,
+            'isActive' => (
+                Yii::$app->controller->module &&
+                Yii::$app->controller->module->id == 'directory' &&
+                Yii::$app->controller->action->id == 'members'
+            ),
+        ]);
+        
+        $event->sender->addItem([
+            'label' => Yii::t('DashboardModule.base', 'Spaces'),
+            'id' => 'dashboard',
+            'icon' => '<i class="fa fa-connectdevelop"></i>',
+            'url' => Url::toRoute('/directory/spaces'),
+            'sortOrder' => 200,
+            'isActive' => (
+                Yii::$app->controller->module &&
+                Yii::$app->controller->module->id == 'directory' &&
+                Yii::$app->controller->action->id == 'spaces'
+            ),
         ]);
 
         Event::on(TopMenu::class, TopMenu::EVENT_BEFORE_RUN, function ($event) {
