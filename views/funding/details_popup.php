@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\xcoin\models\Funding;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
 use humhub\modules\xcoin\models\ChallengeContactButton as ChallengeContactButtonAlias;
@@ -248,11 +249,13 @@ Assets::register($this);
                                 <?php if (Yii::$app->user->isGuest): ?>
                                     <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                                 <?php else: ?>
-                                    <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
-                                        'invest',
-                                        'fundingId' => $funding->id,
-                                        'container' => $funding->getSpace()->one()
-                                    ], ['data-target' => '#globalModal']); ?>
+                                    <?php if ($funding->status !== Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED): ?>
+                                        <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
+                                            'invest',
+                                            'fundingId' => $funding->id,
+                                            'container' => $funding->getSpace()->one()
+                                        ], ['data-target' => '#globalModal']); ?>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                             </div>
                         <?php endif; ?>
