@@ -51,6 +51,7 @@ class Challenge extends ActiveRecord
     const CHALLENGE_STATUS_ENABLED = 1;
     const CHALLENGE_ACTIVE = 0;
     const CHALLENGE_STOPPED = 1;
+    const CHALLENGE_CLOSED = 2;
 
 
     // challenges investor reward options
@@ -110,7 +111,7 @@ class Challenge extends ActiveRecord
                 'hide_unverified_submissions'
             ],
             self::SCENARIO_EDIT => [
-                'asset_id',
+                'contactButtons',
                 'title',
                 'description',
                 'stopped',
@@ -189,8 +190,7 @@ class Challenge extends ActiveRecord
      */
     public function getContactButtons()
     {
-        return $this->hasMany(ChallengeContactButton::class, ['id' => 'challenge_id'])
-            ->viaTable('xcoin_challenge_contact_button', ['challenge_id' => 'id']);
+        return $this->hasMany(ChallengeContactButton::class, ['challenge_id' => 'id']);
     }
 
     /**
@@ -236,6 +236,11 @@ class Challenge extends ActiveRecord
     public function isStopped()
     {
         return $this->stopped == self::CHALLENGE_STOPPED;
+    }
+
+    public function isClosed()
+    {
+        return $this->stopped == self::CHALLENGE_CLOSED;
     }
 
     public function isDisabled()
