@@ -258,12 +258,11 @@ class AccountsGridView extends GridView
                     $overviewButton = Html::a('<i class="fa fa-search" aria-hidden="true"></i>', ['/xcoin/account', 'id' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default']);
 
                     return $loadPKButton . $transferButton . $disabledButton . $overviewButton;
-                }],];
-
+                }
+                ],
+            ];
 
         parent::init();
+
     }
-
-
 }
-
