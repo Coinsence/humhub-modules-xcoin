@@ -322,10 +322,8 @@ Assets::register($this);
                             ], ['data-target' => '#globalModal']); ?>
                         <?php endif; ?>
                     <?php endif; ?>
-
                 </div>
                 <!-- campaign invest action end -->
-
             </div>
         </div>
     </div>

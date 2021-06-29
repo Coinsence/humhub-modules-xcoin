@@ -93,10 +93,9 @@ Assets::register($this);
                     <?php foreach ($fundings as $funding): ?>
                         <?php if ($funding->space->isAdmin(Yii::$app->user->identity) || $funding->status !== Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED): ?>
                             <?php
-                            $space = $funding->getSpace()->one();
-                            $cover = $funding->getCover();
+                                $space = $funding->getSpace()->one();
+                                $cover = $funding->getCover();
                             ?>
-
                             <div style="position: relative">
                                 <div class="col-sm-6 col-md-4 col-lg-3">
                                     <a href="<?= $space->createUrl('/xcoin/funding/details', [
