@@ -33,6 +33,7 @@ class AccountsGridView extends GridView
      * @throws InvalidConfigException
      */
     public $listAssetss;
+
     public function init()
     {
         $this->dataProvider = new ActiveDataProvider([
@@ -226,31 +227,42 @@ class AccountsGridView extends GridView
                         }
                     }
 
-                    if ($model->space != null && AccountHelper::canManageAccount($model) && in_array($model->account_type, [Account::TYPE_STANDARD, Account::TYPE_COMMUNITY_INVESTOR,Account::TYPE_FUNDING])) {
-                        $disabledButton = ModalConfirm::widget([
-                            'uniqueID' => 'model_disable_account' . $model->id,
-                            'title' => Yii::t('XcoinModule.base', '<strong>Confirm</strong> disabling account'),
-                            'message' => Yii::t('XcoinModule.base', 'Do you really want to disable this account?'),
-                            'buttonTrue' => Yii::t('XcoinModule.base', 'Disable'),
-                            'buttonFalse' => Yii::t('XcoinModule.base', 'Cancel'),
-                            'linkContent' => '<i class="fa fa-ban"></i> ',
-                            'cssClass' => 'btn btn-default',
-                            'linkHref' => Url::to(['/xcoin/account/disable', 'id' => $model->id, 'container' => $this->contentContainer])
-                        ]);
+                    if ($model->space != null && AccountHelper::canManageAccount($model) && in_array($model->account_type, [Account::TYPE_STANDARD, Account::TYPE_COMMUNITY_INVESTOR, Account::TYPE_FUNDING])) {
+                        if ($model->account_type == Account::TYPE_FUNDING) {
+                            if (!$model->funding) {
+                                $disabledButton = ModalConfirm::widget([
+                                    'uniqueID' => 'model_disable_account' . $model->id,
+                                    'title' => Yii::t('XcoinModule.base', '<strong>Confirm</strong> disabling account'),
+                                    'message' => Yii::t('XcoinModule.base', 'When disabling account, all COINs will be transferred to space default account.'),
+                                    'buttonTrue' => Yii::t('XcoinModule.base', 'Disable'),
+                                    'buttonFalse' => Yii::t('XcoinModule.base', 'Cancel'),
+                                    'linkContent' => '<i class="fa fa-ban"></i> ',
+                                    'cssClass' => 'btn btn-default',
+                                    'linkHref' => Url::to(['/xcoin/account/disable', 'id' => $model->id, 'container' => $this->contentContainer])
+                                ]);
+                            }
+                        } else {
+                            $disabledButton = ModalConfirm::widget([
+                                'uniqueID' => 'model_disable_account' . $model->id,
+                                'title' => Yii::t('XcoinModule.base', '<strong>Confirm</strong> disabling account'),
+                                'message' => Yii::t('XcoinModule.base', 'Do you really want to disable this account?'),
+                                'buttonTrue' => Yii::t('XcoinModule.base', 'Disable'),
+                                'buttonFalse' => Yii::t('XcoinModule.base', 'Cancel'),
+                                'linkContent' => '<i class="fa fa-ban"></i> ',
+                                'cssClass' => 'btn btn-default',
+                                'linkHref' => Url::to(['/xcoin/account/disable', 'id' => $model->id, 'container' => $this->contentContainer])
+                            ]);
+                        }
                     }
 
                     $overviewButton = Html::a('<i class="fa fa-search" aria-hidden="true"></i>', ['/xcoin/account', 'id' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default']);
 
                     return $loadPKButton . $transferButton . $disabledButton . $overviewButton;
                 }
-            ],
-        ];
-
+                ],
+            ];
 
         parent::init();
+
     }
-
-
-    
 }
-
