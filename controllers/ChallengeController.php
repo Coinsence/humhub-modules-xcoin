@@ -73,7 +73,7 @@ class ChallengeController extends ContentContainerController
             throw new HttpException(404);
         }
 
-        if ($challenge->showUnreviewedSubmissions() || Space::findOne(['id'=>$challenge->space_id])->isAdmin(Yii::$app->user->identity)) {
+        if ($challenge->showUnreviewedSubmissions() || Space::findOne(['id' => $challenge->space_id])->isAdmin(Yii::$app->user->identity)) {
             $fundings = $challenge->getFundings()->all();
         } else {
             $fundings = Funding::findAll(['challenge_id' => $challenge->id, 'review_status' => 1]);
@@ -107,10 +107,23 @@ class ChallengeController extends ContentContainerController
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
             if (isset($_POST['firstButton'])) {
-                $this->createButton($model->id, $_POST['firstButtonTitle'], $_POST['firstButtonText'], $_POST['firstButtonReceiver']);
+                $this->createButton(
+                    $model->id,
+                    ChallengeContactButton::CONTACT_BUTTON_ENABLED,
+                    $_POST['firstButtonTitle'], $_POST['firstButtonText'],
+                    $_POST['firstButtonReceiver']);
+            } else {
+                $this->createButton($model->id);
             }
             if (isset($_POST['secondButton'])) {
-                $this->createButton($model->id, $_POST['secondButtonTitle'], $_POST['secondButtonText'], $_POST['secondButtonReceiver']);
+                $this->createButton(
+                    $model->id,
+                    ChallengeContactButton::CONTACT_BUTTON_ENABLED,
+                    $_POST['secondButtonTitle'],
+                    $_POST['secondButtonText'],
+                    $_POST['secondButtonReceiver']);
+            } else {
+                $this->createButton($model->id);
             }
             return $this->htmlRedirect($currentSpace->createUrl('/xcoin/challenge/index', [
                 'challengeId' => $model->id
@@ -125,11 +138,17 @@ class ChallengeController extends ContentContainerController
         );
     }
 
-    private function createButton($challengeId, $buttonTitle, $popupText, $receiver)
+    private function createButton(
+        $challengeId,
+        $status = ChallengeContactButton::CONTACT_BUTTON_DISABLED,
+        $buttonTitle = null,
+        $popupText = null,
+        $receiver = null
+    )
     {
         $button = new ChallengeContactButton();
-        $button->status = true;
         $button->challenge_id = $challengeId;
+        $button->status = $status;
         $button->receiver = $receiver;
         $button->button_title = $buttonTitle;
         $button->popup_text = $popupText;
@@ -156,30 +175,70 @@ class ChallengeController extends ContentContainerController
         }
 
         $model->scenario = Challenge::SCENARIO_EDIT;
-
         $assets = AssetHelper::getAllAssets();
-
+        $contactButtons = $model->getContactButtons()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
-
             $this->view->saved();
-
+            if (isset($_POST['firstButton'])) {
+                $this->updateButton(
+                    $contactButtons[0],
+                    $_POST['firstButtonReceiver'],
+                    $_POST['firstButtonTitle'],
+                    $_POST['firstButtonText'],
+                    ChallengeContactButton::CONTACT_BUTTON_ENABLED
+                );
+            } else {
+                $this->disableButton($contactButtons[0]);
+            }
+            if (isset($_POST['secondButton'])) {
+                $this->updateButton(
+                    $contactButtons[1],
+                    $_POST['secondButtonReceiver'],
+                    $_POST['secondButtonTitle'],
+                    $_POST['secondButtonText'],
+                    ChallengeContactButton::CONTACT_BUTTON_ENABLED
+                );
+            } else {
+                $this->disableButton($contactButtons[1]);
+            }
             return $this->htmlRedirect($currentSpace->createUrl('/xcoin/challenge/overview', [
-                'challengeId' => $model->id
+                'challengeId' => $model->id,
             ]));
         }
-
         return $this->renderAjax('edit', [
                 'model' => $model,
-                'assets' => $assets
+                'assets' => $assets,
+                'contactButtons' => $contactButtons,
             ]
         );
     }
+
+    private function updateButton(
+        ChallengeContactButton $button,
+        $receiver, $button_title,
+        $popup_text,
+        $status
+    )
+    {
+        $button->receiver = $receiver;
+        $button->button_title = $button_title;
+        $button->popup_text = $popup_text;
+        $button->status = $status;
+        $button->save();
+    }
+
+    private function disableButton(ChallengeContactButton $button)
+    {
+        $button->status = ChallengeContactButton::CONTACT_BUTTON_DISABLED;
+        $button->save();
+    }
+
     public function actionReviewFunding($id, $status)
     {
         $model = Funding::findOne(['id' => $id]);
         if ($model == null) {
-            throw new HttpException(404,'Funding Not found');
+            throw new HttpException(404, 'Funding Not found');
         }
 
         if (!SpaceHelper::canReviewProject($model->challenge->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {
@@ -195,7 +254,7 @@ class ChallengeController extends ContentContainerController
 
         return $this->redirect($this->contentContainer->createUrl('/xcoin/challenge/overview', [
             'container' => $this->contentContainer,
-            'challengeId' =>$model->challenge_id
+            'challengeId' => $model->challenge_id
         ]));
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\xcoin\models\Funding;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
 use humhub\modules\xcoin\models\ChallengeContactButton as ChallengeContactButtonAlias;
@@ -23,7 +24,7 @@ Assets::register($this);
 ?>
 
 <div class="funding-details-popup" id="funding-popup">
-<?php
+    <?php
     $space = $funding->getSpace()->one();
     $challenge = $funding->getChallenge()->one();
     $cover = $funding->getCover();
@@ -66,14 +67,19 @@ Assets::register($this);
                 <span class="text"><?= Html::encode($funding->description); ?></span>
                 <div class="social-share">
                     <span class="text"><?= Yii::t('XcoinModule.funding', 'Share') ?></span>
-                    <span class="sharer" data-sharer="fb" data-link="<?= $fundingUrl ?>"><i class="fa fa-facebook-square"></i></span>
-                    <span class="sharer" data-sharer="tw" data-link="<?= $fundingUrl ?>"><i class="fa fa-twitter-square"></i></span>
-                    <span class="sharer" data-sharer="in" data-link="<?= $fundingUrl ?>"><i class="fa fa-linkedin-square"></i></span>
+                    <span class="sharer" data-sharer="fb" data-link="<?= $fundingUrl ?>"><i
+                                class="fa fa-facebook-square"></i></span>
+                    <span class="sharer" data-sharer="tw" data-link="<?= $fundingUrl ?>"><i
+                                class="fa fa-twitter-square"></i></span>
+                    <span class="sharer" data-sharer="in" data-link="<?= $fundingUrl ?>"><i
+                                class="fa fa-linkedin-square"></i></span>
                 </div>
             </div>
             <?php if (!empty($funding->youtube_link)): ?>
                 <div class="funding-video">
-                    <iframe id="player" type="text/html" width="640" height="390" src="<?= FundingHelper::getYoutubeEmbedUrl($funding->youtube_link) ?>" frameborder="0"></iframe>
+                    <iframe id="player" type="text/html" width="640" height="390"
+                            src="<?= FundingHelper::getYoutubeEmbedUrl($funding->youtube_link) ?>"
+                            frameborder="0"></iframe>
                 </div>
             <?php else: ?>
                 <div class="img-container">
@@ -84,14 +90,14 @@ Assets::register($this);
                             ]) ?>
                         <?php else: ?>
                             <div class="bg"
-                                style="background-image: url('<?= $cover->getUrl() ?>')"></div>
+                                 style="background-image: url('<?= $cover->getUrl() ?>')"></div>
                             <?= Html::img($cover->getUrl(), [
                                 'width' => '100%'
                             ]) ?>
                         <?php endif; ?>
                     <?php else : ?>
                         <div class="bg"
-                            style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
+                             style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
                         <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
                             'width' => '100%'
                         ]) ?>
@@ -163,7 +169,7 @@ Assets::register($this);
 
                         <label><?= Yii::t('XcoinModule.funding', 'Category') ?></label>
                         <span>
-                            <?= join(', ', array_map(function($cat) {
+                            <?= join(', ', array_map(function ($cat) {
                                 return '<strong>' . $cat->name . '</strong>';
                             }, $funding->getCategories()->all())) ?> 
                         </span>
@@ -220,19 +226,21 @@ Assets::register($this);
                     <hr/>
                     <div class="actions">
                         <?php foreach ($contactButtons as $contactButton): ?>
-                            <?php if (Yii::$app->user->isGuest): ?>
-                                <div class="custom-btn">
-                                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
-                                </div>
-                            <?php else: ?>
-                                <div class="custom-btn">
-                                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [
-                                        'contact',
-                                        'fundingId' => $funding->id,
-                                        'contactButtonId' => $contactButton->id,
-                                        'container' => $funding->getSpace()->one(),
-                                    ], ['data-target' => '#globalModal']); ?>
-                                </div>
+                            <?php if ($contactButton->isButtonEnabled()) : ?>
+                                <?php if (Yii::$app->user->isGuest): ?>
+                                    <div class="custom-btn">
+                                        <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="custom-btn">
+                                        <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [
+                                            'contact',
+                                            'fundingId' => $funding->id,
+                                            'contactButtonId' => $contactButton->id,
+                                            'container' => $funding->getSpace()->one(),
+                                        ], ['data-target' => '#globalModal']); ?>
+                                    </div>
+                                <?php endif; ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
                         <!-- campaign invest action start -->
@@ -241,11 +249,13 @@ Assets::register($this);
                                 <?php if (Yii::$app->user->isGuest): ?>
                                     <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                                 <?php else: ?>
-                                    <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
-                                        'invest',
-                                        'fundingId' => $funding->id,
-                                        'container' => $funding->getSpace()->one()
-                                    ], ['data-target' => '#globalModal']); ?>
+                                    <?php if ($funding->status !== Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED): ?>
+                                        <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
+                                            'invest',
+                                            'fundingId' => $funding->id,
+                                            'container' => $funding->getSpace()->one()
+                                        ], ['data-target' => '#globalModal']); ?>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                             </div>
                         <?php endif; ?>
@@ -259,7 +269,7 @@ Assets::register($this);
     <?php ModalDialog::end() ?>
 </div>
 <script>
-    $('.social-share .sharer').on('click', function(e) {
+    $('.social-share .sharer').on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         let sharer = $(this).data('sharer');
@@ -267,15 +277,15 @@ Assets::register($this);
         console.log();
         switch (sharer) {
             case 'fb':
-                window.open("https://www.facebook.com/sharer.php?u="+link,"","height=368,width=600,left=100,top=100,menubar=0");
+                window.open("https://www.facebook.com/sharer.php?u=" + link, "", "height=368,width=600,left=100,top=100,menubar=0");
                 break;
             case 'tw':
-                window.open("https://twitter.com/share?url="+link+"&text=Come%20join","","height=260,width=500,left=100,top=100,menubar=0");
+                window.open("https://twitter.com/share?url=" + link + "&text=Come%20join", "", "height=260,width=500,left=100,top=100,menubar=0");
                 break;
             case 'in':
-                window.open("https://www.linkedin.com/sharing/share-offsite/?url="+link,"","height=260,width=500,left=100,top=100,menubar=0");
+                window.open("https://www.linkedin.com/sharing/share-offsite/?url=" + link, "", "height=260,width=500,left=100,top=100,menubar=0");
                 break;
-        
+
             default:
                 break;
         }

@@ -314,16 +314,16 @@ Assets::register($this);
                     <?php if (Yii::$app->user->isGuest): ?>
                         <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                     <?php else: ?>
-                        <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
-                            'invest',
-                            'fundingId' => $funding->id,
-                            'container' => $this->context->contentContainer
-                        ], ['data-target' => '#globalModal']); ?>
+                        <?php if ($funding->status !== Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED): ?>
+                            <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
+                                'invest',
+                                'fundingId' => $funding->id,
+                                'container' => $this->context->contentContainer
+                            ], ['data-target' => '#globalModal']); ?>
+                        <?php endif; ?>
                     <?php endif; ?>
-
                 </div>
                 <!-- campaign invest action end -->
-
             </div>
         </div>
     </div>
