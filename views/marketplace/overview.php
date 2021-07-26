@@ -237,9 +237,9 @@ Assets::register($this);
                                 </a>
                                 <?php if (SpaceHelper::canReviewProject($product->marketplace->space) || PublicOffersHelper::canReviewSubmittedProjects()): ?>
                                     <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
-                                        <?= Html::a('<i class="fa fa-check"></i>', ['/xcoin/marketplace/review-product', 'id' => $product->id, 'status' => Product::PRODUCT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted']) ?>
+                                        <?= Html::a('<i class="fa fa-close"></i>', ['/xcoin/marketplace/review-product', 'id' => $product->id, 'status' => Product::PRODUCT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted']) ?>
                                     <?php else : ?>
-                                        <?= Html::a('<i class="fa fa-close"></i>', ['/xcoin/marketplace/review-product', 'id' => $product->id, 'status' => Product::PRODUCT_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted']) ?>
+                                        <?= Html::a('<i class="fa fa-check"></i>', ['/xcoin/marketplace/review-product', 'id' => $product->id, 'status' => Product::PRODUCT_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted']) ?>
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </div>
