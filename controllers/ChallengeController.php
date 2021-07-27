@@ -177,6 +177,12 @@ class ChallengeController extends ContentContainerController
         $model->scenario = Challenge::SCENARIO_EDIT;
         $assets = AssetHelper::getAllAssets();
         $contactButtons = $model->getContactButtons()->all();
+
+        if (!$contactButtons) {
+            $this->initiateChallengeContactButtons($model->id);
+            $contactButtons = $model->getContactButtons()->all();
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
@@ -232,6 +238,12 @@ class ChallengeController extends ContentContainerController
     {
         $button->status = ChallengeContactButton::CONTACT_BUTTON_DISABLED;
         $button->save();
+    }
+
+    private function initiateChallengeContactButtons($id)
+    {
+        $this->createButton($id);
+        $this->createButton($id);
     }
 
     public function actionReviewFunding($id, $status)
