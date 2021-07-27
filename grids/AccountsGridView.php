@@ -97,7 +97,7 @@ class AccountsGridView extends GridView
                         return '<span class="label label-info">DEFAULT</span>';
                     }
                     if ($model->account_type == Account::TYPE_TASK) {
-                        return $model->task ? '<span class="label label-info">TASK</span> ' .
+                        return $model->task ? '<span class="label label-info">'.Yii::t('XcoinModule.funding','task').'</span> ' .
                             Html::a(
                                 Html::encode($model->title),
                                 [
@@ -255,34 +255,26 @@ class AccountsGridView extends GridView
                         }
                     }
                     if ($model->space != null && AccountHelper::canManageAccount($model) && $model->account_type == Account::TYPE_TASK) {
-                        if (!$model->task) {
                             $disabledButton = ModalConfirm::widget([
                                 'uniqueID' => 'model_disable_account' . $model->id,
                                 'title' => Yii::t('XcoinModule.base', '<strong>Confirm</strong> disabling account'),
-                                'message' => Yii::t('XcoinModule.base', 'When disabling account, all COINs will be transferred to space default account.'),
+                                'message' => !$model->task ?
+                                    Yii::t('XcoinModule.base', 'When disabling account, all COINs will be transferred to space default account.'):
+                                    Yii::t('XcoinModule.base', 'Do you really want to disable this account?'),
                                 'buttonTrue' => Yii::t('XcoinModule.base', 'Disable'),
                                 'buttonFalse' => Yii::t('XcoinModule.base', 'Cancel'),
                                 'linkContent' => '<i class="fa fa-ban"></i> ',
                                 'cssClass' => 'btn btn-default',
                                 'linkHref' => Url::to(['/xcoin/account/disable', 'id' => $model->id, 'container' => $this->contentContainer])
                             ]);
-                        } else {
-                            $disabledButton = ModalConfirm::widget([
-                                'uniqueID' => 'model_disable_account' . $model->id,
-                                'title' => Yii::t('XcoinModule.base', '<strong>Confirm</strong> disabling account'),
-                                'message' => Yii::t('XcoinModule.base', 'Do you really want to disable this account?'),
-                                'buttonTrue' => Yii::t('XcoinModule.base', 'Disable'),
-                                'buttonFalse' => Yii::t('XcoinModule.base', 'Cancel'),
-                                'linkContent' => '<i class="fa fa-ban"></i> ',
-                                'cssClass' => 'btn btn-default',
-                                'linkHref' => Url::to(['/xcoin/account/disable', 'id' => $model->id, 'container' => $this->contentContainer])
-                            ]);
-                        }
+
                     }
                     $overviewButton = Html::a('<i class="fa fa-search" aria-hidden="true"></i>', ['/xcoin/account', 'id' => $model->id, 'container' => $this->contentContainer], ['class' => 'btn btn-default']);
 
                     return $loadPKButton . $transferButton . $disabledButton . $overviewButton;
-                }],];
+                }
+            ],
+        ];
 
         parent::init();
 
