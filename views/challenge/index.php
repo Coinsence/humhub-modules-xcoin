@@ -24,7 +24,9 @@ Assets::register($this);
                 <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
                     <div class="col-sm-6 col-md-4 col-lg-3">
 
-                        <a class="add-challenge" href="<?= Url::to(['/xcoin/challenge/create', 'container' => $this->context->contentContainer]) ?>" data-target="#globalModal">
+                        <a class="add-challenge"
+                           href="<?= Url::to(['/xcoin/challenge/create', 'container' => $this->context->contentContainer]) ?>"
+                           data-target="#globalModal">
                             <span class="icon">
                                 <i class="cross"></i>
                             </span>
@@ -39,7 +41,8 @@ Assets::register($this);
                     <?php endif; ?>
                 <?php endif; ?>
                 <?php foreach ($challenges as $challenge): ?>
-                    <?php
+                    <?php if (!$challenge->isClosed() || $challenge->space->isAdmin(Yii::$app->user->id)): ?>
+                        <?php
                     $space = $challenge->getSpace()->one();
                     $cover = $challenge->getCover();
                     ?>
@@ -72,6 +75,7 @@ Assets::register($this);
                             </div>
                         </div>
                     </a>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
         </div>
