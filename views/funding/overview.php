@@ -306,7 +306,7 @@ Assets::register($this);
         <div class="panel-footer">
 
             <!-- campaign invest action start -->
-            <?php if (!$funding->canInvest()): ?>
+            <?php if (!$funding->canInvest() && !$funding->challenge->isClosed()): ?>
             <div class="invest-btn disabled">
                 <?php else: ?>
                 <div class="invest-btn">
