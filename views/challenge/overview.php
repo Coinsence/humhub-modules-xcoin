@@ -66,6 +66,10 @@ Assets::register($this);
                         <div class="add-project" style="color: red">
                             <?= Yii::t('XcoinModule.challenge', 'This challenge is stopped') ?>
                         </div>
+                    <?php elseif ($challenge->isClosed()): ?>
+                        <div class="add-project" style="color: red">
+                            <?= Yii::t('XcoinModule.challenge', 'This challenge is closed') ?>
+                        </div>
                     <?php else: ?>
                         <?php if (Yii::$app->user->isGuest): ?>
                             <?= Html::a(Yii::t('XcoinModule.challenge', 'Add Your Project'), Yii::$app->user->loginUrl, ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']) ?>

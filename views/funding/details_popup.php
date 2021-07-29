@@ -244,7 +244,7 @@ Assets::register($this);
                             <?php endif; ?>
                         <?php endforeach; ?>
                         <!-- campaign invest action start -->
-                        <?php if ($funding->canInvest()) : ?>
+                        <?php if ($funding->canInvest() && !$funding->challenge->isClosed()) : ?>
                             <div class="invest-btn">
                                 <?php if (Yii::$app->user->isGuest): ?>
                                     <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
