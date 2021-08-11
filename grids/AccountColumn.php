@@ -33,7 +33,7 @@ class AccountColumn extends DataColumn
      */
     public function init()
     {
-        $this->options = ['style' => 'width:150px'];
+        $this->options = ['style' => 'width:220px'];
 
         parent::init();
     }
