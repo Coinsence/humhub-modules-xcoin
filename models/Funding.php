@@ -397,10 +397,11 @@ class Funding extends ActiveRecord
             'transaction_type' => Transaction::TRANSACTION_TYPE_TRANSFER
         ]) as $transaction) {
             $account = $transaction->getFromAccount()->one();
-
             $contentContainer = $account->user;
-            $id = $contentContainer->contentContainerRecord->id;
 
+            if (!$contentContainer) continue;
+            
+            $id = $contentContainer->id;
 
             if (!isset($result[$id])) {
                 $result[$id]['record'] = $contentContainer;
