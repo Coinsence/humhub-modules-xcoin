@@ -46,14 +46,14 @@ Assets::register($this);
     <div class="panel panel-default">
         <?php
         $space = $marketplace->getSpace()->one();
-        $cover = $marketplace->getCover();
+        $cover = $marketplace->getCroppedCover("lg",550,550);
         ?>
         <div class="panel-heading">
             <div class="img-container">
                 <!-- marketplace image start -->
                 <?php if ($cover) : ?>
-                    <div class="bg" style="background-image: url('<?= $cover->getUrl() ?>')"></div>
-                    <?= Html::img($cover->getUrl(), ['height' => '550px']) ?>
+                    <div class="bg" style="background-image: url('<?= $marketplace->getCroppedCover("lg",550,550) ?>')"></div>
+                    <?= Html::img($marketplace->getCroppedCover("lg",550,550), ['height' => '550px']) ?>
                 <?php else : ?>
                     <div class="bg"
                          style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-marketplace-cover.png' ?>')"></div>
