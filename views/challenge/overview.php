@@ -91,7 +91,7 @@ Assets::register($this);
                         </p>
                     <?php endif; ?>
                     <?php foreach ($fundings as $funding): ?>
-                        <?php if ($funding->space->isAdmin(Yii::$app->user->identity) || $funding->status !== Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED): ?>
+                        <?php if ($funding->space->isAdmin(Yii::$app->user->identity) || $funding->published == Funding::FUNDING_PUBLISHED): ?>
                             <?php
                             $space = $funding->getSpace()->one();
                             $cover = $funding->getCover();
