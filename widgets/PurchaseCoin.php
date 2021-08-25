@@ -11,6 +11,7 @@ namespace humhub\modules\xcoin\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\user\models\User;
+use humhub\modules\xcoin\helpers\AccountHelper;
 use Yii;
 
 /**
@@ -18,8 +19,10 @@ use Yii;
  */
 class PurchaseCoin extends Widget
 {
+    public $contentContainer;
     public $style;
-    public $assetName;
+    public $requireAsset;
+    public $noCoinsWarning;
 
     /**
      * @inheritdoc
@@ -34,7 +37,9 @@ class PurchaseCoin extends Widget
         )
             return;
         
-        if (isset($this->assetName) && $this->assetName !== Yii::$app->params['coinPurchase']['space'])
+        $assetName = isset($this->requireAsset) ? $this->requireAsset->getSpace()->one()->name : '';
+
+        if ($assetName === '' || $assetName !== Yii::$app->params['coinPurchase']['space'])
             return;
         
         $identity = Yii::$app->user->identity;
@@ -44,10 +49,27 @@ class PurchaseCoin extends Widget
 
         $user = User::findIdentity($identity->id);
 
+        $noCoinsWarning = false;
+        $currentCoinsBalance = 0;
+        if ($this->noCoinsWarning) {
+            $accounts = AccountHelper::getAccountsQuery($this->contentContainer, $this->requireAsset)->all();
+            foreach ($accounts as $account) {
+                foreach ($account->getAssets() as $asset) {
+                    if ($assetName === $asset->space->name) {
+                        $currentCoinsBalance += $account->getAssetBalance($asset);
+                    }
+                }
+            }
+            $noCoinsWarning = true;
+        }
+
         return $this->render('@xcoin/widgets/views/purchase-coin', [
             'style' => $this->style,
             'contentContainer' => $user,
-            'name' => Yii::$app->params['coinPurchase']['coin']
+            'name' => Yii::$app->params['coinPurchase']['coin'],
+            'noCoinsWarning' => $noCoinsWarning,
+            'coinsBlanace' => $currentCoinsBalance,
+            'asset' => $this->requireAsset
         ]);
     }
 }
