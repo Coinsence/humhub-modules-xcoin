@@ -7,6 +7,7 @@ use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AccountHelper;
+use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Transaction;
 use humhub\modules\xcoin\models\Product;
@@ -82,17 +83,31 @@ class TransactionController extends ContentContainerController
         $transaction->from_account_id = $fromAccount->id;
         $transaction->asset_id = array_keys($accountAssetList)[0];
 
-        if ($transaction->load(Yii::$app->request->post())) {
 
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '1') {
+            return $this->renderAjax('transfer-select-coin', [
+                'transaction' => $transaction,
+                'accountAssetList' => $accountAssetList
+            ]);
+        }
+        $transaction->load(Yii::$app->request->post());
+
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
+            return $this->renderAjax('transfer-select-sender-account', [
+                'transaction' => $transaction,
+                'accountAssetList' => $accountAssetList
+            ]);
+        }
+
+
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3') {
             // disable transfer to ISSUE ACCOUNT
             if ($this->contentContainer instanceof Space) {
                 if (AccountHelper::getIssueAccount($this->contentContainer)->id == Account::findOne(['id' => $transaction->to_account_id])->id) {
                     throw new HttpException(401, 'Can\'t transfer back coins to ISSUE ACCOUNT');
                 }
             }
-
             $transaction->save();
-
             $this->view->saved();
 
             return $this->htmlRedirect([
@@ -105,7 +120,6 @@ class TransactionController extends ContentContainerController
         return $this->renderAjax('transfer', [
             'transaction' => $transaction,
             'fromAccount' => $fromAccount,
-            'accountAssetList' => $accountAssetList
         ]);
     }
 
@@ -132,7 +146,7 @@ class TransactionController extends ContentContainerController
         } else {
             $toAccount = Account::findOne(['user_id' => $seller->id, 'account_type' => Account::TYPE_DEFAULT, 'space_id' => null]);
         }
-        
+
         if ($toAccount === null) {
             throw new HttpException(404);
         }
