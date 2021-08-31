@@ -44,7 +44,7 @@ Assets::register($this);
                     <?php if (!$challenge->isClosed() || $challenge->space->isAdmin(Yii::$app->user->id)): ?>
                         <?php
                     $space = $challenge->getSpace()->one();
-                    $cover = $challenge->getCroppedCover('sm','300','300');
+                    $cover = $challenge->getCroppedCover('sm', '300', '300');
                     ?>
                     <a href="<?= $space->createUrl('/xcoin/challenge/overview', [
                         'challengeId' => $challenge->id
@@ -54,8 +54,8 @@ Assets::register($this);
                                 <div class="panel-heading">
                                     <!-- challenge image start -->
                                     <?php if ($cover) : ?>
-                                        <div class="bg" style="background-image: url('<?= $challenge->getCroppedCover('sm','300','300') ?>')"></div>
-                                        <?= Html::img($challenge->getCroppedCover('sm','300','300'), ['height' => '240']) ?>
+                                        <div class="bg" style="background-image: url('<?= $challenge->getCroppedCover('sm', '300', '300') ?>')"></div>
+                                        <?= Html::img($challenge->getCroppedCover('sm', '300', '300'), ['height' => '240']) ?>
                                     <?php else : ?>
                                         <div class="bg"
                                              style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-challenge-cover.png' ?>')   "></div>

@@ -34,9 +34,7 @@ class ImageUtils
         $path = Yii::getAlias('@webroot/uploads/' . $folderImage . '/');
         FileHelper::createDirectory($path);
 
-        $path .= '';
-        $path .= $prefix;
-        $path .= '.jpg';
+        $path .= '' . $prefix .'.jgp';
 
         return $path;
     }

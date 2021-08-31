@@ -251,9 +251,8 @@ class Marketplace extends ActiveRecord
         ])->orderBy(['id' => SORT_DESC])->one();
     }
 
-    public function getCroppedCover($type,$width,$height)
+    public function getCroppedCover($type, $width, $height)
     {
-
         $file = $this->getCover();
         
         if (!$file) {
@@ -263,6 +262,7 @@ class Marketplace extends ActiveRecord
         $targetFile = $file->getStoredFilePath();
         $path = $targetFile . "file";
         $targetPath = ImageUtils::resizeImage($path, "product_image", $width, $height, $file->guid . "_".$type);
+
         return Url::base() . "/uploads/product_image/" . basename($targetPath);
 
     }

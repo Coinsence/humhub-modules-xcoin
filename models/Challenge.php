@@ -234,9 +234,9 @@ class Challenge extends ActiveRecord
             'show_in_stream' => true
         ])->orderBy(['id' => SORT_DESC])->one();
     }
-    public function getCroppedCover($type,$width,$height)
-    {
 
+    public function getCroppedCover($type, $width, $height)
+    {
         $file = $this->getCover();
 
         if (!$file) {
@@ -246,8 +246,8 @@ class Challenge extends ActiveRecord
         $targetFile = $file->getStoredFilePath();
         $path = $targetFile . "file";
         $targetPath = ImageUtils::resizeImage($path, "challenge_image", $width, $height, $file->guid . "_".$type);
-        return Url::base() . "/uploads/challenge_image/" . basename($targetPath);
 
+        return Url::base() . "/uploads/challenge_image/" . basename($targetPath);
     }
 
     public function isStopped()
