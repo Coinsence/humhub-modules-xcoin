@@ -249,7 +249,7 @@ Assets::register($this);
                                 <?php if (Yii::$app->user->isGuest): ?>
                                     <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                                 <?php else: ?>
-                                    <?php if ($funding->status !== Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED): ?>
+                                    <?php if ($funding->activate_funding !== Funding::FUNDING_DEACTIVATED): ?>
                                         <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
                                             'invest',
                                             'fundingId' => $funding->id,

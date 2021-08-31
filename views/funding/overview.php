@@ -106,7 +106,7 @@ Assets::register($this);
                 ) ?>
 
                 <?php if ($funding->status != Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED) : ?>
-                    <?= Html::a('<i class="fa fa-check"></i>' . Yii::t('XcoinModule.funding', 'Close campaign'),
+                    <?= Html::a('<i class="fa fa-check"></i>' . Yii::t('XcoinModule.funding', 'Close funding and enable transaction from funding account'),
                         [
                             '/xcoin/funding/accept',
                             'id' => $funding->id,
@@ -115,19 +115,6 @@ Assets::register($this);
                         [
                             'class' => 'edit-btn',
                             'style' => 'top: 60px; color:green',
-                            'title' => 'Accept investment'
-                        ]
-                    ) ?>
-                <?php else : ?>
-                    <?= Html::a('<i class="fa fa-refresh"></i>' . Yii::t('XcoinModule.funding', 'Restart campaign'),
-                        [
-                            '/xcoin/funding/restart',
-                            'id' => $funding->id,
-                            'container' => $this->context->contentContainer
-                        ],
-                        [
-                            'class' => 'edit-btn',
-                            'style' => 'top: 60px; color:orange',
                             'title' => 'Accept investment'
                         ]
                     ) ?>
