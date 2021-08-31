@@ -133,6 +133,60 @@ Assets::register($this);
                     ) ?>
                 <?php endif; ?>
 
+                <?php if ($funding->published == Funding::FUNDING_PUBLISHED) : ?>
+                    <?= Html::a('<i class="fa fa-times"></i>' . Yii::t('XcoinModule.funding', 'Hide campaign'),
+                        [
+                            '/xcoin/funding/publish',
+                            'id' => $funding->id,
+                            'container' => $this->context->contentContainer
+                        ],
+                        [
+                            'class' => 'edit-btn',
+                            'style' => 'top: 103px; color:red',
+                            'title' => 'Hide campaign'
+                        ]
+                    ) ?>
+                <?php else : ?>
+                    <?= Html::a('<i class="fa fa-check"></i>' . Yii::t('XcoinModule.funding', 'Publish campaign'),
+                        [
+                            '/xcoin/funding/publish',
+                            'id' => $funding->id,
+                            'container' => $this->context->contentContainer
+                        ],
+                        [
+                            'class' => 'edit-btn',
+                            'style' => 'top: 103px; color:green',
+                            'title' => 'Publish campaign'
+                        ]
+                    ); ?>
+                <?php endif; ?>
+                <?php if ($funding->activate_funding == Funding::FUNDING_ACTIVATED) : ?>
+                    <?= Html::a('<i class="fa fa-times"></i>' . Yii::t('XcoinModule.funding', 'Deactivate Funding'),
+                        [
+                            '/xcoin/funding/show',
+                            'id' => $funding->id,
+                            'container' => $this->context->contentContainer
+                        ],
+                        [
+                            'class' => 'edit-btn',
+                            'style' => 'top: 146px; color:red',
+                            'title' => 'Deactivate Funding'
+                        ]
+                    ) ?>
+                <?php else : ?>
+                    <?= Html::a('<i class="fa fa-check"></i>' . Yii::t('XcoinModule.funding', 'Activate Funding'),
+                        [
+                            '/xcoin/funding/show',
+                            'id' => $funding->id,
+                            'container' => $this->context->contentContainer
+                        ],
+                        [
+                            'class' => 'edit-btn',
+                            'style' => 'top: 146px; color:green',
+                            'title' => 'Activate Funding'
+                        ]
+                    ); ?>
+                <?php endif; ?>
                 <?= Html::a('<i class="fa fa-times"></i>' . Yii::t('XcoinModule.funding', 'Cancel campaign'),
                     [
                         '/xcoin/funding/cancel',
@@ -141,7 +195,7 @@ Assets::register($this);
                     ],
                     [
                         'class' => 'edit-btn',
-                        'style' => 'top: 103px; color:red',
+                        'style' => 'top: 189px; color:red',
                         'title' => 'Delete campaign'
                     ]
                 ); ?>
@@ -188,6 +242,32 @@ Assets::register($this);
                         <div style="color: dodgerblue; display: inline">
                             ( <i class="fa fa-check-circle-o"
                                  aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Verified') ?>
+                            )
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($funding->published == Funding::FUNDING_HIDDEN) : ?>
+                        <div style="color: orange; display: inline">
+                            ( <i class="fa fa-check-circle-o"
+                                 aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Hidden') ?>
+                            )
+                        </div>
+                    <?php else: ?>
+                        <div style="color: green; display: inline">
+                            ( <i class="fa fa-check-circle-o"
+                                 aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Published') ?>
+                            )
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($funding->activate_funding == Funding::FUNDING_DEACTIVATED) : ?>
+                        <div style="color: orange; display: inline">
+                            ( <i class="fa fa-check-circle-o"
+                                 aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Deactivated') ?>
+                            )
+                        </div>
+                    <?php else: ?>
+                        <div style="color: green; display: inline">
+                            ( <i class="fa fa-check-circle-o"
+                                 aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Activated') ?>
                             )
                         </div>
                     <?php endif; ?>
@@ -314,7 +394,7 @@ Assets::register($this);
                     <?php if (Yii::$app->user->isGuest): ?>
                         <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                     <?php else: ?>
-                        <?php if ($funding->status !== Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED): ?>
+                        <?php if ($funding->activate_funding !== Funding::FUNDING_DEACTIVATED): ?>
                             <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
                                 'invest',
                                 'fundingId' => $funding->id,

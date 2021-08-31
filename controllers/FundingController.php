@@ -390,4 +390,43 @@ class FundingController extends ContentContainerController
         ]);
     }
 
+    public function actionPublish($id)
+    {
+        if (!AssetHelper::canManageAssets($this->contentContainer)) {
+            throw new HttpException(401);
+        }
+
+        $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
+
+        if ($model->isPublished()) {
+            $model->updateAttributes(['published' => Funding::FUNDING_HIDDEN]);
+        } else {
+            $model->updateAttributes(['published' => Funding::FUNDING_PUBLISHED]);
+        }
+
+        return $this->htmlRedirect(['overview',
+            'container' => $this->contentContainer,
+            'fundingId' => $model->id
+        ]);
+    }
+
+    public function actionShow($id){
+        if (!AssetHelper::canManageAssets($this->contentContainer)) {
+            throw new HttpException(401);
+        }
+
+        $model = Funding::findOne(['space_id' => $this->contentContainer->id, 'id' => $id]);
+
+        if ($model->isActivated()) {
+            $model->updateAttributes(['activate_funding' => Funding::FUNDING_DEACTIVATED]);
+        } else {
+            $model->updateAttributes(['activate_funding' => Funding::FUNDING_ACTIVATED]);
+        }
+
+        return $this->htmlRedirect(['overview',
+            'container' => $this->contentContainer,
+            'fundingId' => $model->id
+        ]);
+    }
+
 }

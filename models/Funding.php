@@ -36,6 +36,8 @@ use yii\web\HttpException;
  * @property string $content
  * @property integer $review_status
  * @property integer $status
+ * @property integer $published
+ * @property integer $activate_funding
  * @property string $country
  * @property string $city
  * @property string $youtube_link
@@ -57,6 +59,14 @@ class Funding extends ActiveRecord
     const FUNDING_STATUS_IN_PROGRESS = 0;
     const FUNDING_STATUS_INVESTMENT_ACCEPTED = 1;
     const FUNDING_STATUS_INVESTMENT_RESTARTED = 2;
+
+    // Deactivate or activate funding
+    const FUNDING_DEACTIVATED = 0;
+    const FUNDING_ACTIVATED = 1;
+
+    // Hide or publish funding
+    const FUNDING_HIDDEN = 0;
+    const FUNDING_PUBLISHED = 1;
 
     // used in readonly for setting up exchange rate
     public $rate = 1;
@@ -93,7 +103,7 @@ class Funding extends ActiveRecord
                 'required'
             ],
             ['categories_names', 'required', 'message' => 'Please choose at least a category'],
-            [['space_id', 'challenge_id', 'amount', 'created_by'], 'integer'],
+            [['space_id', 'challenge_id', 'amount', 'created_by', 'activate_funding', 'published'], 'integer'],
             [['amount'], 'number', 'min' => '1'],
             [['exchange_rate'], 'number', 'min' => '0.1'],
             [['created_at'], 'safe'],
@@ -140,6 +150,8 @@ class Funding extends ActiveRecord
                 'country',
                 'city',
                 'youtube_link',
+                'published',
+                'activate_funding'
             ],
         ];
     }
@@ -409,13 +421,13 @@ class Funding extends ActiveRecord
             }
 
             $result[$id]['balance'] += $transaction->amount;
-            $result[$id]['percent'] = round(($result[$id]['balance'] / $targetAmount)*100, 4);            
+            $result[$id]['percent'] = round(($result[$id]['balance'] / $targetAmount) * 100, 4);
         }
 
         usort($result, function ($a, $b) {
             return $b['balance'] - $a['balance'];
         });
-        
+
         return $result;
     }
 
@@ -557,5 +569,15 @@ class Funding extends ActiveRecord
         if ($transaction->transaction_type === Transaction::TRANSACTION_TYPE_ISSUE) {
             Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $transaction]));
         }
+    }
+
+    public function isPublished()
+    {
+        return $this->published == self::FUNDING_PUBLISHED;
+    }
+
+    public function isActivated()
+    {
+        return $this->activate_funding == self::FUNDING_ACTIVATED;
     }
 }
