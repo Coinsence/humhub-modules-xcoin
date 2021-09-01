@@ -223,6 +223,11 @@
       padding: 0;
       text-align: center;
     }
+    .panel-footer .contact-btns,
+    .panel-footer .contact-btns .contact-btn {
+      margin-bottom: 2px;
+    }
+    .panel-footer .contact-btn,
     .panel-footer .invest-btn {
       /*position: absolute;*/
       /*bottom: 0;*/
@@ -234,39 +239,49 @@
       /*-ms-transition: height .25s ease-in-out;*/
       /*-o-transition: height .25s ease-in-out;*/
       /*transition: height .25s ease-in-out;*/
+      a, button {
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        width: 100%;
+        text-transform: uppercase;
+        color: #fff;
+        display: inline-block;
+        padding: 26px 20px;
+        font-size: 17px;
+        font-weight: bold;
+      }
     }
-    .panel-footer .invest-btn a,
-    .panel-footer .invest-btn button {
-      -webkit-border-radius: 0;
-      -moz-border-radius: 0;
-      border-radius: 0;
-      width: 100%;
-      background: linear-gradient(to right, #3CBEEF, #28AA69);
-      text-transform: uppercase;
-      color: #fff;
-      display: inline-block;
-      padding: 26px 20px;
-      font-size: 17px;
-      font-weight: bold;
-    }
-    .panel-footer .invest-btn button {
+    button {
       outline: none;
       border: none;
     }
-    .panel-footer .invest-btn a:hover,
-    .panel-footer .invest-btn button:hover {
-      background: linear-gradient(to right, #24b6ed, #23955c);
-    }
-    .panel-footer .invest-btn.disabled {
+    &.disabled {
       cursor: not-allowed;
-    }
-    .panel-footer .invest-btn.disabled a,
-    .panel-footer .invest-btn.disabled button {
-      pointer-events: none;
-      display: inline-block;
-      opacity: 0.5;
-    }
 
+      a, button {
+        pointer-events: none;
+        display: inline-block;
+        opacity: 0.5;
+      }
+    }
+    .panel-footer .contact-btn {
+      a, button {
+        background: #f2f2f2;
+        color: #202020;
+        &:hover {
+          background: #ededed;
+        }
+      }
+    }
+    .panel-footer .invest-btn {
+      a, button {
+        background: linear-gradient(to right, #3CBEEF, #28AA69);
+        &:hover {
+          background: linear-gradient(to right, #24b6ed, #23955c);
+        }
+      }
+    }
   }
 
   .carousel-control {
@@ -389,9 +404,11 @@
         font-size: 8px;
       }
 
-      .panel-footer .invest-btn a,
-      .panel-footer .invest-btn button {
-        font-size: 14px;
+      .panel-footer .contact-btn,
+      .panel-footer .invest-btn {
+        a, button {
+          font-size: 14px;
+        }
       }
     }
 
