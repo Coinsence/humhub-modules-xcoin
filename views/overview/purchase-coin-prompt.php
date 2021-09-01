@@ -8,7 +8,7 @@ use kartik\select2\Select2;
 use yii\web\JsExpression;
 
 /** @var $coin string */
-/** @var $model yii\base\DynamicModel */
+/** @var $model humhub\modules\xcoin\models\forms\PurchaseForm */
 
 ?>
 
@@ -20,7 +20,7 @@ use yii\web\JsExpression;
             <?= $form->field($model, 'coin')->textInput(['type' => 'text', 'readonly'=> true])->label(Yii::t('XcoinModule.purchase', 'Selected COIN')); ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'amount')->textInput(['type' => 'number', 'min' => 0])->label(Yii::t('XcoinModule.purchase', 'Number of COINs')); ?>
+            <?= $form->field($model, 'amount')->textInput(['type' => 'number', 'min' => 10])->label(Yii::t('XcoinModule.purchase', 'Number of COINs')); ?>
         </div>
     </div>
     <hr>
