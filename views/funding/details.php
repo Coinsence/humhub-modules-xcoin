@@ -15,6 +15,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\JsExpression;
 
 /** @var $myAsset Asset */
+/** @var $imageError string */
 
 ?>
 
@@ -28,6 +29,12 @@ use yii\web\JsExpression;
 
 <div class="modal-body">
     <div class="row">
+        <div class="col-md-12">
+            <?php if ($imageError) : ?>
+                <p class="help-block help-block-error" style="color:red"><?= Yii::t('XcoinModule.challenge', $imageError) ?></p>
+            <?php endif; ?>
+
+        </div>
         <div class="col-md-12">
             <?= $form->field($model, 'amount')->widget(AmountField::class, ['asset' => $model->challenge->asset])->label(Yii::t('XcoinModule.funding', 'Requested amount')); ?>
         </div>

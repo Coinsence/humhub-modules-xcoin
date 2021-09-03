@@ -98,7 +98,7 @@ Assets::register($this);
                         <?php if ($funding->space->isAdmin(Yii::$app->user->identity) || $funding->published == Funding::FUNDING_PUBLISHED): ?>
                             <?php
                             $space = $funding->getSpace()->one();
-                            $cover = $challenge->getCroppedCover('lg','550','550')
+                            $cover = $funding->getCover();
                             ?>
                             <div style="position: relative">
                                 <div class="col-sm-6 col-md-4 col-lg-3">
@@ -110,8 +110,8 @@ Assets::register($this);
                                             <div class="panel-heading">
                                                 <?php if ($cover) : ?>
                                                     <div class="bg"
-                                                         style="background-image: url('<?= $challenge->getCroppedCover('lg','550','550') ?>')"></div>
-                                                    <?= Html::img($challenge->getCroppedCover('lg','550','550'), ['height' => '140']) ?>
+                                                         style="background-image: url('<?= $cover->getUrl() ?>')"></div>
+                                                    <?= Html::img($cover->getUrl(), ['height' => '140']) ?>
                                                 <?php else : ?>
                                                     <div class="bg"
                                                          style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
