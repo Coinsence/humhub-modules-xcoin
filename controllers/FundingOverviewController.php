@@ -11,6 +11,7 @@ use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\Funding;
 use humhub\components\Controller;
 use humhub\modules\xcoin\models\FundingFilter;
+use humhub\modules\xcoin\utils\ImageUtils;
 use humhub\modules\xcoin\widgets\ChallengeImage;
 use Yii;
 use yii\db\Expression;
@@ -47,8 +48,8 @@ class FundingOverviewController extends Controller
         $query = Funding::find();
         $query->where(['>', 'xcoin_funding.amount', 0]);
         $query->andWhere(['or',
-            ['xcoin_funding.status'=> Funding::FUNDING_STATUS_IN_PROGRESS],
-            ['xcoin_funding.status'=> Funding::FUNDING_STATUS_INVESTMENT_RESTARTED]
+            ['xcoin_funding.status' => Funding::FUNDING_STATUS_IN_PROGRESS],
+            ['xcoin_funding.status' => Funding::FUNDING_STATUS_INVESTMENT_RESTARTED]
         ]); // only not investment accepted campaigns
         $query->andWhere(['IS NOT', 'xcoin_funding.id', new Expression('NULL')]);
         $query->orderBy(['created_at' => SORT_DESC]);
@@ -149,7 +150,7 @@ class FundingOverviewController extends Controller
             foreach ($challenges as $challenge) {
                 if ($challenge->isStopped() or $challenge->isDisabled())
                     continue;
-                
+
                 if ($model->space) {
                     if (AssetHelper::getSpaceAsset($model->space)->id != $challenge->asset_id)
                         $challengesList[$challenge->id] = ChallengeImage::widget(['challenge' => $challenge, 'width' => 16, 'link' => true]);
@@ -177,7 +178,10 @@ class FundingOverviewController extends Controller
             }
 
             // Step 3: Gallery
-            return $this->renderAjax('../funding/media', ['model' => $model]);
+            return $this->renderAjax('../funding/media', [
+                'model' => $model,
+                'lastStepEnabled' => $model->challenge->acceptSpecificRewardingAsset(),
+            ]);
         }
 
         // Try Save Step 3
@@ -185,10 +189,18 @@ class FundingOverviewController extends Controller
             Yii::$app->request->isPost &&
             Yii::$app->request->post('step') == '3'
             && $model->isNameUnique()
-            && $model->save()
         ) {
-            $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
+                return $this->renderAjax('../funding/details', [
+                    'model' => $model,
+                    'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null,
+                    'imageError' => "Image size cannot be more than 500 kb"
+                ]);
+            }
+            $model->save();
+            $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
 
             return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
@@ -202,14 +214,16 @@ class FundingOverviewController extends Controller
 
             return $this->renderAjax('../funding/details', [
                 'model' => $model,
-                'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null
+                'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null,
+                'imageError' => null
             ]);
         }
 
         // Step 2: Details
         return $this->renderAjax('../funding/details', [
             'model' => $model,
-            'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null
+            'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null,
+            'imageError' => null
         ]);
     }
 }
