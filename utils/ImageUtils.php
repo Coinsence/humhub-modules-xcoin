@@ -62,7 +62,7 @@ class ImageUtils
                 continue;
             }
 
-            if($file->size/1024 >100){
+            if($file->size/1024 > 500){
                 $valid = false;
                 return $valid;
             }

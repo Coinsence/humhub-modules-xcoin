@@ -160,7 +160,7 @@ $upload = Upload::withName();
             <br>
             <?= $upload->progress() ?>
             <p class="help-block">
-                <?= Yii::t('XcoinModule.product', 'Please note that first picture will be used as cover (MAXIMUM FILE SIZE IS 100kB).') ?>
+                <?= Yii::t('XcoinModule.product', 'Please note that first picture will be used as cover (MAXIMUM FILE SIZE IS 500kb).') ?>
             </p>
         </div>
         <div class="col-md-12">

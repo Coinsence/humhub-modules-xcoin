@@ -126,7 +126,7 @@ class ProductController extends ContentContainerController
                 return $this->renderAjax('../product/details', [
                     'model' => $model,
                     'accountsList' => $accountsList,
-                    'imageError' => "Image size cannot be more then 100 kb"
+                    'imageError' => "Image size cannot be more then 500 kb"
                 ]);
 
             }
@@ -218,7 +218,7 @@ class ProductController extends ContentContainerController
                 return $this->renderAjax('edit', [
                     'model' => $model,
                     'assetList' => $assetList,
-                    'imageError' => "Image size cannot be more then 100 kb"
+                    'imageError' => "Image size cannot be more then 500 kb"
 
                 ]);
             }

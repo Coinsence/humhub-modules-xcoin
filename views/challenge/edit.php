@@ -105,7 +105,7 @@ $upload = Upload::forModel($model, $model->coverFile);
             ?>
         </div>
         <div class="col-md-12">
-            <label class="control-label"><?= Yii::t('XcoinModule.challenge', 'Challenge Image (MAXIMUM FILE SIZE IS 100kB)') ?></label><br>
+            <label class="control-label"><?= Yii::t('XcoinModule.challenge', 'Challenge Image (MAXIMUM FILE SIZE IS 500kb)') ?></label><br>
             <div class="col-md-2">
                 <?= $upload->button([
                     'label' => true,

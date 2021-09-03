@@ -96,7 +96,7 @@ class MarketplaceController extends ContentContainerController
                         'model' => $model,
                         'assets' => $assets,
                         'defaultAsset' => $defaultAsset,
-                        'imageError' => "Image size cannot be more then 100 kb"
+                        'imageError' => "Image size cannot be more then 500 kb"
                     ]
                 );
             }
@@ -148,7 +148,7 @@ class MarketplaceController extends ContentContainerController
                 return $this->renderAjax('edit', [
                         'model' => $model,
                         'assets' => $assets,
-                        'imageError' => "Image size cannot be more then 100 kb"
+                        'imageError' => "Image size cannot be more then 500 kb"
                     ]
                 );
             }

@@ -68,7 +68,7 @@ $upload = Upload::withName();
                 ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign YouTube video link')) ?>
         </div>
         <div class="col-md-12">
-            <label class="control-label" for="funding-content"><?= Yii::t('XcoinModule.base', 'Gallery (MAXIMUM FILE SIZE IS 100kB)')?></label>
+            <label class="control-label" for="funding-content"><?= Yii::t('XcoinModule.base', 'Gallery (MAXIMUM FILE SIZE IS 500kb)')?></label>
             <div class="row">
                 <div class="col-md-2">
                     <?= $upload->button([
