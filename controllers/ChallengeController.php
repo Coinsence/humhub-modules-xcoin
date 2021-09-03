@@ -112,7 +112,7 @@ class ChallengeController extends ContentContainerController
                         'model' => $model,
                         'assets' => $assets,
                         'defaultAsset' => $defaultAsset,
-                        'imageError'=>"Image size cannot be more then 500 kb"
+                        'imageError'=>"Image size cannot be more than 500 kb"
                     ]
                 );
             }
@@ -202,7 +202,7 @@ class ChallengeController extends ContentContainerController
                         'model' => $model,
                         'assets' => $assets,
                         'contactButtons' => $contactButtons,
-                        'imageError'=>"Image size cannot be more then 500 kb"
+                        'imageError'=>"Image size cannot be more than 500 kb"
                     ]
                 );
             }

@@ -186,7 +186,7 @@ class FundingController extends ContentContainerController
                 return $this->renderAjax('details', [
                     'model' => $model,
                     'myAsset' => AssetHelper::getSpaceAsset($currentSpace),
-                    'imageError' => "Image size cannot be more then 500 kb"
+                    'imageError' => "Image size cannot be more than 500 kb"
 
                 ]);
             }
@@ -251,7 +251,7 @@ class FundingController extends ContentContainerController
                 return $this->renderAjax('edit', [
                     'model' => $model,
                     'myAsset' => AssetHelper::getSpaceAsset($currentSpace),
-                    'imageError' => "Image size cannot be more then 500 kb"
+                    'imageError' => "Image size cannot be more than 500 kb"
 
                 ]);
             }
