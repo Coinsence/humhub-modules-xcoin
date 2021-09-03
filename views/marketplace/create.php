@@ -16,7 +16,7 @@ use kartik\widgets\Select2;
 /** @var $model Marketplace */
 /** @var $assets Asset[] */
 /** @var $defaultAsset Asset */
-
+/** @var $imageError string */
 Select2BootstrapAsset::register($this);
 
 $upload = Upload::forModel($model, $model->coverFile);
@@ -82,7 +82,7 @@ $upload = Upload::forModel($model, $model->coverFile);
             <?= $form->field($model, 'is_tasks_marketplace')->checkbox() ?>
         </div>
         <div class="col-md-12">
-            <label class="control-label"><?= Yii::t('XcoinModule.marketplace', 'Marketplace Image') ?></label><br>
+            <label class="control-label"><?= Yii::t('XcoinModule.marketplace', 'Marketplace Image (MAXIMUM FILE SIZE IS 100kB)') ?></label><br>
             <div class="col-md-2">
                 <?= $upload->button([
                     'label' => true,
@@ -103,6 +103,12 @@ $upload = Upload::forModel($model, $model->coverFile);
             </div>
             <br>
             <?= $upload->progress() ?>
+        </div>
+        <div class="col-md-12">
+            <?php if ($imageError) : ?>
+                <p class="help-block help-block-error" style="color:red"><?= Yii::t('XcoinModule.challenge', $imageError) ?></p>
+            <?php endif; ?>
+
         </div>
     </div>
 </div>

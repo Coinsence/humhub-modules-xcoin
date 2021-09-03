@@ -16,6 +16,7 @@ use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\ChallengeContactButton;
 use humhub\modules\xcoin\models\Transaction;
+use humhub\modules\xcoin\utils\ImageUtils;
 use Throwable;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
@@ -171,11 +172,24 @@ class FundingController extends ContentContainerController
                 throw new HttpException(401);
             }
             // Step 3: Gallery
-            return $this->renderAjax('media', ['model' => $model, 'lastStepEnabled' => $challenge->acceptSpecificRewardingAsset(),]);
+            return $this->renderAjax('media', [
+                'model' => $model,
+                'lastStepEnabled' => $challenge->acceptSpecificRewardingAsset(),
+                'imageError' => null
+            ]);
         }
 
         // Try Save Step 3
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
+                return $this->renderAjax('details', [
+                    'model' => $model,
+                    'myAsset' => AssetHelper::getSpaceAsset($currentSpace),
+                    'imageError' => "Image size cannot be more then 100 kb"
+
+                ]);
+            }
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
             if ($challenge->acceptSpecificRewardingAsset()) {
@@ -204,14 +218,15 @@ class FundingController extends ContentContainerController
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '4' && $model->save()) {
             return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
                 'container' => $model->space,
-                'fundingId' => $model->id
+                'fundingId' => $model->id,
             ]));
         }
 
         // Step 2: Details
         return $this->renderAjax('details', [
             'model' => $model,
-            'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
+            'myAsset' => AssetHelper::getSpaceAsset($currentSpace),
+            'imageError'=>null
         ]);
     }
 
@@ -231,6 +246,15 @@ class FundingController extends ContentContainerController
         $model->scenario = Funding::SCENARIO_EDIT;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
+                return $this->renderAjax('edit', [
+                    'model' => $model,
+                    'myAsset' => AssetHelper::getSpaceAsset($currentSpace),
+                    'imageError' => "Image size cannot be more then 100 kb"
+
+                ]);
+            }
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
             $this->view->saved();
@@ -243,7 +267,9 @@ class FundingController extends ContentContainerController
 
         return $this->renderAjax('edit', [
             'model' => $model,
-            'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
+            'myAsset' => AssetHelper::getSpaceAsset($currentSpace),
+            'imageError' => null
+
         ]);
     }
 

@@ -15,7 +15,7 @@ use kartik\widgets\Select2;
 /** @var $model Challenge */
 /** @var $assets Asset[] */
 /** @var $contactButtons ChallengeContactButton[] */
-
+/** @var $imageError string */
 Select2BootstrapAsset::register($this);
 
 $upload = Upload::forModel($model, $model->coverFile);
@@ -105,7 +105,7 @@ $upload = Upload::forModel($model, $model->coverFile);
             ?>
         </div>
         <div class="col-md-12">
-            <label class="control-label"><?= Yii::t('XcoinModule.challenge', 'Challenge Image') ?></label><br>
+            <label class="control-label"><?= Yii::t('XcoinModule.challenge', 'Challenge Image (MAXIMUM FILE SIZE IS 100kB)') ?></label><br>
             <div class="col-md-2">
                 <?= $upload->button([
                     'label' => true,
@@ -126,6 +126,12 @@ $upload = Upload::forModel($model, $model->coverFile);
             </div>
             <br>
             <?= $upload->progress() ?>
+        </div>
+        <div class="col-md-12">
+            <?php if ($imageError) : ?>
+                <p class="help-block help-block-error" style="color:red"><?= Yii::t('XcoinModule.challenge', $imageError) ?></p>
+            <?php endif; ?>
+
         </div>
     </div>
 </div>

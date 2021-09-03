@@ -12,6 +12,8 @@ use yii\web\JsExpression;
 use humhub\modules\file\widgets\Upload;
 
 /** @var $myAsset Asset */
+/** @var  $imageError string */
+
 $upload = Upload::withName();
 ?>
 
@@ -66,7 +68,7 @@ $upload = Upload::withName();
                 ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign YouTube video link')) ?>
         </div>
         <div class="col-md-12">
-            <label class="control-label" for="funding-content"><?= Yii::t('XcoinModule.base', 'Gallery')?></label>
+            <label class="control-label" for="funding-content"><?= Yii::t('XcoinModule.base', 'Gallery (MAXIMUM FILE SIZE IS 100kB)')?></label>
             <div class="row">
                 <div class="col-md-2">
                     <?= $upload->button([
@@ -92,6 +94,12 @@ $upload = Upload::withName();
             <p class="help-block">
                 <?= Yii::t('XcoinModule.funding', 'Please note that first picture will be used as cover for your crowdfunding campaign.') ?>
             </p>
+        </div>
+        <div class="col-md-12">
+            <?php if ($imageError) : ?>
+                <p class="help-block help-block-error" style="color:red"><?= Yii::t('XcoinModule.challenge', $imageError) ?></p>
+            <?php endif; ?>
+
         </div>
     </div>
 </div>

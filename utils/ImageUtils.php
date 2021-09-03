@@ -9,6 +9,7 @@ namespace humhub\modules\xcoin\utils;
 
 
 use humhub\modules\file\libs\ImageConverter;
+use humhub\modules\file\models\File;
 use Yii;
 use yii\helpers\FileHelper;
 
@@ -37,5 +38,35 @@ class ImageUtils
         $path .= '' . $prefix .'.jgp';
 
         return $path;
+    }
+
+    static function checkImageSize($files)
+    {
+        $valid = true;
+
+        if (!$files) {
+            return $valid;
+        }
+        if (is_string($files)) {
+            $files = array_map('trim', explode(',', $files));
+        } elseif ($files instanceof File) {
+            $files = [$files];
+        }
+
+        foreach ($files as $file) {
+            if (is_string($file) && $file != '') {
+                $file = File::findOne(['guid' => $file]);
+            }
+
+            if ($file === null || !$file instanceof File) {
+                continue;
+            }
+
+            if($file->size/1024 >100){
+                $valid = false;
+                return $valid;
+            }
+        }
+        return $valid;
     }
 }

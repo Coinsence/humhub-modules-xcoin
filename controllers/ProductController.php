@@ -16,6 +16,7 @@ use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
+use humhub\modules\xcoin\utils\ImageUtils;
 use Throwable;
 use Yii;
 use yii\web\HttpException;
@@ -64,26 +65,27 @@ class ProductController extends ContentContainerController
 
         $model->load(Yii::$app->request->post());
 
+        $spaces = SpaceHelper::getSellerSpaces($user);
+
+        $accountsList = [];
+
+        $accountsList[Product::PRODUCT_USER_DEFAULT_ACCOUNT] = UserImage::widget(['user' => $user, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' Default';
+
+        foreach ($spaces as $space) {
+            if (AssetHelper::getSpaceAsset($space))
+                $accountsList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+        }
         // Step 2: Details
         if ($model->isSecondStep()) {
 
-            $spaces = SpaceHelper::getSellerSpaces($user);
-
-            $accountsList = [];
-
-            $accountsList[Product::PRODUCT_USER_DEFAULT_ACCOUNT] = UserImage::widget(['user' => $user, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' Default';
-
-            foreach ($spaces as $space) {
-                if (AssetHelper::getSpaceAsset($space))
-                    $accountsList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
-            }
 
             $model->account = Product::PRODUCT_USER_DEFAULT_ACCOUNT;
 
             if (!Yii::$app->request->isPost) {
                 return $this->renderAjax('../product/details', [
                     'model' => $model,
-                    'accountsList' => $accountsList
+                    'accountsList' => $accountsList,
+                    'imageError'=> null
                 ]);
             }
         }
@@ -106,7 +108,9 @@ class ProductController extends ContentContainerController
                 $model->product_type = Product::TYPE_SPACE;
             }
 
-            return $this->renderAjax('../product/media', ['model' => $model]);
+            return $this->renderAjax('../product/media', [
+                'model' => $model,
+            ]);
         }
 
         // Try Saving
@@ -117,6 +121,15 @@ class ProductController extends ContentContainerController
             $model->validate() &&
             $model->save()
         ) {
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
+                return $this->renderAjax('../product/details', [
+                    'model' => $model,
+                    'accountsList' => $accountsList,
+                    'imageError' => "Image size cannot be more then 100 kb"
+                ]);
+
+            }
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
             $this->view->saved();
@@ -200,6 +213,15 @@ class ProductController extends ContentContainerController
         }
 
         if (Yii::$app->request->isPost && $model->save()) {
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
+                return $this->renderAjax('edit', [
+                    'model' => $model,
+                    'assetList' => $assetList,
+                    'imageError' => "Image size cannot be more then 100 kb"
+
+                ]);
+            }
 
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
@@ -207,7 +229,11 @@ class ProductController extends ContentContainerController
             return $this->htmlRedirect(['/xcoin/product', 'container' => $this->contentContainer]);
         }
 
-        return $this->renderAjax('edit', ['model' => $model, 'assetList' => $assetList]);
+        return $this->renderAjax('edit', [
+            'model' => $model,
+            'assetList' => $assetList,
+            'imageError'=>null
+        ]);
     }
 
     /**

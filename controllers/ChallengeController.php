@@ -17,6 +17,7 @@ use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\ChallengeContactButton;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\utils\ImageUtils;
 use Yii;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -105,6 +106,16 @@ class ChallengeController extends ContentContainerController
         $defaultAsset = AssetHelper::getDefaultAsset();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
+            $imageValidation =ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if($imageValidation == false){
+                return $this->renderAjax('create', [
+                        'model' => $model,
+                        'assets' => $assets,
+                        'defaultAsset' => $defaultAsset,
+                        'imageError'=>"Image size cannot be more then 100 kb"
+                    ]
+                );
+            }
             $this->view->saved();
             if (isset($_POST['firstButton'])) {
                 $this->createButton(
@@ -134,6 +145,7 @@ class ChallengeController extends ContentContainerController
                 'model' => $model,
                 'assets' => $assets,
                 'defaultAsset' => $defaultAsset,
+                'imageError'=>null
             ]
         );
     }
@@ -184,6 +196,16 @@ class ChallengeController extends ContentContainerController
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $imageValidation =ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if($imageValidation == false){
+                return $this->renderAjax('edit', [
+                        'model' => $model,
+                        'assets' => $assets,
+                        'contactButtons' => $contactButtons,
+                        'imageError'=>"Image size cannot be more then 100 kb"
+                    ]
+                );
+            }
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
             if (isset($_POST['firstButton'])) {
@@ -216,6 +238,7 @@ class ChallengeController extends ContentContainerController
                 'model' => $model,
                 'assets' => $assets,
                 'contactButtons' => $contactButtons,
+                'imageError'=>null
             ]
         );
     }

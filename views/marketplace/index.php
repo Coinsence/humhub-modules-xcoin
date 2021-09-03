@@ -40,7 +40,7 @@ Assets::register($this);
                 <?php foreach ($marketplaces as $marketplace): ?>
                     <?php
                         $space = $marketplace->getSpace()->one();
-                        $cover = $marketplace->getCroppedCover("sm",300,300);
+                        $cover = $marketplace->getCover();
                     ?>
                     <a href="<?= $space->createUrl('/xcoin/marketplace/overview', [
                         'marketplaceId' => $marketplace->id
@@ -50,8 +50,8 @@ Assets::register($this);
                                 <div class="panel-heading">
                                     <!-- marketplace image start -->
                                     <?php if ($cover) : ?>
-                                        <div class="bg" style="background-image: url('<?= $cover ?>')"></div>
-                                        <?= Html::img($cover, ['height' => '240']) ?>
+                                        <div class="bg" style="background-image: url('<?= $cover->getUrl() ?>')"></div>
+                                        <?= Html::img($cover->getUrl(), ['height' => '240']) ?>
                                     <?php else : ?>
                                         <div class="bg"
                                              style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-marketplace-cover.png' ?>')"></div>
