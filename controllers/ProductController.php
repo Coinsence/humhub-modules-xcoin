@@ -152,7 +152,8 @@ class ProductController extends ContentContainerController
 
             return $this->renderAjax('../product/details', [
                 'model' => $model,
-                'accountsList' => $accountsList
+                'accountsList' => $accountsList,
+                'imageError'=>null
             ]);
 
         }
