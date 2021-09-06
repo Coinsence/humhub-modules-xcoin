@@ -31,6 +31,13 @@ class ProductController extends ContentContainerController
         if ($this->contentContainer instanceof Space) {
             $products = Product::find()->where(['space_id' => $this->contentContainer->id])->all();
 
+            $products = array_filter($products, function($product) {
+                return
+                    $product->review_status == Product::PRODUCT_REVIEWED ||
+                    AssetHelper::canManageAssets($this->context->contentContainer) ||
+                    $product->isOwner(Yii::$app->user->identity);
+            });
+
             return $this->render('index', [
                 'products' => $products,
             ]);
@@ -39,6 +46,13 @@ class ProductController extends ContentContainerController
                 'created_by' => $this->contentContainer->id,
                 'product_type' => Product::TYPE_PERSONAL
             ])->all();
+
+            $products = array_filter($products, function($product) {
+                return
+                    $product->review_status == Product::PRODUCT_REVIEWED ||
+                    AssetHelper::canManageAssets($this->contentContainer) ||
+                    $product->isOwner(Yii::$app->user->identity);
+            });
 
             return $this->render('index_user', [
                 'products' => $products,
