@@ -60,7 +60,11 @@ class MarketplaceController extends ContentContainerController
         if ($marketplace->showUnreviewedSubmissions() || Space::findOne(['id' => $marketplace->space_id])->isAdmin(Yii::$app->user->identity)) {
             $products = $marketplace->getProducts()->all();
         } else {
-            $products = Product::findAll(['marketplace_id' => $marketplace->id, 'review_status' => 1]);
+            $products = Product::findAll([
+                'marketplace_id' => $marketplace->id,
+                'review_status' => Product::PRODUCT_REVIEWED,
+                'status' => Product::STATUS_AVAILABLE,
+            ]);
         }
 
         return $this->render('overview', [
