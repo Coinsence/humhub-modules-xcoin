@@ -33,7 +33,7 @@ class ProductController extends ContentContainerController
 
             $products = array_filter($products, function($product) {
                 return
-                    $product->review_status == Product::PRODUCT_REVIEWED ||
+                    $product->status == Product::STATUS_AVAILABLE ||
                     AssetHelper::canManageAssets($this->contentContainer) ||
                     $product->isOwner(Yii::$app->user->identity);
             });
@@ -49,7 +49,7 @@ class ProductController extends ContentContainerController
 
             $products = array_filter($products, function($product) {
                 return
-                    $product->review_status == Product::PRODUCT_REVIEWED ||
+                    $product->status == Product::STATUS_AVAILABLE ||
                     AssetHelper::canManageAssets($this->contentContainer) ||
                     $product->isOwner(Yii::$app->user->identity);
             });
