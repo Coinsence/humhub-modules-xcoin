@@ -34,7 +34,7 @@ class ProductController extends ContentContainerController
             $products = array_filter($products, function($product) {
                 return
                     $product->review_status == Product::PRODUCT_REVIEWED ||
-                    AssetHelper::canManageAssets($this->context->contentContainer) ||
+                    AssetHelper::canManageAssets($this->contentContainer) ||
                     $product->isOwner(Yii::$app->user->identity);
             });
 
