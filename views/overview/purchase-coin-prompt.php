@@ -17,10 +17,13 @@ use yii\web\JsExpression;
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'coin')->textInput(['type' => 'text', 'readonly'=> true])->label(Yii::t('XcoinModule.purchase', 'Selected COIN')); ?>
+            <?= $form->field($model, 'coin')->textInput(['type' => 'text', 'readonly' => true])->label(Yii::t('XcoinModule.purchase', 'Selected COIN')); ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'amount')->textInput(['type' => 'number', 'min' => 10])->label(Yii::t('XcoinModule.purchase', 'Number of COINs')); ?>
+            <?= $form->field($model, 'amount')
+                    ->textInput(['type' => 'number', 'min' => 10])
+                    ->label(Yii::t('XcoinModule.purchase', 'Number of COINs'))
+                    ->hint(Yii::t('XcoinModule.purchase', 'Minimum amount of COINs is 10')); ?>
         </div>
     </div>
     <hr>
