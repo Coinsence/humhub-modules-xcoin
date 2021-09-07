@@ -39,7 +39,7 @@ class PurchaseCoin extends Widget
         
         $assetName = isset($this->requireAsset) ? $this->requireAsset->getSpace()->one()->name : '';
 
-        if ($assetName === '' || $assetName !== Yii::$app->params['coinPurchase']['space'])
+        if ($assetName !== '' && $assetName !== Yii::$app->params['coinPurchase']['space'])
             return;
         
         $identity = Yii::$app->user->identity;
