@@ -205,6 +205,7 @@ Assets::register($this);
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                     </a>
                                     <?php if (SpaceHelper::canReviewProject($funding->challenge->space) || PublicOffersHelper::canReviewSubmittedProjects()): ?>
                                         <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
