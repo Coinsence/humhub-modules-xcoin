@@ -15,7 +15,7 @@ use yii\web\JsExpression;
 
 /** @var $model Product */
 /** @var $accountsList array */
-
+/** @var $imageError string */
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.product', 'Provide details'), 'closable' => false]) ?>
@@ -27,6 +27,12 @@ use yii\web\JsExpression;
 
     <div class="modal-body">
         <div class="row">
+            <div class="col-md-12">
+                <?php if ($imageError) : ?>
+                    <p class="help-block help-block-error" style="color:red"><?= Yii::t('XcoinModule.challenge', $imageError) ?></p>
+                <?php endif; ?>
+
+            </div>
             <div class="col-md-12">
                 <?= $form->field($model, 'account')->widget(Select2::class, [
                     'data' => $accountsList,

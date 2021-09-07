@@ -57,7 +57,7 @@ $upload = Upload::withName();
             <br>
             <?= $upload->progress() ?>
             <p class="help-block">
-                <?= Yii::t('XcoinModule.funding', 'Please note that first picture will be used as cover for your crowdfunding campaign.') ?>
+                <?= Yii::t('XcoinModule.funding', 'Please note that first picture will be used as cover for your crowdfunding campaign (MAXIMUM FILE SIZE IS 500kb).') ?>
             </p>
         </div>
     </div>

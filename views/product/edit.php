@@ -14,6 +14,7 @@ use humhub\modules\file\widgets\Upload;
 
 /** @var $model Product */
 /** @var $myAsset Asset */
+/** @var  $imageError string */
 
 $upload = Upload::withName();
 ?>
@@ -165,8 +166,14 @@ $upload = Upload::withName();
             <br>
             <?= $upload->progress() ?>
             <p class="help-block">
-                <?= Yii::t('XcoinModule.product', 'Please note that first picture will be used as cover.') ?>
+                <?= Yii::t('XcoinModule.product', 'Please note that first picture will be used as cover (MAXIMUM FILE SIZE IS 500kb).') ?>
             </p>
+        </div>
+        <div class="col-md-12">
+            <?php if ($imageError) : ?>
+                <p class="help-block help-block-error" style="color:red"><?= Yii::t('XcoinModule.challenge', $imageError) ?></p>
+            <?php endif; ?>
+
         </div>
     </div>
 </div>
