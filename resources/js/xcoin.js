@@ -202,3 +202,16 @@ $('body').on('change', '#secondButton', function () {
         $("#secondButtonReceiver").attr("required", false);
     }
 });
+
+$('body').on('change', '#product-is_voucher_product', function () {
+    if (this.checked) {
+        $('#product-vouchers').show();
+        $('#cta-link').hide();
+        $('#buy-message').hide();
+    }
+    else {
+        $('#product-vouchers').hide();
+        $('#cta-link').show();
+        $('#buy-message').show();
+    }
+})
