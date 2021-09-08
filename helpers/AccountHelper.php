@@ -27,7 +27,7 @@ class AccountHelper
     public static function initContentContainer(ContentContainerActiveRecord $container)
     {
         if ($container instanceof Space) {
-            if (Account::find()->andWhere(['space_id' => $container->id])->count() == 0) {
+            if (Account::find()->andWhere(['space_id' => $container->id, 'account_type' => Account::TYPE_DEFAULT])->count() == 0) {
                 $account = new Account();
                 $account->title = 'Default';
                 $account->space_id = $container->id;
@@ -37,7 +37,7 @@ class AccountHelper
                 Event::trigger(Account::class, Account::EVENT_DEFAULT_SPACE_ACCOUNT_CREATED, new Event(['sender' => $container]));
             }
         } else {
-            if (Account::find()->andWhere(['user_id' => $container->id])->count() == 0) {
+            if (Account::find()->andWhere(['user_id' => $container->id, 'account_type' => Account::TYPE_DEFAULT])->count() == 0) {
                 $account = new Account();
                 $account->title = 'Default';
                 $account->user_id = $container->id;
