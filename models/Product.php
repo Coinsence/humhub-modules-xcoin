@@ -254,7 +254,7 @@ class Product extends ActiveRecord
         }
 
         if ($this->vouchers) {
-            foreach (array_unique(array_map('trim', array_filter(explode(";", $this->vouchers)))) as $voucherValue) {
+            foreach (array_unique(array_filter(array_map('trim', explode(";", $this->vouchers)))) as $voucherValue) {
                $voucherModel = Voucher::findOneByValueAndProduct($voucherValue, $this->id);
 
                if (!$voucherModel) {
