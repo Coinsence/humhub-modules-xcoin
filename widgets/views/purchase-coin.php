@@ -21,7 +21,7 @@ $res = Yii::$app->request->get('res');
         <p><?= Yii::t('XcoinModule.overview', 'You can buy and get instantly COINs using the button below') ?></p>
     </div>
 <?php endif; ?>
-<?= Html::a('<i class="fa fa-money" aria-hidden="true"></i> Buy ' . $name, [
+<?= Html::a('<i class="fa fa-money" aria-hidden="true"></i> ' . Yii::t('XcoinModule.overview', 'Buy') . ' ' . $name, [
     '/xcoin/overview/purchase-coin',
     'container' => $contentContainer
 ], ['class' => 'btn ' . ($coinsBlanace > 0 ? 'btn-default' : 'btn-primary'), 'data-target' => '#globalModal', 'style' => $style]) ?>
