@@ -388,14 +388,17 @@ Assets::register($this);
             </div>
             <!-- campaign invest action start -->
             <?php if (!$funding->canInvest() && !$funding->challenge->isClosed()): ?>
-            <div class="invest-btn disabled">
-                <?php else: ?>
+                <div class="invest-btn disabled">
+            <?php else: ?>
                 <div class="invest-btn">
                     <?php endif; ?>
                     <?php if (Yii::$app->user->isGuest): ?>
                         <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                     <?php else: ?>
-                        <?php if ($funding->activate_funding !== Funding::FUNDING_DEACTIVATED): ?>
+                        <?php if (
+                            $funding->status !== Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED &&
+                            $funding->activate_funding !== Funding::FUNDING_DEACTIVATED
+                        ): ?>
                             <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
                                 'invest',
                                 'fundingId' => $funding->id,
@@ -404,7 +407,7 @@ Assets::register($this);
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
-                <!-- campaign invest action end -->
+            <!-- campaign invest action end -->
             </div>
         </div>
     </div>
