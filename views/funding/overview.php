@@ -368,22 +368,24 @@ Assets::register($this);
                 <?php endif; ?>
 
                 <?php foreach ($contactButtons as $contactButton): ?>
-                    <div class="contact-btn">
-                        <?php if (Yii::$app->user->isGuest): ?>
-                            <div>
-                                <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
-                            </div>
-                        <?php else: ?>
-                            <div>
-                                <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [
-                                    'contact',
-                                    'fundingId' => $funding->id,
-                                    'contactButtonId' => $contactButton->id,
-                                    'container' => $funding->getSpace()->one(),
-                                ], ['data-target' => '#globalModal']); ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
+                    <?php if ($contactButton->isButtonEnabled()) : ?>
+                        <div class="contact-btn">
+                            <?php if (Yii::$app->user->isGuest): ?>
+                                <div>
+                                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+                                </div>
+                            <?php else: ?>
+                                <div>
+                                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [
+                                        'contact',
+                                        'fundingId' => $funding->id,
+                                        'contactButtonId' => $contactButton->id,
+                                        'container' => $funding->getSpace()->one(),
+                                    ], ['data-target' => '#globalModal']); ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
             <!-- campaign invest action start -->
