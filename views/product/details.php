@@ -148,16 +148,28 @@ use yii\web\JsExpression;
                     ])
                 ?>
             </div>
-            <?php if ($model->marketplace->shouldRedirectToLink()) : ?>
-                <div class="col-md-12">
-                    <?= $form->field($model, 'link')->textInput()
-                        ->hint(Yii::t('XcoinModule.product', 'Please enter your product call to action link')) ?>
-                </div>
-            <?php else : ?>
-                <div class="col-md-12" id="buy-message">
-                    <?= $form->field($model, 'buy_message')->widget(RichTextField::class, ['preset' => 'full'])
-                        ->hint(Yii::t('XcoinModule.product', 'Please enter a message to be sent when customer wants to buy your product')) ?>
-                </div>
+            <div class="col-md-12">
+            <?= $form->field($model, 'is_voucher_product')->checkbox([
+                'uncheck' => 0,
+                'checked' => 1,
+            ]) ?>
+            </div>
+            <div class="col-md-12" id="product-vouchers" style="display: <?= $model->hasErrors('vouchers') || $model->isVoucherProduct() ? "block" : "none"; ?>">
+                <?= $form->field($model, 'vouchers')->textarea(['rows' => 6])
+                    ->hint(Yii::t('XcoinModule.product', 'Please enter vouchers list separated by ";"')) ?>
+            </div>
+            <?php if (!$model->isVoucherProduct()): ?>
+                <?php if ($model->marketplace->shouldRedirectToLink()) : ?>
+                    <div class="col-md-12" id="cta-link">
+                        <?= $form->field($model, 'link')->textInput()
+                            ->hint(Yii::t('XcoinModule.product', 'Please enter your product call to action link')) ?>
+                    </div>
+                <?php else : ?>
+                    <div class="col-md-12" id="buy-message">
+                        <?= $form->field($model, 'buy_message')->widget(RichTextField::class, ['preset' => 'full'])
+                            ->hint(Yii::t('XcoinModule.product', 'Please enter a message to be sent when customer wants to buy your product')) ?>
+                    </div>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
@@ -169,3 +181,4 @@ use yii\web\JsExpression;
 
 <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>
+

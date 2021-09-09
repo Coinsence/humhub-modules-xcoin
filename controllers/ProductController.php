@@ -16,6 +16,7 @@ use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
+use humhub\modules\xcoin\models\Voucher;
 use humhub\modules\xcoin\utils\ImageUtils;
 use Throwable;
 use Yii;
@@ -177,7 +178,7 @@ class ProductController extends ContentContainerController
         ]);
     }
 
-  
+
 
     /**
      * @throws HttpException
@@ -228,6 +229,10 @@ class ProductController extends ContentContainerController
             $this->view->saved();
 
             return $this->htmlRedirect(['/xcoin/product', 'container' => $this->contentContainer]);
+        }
+
+        if ($model->isVoucherProduct()) {
+            $model->setVouchers();
         }
 
         return $this->renderAjax('edit', [
@@ -327,8 +332,32 @@ class ProductController extends ContentContainerController
         $message->addRecepient($seller, true);
         $message->addRecepient($buyer);
 
-        MessageEntry::createForMessage($message, $seller, $product->buy_message)->save();
+        if ($product->isVoucherProduct()) {
+            /** @var Voucher $voucher */
+            $voucher = $product->retrieveOneReadyVoucher();
 
+            if (null === $voucher) {
+                $this->view->info(Yii::t('XcoinModule.product', "No vouchers remaining"));
+
+                return $this->redirect($this->contentContainer->createUrl('/xcoin/product/overview', [
+                    'container' => $this->contentContainer,
+                    'productId' => $product->id
+                ]));
+            }
+
+            // send message with voucher value to buyer
+            MessageEntry::createForMessage($message, $seller, "Your voucher is : {$voucher->value}")->save();
+
+            // disable voucher
+            $voucher->updateAttributes(['status' => Voucher::STATUS_USED]);
+
+            // check if no next voucher then disable product
+            if (null === $product->retrieveOneReadyVoucher()) {
+                $product->updateAttributes(['status' => Product::STATUS_UNAVAILABLE]);
+            }
+        } else {
+            MessageEntry::createForMessage($message, $seller, $product->buy_message)->save();
+        }
         // notify the buyer
         try {
             $message->notify($buyer);

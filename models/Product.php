@@ -38,6 +38,7 @@ use yii\web\HttpException;
  * @property string $link
  * @property string $buy_message
  * @property integer $payment_first
+ * @property integer $is_voucher_product
  *
  * @property Marketplace $marketplace
  * @property User $owner
@@ -85,6 +86,9 @@ class Product extends ActiveRecord
     // used to select between user and space product
     public $account;
 
+    // unmapped field used to store vouchers in runtime when creating product
+    public $vouchers;
+
     /**
      * @inheritdoc
      */
@@ -107,13 +111,29 @@ class Product extends ActiveRecord
             [['discount'], 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS;
             }],
+            [['vouchers'], 'required', 'when' => function ($model) {
+                return $model->isVoucherProduct();
+            }],
             [['link'], 'required', 'when' => function ($model) {
-                return $model->marketplace->shouldRedirectToLink();
+                return $model->marketplace->shouldRedirectToLink() && !$model->isVoucherProduct();
             }],
             [['buy_message'], 'required', 'when' => function ($model) {
-                return !$model->marketplace->shouldRedirectToLink();
+                return !$model->marketplace->shouldRedirectToLink() && !$model->isVoucherProduct();
             }],
-            [['marketplace_id', 'created_by', 'product_type', 'payment_first', 'space_id', 'sale_type', 'status', 'offer_type', 'payment_type'], 'integer'],
+            [
+                [
+                    'marketplace_id',
+                    'created_by',
+                    'product_type',
+                    'payment_first',
+                    'space_id',
+                    'sale_type',
+                    'status',
+                    'offer_type',
+                    'payment_type',
+                    'is_voucher_product'
+                ], 'integer'
+            ],
             [['price'], 'number', 'min' => '0'],
             [['discount'], 'number', 'min' => '0', 'max' => '100'],
             [['created_at'], 'safe'],
@@ -154,7 +174,9 @@ class Product extends ActiveRecord
                 'product_type',
                 'link',
                 'buy_message',
-                'payment_first'
+                'payment_first',
+                'is_voucher_product',
+                'vouchers',
             ],
             self::SCENARIO_EDIT => [
                 'name',
@@ -169,7 +191,8 @@ class Product extends ActiveRecord
                 'city',
                 'link',
                 'buy_message',
-                'payment_first'
+                'payment_first',
+                'vouchers',
             ],
         ];
     }
@@ -198,6 +221,8 @@ class Product extends ActiveRecord
             'link' => Yii::t('XcoinModule.base', 'Call to action link'),
             'buy_message' => Yii::t('XcoinModule.base', 'Message to be sent to the buyer'),
             'payment_first' => Yii::t('XcoinModule.base', 'Request payment first'),
+            'is_voucher_product' => Yii::t('XcoinModule.base', 'Vouchers product ?'),
+            'vouchers' => Yii::t('XcoinModule.base', 'Vouchers list'),
         ];
     }
 
@@ -226,6 +251,22 @@ class Product extends ActiveRecord
                 }
             }
             $this->linkAll('categories', $categories);
+        }
+
+        if ($this->vouchers) {
+            foreach (array_unique(array_filter(array_map('trim', explode(";", $this->vouchers)))) as $voucherValue) {
+               $voucherModel = Voucher::findOneByValueAndProduct($voucherValue, $this->id);
+
+               if (!$voucherModel) {
+                   $voucher = Voucher::create($voucherValue, $this->id);
+                   $voucher->save();
+               }
+            }
+
+            // make sure that the product is available once new vouchers are added
+            if (self::STATUS_UNAVAILABLE == $this->status) {
+                $this->updateAttributes(['status' => self::STATUS_AVAILABLE]);
+            }
         }
 
         parent::afterSave($insert, $changedAttributes);
@@ -259,6 +300,29 @@ class Product extends ActiveRecord
     public function getCreatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+
+    /**
+     * Returns an ActiveQuery for all voucher models of this product.
+     *
+     * @return ActiveQuery
+     */
+    public function getVouchers()
+    {
+        return $this->hasMany(Voucher::class, ['product_id' => 'id']);
+    }
+
+    public function setVouchers()
+    {
+        $vouchersValues = [];
+
+        /** @var Voucher $voucher */
+        foreach ($this->getVouchers()->andWhere(['status' => Voucher::STATUS_READY])->all() as $voucher) {
+            $vouchersValues[] = sprintf(' %s ', $voucher->value);
+        }
+
+        $this->vouchers = implode(';', $vouchersValues);
     }
 
     public function shortenName()
@@ -387,8 +451,9 @@ class Product extends ActiveRecord
             ) || strlen($this->description) > 255 ||
             ($this->offer_type == self::OFFER_DISCOUNT_FOR_COINS && empty($this->discount)) ||
             ($this->offer_type == self::OFFER_TOTAL_PRICE_IN_COINS && (empty($this->price) || empty($this->payment_type))) ||
-            ($this->marketplace->shouldRedirectToLink() && empty($this->link)) ||
-            (!$this->marketplace->shouldRedirectToLink() && empty($this->buy_message));
+            ($this->isVoucherProduct() && empty($this->vouchers)) ||
+            (!$this->isVoucherProduct() && $this->marketplace->shouldRedirectToLink() && empty($this->link)) ||
+            (!$this->isVoucherProduct() && !$this->marketplace->shouldRedirectToLink() && empty($this->buy_message));
     }
 
     public function isPaymentFirst()
@@ -417,5 +482,18 @@ class Product extends ActiveRecord
         }
 
         $this->space_id = $space->id;
+    }
+
+    public function isVoucherProduct()
+    {
+        return $this->is_voucher_product;
+    }
+
+    public function retrieveOneReadyVoucher()
+    {
+        return $this
+            ->getVouchers()
+            ->andWhere(['status' => Voucher::STATUS_READY])
+            ->one();
     }
 }
