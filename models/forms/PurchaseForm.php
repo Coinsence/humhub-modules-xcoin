@@ -85,7 +85,7 @@ class PurchaseForm extends Model
 
         return [
             [['coin', 'amount', 'address', 'state', 'city', 'zip', 'country'], 'required'],
-            ['amount', 'integer', 'min' => 0],
+            ['amount', 'integer', 'min' => 10],
             $addressFieldRules,
             $this->stateField->getFieldType()->getFieldRules()[0],
             $this->cityField->getFieldType()->getFieldRules()[0],
