@@ -29,12 +29,7 @@ class PurchaseCoin extends Widget
      */
     public function run()
     {
-        if (
-            !array_key_exists('coinPurchase', Yii::$app->params) ||
-            !array_key_exists('coin', Yii::$app->params['coinPurchase']) ||
-            !array_key_exists('space', Yii::$app->params['coinPurchase']) ||
-            !array_key_exists('bridge', Yii::$app->params['coinPurchase'])
-        )
+        if (!self::isEnabled())
             return;
         
         $assetName = isset($this->requireAsset) ? $this->requireAsset->getSpace()->one()->name : '';
@@ -71,5 +66,14 @@ class PurchaseCoin extends Widget
             'coinsBlanace' => $currentCoinsBalance,
             'asset' => $this->requireAsset
         ]);
+    }
+
+    static function isEnabled()
+    {
+        return
+            array_key_exists('coinPurchase', Yii::$app->params) &&
+            array_key_exists('coin', Yii::$app->params['coinPurchase']) &&
+            array_key_exists('space', Yii::$app->params['coinPurchase']) &&
+            array_key_exists('bridge', Yii::$app->params['coinPurchase']);
     }
 }

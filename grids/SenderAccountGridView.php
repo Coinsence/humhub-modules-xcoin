@@ -12,6 +12,7 @@ use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\Account;
+use humhub\modules\xcoin\widgets\PurchaseCoin;
 
 /**
  * Description of LatestTransactionsGridView
@@ -118,10 +119,7 @@ class SenderAccountGridView extends GridView
                     if (
                         $assetName !== '' &&
                         (
-                            !array_key_exists('coinPurchase', Yii::$app->params) ||
-                            !array_key_exists('coin', Yii::$app->params['coinPurchase']) ||
-                            !array_key_exists('space', Yii::$app->params['coinPurchase']) ||
-                            !array_key_exists('bridge', Yii::$app->params['coinPurchase']) ||
+                            !PurchaseCoin::isEnabled() ||
                             $assetName !== Yii::$app->params['coinPurchase']['space']
                         )
                     ) {
