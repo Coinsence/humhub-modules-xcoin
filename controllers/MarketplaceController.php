@@ -57,10 +57,21 @@ class MarketplaceController extends ContentContainerController
             throw new HttpException(404);
         }
 
-        if ($marketplace->showUnreviewedSubmissions() || Space::findOne(['id' => $marketplace->space_id])->isAdmin(Yii::$app->user->identity)) {
+        if (Space::findOne(['id' => $marketplace->space_id])->isAdmin(Yii::$app->user->identity)) {
             $products = $marketplace->getProducts()->all();
         } else {
-            $products = Product::findAll(['marketplace_id' => $marketplace->id, 'review_status' => 1]);
+            if ($marketplace->showUnreviewedSubmissions()) {
+                $products = Product::findAll([
+                    'marketplace_id' => $marketplace->id,
+                    'status' => Product::STATUS_AVAILABLE,
+                ]);
+            } else {
+                $products = Product::findAll([
+                    'marketplace_id' => $marketplace->id,
+                    'review_status' => Product::PRODUCT_REVIEWED,
+                    'status' => Product::STATUS_AVAILABLE,
+                ]);
+            }
         }
 
         return $this->render('overview', [

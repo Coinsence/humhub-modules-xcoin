@@ -166,7 +166,7 @@ Assets::register($this);
                                     <?= Html::a(
                                         $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product'),
                                         ['/xcoin/transaction/select-account', 'container' => Yii::$app->user->identity, 'productId' => $product->id],
-                                        ['class' => 'btn btn-sm btn-default pull-right', 'data-target' => '#globalModal', 'data-ui-loader' => '']
+                                        ['data-target' => '#globalModal', 'data-ui-loader' => '']
                                     ); ?>
                                 <?php else : ?>
                                     <?php if ($product->marketplace->shouldRedirectToLink()): ?>

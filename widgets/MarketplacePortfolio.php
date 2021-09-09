@@ -68,6 +68,12 @@ class MarketplacePortfolio extends \yii\base\Widget
                 'product_type' => Product::TYPE_PERSONAL
             ])->all();
 
+            $products = array_filter($products, function($product) {
+                return
+                    $product->status == Product::STATUS_AVAILABLE ||
+                    $product->isOwner(Yii::$app->user->identity);
+            });
+
             return $this->render('marketplacePortfolio', [
                 'products' => array_slice($products, 0, 3),
                 'user' => $this->user
