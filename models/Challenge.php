@@ -9,12 +9,14 @@
 
 namespace humhub\modules\xcoin\models;
 
+use humhub\modules\xcoin\utils\ImageUtils;
 use Yii;
 use yii\db\ActiveQuery;
 use humhub\components\ActiveRecord;
 use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "xcoin_challenge".
@@ -231,6 +233,21 @@ class Challenge extends ActiveRecord
             'object_id' => $this->id,
             'show_in_stream' => true
         ])->orderBy(['id' => SORT_DESC])->one();
+    }
+
+    public function getCroppedCover($type, $width, $height)
+    {
+        $file = $this->getCover();
+
+        if (!$file) {
+            return null;
+        }
+
+        $targetFile = $file->getStoredFilePath();
+        $path = $targetFile . "file";
+        $targetPath = ImageUtils::resizeImage($path, "challenge_image", $width, $height, $file->guid . "_".$type);
+
+        return Url::base() . "/uploads/challenge_image/" . basename($targetPath);
     }
 
     public function isStopped()

@@ -16,6 +16,7 @@ use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
+use humhub\modules\xcoin\utils\ImageUtils;
 use Yii;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -56,10 +57,21 @@ class MarketplaceController extends ContentContainerController
             throw new HttpException(404);
         }
 
-        if ($marketplace->showUnreviewedSubmissions() || Space::findOne(['id' => $marketplace->space_id])->isAdmin(Yii::$app->user->identity)) {
+        if (Space::findOne(['id' => $marketplace->space_id])->isAdmin(Yii::$app->user->identity)) {
             $products = $marketplace->getProducts()->all();
         } else {
-            $products = Product::findAll(['marketplace_id' => $marketplace->id, 'review_status' => 1]);
+            if ($marketplace->showUnreviewedSubmissions()) {
+                $products = Product::findAll([
+                    'marketplace_id' => $marketplace->id,
+                    'status' => Product::STATUS_AVAILABLE,
+                ]);
+            } else {
+                $products = Product::findAll([
+                    'marketplace_id' => $marketplace->id,
+                    'review_status' => Product::PRODUCT_REVIEWED,
+                    'status' => Product::STATUS_AVAILABLE,
+                ]);
+            }
         }
 
         return $this->render('overview', [
@@ -89,6 +101,16 @@ class MarketplaceController extends ContentContainerController
         $defaultAsset = AssetHelper::getDefaultAsset();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
+                return $this->renderAjax('create', [
+                        'model' => $model,
+                        'assets' => $assets,
+                        'defaultAsset' => $defaultAsset,
+                        'imageError' => "Image size cannot be more than 500 kb"
+                    ]
+                );
+            }
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
             $this->view->saved();
@@ -102,6 +124,8 @@ class MarketplaceController extends ContentContainerController
                 'model' => $model,
                 'assets' => $assets,
                 'defaultAsset' => $defaultAsset,
+                'imageError'=>null
+
             ]
         );
     }
@@ -130,6 +154,15 @@ class MarketplaceController extends ContentContainerController
         $assets = AssetHelper::getAllAssets();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
+                return $this->renderAjax('edit', [
+                        'model' => $model,
+                        'assets' => $assets,
+                        'imageError' => "Image size cannot be more than 500 kb"
+                    ]
+                );
+            }
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
             $this->view->saved();
@@ -141,7 +174,8 @@ class MarketplaceController extends ContentContainerController
 
         return $this->renderAjax('edit', [
                 'model' => $model,
-                'assets' => $assets
+                'assets' => $assets,
+                'imageError'=>null
             ]
         );
     }

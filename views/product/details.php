@@ -15,7 +15,7 @@ use yii\web\JsExpression;
 
 /** @var $model Product */
 /** @var $accountsList array */
-
+/** @var $imageError string */
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.product', 'Provide details'), 'closable' => false]) ?>
@@ -27,6 +27,12 @@ use yii\web\JsExpression;
 
     <div class="modal-body">
         <div class="row">
+            <div class="col-md-12">
+                <?php if ($imageError) : ?>
+                    <p class="help-block help-block-error" style="color:red"><?= Yii::t('XcoinModule.challenge', $imageError) ?></p>
+                <?php endif; ?>
+
+            </div>
             <div class="col-md-12">
                 <?= $form->field($model, 'account')->widget(Select2::class, [
                     'data' => $accountsList,
@@ -142,16 +148,28 @@ use yii\web\JsExpression;
                     ])
                 ?>
             </div>
-            <?php if ($model->marketplace->shouldRedirectToLink()) : ?>
-                <div class="col-md-12">
-                    <?= $form->field($model, 'link')->textInput()
-                        ->hint(Yii::t('XcoinModule.product', 'Please enter your product call to action link')) ?>
-                </div>
-            <?php else : ?>
-                <div class="col-md-12" id="buy-message">
-                    <?= $form->field($model, 'buy_message')->widget(RichTextField::class, ['preset' => 'full'])
-                        ->hint(Yii::t('XcoinModule.product', 'Please enter a message to be sent when customer wants to buy your product')) ?>
-                </div>
+            <div class="col-md-12">
+            <?= $form->field($model, 'is_voucher_product')->checkbox([
+                'uncheck' => 0,
+                'checked' => 1,
+            ]) ?>
+            </div>
+            <div class="col-md-12" id="product-vouchers" style="display: <?= $model->hasErrors('vouchers') || $model->isVoucherProduct() ? "block" : "none"; ?>">
+                <?= $form->field($model, 'vouchers')->textarea(['rows' => 6])
+                    ->hint(Yii::t('XcoinModule.product', 'Please enter vouchers list separated by ";"')) ?>
+            </div>
+            <?php if (!$model->isVoucherProduct()): ?>
+                <?php if ($model->marketplace->shouldRedirectToLink()) : ?>
+                    <div class="col-md-12" id="cta-link">
+                        <?= $form->field($model, 'link')->textInput()
+                            ->hint(Yii::t('XcoinModule.product', 'Please enter your product call to action link')) ?>
+                    </div>
+                <?php else : ?>
+                    <div class="col-md-12" id="buy-message">
+                        <?= $form->field($model, 'buy_message')->widget(RichTextField::class, ['preset' => 'full'])
+                            ->hint(Yii::t('XcoinModule.product', 'Please enter a message to be sent when customer wants to buy your product')) ?>
+                    </div>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
@@ -163,3 +181,4 @@ use yii\web\JsExpression;
 
 <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>
+

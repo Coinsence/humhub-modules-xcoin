@@ -11,6 +11,7 @@ use humhub\components\Controller;
 use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
 use humhub\modules\xcoin\models\ProductFilter;
+use humhub\modules\xcoin\utils\ImageUtils;
 use humhub\modules\xcoin\widgets\MarketplaceImage;
 use Yii;
 use yii\db\Expression;
@@ -84,7 +85,7 @@ class MarketplaceOverviewController extends Controller
             'countriesList' => $countriesList,
             'products' => $query->all(),
             'marketplacesCarousel' => MarketplaceHelper::getRandomMarketplaces(),
-            'user'=>$user
+            'user' => $user
         ]);
     }
 
@@ -130,19 +131,21 @@ class MarketplaceOverviewController extends Controller
             );
         }
 
+
         // Step 2: Details
+
+        $spaces = SpaceHelper::getSellerSpaces($user);
+
+        $accountsList = [];
+
+        $accountsList[Product::PRODUCT_USER_DEFAULT_ACCOUNT] = UserImage::widget(['user' => $user, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' Default';
+
+        foreach ($spaces as $space) {
+            if (AssetHelper::getSpaceAsset($space))
+                $accountsList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+        }
+
         if ($model->isSecondStep()) {
-
-            $spaces = SpaceHelper::getSellerSpaces($user);
-
-            $accountsList = [];
-
-            $accountsList[Product::PRODUCT_USER_DEFAULT_ACCOUNT] = UserImage::widget(['user' => $user, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' Default';
-
-            foreach ($spaces as $space) {
-                if (AssetHelper::getSpaceAsset($space))
-                    $accountsList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
-            }
 
             $model->account = Product::PRODUCT_USER_DEFAULT_ACCOUNT;
         }
@@ -151,7 +154,8 @@ class MarketplaceOverviewController extends Controller
 
             return $this->renderAjax('../product/details', [
                 'model' => $model,
-                'accountsList' => $accountsList
+                'accountsList' => $accountsList,
+                'imageError' => null
             ]);
         }
 
@@ -181,11 +185,20 @@ class MarketplaceOverviewController extends Controller
             Yii::$app->request->isPost &&
             Yii::$app->request->post('step') == '3' &&
             $model->isNameUnique() &&
-            $model->validate() &&
-            $model->save()
+            $model->validate()
         ) {
-            $model->fileManager->attach(Yii::$app->request->post('fileList'));
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
 
+                return $this->renderAjax('../product/details', [
+                        'model' => $model,
+                        'accountsList' => $accountsList,
+                        'imageError' => "Image size cannot be more than 500 kb"
+                    ]
+                );
+            }
+            $model->save();
+            $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
 
             $url = $model->isSpaceProduct() ?
@@ -195,19 +208,20 @@ class MarketplaceOverviewController extends Controller
                 ]) :
                 $user->createUrl('/xcoin/product/overview', [
                     'container' => $user,
-                    'productId' => $model->id
+                    'productId' => $model->id,
                 ]);
 
             return $this->redirect($url);
 
         }
-        
+
         // Check validation
         if ($model->hasErrors() && $model->isSecondStep()) {
 
             return $this->renderAjax('../product/details', [
                 'model' => $model,
-                'accountsList' => $accountsList
+                'accountsList' => $accountsList,
+                'imageError' => null
             ]);
 
         }

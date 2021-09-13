@@ -58,7 +58,7 @@ Assets::register($this);
                                         <?= Html::img($cover->getUrl(), ['height' => '240']) ?>
                                     <?php else : ?>
                                         <div class="bg"
-                                             style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-challenge-cover.png' ?>')"></div>
+                                             style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-challenge-cover.png' ?>')   "></div>
                                         <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-challenge-cover.png', [
                                             'height' => '240'
                                         ]) ?>

@@ -15,6 +15,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\JsExpression;
 
 /** @var $myAsset Asset */
+/** @var $imageError string */
 
 ?>
 
@@ -28,6 +29,12 @@ use yii\web\JsExpression;
 
 <div class="modal-body">
     <div class="row">
+        <div class="col-md-12">
+            <?php if ($imageError) : ?>
+                <p class="help-block help-block-error" style="color:red"><?= Yii::t('XcoinModule.challenge', $imageError) ?></p>
+            <?php endif; ?>
+
+        </div>
         <div class="col-md-12">
             <?= $form->field($model, 'amount')->widget(AmountField::class, ['asset' => $model->challenge->asset])->label(Yii::t('XcoinModule.funding', 'Requested amount')); ?>
         </div>
@@ -96,16 +103,7 @@ use yii\web\JsExpression;
             <?= $form->field($model, 'youtube_link')->textInput()
                 ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign YouTube video link. Note: no pictures will be shown if you add a video link.')) ?>
         </div>
-        <?php if (!$model->isNewRecord): ?>
-            <div class="row">
-                <div class="col-md-6 text-center">
-                    <?= Html::a(Yii::t('XcoinModule.base', 'Accept investment'), ['accept', 'id' => $model->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-success', 'style' => 'margin-bottom: 10px;', 'data-modal-close' => '']); ?>
-                </div>
-                <div class="col-md-6 text-center">
-                    <?= Html::a(Yii::t('XcoinModule.base', 'Cancel this campaign'), ['cancel', 'id' => $model->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-danger', 'data-modal-close' => '']); ?>
-                </div>
-            </div>
-        <?php endif; ?>
+
     </div>
 </div>
 <hr>

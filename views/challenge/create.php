@@ -15,6 +15,7 @@ use humhub\modules\xcoin\assets\Assets;
 /** @var $model Challenge */
 /** @var $assets Asset[] */
 /** @var $defaultAsset Asset */
+/** @var $imageError string */
 
 Select2BootstrapAsset::register($this);
 Assets::register($this);
@@ -130,7 +131,7 @@ $upload = Upload::forModel($model, $model->coverFile);
             </div>
         </div>
         <div class="col-md-12">
-            <label class="control-label"><?= Yii::t('XcoinModule.challenge', 'Challenge Image') ?></label><br>
+            <label class="control-label"><?= Yii::t('XcoinModule.challenge', 'Challenge Image (MAXIMUM FILE SIZE IS 500kb)') ?></label><br>
             <div class="col-md-2">
                 <?= $upload->button([
                     'label' => true,
@@ -151,6 +152,12 @@ $upload = Upload::forModel($model, $model->coverFile);
             </div>
             <br>
             <?= $upload->progress() ?>
+        </div>
+        <div class="col-md-12">
+            <?php if ($imageError) : ?>
+                <p class="help-block help-block-error" style="color:red"><?= Yii::t('XcoinModule.challenge', $imageError) ?></p>
+            <?php endif; ?>
+
         </div>
     </div>
 </div>

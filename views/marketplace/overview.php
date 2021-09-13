@@ -90,12 +90,19 @@ Assets::register($this);
                             <?= Yii::t('XcoinModule.marketplace', 'This marketplace is closed') ?>
                         </div>
                     <?php else: ?>
-                        <?= Html::a(
-                            $marketplace->isTasksMarketplace() ? Yii::t('XcoinModule.marketplace', 'Add your job') : Yii::t('XcoinModule.marketplace', 'Sell Your Product'), [
-                            '/xcoin/product/new',
-                            'marketplaceId' => $marketplace->id,
-                            'container' => $this->context->contentContainer
-                        ], ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']); ?>
+                        <?php if (Yii::$app->user->isGuest): ?>
+                            <?= Html::a(
+                                Yii::t('XcoinModule.marketplace', 'Add your job'),
+                                Yii::$app->user->loginUrl,
+                                ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']) ?>
+                        <?php else: ?>
+                            <?= Html::a(
+                                $marketplace->isTasksMarketplace() ? Yii::t('XcoinModule.marketplace', 'Add your job') : Yii::t('XcoinModule.marketplace', 'Sell Your Product'), [
+                                '/xcoin/product/new',
+                                'marketplaceId' => $marketplace->id,
+                                'container' => $this->context->contentContainer
+                            ], ['class' => 'btn btn-gradient-1 add-project', 'data-target' => '#globalModal']); ?>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
                 <?php if ($marketplace->getCategories()->count()) : ?>
@@ -237,9 +244,9 @@ Assets::register($this);
                                 </a>
                                 <?php if (SpaceHelper::canReviewProject($product->marketplace->space) || PublicOffersHelper::canReviewSubmittedProjects()): ?>
                                     <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
-                                        <?= Html::a('<i class="fa fa-check"></i>', ['/xcoin/marketplace/review-product', 'id' => $product->id, 'status' => Product::PRODUCT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted']) ?>
+                                        <?= Html::a('<i class="fa fa-close"></i>', ['/xcoin/marketplace/review-product', 'id' => $product->id, 'status' => Product::PRODUCT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted']) ?>
                                     <?php else : ?>
-                                        <?= Html::a('<i class="fa fa-close"></i>', ['/xcoin/marketplace/review-product', 'id' => $product->id, 'status' => Product::PRODUCT_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted']) ?>
+                                        <?= Html::a('<i class="fa fa-check"></i>', ['/xcoin/marketplace/review-product', 'id' => $product->id, 'status' => Product::PRODUCT_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted']) ?>
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </div>

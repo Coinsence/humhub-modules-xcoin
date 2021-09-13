@@ -16,6 +16,8 @@ use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
+use humhub\modules\xcoin\models\Voucher;
+use humhub\modules\xcoin\utils\ImageUtils;
 use Throwable;
 use Yii;
 use yii\web\HttpException;
@@ -30,6 +32,13 @@ class ProductController extends ContentContainerController
         if ($this->contentContainer instanceof Space) {
             $products = Product::find()->where(['space_id' => $this->contentContainer->id])->all();
 
+            $products = array_filter($products, function($product) {
+                return
+                    $product->status == Product::STATUS_AVAILABLE ||
+                    AssetHelper::canManageAssets($this->contentContainer) ||
+                    $product->isOwner(Yii::$app->user->identity);
+            });
+
             return $this->render('index', [
                 'products' => $products,
             ]);
@@ -38,6 +47,13 @@ class ProductController extends ContentContainerController
                 'created_by' => $this->contentContainer->id,
                 'product_type' => Product::TYPE_PERSONAL
             ])->all();
+
+            $products = array_filter($products, function($product) {
+                return
+                    $product->status == Product::STATUS_AVAILABLE ||
+                    AssetHelper::canManageAssets($this->contentContainer) ||
+                    $product->isOwner(Yii::$app->user->identity);
+            });
 
             return $this->render('index_user', [
                 'products' => $products,
@@ -64,26 +80,27 @@ class ProductController extends ContentContainerController
 
         $model->load(Yii::$app->request->post());
 
+        $spaces = SpaceHelper::getSellerSpaces($user);
+
+        $accountsList = [];
+
+        $accountsList[Product::PRODUCT_USER_DEFAULT_ACCOUNT] = UserImage::widget(['user' => $user, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' Default';
+
+        foreach ($spaces as $space) {
+            if (AssetHelper::getSpaceAsset($space))
+                $accountsList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
+        }
         // Step 2: Details
         if ($model->isSecondStep()) {
 
-            $spaces = SpaceHelper::getSellerSpaces($user);
-
-            $accountsList = [];
-
-            $accountsList[Product::PRODUCT_USER_DEFAULT_ACCOUNT] = UserImage::widget(['user' => $user, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' Default';
-
-            foreach ($spaces as $space) {
-                if (AssetHelper::getSpaceAsset($space))
-                    $accountsList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
-            }
 
             $model->account = Product::PRODUCT_USER_DEFAULT_ACCOUNT;
 
             if (!Yii::$app->request->isPost) {
                 return $this->renderAjax('../product/details', [
                     'model' => $model,
-                    'accountsList' => $accountsList
+                    'accountsList' => $accountsList,
+                    'imageError'=> null
                 ]);
             }
         }
@@ -106,7 +123,9 @@ class ProductController extends ContentContainerController
                 $model->product_type = Product::TYPE_SPACE;
             }
 
-            return $this->renderAjax('../product/media', ['model' => $model]);
+            return $this->renderAjax('../product/media', [
+                'model' => $model,
+            ]);
         }
 
         // Try Saving
@@ -117,6 +136,15 @@ class ProductController extends ContentContainerController
             $model->validate() &&
             $model->save()
         ) {
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
+                return $this->renderAjax('../product/details', [
+                    'model' => $model,
+                    'accountsList' => $accountsList,
+                    'imageError' => "Image size cannot be more than 500 kb"
+                ]);
+
+            }
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
 
             $this->view->saved();
@@ -139,7 +167,8 @@ class ProductController extends ContentContainerController
 
             return $this->renderAjax('../product/details', [
                 'model' => $model,
-                'accountsList' => $accountsList
+                'accountsList' => $accountsList,
+                'imageError'=>null
             ]);
 
         }
@@ -163,7 +192,7 @@ class ProductController extends ContentContainerController
         ]);
     }
 
-  
+
 
     /**
      * @throws HttpException
@@ -200,6 +229,15 @@ class ProductController extends ContentContainerController
         }
 
         if (Yii::$app->request->isPost && $model->save()) {
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
+                return $this->renderAjax('edit', [
+                    'model' => $model,
+                    'assetList' => $assetList,
+                    'imageError' => "Image size cannot be more than 500 kb"
+
+                ]);
+            }
 
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
@@ -207,7 +245,15 @@ class ProductController extends ContentContainerController
             return $this->htmlRedirect(['/xcoin/product', 'container' => $this->contentContainer]);
         }
 
-        return $this->renderAjax('edit', ['model' => $model, 'assetList' => $assetList]);
+        if ($model->isVoucherProduct()) {
+            $model->setVouchers();
+        }
+
+        return $this->renderAjax('edit', [
+            'model' => $model,
+            'assetList' => $assetList,
+            'imageError'=>null
+        ]);
     }
 
     /**
@@ -300,8 +346,32 @@ class ProductController extends ContentContainerController
         $message->addRecepient($seller, true);
         $message->addRecepient($buyer);
 
-        MessageEntry::createForMessage($message, $seller, $product->buy_message)->save();
+        if ($product->isVoucherProduct()) {
+            /** @var Voucher $voucher */
+            $voucher = $product->retrieveOneReadyVoucher();
 
+            if (null === $voucher) {
+                $this->view->info(Yii::t('XcoinModule.product', "No vouchers remaining"));
+
+                return $this->redirect($this->contentContainer->createUrl('/xcoin/product/overview', [
+                    'container' => $this->contentContainer,
+                    'productId' => $product->id
+                ]));
+            }
+
+            // send message with voucher value to buyer
+            MessageEntry::createForMessage($message, $seller, "Your voucher is : {$voucher->value}")->save();
+
+            // disable voucher
+            $voucher->updateAttributes(['status' => Voucher::STATUS_USED]);
+
+            // check if no next voucher then disable product
+            if (null === $product->retrieveOneReadyVoucher()) {
+                $product->updateAttributes(['status' => Product::STATUS_UNAVAILABLE]);
+            }
+        } else {
+            MessageEntry::createForMessage($message, $seller, $product->buy_message)->save();
+        }
         // notify the buyer
         try {
             $message->notify($buyer);
