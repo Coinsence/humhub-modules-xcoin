@@ -345,43 +345,49 @@ Assets::register($this);
             <!-- campaign content start -->
             <?= RichText::output($funding->content); ?>
             <!-- campaign content end -->
-
-            <?php if (!empty($funding->youtube_link)): ?>
-                <div class="youtube-video">
-                    <iframe id="player" type="text/html" width="640" height="390" src="<?= FundingHelper::getYoutubeEmbedUrl($funding->youtube_link) ?>" frameborder="0"></iframe>
-                </div>
-            <?php endif; ?>
-
-            <?php foreach ($contactButtons as $contactButton): ?>
-                <?php if (Yii::$app->user->isGuest): ?>
-                    <div>
-                        <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
-                    </div>
-                <?php else: ?>
-                    <div>
-                        <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [
-                            'contact',
-                            'fundingId' => $funding->id,
-                            'contactButtonId' => $contactButton->id,
-                            'container' => $funding->getSpace()->one(),
-                        ], ['data-target' => '#globalModal']); ?>
-                    </div>
-                <?php endif; ?>
-            <?php endforeach; ?>
-
         </div>
         <div class="panel-footer">
+            <div class="contact-btns">
+                <?php if (!empty($funding->youtube_link)): ?>
+                    <div class="youtube-video">
+                        <iframe id="player" type="text/html" width="640" height="390" src="<?= FundingHelper::getYoutubeEmbedUrl($funding->youtube_link) ?>" frameborder="0"></iframe>
+                    </div>
+                <?php endif; ?>
 
+                <?php foreach ($contactButtons as $contactButton): ?>
+                    <?php if ($contactButton->isButtonEnabled()) : ?>
+                        <div class="contact-btn">
+                            <?php if (Yii::$app->user->isGuest): ?>
+                                <div>
+                                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+                                </div>
+                            <?php else: ?>
+                                <div>
+                                    <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [
+                                        'contact',
+                                        'fundingId' => $funding->id,
+                                        'contactButtonId' => $contactButton->id,
+                                        'container' => $funding->getSpace()->one(),
+                                    ], ['data-target' => '#globalModal']); ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
             <!-- campaign invest action start -->
             <?php if (!$funding->canInvest() && !$funding->challenge->isClosed()): ?>
-            <div class="invest-btn disabled">
-                <?php else: ?>
+                <div class="invest-btn disabled">
+            <?php else: ?>
                 <div class="invest-btn">
                     <?php endif; ?>
                     <?php if (Yii::$app->user->isGuest): ?>
                         <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                     <?php else: ?>
-                        <?php if ($funding->activate_funding !== Funding::FUNDING_DEACTIVATED): ?>
+                        <?php if (
+                            $funding->status !== Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED &&
+                            $funding->activate_funding !== Funding::FUNDING_DEACTIVATED
+                        ): ?>
                             <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
                                 'invest',
                                 'fundingId' => $funding->id,
@@ -390,7 +396,7 @@ Assets::register($this);
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
-                <!-- campaign invest action end -->
+            <!-- campaign invest action end -->
             </div>
         </div>
     </div>
