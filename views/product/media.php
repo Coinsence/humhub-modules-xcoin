@@ -32,7 +32,6 @@ $upload = Upload::withName();
 <?= $form->field($model, 'link')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'buy_message')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'payment_first')->hiddenInput()->label(false) ?>
-<?= $form->field($model, 'is_voucher_product')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'vouchers')->hiddenInput()->label(false) ?>
 
 <?php if ($model->categories_names): ?>
