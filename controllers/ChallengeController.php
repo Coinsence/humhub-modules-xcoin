@@ -77,7 +77,7 @@ class ChallengeController extends ContentContainerController
         if ($challenge->showUnreviewedSubmissions() || Space::findOne(['id' => $challenge->space_id])->isAdmin(Yii::$app->user->identity)) {
             $fundings = $challenge->getFundings()->all();
         } else {
-            $fundings = Funding::findAll(['challenge_id' => $challenge->id, 'published' => 1]);
+            $fundings = Funding::findAll(['challenge_id' => $challenge->id, 'published' => 1,'review_status'=>1]);
         }
 
         return $this->render('overview', [
