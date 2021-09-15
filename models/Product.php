@@ -38,7 +38,6 @@ use yii\web\HttpException;
  * @property string $link
  * @property string $buy_message
  * @property integer $payment_first
- * @property integer $is_voucher_product
  *
  * @property Marketplace $marketplace
  * @property User $owner
@@ -60,6 +59,7 @@ class Product extends ActiveRecord
     // Product offer type
     const OFFER_DISCOUNT_FOR_COINS = 1;
     const OFFER_TOTAL_PRICE_IN_COINS = 2;
+    const OFFER_VOUCHER = 3;
 
     // Product status
     const STATUS_UNAVAILABLE = 0;
@@ -105,7 +105,10 @@ class Product extends ActiveRecord
         return [
             [['name', 'description', 'content', 'marketplace_id', 'offer_type', 'city', 'country'], 'required'],
             ['categories_names', 'required', 'message' => 'Please choose at least a category'],
-            [['price', 'payment_type'], 'required', 'when' => function ($model) {
+            ['price', 'required', 'when' => function ($model) {
+                return $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS || $model->isVoucherProduct();
+            }],
+            ['payment_type', 'required', 'when' => function ($model) {
                 return $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS;
             }],
             [['discount'], 'required', 'when' => function ($model) {
@@ -131,7 +134,6 @@ class Product extends ActiveRecord
                     'status',
                     'offer_type',
                     'payment_type',
-                    'is_voucher_product'
                 ], 'integer'
             ],
             [['price'], 'number', 'min' => '0'],
@@ -175,7 +177,6 @@ class Product extends ActiveRecord
                 'link',
                 'buy_message',
                 'payment_first',
-                'is_voucher_product',
                 'vouchers',
             ],
             self::SCENARIO_EDIT => [
@@ -221,7 +222,6 @@ class Product extends ActiveRecord
             'link' => Yii::t('XcoinModule.base', 'Call to action link'),
             'buy_message' => Yii::t('XcoinModule.base', 'Message to be sent to the buyer'),
             'payment_first' => Yii::t('XcoinModule.base', 'Request payment first'),
-            'is_voucher_product' => Yii::t('XcoinModule.base', 'Vouchers product ?'),
             'vouchers' => Yii::t('XcoinModule.base', 'Vouchers list'),
         ];
     }
@@ -363,6 +363,7 @@ class Product extends ActiveRecord
         return [
             self::OFFER_DISCOUNT_FOR_COINS => Yii::t('XcoinModule.base', 'Discount for coins'),
             self::OFFER_TOTAL_PRICE_IN_COINS => Yii::t('XcoinModule.base', 'Total price in coins'),
+            self::OFFER_VOUCHER => Yii::t('XcoinModule.base', 'Voucher'),
         ];
     }
 
@@ -451,7 +452,7 @@ class Product extends ActiveRecord
             ) || strlen($this->description) > 255 ||
             ($this->offer_type == self::OFFER_DISCOUNT_FOR_COINS && empty($this->discount)) ||
             ($this->offer_type == self::OFFER_TOTAL_PRICE_IN_COINS && (empty($this->price) || empty($this->payment_type))) ||
-            ($this->isVoucherProduct() && empty($this->vouchers)) ||
+            ($this->isVoucherProduct() && (empty($this->vouchers) || empty($this->price))) ||
             (!$this->isVoucherProduct() && $this->marketplace->shouldRedirectToLink() && empty($this->link)) ||
             (!$this->isVoucherProduct() && !$this->marketplace->shouldRedirectToLink() && empty($this->buy_message));
     }
@@ -486,7 +487,7 @@ class Product extends ActiveRecord
 
     public function isVoucherProduct()
     {
-        return $this->is_voucher_product;
+        return self::OFFER_VOUCHER == $this->offer_type;
     }
 
     public function retrieveOneReadyVoucher()

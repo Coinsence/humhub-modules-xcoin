@@ -84,17 +84,25 @@ $upload = Upload::withName();
                         $('#product-payment-type').hide();
                         $('#payment_first_container').hide();
                         $('#product-discount').show();
-                     } else {
+                        $('#product-vouchers').hide();
+                     } else if (offer_type == 2) {
                         $('#product-price').show();
                         $('#product-payment-type').show();
                         $('#payment_first_container').show();
+                        $('#product-discount').hide();
+                        $('#product-vouchers').hide();
+                     } else {
+                        $('#product-vouchers').show();
+                        $('#product-price').show();
+                        $('#payment_first_container').show();
+                        $('#product-payment-type').hide();
                         $('#product-discount').hide();
                      }
                 }"),]
             ]) ?>
 
         </div>
-        <div class="col-md-6" id="product-price" style="display: <?= $model->hasErrors('price') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" :  "none"; ?>">
+        <div class="col-md-6" id="product-price" style="display: <?= $model->hasErrors('price') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS || $model->isVoucherProduct() ? "block" :  "none"; ?>">
             <?= $form->field($model, 'price')->input('number', ['min' => 1]) ?>
         </div>
         <div class="col-md-12" id="product-discount" style="display: <?= $model->hasErrors('discount') || $model->offer_type == Product::OFFER_DISCOUNT_FOR_COINS ? "block" :  "none"; ?>">
@@ -113,7 +121,7 @@ $upload = Upload::withName();
             ]) ?>
         </div>
         <div class="col-md-6" id="payment_first_container"
-             style="display: <?= $model->hasErrors('payment_first') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS ? "block" : "none"; ?>">
+             style="display: <?= $model->hasErrors('payment_first') || $model->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS || $model->isVoucherProduct() ? "block" : "none"; ?>">
             <input type="hidden" value="0" name="Model[payment_first]">
             <?= $form->field($model, 'payment_first')
                 ->checkBox([
