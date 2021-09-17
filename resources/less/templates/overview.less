@@ -1,9 +1,10 @@
 // main: ../build.less
 /* -------------------------------------------- */
-/* Coinsence overview styling */
+/* Coinsence space overview styling */
 /* -------------------------------------------- */
 
 .cs-overview {
+  margin-top: -42px;
   > .close-cs-overview {
     display: inline-block;
     margin-bottom: 24px;
@@ -304,7 +305,13 @@
 
   }
 
+  @media (max-width: 991px) and (min-width: 767px) {
+    margin-top: 32px;
+  }
+
   @media (max-width: 767px) {
+
+    margin-top: 0;
 
     > .close-cs-overview {
       padding: 12px;
