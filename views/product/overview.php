@@ -13,7 +13,7 @@ use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\libs\Iso3166Codes;
 use humhub\modules\content\widgets\richtext\RichText;
-
+use humhub\modules\xcoin\widgets\SocialShare;
 
 Assets::register($this);
 
@@ -87,6 +87,7 @@ Assets::register($this);
 
             <div class="co-overview-social">
                 <p><?= Yii::t('XcoinModule.product', 'Partager') ?></p>
+                <?= SocialShare::widget(['url' => Yii::$app->request->hostInfo . Yii::$app->request->url]); ?>
             </div>
         </div>
     </div>
