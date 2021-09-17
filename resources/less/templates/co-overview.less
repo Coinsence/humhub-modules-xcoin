@@ -1,0 +1,462 @@
+// main: ../build.less
+/* -------------------------------------------- */
+/* Coinsence object overview styling            */
+/* -------------------------------------------- */
+
+// Variables
+@co-overview-title-color: #353535;
+@co-overview-subtitle-color: #4F4F4F;
+@co-overview-side-widget-border-color: #E3E3E3;
+@co-overview-side-widget-bg-color: #fff;
+@co-overview-text-color: #353535;
+@co-overview-icons-color: #828282;
+@co-overview-progressbar-color: #47CC8C;
+@co-overview-action-btn-color: #3CBEEF;
+
+.co-overview {
+  > .co-overview-heading {
+    .co-overview-title {
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 50px;
+      color: #353535;
+    }
+    .co-overview-title small {
+      font-size: 14px;
+      font-weight: 400;
+    }
+    .co-overview-subtitle {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .co-overview-description p {
+      color: #4f4f4f;
+      margin: 10px 0 40px;
+    }
+    .co-overview-social p {
+      color: #353535;
+      margin: 10px 0 40px 10px;
+    }
+  }
+  > .panel-head {
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+
+    .img-container {
+      position: relative;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .img-container .bg {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+      background-size: 1px 1px;
+    }
+    .img-container img {
+      height: 610px;
+      object-fit: contain;
+    }
+    .img-container .carousel-indicators li {
+      box-shadow: 0 0 4px -2px #111;
+    }
+
+    .challenge-btn,
+    .edit-btn,
+    .delete-btn,
+    .review-btn-trusted,
+    .review-btn-untrusted {
+      position: absolute;
+      opacity: .5;
+      font-weight: bold;
+      box-shadow: @overview-action-btn-shadow;
+      transition:
+              box-shadow @overview-action-btn-transition,
+              opacity @overview-action-btn-transition;
+    }
+    .challenge-btn {
+      right: 18px;
+      color: black;
+      background: #ffffff;
+      border-radius: 26px;
+      padding: 10px 26px;
+    }
+
+    .challenge-btn,
+    .edit-btn,
+    .delete-btn {
+      top: 18px;
+    }
+    .review-btn-trusted,
+    .review-btn-untrusted {
+      top: 80px
+    }
+    .edit-btn,
+    .delete-btn,
+    .review-btn-trusted,
+    .review-btn-untrusted {
+      border-radius: 20px;
+      font-size: 14px;
+      padding: 4px 12px;
+    }
+    .edit-btn {
+      left: 18px;
+      color: black;
+      background: #ffffff;
+    }
+    .delete-btn {
+      left: 130px;
+      color: white;
+      background: #e40000;
+    }
+    .review-btn-trusted {
+      right: 18px;
+      color: white;
+      background: #4ac309;
+    }
+    .review-btn-untrusted {
+      right: 18px;
+      color: white;
+      background: #d60000;
+    }
+    .challenge-btn:hover,
+    .edit-btn:hover,
+    .delete-btn:hover,
+    .review-btn-trusted:hover,
+    .review-btn-untrusted:hover,
+    .challenge-btn:active,
+    .edit-btn:active,
+    .delete-btn:active,
+    .review-btn-trusted:active,
+    .review-btn-untrusted:active {
+      box-shadow: @overview-action-btn-shadow-transitioned;
+      opacity: 1;
+      z-index: 1; /* meeh */
+    }
+    .challenge-btn small {
+      font-size: 14px;
+    }
+    .edit-btn i,
+    .delete-btn i,
+    .review-btn-trusted i,
+    .review-btn-untrusted i {
+      margin-right: 6px;
+    }
+  }
+  > .panel-body {
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+
+    .co-overview-container {
+      margin-top: 62px;
+    }
+    .title {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 1.36;
+      letter-spacing: -0.04em;
+    }
+    .side-widget {
+      padding: 22px 28px;
+      margin-bottom: 32px;
+      border-radius: 17px;
+      border: 1px solid @co-overview-side-widget-border-color;
+      background-color: @co-overview-side-widget-bg-color;
+      hr {
+          margin: 0;
+      }
+      .info {
+          display: grid;
+          grid-template-columns: auto auto;
+          justify-content: space-between;
+          margin-bottom: 18px;
+          color: @co-overview-text-color;
+          > label, > span {
+              font-size: 14px;
+              line-height: 1.36;
+              padding: 10px 0;
+          }
+          > span {
+              text-align: right;
+          }
+          > span strong {
+              font-weight: 600;
+          }
+          .requesting {
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+          }
+          .requesting strong {
+              margin-right: 8px;
+          }
+          .requesting span {
+              margin-left: 8px;
+          }
+      }
+      .funding-progress {
+          .progress-info {
+              display: flex;
+              padding: 32px 0 16px;
+          }
+          .progress-info > :not(:first-child) {
+              margin-left: 24px;
+          }
+          .progress-info i {
+              font-size: 34px;
+              color: @co-overview-icons-color;
+          }
+          .progress-info > * {
+              display: flex;
+              align-items: center;
+          }
+          .progress-info .infos {
+              margin-left: 10px;
+              color: @co-overview-text-color;
+          }
+          .progress-info strong {
+              font-size: 14px;
+              line-height: 1.36;
+          }
+          .progress-info h6 {
+              font-size: 12px;
+              line-height: 1.36;
+              margin: 0;
+              text-transform: uppercase;
+          }
+
+          .progress-value {
+              margin-bottom: 26px;
+          }
+          .progress-value .progress {
+              height: 6px;
+              border-radius: 12px;
+          }
+          .progress-value .progress-bar {
+              background-color: @co-overview-progressbar-color;
+          }
+      }
+      .contributors {
+          padding: 16px 0;
+          h6 {
+              font-size: 14px;
+              line-height: 1.36;
+              color: @co-overview-text-color;
+          }
+          > span {
+              display: inline-block;
+              margin-right: 7px;
+              margin-bottom: 7px;
+          }
+      }
+      .actions {
+          padding-top: 22px;
+          .invest-btn a {
+              color: white;
+              background-color: @co-overview-action-btn-color;
+          }
+          .invest-btn a:hover {
+              background-color: darken(@co-overview-action-btn-color, 10%)
+          }
+          .invest-btn.disabled a {
+              background-color: lighten(@co-overview-action-btn-color, 10%);
+              pointer-events: none;
+          }
+          .custom-btn a {
+              color: @co-overview-title-color;
+              background: linear-gradient(180deg, #FFFFFF 0%, #CACACA 155.94%);
+              border: 1px solid rgba(53, 53, 53, 0.5);
+          }
+          .custom-btn a:hover {
+              background: linear-gradient(180deg, #CACACA -60%, #FFFFFF 100%);
+          }
+          .invest-btn a,
+          .custom-btn a {
+              display: block;
+              font-weight: 700;
+              font-size: 14px;
+              line-height: 1.36;
+              padding: 16px 10px;
+              border-radius: 8px;
+              text-align: center;
+              margin-bottom: 12px;
+          }
+      }
+    }
+    .youtube-video {
+      overflow: hidden;
+      position: relative;
+      width:100%;
+      max-width: 780px;
+      margin: 16px auto 0 0;
+      border-radius: 17px;
+    }
+    .youtube-video::after {
+        padding-top: 56.25%;
+        display: block;
+        content: '';
+    }
+    .youtube-video iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+  }
+
+  .carousel-control {
+    width: auto;
+    bottom: unset;
+    top: calc(50% - 70px/2);
+    font-size: 36px;
+    line-height: 1;
+    padding: 15px 30px 19px;
+    border-radius: calc(70px/2);
+    opacity: 1;
+    color: #202020;
+    &:focus,
+    &:hover {
+      color: #202020;
+    }
+    &.right {
+      background: white;
+      right: 20px;
+      left: auto;
+    }
+    &.left {
+      background: white;
+      right: auto;
+      left: 20px;
+    }
+  }
+
+  @media (max-width: 1365px) {
+
+  }
+
+  @media (max-width: 991px) {
+    > .co-overview-heading {
+      padding: 0 20px;
+
+      .co-overview-subtitle {
+        flex-direction: column;
+      }
+      .co-overview-social p {
+        margin: 10px 0 40px;
+      }
+    }
+    
+    > .panel-head {
+      border-radius: 0;
+    }
+
+    > .panel-body {
+      .co-overview-container {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+      .co-overview-container > div:first-child {
+        order: 1;
+      }
+      .title,
+      .co-overview-content {
+        padding: 0 20px;
+      }
+      .side-widget {
+        border-radius: 0;
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+
+    > .panel-head {
+      .img-container img {
+        height: 420px;
+      }
+      .challenge-btn,
+      .edit-btn,
+      .delete-btn {
+        top: 16px;
+      }
+      .review-btn-trusted,
+      .review-btn-untrusted {
+        top: 60px;
+      }
+      .challenge-btn {
+        right: 16px;
+        border-radius: 30px;
+        padding: 10px 18px;
+      }
+      .challenge-btn small {
+        font-size: 12px;
+      }
+      .edit-btn,
+      .delete-btn,
+      .review-btn-trusted,
+      .review-btn-untrusted {
+        border-radius: 14px;
+        font-size: 12px;
+        padding: 4px 10px;
+      }
+    }
+
+    .carousel-control {
+      top: calc(50% - 50px/2);
+      font-size: 24px;
+      padding: 11px 22px 14px;
+      border-radius: calc(50px/2);
+    }
+
+  }
+
+  @media (max-width: 575px) {
+
+    > .panel-head {
+      .challenge-btn,
+      .edit-btn,
+      .delete-btn {
+        top: 14px;
+      }
+      .review-btn-trusted,
+      .review-btn-untrusted {
+        top: 56px;
+      }
+      .challenge-btn {
+        right: 14px;
+        border-radius: 20px;
+        padding: 4px 10px;
+      }
+      .challenge-btn small {
+        font-size: 10px;
+      }
+      .edit-btn,
+      .delete-btn,
+      .review-btn-trusted,
+      .review-btn-untrusted {
+        border-radius: 12px;
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+    }
+
+    .carousel-control {
+      top: calc(50% - 36px/2);
+      font-size: 18px;
+      padding: 7px 16px 11px;
+      border-radius: calc(36px/2);
+    }
+
+  }
+
+}
+
+
+/* -------------------------------------------- */
