@@ -17,6 +17,7 @@ use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\ChallengeContactButton;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\models\FundingCategory;
 use humhub\modules\xcoin\utils\ImageUtils;
 use Yii;
 use yii\web\HttpException;
@@ -66,7 +67,7 @@ class ChallengeController extends ContentContainerController
      * @return string
      * @throws HttpException
      */
-    public function actionOverview($challengeId)
+    public function actionOverview($challengeId, $categoryId = null)
     {
         $challenge = Challenge::findOne(['id' => $challengeId, 'space_id' => $this->contentContainer]);
 
@@ -80,9 +81,28 @@ class ChallengeController extends ContentContainerController
             $fundings = Funding::findAll(['challenge_id' => $challenge->id, 'published' => 1]);
         }
 
+        $categories = [];
+        foreach ($fundings as $funding) {
+            foreach ($funding->getCategories()->all() as $category) {
+                $categories[] = $category;
+            }
+        }
+
+        if ($categoryId) {
+            $fundings = array_filter($fundings, function($funding) use ($categoryId) {
+                $categories_ids = array_map(function($category) {
+                    return $category->id;
+                }, $funding->getCategories()->all());
+
+                return in_array($categoryId, $categories_ids);
+            });
+        }
+
         return $this->render('overview', [
             'challenge' => $challenge,
-            'fundings' => $fundings
+            'fundings' => $fundings,
+            'categories' => array_unique($categories, SORT_REGULAR),
+            'activeCategory' => $categoryId,
         ]);
     }
 

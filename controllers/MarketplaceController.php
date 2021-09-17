@@ -49,7 +49,7 @@ class MarketplaceController extends ContentContainerController
      * @return string
      * @throws HttpException
      */
-    public function actionOverview($marketplaceId)
+    public function actionOverview($marketplaceId, $categoryId = null)
     {
         $marketplace = Marketplace::findOne(['id' => $marketplaceId, 'space_id' => $this->contentContainer]);
 
@@ -74,9 +74,28 @@ class MarketplaceController extends ContentContainerController
             }
         }
 
+        $categories = [];
+        foreach ($products as $product) {
+            foreach ($product->getCategories()->all() as $category) {
+                $categories[] = $category;
+            }
+        }
+
+        if ($categoryId) {
+            $products = array_filter($products, function($product) use ($categoryId) {
+                $categories_ids = array_map(function($category) {
+                    return $category->id;
+                }, $product->getCategories()->all());
+
+                return in_array($categoryId, $categories_ids);
+            });
+        }
+
         return $this->render('overview', [
             'marketplace' => $marketplace,
-            'products' => $products
+            'products' => $products,
+            'categories' => array_unique($categories, SORT_REGULAR),
+            'activeCategory' => $categoryId,
         ]);
     }
 
