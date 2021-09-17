@@ -11,6 +11,7 @@ use humhub\modules\xcoin\models\Product;
 use humhub\modules\xcoin\models\ProductCategory;
 use yii\helpers\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\modules\xcoin\widgets\SocialShare;
 
 Assets::register($this);
 
@@ -107,6 +108,8 @@ Assets::register($this);
                 <?= Html::a('<i class="fa fa-pencil"></i>' . Yii::t('XcoinModule.marketplace', 'Edit'), ['/xcoin/marketplace/edit', 'id' => $marketplace->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
             <?php endif; ?>
             <!-- marketplace edit button end -->
+
+            <?= SocialShare::widget(['url' => Yii::$app->request->hostInfo . Yii::$app->request->url]); ?>
         </div>
     </div>
     <div class="panel panel-default panel-body">
