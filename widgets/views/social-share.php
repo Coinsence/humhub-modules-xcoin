@@ -11,7 +11,7 @@
 </div>
 
 <script>
-    $('.social-share .share-btn').on('click', function(e) {
+    $('.cs-social-share .share-btn').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         let sharer = $(this).data('sharer');
