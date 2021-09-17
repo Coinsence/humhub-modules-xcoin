@@ -1,5 +1,6 @@
 <?php
 
+use Da\QrCode\QrCode;
 use humhub\assets\Select2BootstrapAsset;
 use humhub\libs\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
@@ -11,6 +12,7 @@ use humhub\widgets\ModalDialog;
 use kartik\widgets\Select2;
 use yii\web\JsExpression;
 
+/** @var $qrCode QrCode */
 Select2BootstrapAsset::register($this);
 ?>
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.transaction', '<strong>Transfer</strong> asset'), 'closable' => false]) ?>
@@ -31,6 +33,7 @@ Select2BootstrapAsset::register($this);
         </div>
     </div>
 </div>
+<div class="col-md-12 "><?= '<img src="' . $qrCode->writeDataUri() . '">'; ?></div>
 
 <div class="modal-footer">
     <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Next')); ?>

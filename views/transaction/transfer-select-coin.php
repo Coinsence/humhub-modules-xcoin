@@ -4,6 +4,7 @@ use humhub\assets\Select2BootstrapAsset;
 use humhub\libs\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
+use humhub\modules\xcoin\models\Transaction;
 use humhub\modules\xcoin\widgets\AccountField;
 use humhub\widgets\ActiveForm;
 use humhub\widgets\ModalButton;
@@ -11,6 +12,9 @@ use humhub\widgets\ModalDialog;
 use kartik\widgets\Select2;
 use yii\web\JsExpression;
 
+/**
+ * @var $transaction Transaction
+ */
 Select2BootstrapAsset::register($this);
 ?>
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.transaction', '<strong>Transfer</strong> asset'), 'closable' => false]) ?>
@@ -20,7 +24,7 @@ Select2BootstrapAsset::register($this);
     <hr class="row">
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($transaction, 'amount')->textInput(['type' => 'number']); ?>
+            <?= $form->field($transaction, 'amount'); ?>
         </div>
         <div class="col-md-6">
             <?=

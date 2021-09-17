@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use Da\QrCode\QrCode;
 use humhub\components\Event;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
@@ -83,6 +84,8 @@ class TransactionController extends ContentContainerController
         $transaction->from_account_id = $fromAccount->id;
         $transaction->asset_id = array_keys($accountAssetList)[0];
 
+        $qrCode = (new QrCode($fromAccount->guid))
+            ->setSize(150);
 
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '1') {
             return $this->renderAjax('transfer-select-coin', [
@@ -90,17 +93,31 @@ class TransactionController extends ContentContainerController
                 'accountAssetList' => $accountAssetList
             ]);
         }
+
         $transaction->load(Yii::$app->request->post());
 
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
+            if($transaction->amount == null){
+                $transaction->addError('amount','this field is required');
+                return $this->renderAjax('transfer-select-coin', [
+                    'transaction' => $transaction,
+                    'accountAssetList' => $accountAssetList
+                ]);
+            }
             return $this->renderAjax('transfer-select-sender-account', [
                 'transaction' => $transaction,
                 'accountAssetList' => $accountAssetList
             ]);
         }
 
-
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3') {
+            if($transaction->toAccount == null){
+               $transaction->addError('to_account_id','this field is required');
+                return $this->renderAjax('transfer-select-sender-account', [
+                    'transaction' => $transaction,
+                    'accountAssetList' => $accountAssetList
+                ]);
+            }
             // disable transfer to ISSUE ACCOUNT
             if ($this->contentContainer instanceof Space) {
                 if (AccountHelper::getIssueAccount($this->contentContainer)->id == Account::findOne(['id' => $transaction->to_account_id])->id) {
@@ -116,10 +133,13 @@ class TransactionController extends ContentContainerController
                 'container' => $this->contentContainer
             ]);
         }
+        // Check validation
+
 
         return $this->renderAjax('transfer', [
             'transaction' => $transaction,
             'fromAccount' => $fromAccount,
+            'qrCode'=>$qrCode
         ]);
     }
 
