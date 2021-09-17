@@ -1,13 +1,63 @@
 // main: ../build.less
 /* -------------------------------------------- */
-/* Space challenge styling */
+/* Coinsence space overview styling */
 /* -------------------------------------------- */
 
-.space-challenge {
-  > .panel > .panel-heading {
-    padding: 56px 46px 0;
-    margin-bottom: -100px;
+.cs-overview {
+  margin-top: -42px;
+  > .close-cs-overview {
+    display: inline-block;
+    margin-bottom: 24px;
+  }
+  > .panel-head {
+    display: flex;
+    padding: 0;
+    overflow: hidden;
+    .cs-overview-info,
     .img-container {
+      width: 50%;
+    }
+    .cs-overview-info {
+      display: flex;
+      flex-direction: column;
+      background-color: #fff;
+      padding: 42px 48px;
+      font-family: 'Roboto', sans-serif;
+      margin: 0 auto;
+    }
+    .cs-overview-info .cs-overview-title {
+      color: #333;
+      font-size: 36px;
+      font-weight: 600;
+      margin-top: 0;
+      margin-bottom: 22px;
+    }
+    .cs-overview-info .asset-name {
+      margin-left: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+    .cs-overview-info .cs-overview-description {
+      margin: 22px 0;
+      color: #333;
+      font-size: 16px;
+      line-height: 25px;
+    }
+    .cs-overview-info .add-btn {
+      padding: 20px 80px;
+      margin-top: auto;
+      align-self: flex-start;
+      border-radius: 30px;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+    .cs-overview-info .add-btn i {
+      font-size: 20px;
+      vertical-align: bottom;
+    }
+    .img-container {
+      display: flex;
       position: relative;
     }
     .img-container > .bg {
@@ -19,7 +69,8 @@
     .img-container > img {
       position: relative;
       width: 100%;
-      min-height: 550px;
+      min-height: 530px;
+      align-self: center;
       border-top-right-radius: 4px;
       border-top-left-radius: 4px;
       object-fit: contain;
@@ -50,86 +101,9 @@
     .edit-btn i {
       margin-right: 6px;
     }
-    .close-challenge {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-    }
-    .close-challenge .icon {
-      display: block;
-      background-color: #fff;
-      padding: 22px 30px;
-      border-radius: 50%;
-      box-shadow: 0 3px 6px #00000029;
-      transition: box-shadow 500ms ease-in-out;
-    }
-    .close-challenge .icon:hover,
-    .close-challenge .icon:active {
-      box-shadow: 0 3px 10px #00000069;
-    }
-    .close-challenge .icon .X {
-      position: relative;
-      display: block;
-      background-color: #c4c4c4;
-      height: 19px;
-      width: 3px;
-      transform: rotate(45deg);
-    }
-    .close-challenge .icon .X:after {
-      position: absolute;
-      content: '';
-      background-color: #c4c4c4;
-      height: 3px;
-      width: 19px;
-      left: -8px;
-      top: 8px;
-    }
-    .challenge-info {
-      background-color: #fff;
-      width: 70%;
-      padding: 36px 64px;
-      font-family: 'Roboto', sans-serif;
-      box-shadow: 0 3px 50px #00000029;
-      transform: translateY(-160px);
-      margin: 0 auto;
-    }
-    .challenge-info .challenge-title {
-      color: #202020;
-      font-size: 32px;
-      font-weight: bold;
-      margin-top: 0;
-      margin-bottom: 22px;
-    }
-    .challenge-info .middle-block {
-      padding: 15px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid #70707033;
-      border-bottom: 1px solid #70707033;
-    }
-    .challenge-info .middle-block .asset-name {
-      // display: inline-block;
-      margin-left: 12px;
-      font-size: 12px;
-      font-weight: bold;
-      text-transform: uppercase;
-      color: #202020;
-
-    }
-    .challenge-info .middle-block .add-project {
-      padding: 15px 46px;
-      border-radius: 30px;
-      font-size: 14px;
-    }
-    .challenge-info .challenge-description {
-      margin-top: 22px;
-      color: #202020;
-      font-size: 14px;
-    }
   }
-  > .panel > .panel-body {
-    padding: 0 46px 56px;
+  > .panel-body {
+    padding: 34px 48px 56px;
     .header {
       font-size: 18px;
       color: #202020;
@@ -137,7 +111,25 @@
       margin-bottom: 48px;
     }
   }
-  .received-funding .panels {
+  .cs-categories {
+    margin-bottom: 36px;
+    .cs-category {
+      display: inline-block;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 25px;
+      padding: 8px 14px;
+      margin-right: 15px;
+      border-radius: 20px;
+      color: #333;
+      background-color: #F2F2F2;
+      &.active {
+        color: #fff;
+        background-color: #171717;
+      }
+    }
+  }
+  .cs-cards {
     .panel {
       border-radius: 8px;
       position: relative;
@@ -298,56 +290,58 @@
 
   /* Media queries */
 
-  @media (max-width: 1365px) {
+  @media (max-width: 1333px) {
 
-    > .panel > .panel-heading {
-      padding: 56px 44px 0;
-    }
-
-  }
-
-  @media (max-width: 991px) {
-
-    > .panel > .panel-heading {
-      padding: 0;
-      .challenge-info {
-        padding: 27px 62px;
-        width: 88%;
+    > .panel-head {
+      flex-direction: column;
+      .cs-overview-info,
+      .img-container {
+        width: 100%;
+      }
+      .cs-overview-info {
+        order: 2;
       }
     }
 
   }
 
+  @media (max-width: 991px) and (min-width: 767px) {
+    margin-top: 32px;
+  }
+
   @media (max-width: 767px) {
 
-    > .panel > .panel-heading {
+    margin-top: 0;
+
+    > .close-cs-overview {
+      padding: 12px;
+    }
+
+    > .panel-head {
       .edit-btn {
         top: 16px;
         border-radius: 14px;
         font-size: 12px;
         padding: 4px 10px;
       }
-      .challenge-info {
+      .cs-overview-info {
         padding: 26px 32px;
       }
-      .challenge-info .challenge-title {
+      .cs-overview-info .cs-overview-title {
         font-size: 28px;
       }
-      .challenge-info .middle-block {
-        padding: 11px 0;
-      }
-      .challenge-info .middle-block .add-project {
+      .cs-overview-info .add-btn {
         padding: 10px 34px;
         border-radius: 20px;
         font-size: 12px;
       }
-      .challenge-info .challenge-description {
+      .cs-overview-info .cs-overview-description {
         margin-top: 20px;
         font-size: 13px;
       }
     }
-    > .panel > .panel-body {
-      padding: 0 26px 56px;
+    > .panel-body {
+      padding: 48px 26px;
       .header {
         font-size: 16px;
         margin-bottom: 36px;
@@ -356,40 +350,40 @@
   }
 
   @media (max-width: 575px) {
-    > .panel {
-      margin-left: -15px;
-      margin-right: -15px;
-    }
-    > .panel > .panel-heading {
+    > .panel-head {
       .edit-btn {
         top: 14px;
         border-radius: 12px;
         font-size: 10px;
         padding: 4px 8px;
       }
-      .challenge-info {
+      .cs-overview-info {
         padding: 18px 16px;
       }
-      .challenge-info .challenge-title {
+      .cs-overview-info .cs-overview-title {
         font-size: 22px;
         margin-bottom: 14px;
       }
-      .challenge-info .middle-block .challenge-asset .space-acronym {
+      .cs-overview-info .cs-overview-asset .space-acronym {
         width: 24px;
         height: 24px;
         font-size: 9.6px;
       }
-      .challenge-info .middle-block .asset-name {
+      .cs-overview-info .asset-name {
         font-size: 10px;
         margin-left: 0;
       }
-      .challenge-info .challenge-description {
+      .cs-overview-info .cs-overview-description {
         margin-top: 20px;
         font-size: 12px;
       }
     }
 
-    > .panel > .panel-body {
+    > .panel-body {
+      .cs-category {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
       .header {
         font-size: 14px;
         margin-bottom: 28px;

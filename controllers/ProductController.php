@@ -333,6 +333,13 @@ class ProductController extends ContentContainerController
             throw new HttpException(404);
         }
 
+        if (null === Yii::$app->request->getReferrer()) {
+            return $this->redirect($this->contentContainer->createUrl('/xcoin/product/overview', [
+                'container' => $this->contentContainer,
+                'productId' => $product->id
+            ]));
+        }
+
         $message = new Message(['title' => Yii::t('XcoinModule.product', "Sales discussion for : {$product->name}")]);
         $message->save();
 
