@@ -8,6 +8,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\models\Account;
+use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Transaction;
 use humhub\modules\xcoin\models\Product;
 
@@ -77,6 +78,14 @@ class TransactionController extends ContentContainerController
             throw new HttpException(404, 'No assets available on this account!');
         }
 
+        if (Yii::$app->request->isPost && Yii::$app->request->post('overview') == '1') {
+            return $this->htmlRedirect([
+                '/xcoin/account',
+                'id' => $fromAccount->id,
+                'container' => $this->contentContainer
+            ]);
+        }
+
         $transaction = new Transaction();
         $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
         $transaction->from_account_id = $fromAccount->id;
@@ -95,10 +104,9 @@ class TransactionController extends ContentContainerController
 
             $this->view->saved();
 
-            return $this->htmlRedirect([
-                '/xcoin/account',
-                'id' => $transaction->from_account_id,
-                'container' => $this->contentContainer
+            return $this->renderAjax('transfer-overview', [
+                'transaction' => $transaction,
+                'asset' => Asset::findOne(['id' => $transaction->asset_id]),
             ]);
         }
 
