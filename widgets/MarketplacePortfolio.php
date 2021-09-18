@@ -8,6 +8,7 @@
 
 namespace humhub\modules\xcoin\widgets;
 
+use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\Product;
 use humhub\modules\space\models\Space;
