@@ -107,14 +107,25 @@ class FundingController extends ContentContainerController
             ]);
         }
 
+        if (Yii::$app->request->isPost && Yii::$app->request->post('overview') == '1') {
+            return $this->htmlRedirect([
+                '/xcoin/account',
+                'id' => $fromAccount->id,
+                'container' => Yii::$app->user->getIdentity()
+            ]);
+        }
+
         $model = new FundingInvest();
         $model->fromAccount = $fromAccount;
         $model->funding = $funding;
         $model->amountPay = 1;
         if ($model->load(Yii::$app->request->post()) && $model->invest()) {
-            $challenge = $funding->getChallenge()->one();
-            $challengeSpace = $challenge->getSpace()->one();
-            return $this->htmlRedirect(['/xcoin/challenge/overview', 'challengeId' => $challenge->id, 'container' => $challengeSpace]);
+            return $this->renderAjax('invest-overview', [
+                'amountPay' => $model->amountPay,
+                'amountBuy' => $model->getBuyAmount(),
+                'payAsset' => $model->getPayAsset(),
+                'buyAsset' => $model->getBuyAsset(),
+            ]);
         }
 
         return $this->renderAjax('invest', [
