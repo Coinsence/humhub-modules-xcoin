@@ -17,8 +17,8 @@ use yii\bootstrap\Html;
     <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-marketplace-cover.png', $imageHtmlOptions) ?>
 <?php endif ?>
 
-<?php if ($link) :  echo Html::endTag('a'); endif; ?>
-
 <?php if ($title): ?>
-    <?= Html::encode($marketplace->title) ?>
+    <small><?= Html::encode($marketplace->title) ?></small>
 <?php endif; ?>
+
+<?php if ($link) :  echo Html::endTag('a'); endif; ?>
