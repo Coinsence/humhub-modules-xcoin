@@ -36,6 +36,10 @@ class FundingInvest extends Model
      */
     public $amountPay;
 
+    /**
+     * @var Transaction
+     */
+    public $payTransaction;
 
     /**
      * @inheritdoc
@@ -169,7 +173,13 @@ class FundingInvest extends Model
             throw new HttpException(Yii::t('XcoinModule.base', 'Transaction failed!'));
         }
 
+        $this->payTransaction = $transaction;
+
         return true;
     }
 
+    public function getPayTransaction()
+    {
+
+    }
 }

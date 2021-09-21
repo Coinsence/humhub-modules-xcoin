@@ -125,6 +125,7 @@ class FundingController extends ContentContainerController
                 'amountBuy' => $model->getBuyAmount(),
                 'payAsset' => $model->getPayAsset(),
                 'buyAsset' => $model->getBuyAsset(),
+                'transaction' => $model->payTransaction
             ]);
         }
 
