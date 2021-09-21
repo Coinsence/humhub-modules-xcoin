@@ -80,15 +80,19 @@ $upload = Upload::withName();
                     "select2:select" => new JsExpression("function() {  
                      var offer_type = $(this).val();
                      if(offer_type == 1){
+                        $('#product-discount').show();
+                        $('#cta-link').show();
+                        $('#buy-message').show();
                         $('#product-price').hide();
                         $('#product-payment-type').hide();
                         $('#payment_first_container').hide();
-                        $('#product-discount').show();
                         $('#product-vouchers').hide();
                      } else if (offer_type == 2) {
                         $('#product-price').show();
                         $('#product-payment-type').show();
                         $('#payment_first_container').show();
+                        $('#cta-link').show();
+                        $('#buy-message').show();
                         $('#product-discount').hide();
                         $('#product-vouchers').hide();
                      } else {
@@ -97,6 +101,8 @@ $upload = Upload::withName();
                         $('#payment_first_container').show();
                         $('#product-payment-type').hide();
                         $('#product-discount').hide();
+                        $('#cta-link').hide();
+                        $('#buy-message').hide();
                      }
                 }"),]
             ]) ?>

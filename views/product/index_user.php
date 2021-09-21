@@ -144,8 +144,17 @@ Assets::register($this);
                                                         'link' => false
                                                     ]); ?>
                                                     <small> <?= $product->getPaymentType() ?> </small>
-                                                <?php else : ?>
+                                                <?php elseif ($product->offer_type == Product::OFFER_DISCOUNT_FOR_COINS) : ?>
                                                     <?= $product->discount ?> % <?= Yii::t('XcoinModule.product', 'Discount') ?>
+                                                <?php else: ?>
+                                                    <?= Yii::t('XcoinModule.product', 'Price') ?> : <b><?= $product->price ?></b>
+                                                    <?= SpaceImage::widget([
+                                                        'space' => $product->marketplace->asset->space,
+                                                        'width' => 24,
+                                                        'showTooltip' => true,
+                                                        'link' => false
+                                                    ]); ?>
+                                                    <small> <?= Yii::t('XcoinModule.product', 'Per Voucher') ?> </small>
                                                 <?php endif; ?>
                                             </div>
                                             <!-- product pricing & discount end -->

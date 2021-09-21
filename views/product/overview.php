@@ -200,7 +200,7 @@ Assets::register($this);
                                     'showTooltip' => true,
                                     'link' => true
                                 ]); ?>
-                            <?php else : ?>
+                            <?php elseif ($product->offer_type == Product::OFFER_DISCOUNT_FOR_COINS) : ?>
                                 <strong><?= $product->discount ?> %</strong>
                                 <?= SpaceImage::widget([
                                     'space' => $product->marketplace->asset->space,
@@ -209,6 +209,15 @@ Assets::register($this);
                                     'link' => true
                                 ]); ?>
                                 <span><?= Yii::t('XcoinModule.product', 'Discount') ?></span>
+                            <?php else : ?>
+                                <strong><?= $product->price ?></strong>
+                                <?= SpaceImage::widget([
+                                    'space' => $product->marketplace->asset->space,
+                                    'width' => 24,
+                                    'showTooltip' => true,
+                                    'link' => true
+                                ]); ?>
+                                <span><?= Yii::t('XcoinModule.product', 'Per Voucher') ?></span>
                             <?php endif; ?>
                         </span>
 
@@ -219,7 +228,7 @@ Assets::register($this);
                         <span>
                             <?= join(', ', array_map(function($cat) {
                                 return '<strong>' . $cat->name . '</strong>';
-                            }, $product->getCategories()->all())) ?> 
+                            }, $product->getCategories()->all())) ?>
                         </span>
                     </div>
                     <hr/>
