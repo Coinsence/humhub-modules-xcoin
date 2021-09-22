@@ -33,7 +33,7 @@ Select2BootstrapAsset::register($this);
         </div>
     </div>
 </div>
-<div class="col-md-12 "><?= '<img src="' . $qrCode->writeDataUri() . '">'; ?></div>
+<div class="col-md-12" ><?= '<img src="' . $qrCode->writeDataUri() . '"style="margin-right: auto ; margin-left: auto ; display: block" >'; ?></div>
 
 <div class="modal-footer">
     <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Next')); ?>

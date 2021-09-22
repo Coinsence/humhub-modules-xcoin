@@ -25,7 +25,7 @@ Select2BootstrapAsset::register($this);
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Transfer')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 
