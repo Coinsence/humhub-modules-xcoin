@@ -20,11 +20,11 @@ Select2BootstrapAsset::register($this);
 <?php $form = ActiveForm::begin(['id' => 'asset-form']); ?>
 <?= Html::hiddenInput('overview', '1'); ?>
 <div class="modal-body">
-    <div class="row" style="margin-bottom: 12px;">
+    <div class="row text-center">
         <div class="col-md-12">
             <?= Yii::t('XcoinModule.transaction', 'Your transfer of {amount} was successfull', [
                 'amount' =>
-                    $amountPay . 
+                    $amountPay .
                     '<span style="margin-left: 4px;">' . SpaceImage::widget([
                         'space' => $payAsset->space,
                         'width' => 16,
@@ -36,11 +36,11 @@ Select2BootstrapAsset::register($this);
     </div>
 
     <?php if ($buyAsset) : ?>
-        <div class="row" style="margin-bottom: 12px;">
+        <div class="row text-center" style="margin-top: 20px">
             <div class="col-md-12">
                 <?= Yii::t('XcoinModule.transaction', 'You\'ve recieved {amount}', [
                     'amount' =>
-                        $amountBuy . 
+                        $amountBuy .
                         '<span style="margin-left: 4px;">' . SpaceImage::widget([
                             'space' => $buyAsset->space,
                             'width' => 16,
@@ -51,30 +51,35 @@ Select2BootstrapAsset::register($this);
             </div>
         </div>
     <?php endif; ?>
-    
+
+    <div class="row text-center" style="margin-top: 20px">
+        <div class="col-md-12">
+            <?= ModalButton::submitModal(null, Yii::t('XcoinModule.transaction', 'Account')) ?>
+            <?= ModalButton::cancel(Yii::t('XcoinModule.transaction', 'Close')) ?>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
     <?php if ($transaction->eth_hash) : ?>
-        <div class="row">
+        <div class="row text-center">
             <div class="col-md-12">
-                <?= 
-                    Yii::t('XcoinModule.transaction', 'You can check this link to see the transaction hash on the blockchain: ') . 
-                    Html::a(
-                        StringHelper::truncate($transaction->eth_hash, 30, '...'),
-                        " https://rinkeby.etherscan.io/tx/$transaction->eth_hash",
-                        [
-                            'target' => '_blank',
-                            'title' => $transaction->eth_hash,
-                            'data-toggle' => 'tooltip',
-                            'style' => 'color: #3cbeef; margin-top: 4px;',
-                        ]
-                    )
+                <?= Yii::t('XcoinModule.transaction', 'link to blockchain transaction: ') ?><br>
+                <?=
+                Html::a(
+                    StringHelper::truncate($transaction->eth_hash, 30, '...'),
+                    " https://rinkeby.etherscan.io/tx/$transaction->eth_hash",
+                    [
+                        'target' => '_blank',
+                        'title' => $transaction->eth_hash,
+                        'data-toggle' => 'tooltip',
+                        'style' => 'color: #3cbeef; margin-top: 4px;',
+                    ]
+                )
                 ?>
             </div>
         </div>
     <?php endif; ?>
-</div>
-<div class="modal-footer">
-    <?= ModalButton::cancel(); ?>
-    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'Account')); ?>
 </div>
 
 <?php ActiveForm::end(); ?>
