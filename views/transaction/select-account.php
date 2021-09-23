@@ -22,6 +22,7 @@ use humhub\modules\xcoin\widgets\PurchaseCoin;
     ?>
 </div>
 
+<?php if (isset($requireAsset)): ?>
 <div class="modal-footer">
     <?= PurchaseCoin::widget([
         'contentContainer' => $contentContainer,
@@ -30,5 +31,5 @@ use humhub\modules\xcoin\widgets\PurchaseCoin;
     ]) ?>
     <?= ModalButton::cancel(); ?>
 </div>
-
+<?php endif;?>
 <?php ModalDialog::end() ?>
