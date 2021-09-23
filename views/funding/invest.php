@@ -23,7 +23,7 @@ Select2BootstrapAsset::register($this);
         <div class="col-md-6">
             <?= $form->field($model, 'amountPay')->widget(AmountField::classname(), ['asset' => $model->getPayAsset()]); ?>
         </div>
-        <?php if ($model->getBuyAsset()): ?>
+        <?php if (!$model->funding->challenge->acceptNoRewarding()): ?>
             <div class="col-md-6">
                 <?= $form->field($model, 'amountBuy')->widget(AmountField::classname(), ['asset' => $model->getBuyAsset(), 'readonly' => true]); ?>
             </div>
