@@ -22,13 +22,14 @@ use humhub\modules\xcoin\widgets\PurchaseCoin;
     ?>
 </div>
 
+<?php if (isset($requireAsset)): ?>
 <div class="modal-footer">
     <?= PurchaseCoin::widget([
         'contentContainer' => $contentContainer,
-        'requireAsset' => isset($requireAsset) ? $requireAsset : null,
+        'requireAsset' => $requireAsset,
         'noCoinsWarning' => true
     ]) ?>
     <?= ModalButton::cancel(); ?>
 </div>
-
+<?php endif;?>
 <?php ModalDialog::end() ?>
