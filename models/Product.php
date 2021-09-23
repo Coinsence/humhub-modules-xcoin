@@ -48,6 +48,7 @@ class Product extends ActiveRecord
     // Model scenarios
     const SCENARIO_EDIT = 'sedit';
     const SCENARIO_CREATE = 'screate';
+    const SCENARIO_REVIEW = 'sreview';
 
     // Product type
     const TYPE_PERSONAL = 1;
@@ -195,6 +196,9 @@ class Product extends ActiveRecord
                 'payment_first',
                 'vouchers',
             ],
+            self::SCENARIO_REVIEW => [
+                'review_status'
+            ],
         ];
     }
 
@@ -237,6 +241,15 @@ class Product extends ActiveRecord
         }
 
         return parent::beforeSave($insert);
+    }
+
+    public function afterFind()
+    {
+        if ($this->isVoucherProduct()) {
+            $this->setVouchers();
+        }
+
+        parent::afterFind();
     }
 
     public function afterSave($insert, $changedAttributes)

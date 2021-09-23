@@ -201,7 +201,6 @@ class MarketplaceController extends ContentContainerController
 
     public function actionReviewProduct($id, $status)
     {
-
         $model = Product::findOne(['id' => $id]);
         if ($model == null) {
             throw new HttpException(404,'Product Not found');
@@ -211,7 +210,7 @@ class MarketplaceController extends ContentContainerController
             throw new HttpException(401);
         }
 
-        $model->scenario = Product::SCENARIO_EDIT;
+        $model->scenario = Product::SCENARIO_REVIEW;
         $model->review_status = $status;
 
         $model->save();

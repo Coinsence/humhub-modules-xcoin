@@ -245,10 +245,6 @@ class ProductController extends ContentContainerController
             return $this->htmlRedirect(['/xcoin/product', 'container' => $this->contentContainer]);
         }
 
-        if ($model->isVoucherProduct()) {
-            $model->setVouchers();
-        }
-
         return $this->renderAjax('edit', [
             'model' => $model,
             'assetList' => $assetList,
@@ -294,7 +290,7 @@ class ProductController extends ContentContainerController
             throw new HttpException(401);
         }
 
-        $model->scenario = Product::SCENARIO_EDIT;
+        $model->scenario = Product::SCENARIO_REVIEW;
         $model->review_status = $status;
 
         $model->save();
