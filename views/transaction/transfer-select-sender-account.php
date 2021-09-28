@@ -17,6 +17,7 @@ Select2BootstrapAsset::register($this);
 <?php $form = ActiveForm::begin(['id' => 'asset-form']); ?>
 <?= Html::hiddenInput('step', '3'); ?>
 <?= $form->field($transaction, 'amount')->hiddenInput()->label(false) ?>
+<?= $form->field($transaction, 'asset_id')->hiddenInput()->label(false) ?>
 
 <div class="modal-body">
         <?= $form->field($transaction, 'to_account_id')->widget(AccountField::class); ?>
