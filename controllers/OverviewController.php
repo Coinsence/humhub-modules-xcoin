@@ -53,7 +53,7 @@ class OverviewController extends ContentContainerController
 
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
-            
+
             $bridge = Yii::$app->params['coinPurchase']['bridge'];
             $defaultAccount = Account::findOne([
                 'user_id' => $this->contentContainer->id,
@@ -71,11 +71,11 @@ class OverviewController extends ContentContainerController
                 'coin' => $form->coin,
                 'amount' => intval($form->amount),
                 'pAddress' => $defaultAccount->ethereum_address,
-                'rediectUrl' => Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success',
+                'redirectUrl' => Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success',
             ];
-            
+
             $jsonData = json_encode($data);
-            
+
             $encodedData = base64_encode($jsonData);
             $this->redirect($bridge . '?data=' . $encodedData);
         }
@@ -83,6 +83,6 @@ class OverviewController extends ContentContainerController
         return $this->renderAjax('purchase-coin-prompt', [
             'coin' => $form->coin,
             'model' => $form
-        ]); 
+        ]);
     }
 }

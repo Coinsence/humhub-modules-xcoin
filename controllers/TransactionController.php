@@ -3,19 +3,18 @@
 namespace humhub\modules\xcoin\controllers;
 
 use Da\QrCode\QrCode;
-use humhub\components\Event;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AccountHelper;
-use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Asset;
+use humhub\modules\xcoin\models\forms\CashOutForm;
 use humhub\modules\xcoin\models\Transaction;
 use humhub\modules\xcoin\models\Product;
-
 use Yii;
 use yii\web\HttpException;
+use yii\web\ServerErrorHttpException;
 
 /**
  * Description of AccountController
@@ -30,8 +29,21 @@ class TransactionController extends ContentContainerController
         return $this->actionSelectAccount();
     }
 
-    public function actionSelectAccount($productId = null)
+    public function actionSelectAccount($productId = null, $assetId = null)
     {
+        if (null !== $assetId) {
+            if (null === $asset = Asset::findOne(['id' => $assetId])) {
+                throw new HttpException(404);
+            }
+
+            return $this->renderAjax('select-account', [
+                'contentContainer' => $this->contentContainer,
+                'requireAsset' => $asset,
+                'nextRoute' => ['/xcoin/transaction/cash-out', 'contentContainer' => $this->contentContainer],
+                'isCoinCashOut' => true
+            ]);
+        }
+
         if ($productId !== null) {
             $product = Product::findOne(['id' => $productId]);
             if ($product === null) {
@@ -219,5 +231,38 @@ class TransactionController extends ContentContainerController
         $transaction = Transaction::findOne(['id' => $id]);
 
         return $this->renderAjax('details', ['transaction' => $transaction]);
+    }
+
+    public function actionCashOut($accountId)
+    {
+        $senderAccount = Account::findOne(['id' => $accountId]);
+
+        if (null === $senderAccount) {
+            throw new HttpException(404);
+        }
+
+        $cashOutForm = new CashOutForm();
+        $cashOutForm->senderAccount = $senderAccount;
+
+        if ($cashOutForm->load(Yii::$app->request->post()) && $cashOutForm->validate()) {
+
+            try {
+                $cashOutForm->makeTransaction();
+            } catch (ServerErrorHttpException $exception) {
+                $this->view->error($exception->getMessage());
+            }
+
+            $jsonData = json_encode($cashOutForm->getCashoutBridgeRedirectDate());
+
+            $encodedData = base64_encode($jsonData);
+            $this->redirect($cashOutForm->getCashoutBridge() . '?data=' . $encodedData);
+
+            $this->view->saved();
+        }
+
+        return $this->renderAjax('cashout-coin-prompt', [
+            'cashOutAssetName' => $cashOutForm->getCashOutAssetName(),
+            'model' => $cashOutForm
+        ]);
     }
 }
