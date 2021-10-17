@@ -12,7 +12,7 @@ Assets::register($this);
 
 /** @var $products Product[] */
 ?>
-    
+
 <div class="marketplacePortfolio panel panel-default">
     <div class="panel-heading">
         <span><?= Yii::t('XcoinModule.marketplace', '<strong>Marketplace</strong> Portfolio ') ?></span>
@@ -31,10 +31,10 @@ Assets::register($this);
                     $owner = $product->isSpaceProduct() ? $product->getSpace()->one() : $product->getCreatedBy()->one();
                     $picture = $product->getPicture();
                     ?>
-                    
-                    <a href="<?= Url::to(['/xcoin/product/details','container' => $user,'productId' => $product->id ])?>" 
+
+                    <a href="<?= Url::to(['/xcoin/product/details','container' => $user,'productId' => $product->id ])?>"
                         data-target="#globalModal">
-        
+
                         <div class="col-sm-6 col-md-4">
                         <div class="panel">
                                 <div class="panel-heading">
@@ -97,8 +97,24 @@ Assets::register($this);
                                                         'link' => false
                                                     ]); ?>
                                                     <small> <?= $product->getPaymentType() ?> </small>
+                                                <?php elseif ($product->offer_type == Product::OFFER_DISCOUNT_FOR_COINS) : ?>
+                                                    <strong><?= $product->discount ?> %</strong>
+                                                    <?= SpaceImage::widget([
+                                                        'space' => $product->marketplace->asset->space,
+                                                        'width' => 24,
+                                                        'showTooltip' => true,
+                                                        'link' => true
+                                                    ]); ?>
+                                                    <span><?= Yii::t('XcoinModule.product', 'Discount') ?></span>
                                                 <?php else : ?>
-                                                    <?= $product->discount ?> % <?= Yii::t('XcoinModule.product', 'Discount') ?>
+                                                    <strong><?= $product->price ?></strong>
+                                                    <?= SpaceImage::widget([
+                                                        'space' => $product->marketplace->asset->space,
+                                                        'width' => 24,
+                                                        'showTooltip' => true,
+                                                        'link' => true
+                                                    ]); ?>
+                                                    <span><?= Yii::t('XcoinModule.product', 'Per Voucher') ?></span>
                                                 <?php endif; ?>
                                             </div>
                                             <!-- product pricing & discount end -->

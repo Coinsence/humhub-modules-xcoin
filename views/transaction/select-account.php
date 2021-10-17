@@ -8,6 +8,9 @@ use humhub\modules\xcoin\widgets\PurchaseCoin;
 
 /** @var ContentContainer $contentContainer */
 /** @var array $nextRoute */
+/** @var bool $isCoinCashOut */
+
+$isCoinCashOut = isset($isCoinCashOut) ? $isCoinCashOut : false;
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.transaction', '<strong>Select</strong> sender account'), 'closable' => false]) ?>
@@ -22,7 +25,7 @@ use humhub\modules\xcoin\widgets\PurchaseCoin;
     ?>
 </div>
 
-<?php if (isset($requireAsset)): ?>
+<?php if (isset($requireAsset) && !$isCoinCashOut): ?>
 <div class="modal-footer">
     <?= PurchaseCoin::widget([
         'contentContainer' => $contentContainer,
