@@ -228,7 +228,7 @@ class CashOutForm extends Model
             'city' => $this->city,
             'postCode' => $this->zipCode,
             'coin' => $this->cashOutAssetName,
-            'pAddress' => $this->cashoutTransaction->eth_hash,
+            'transactionHash' => $this->cashoutTransaction->eth_hash,
             'amount' => $this->amount,
             'redirectUrl' => Url::toRoute(['/xcoin/overview', 'contentContainer' => $user], true) . '?res=success',
             'beneficiary' => $this->cashOutAccount->title,
