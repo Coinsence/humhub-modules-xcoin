@@ -3,11 +3,13 @@
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\widgets\Upload;
 use humhub\modules\xcoin\models\Asset;
+use humhub\modules\xcoin\models\Category;
 use humhub\modules\xcoin\models\Marketplace;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
 use humhub\assets\Select2BootstrapAsset;
+use yii\helpers\ArrayHelper;
 use yii\web\JsExpression;
 use kartik\widgets\Select2;
 
@@ -49,6 +51,19 @@ $upload = Upload::forModel($model, $model->coverFile);
                 ],
             ])->label(Yii::t('XcoinModule.marketplace', 'Sales coin'));
             ?>
+        </div>
+        <div class="col-md-12">
+            <?= $form->field($model, 'categories_names')->widget(Select2::class, [
+                'model' => $model,
+                'attribute' => 'categories_names',
+                'data' => ArrayHelper::map(Category::find()->where(['type' => Category::TYPE_MARKETPLACE])->all(), 'name', 'name'),
+                'options' => [
+                    'multiple' => true,
+                ],
+                'pluginOptions' => [
+                    'tokenSeparators' => [',', ' '],
+                ],
+            ])->label(Yii::t('XcoinModule.marketplace', 'Categories')); ?>
         </div>
         <div class="col-md-12">
             <?=

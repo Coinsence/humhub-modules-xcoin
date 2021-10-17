@@ -115,7 +115,8 @@ class Marketplace extends ActiveRecord
                 'action_name',
                 'selling_option',
                 'is_tasks_marketplace',
-                'hide_unverified_submissions'
+                'hide_unverified_submissions',
+                'categories_names'
             ],
             self::SCENARIO_EDIT_ADMIN => [
                 'status',
@@ -149,7 +150,11 @@ class Marketplace extends ActiveRecord
             LinkAllBehavior::class,
         ];
     }
-
+    public function afterFind()
+    {
+        $this->setCategories();
+        parent::afterFind();
+    }
     public function beforeSave($insert)
     {
         if ($this->isNewRecord) {
@@ -226,7 +231,15 @@ class Marketplace extends ActiveRecord
         return $this->hasMany(Category::class, ['id' => 'category_id'])
             ->viaTable('xcoin_marketplace_category', ['marketplace_id' => 'id']);
     }
+    public function setCategories()
+    {
+        $categoriesValues = [];
 
+        foreach ($this->getCategories()->all() as $category) {
+            $categoriesValues[] = sprintf('%s', $category->name);
+        }
+        $this->categories_names = $categoriesValues;
+    }
     public function canDeleteFile()
     {
         $space = Space::findOne(['id' => $this->space_id]);

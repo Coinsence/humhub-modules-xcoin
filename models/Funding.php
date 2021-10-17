@@ -151,7 +151,8 @@ class Funding extends ActiveRecord
                 'city',
                 'youtube_link',
                 'published',
-                'activate_funding'
+                'activate_funding',
+                'categories_names'
             ],
         ];
     }
@@ -194,6 +195,11 @@ class Funding extends ActiveRecord
         parent::init();
     }
 
+    public function afterFind()
+    {
+        $this->setCategories();
+        parent::afterFind();
+    }
 
     /**
      * @inheritdoc
@@ -228,11 +234,16 @@ class Funding extends ActiveRecord
             if (isset($changedAttributes['amount']) && $changedAttributes['amount'] != $this->amount)
                 $this->adjustIssuesAmount();
         }
-
-        if ($this->categories_names) {
-            $categories = [];
-
+        if ($this->categories_names && !is_array($this->categories_names)) {
             foreach (explode(",", $this->categories_names) as $category_name) {
+                $category = Category::getCategoryByName($category_name);
+                if ($category) {
+                    $categories[] = $category;
+                }
+            }
+            $this->linkAll('categories', $categories);
+        } else {
+            foreach ($this->categories_names as $category_name) {
                 $category = Category::getCategoryByName($category_name);
                 if ($category) {
                     $categories[] = $category;
@@ -271,6 +282,16 @@ class Funding extends ActiveRecord
     {
         return $this->hasMany(Category::class, ['id' => 'category_id'])
             ->viaTable('xcoin_funding_category', ['funding_id' => 'id']);
+    }
+
+    public function setCategories()
+    {
+        $categoriesValues = [];
+
+        foreach ($this->getCategories()->all() as $category) {
+            $categoriesValues[] = sprintf('%s', $category->name);
+        }
+        $this->categories_names = $categoriesValues;
     }
 
     /**
@@ -412,7 +433,7 @@ class Funding extends ActiveRecord
             $contentContainer = $account->user;
 
             if (!$contentContainer) continue;
-            
+
             $id = $contentContainer->id;
 
             if (!isset($result[$id])) {

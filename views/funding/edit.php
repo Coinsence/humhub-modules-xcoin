@@ -2,12 +2,14 @@
 
 use humhub\libs\Iso3166Codes;
 use humhub\modules\content\widgets\richtext\RichTextField;
+use humhub\modules\xcoin\models\Category;
 use humhub\modules\xcoin\widgets\AmountField;
 use kartik\widgets\Select2;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;
+use yii\helpers\ArrayHelper;
 use yii\web\JsExpression;
 use humhub\modules\file\widgets\Upload;
 
@@ -58,6 +60,20 @@ $upload = Upload::withName();
         <div class="col-md-12">
             <?= $form->field($model, 'description')->textarea(['maxlength' => 255])
                 ->hint(Yii::t('XcoinModule.funding', 'Please enter your campaign description')) ?>
+        </div>
+        <div class="col-md-12">
+            <?=
+            $form->field($model, 'categories_names')->widget(Select2::className(), [
+                'model' => $model,
+                'attribute' => 'categories_names',
+                'data' => ArrayHelper::map(Category::find()->where(['type' => Category::TYPE_FUNDING])->all(), 'name', 'name'),
+                'pluginOptions' => [
+                    'tokenSeparators' => [',', ' '],
+                ],
+                'options' => [
+                    'multiple' => true,
+                ]
+            ])->label('Categories'); ?>
         </div>
         <div class="col-md-12">
             <?= $form->field($model, 'content')->widget(RichTextField::class, ['preset' => 'full'])
