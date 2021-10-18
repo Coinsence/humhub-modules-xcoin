@@ -201,18 +201,10 @@ class MarketplaceOverviewController extends Controller
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
 
-            $url = $model->isSpaceProduct() ?
-                $model->space->createUrl('/xcoin/product/overview', [
-                    'container' => $model->space,
-                    'productId' => $model->id
-                ]) :
-                $user->createUrl('/xcoin/product/overview', [
-                    'container' => $user,
-                    'productId' => $model->id,
-                ]);
-
-            return $this->redirect($url);
-
+            return $this->renderAjax('../product/product-overview', [
+                'model' => $model,
+                'id' => $model->id
+            ]);
         }
 
         // Check validation
@@ -224,6 +216,20 @@ class MarketplaceOverviewController extends Controller
                 'imageError' => null
             ]);
 
+        }
+
+        if (Yii::$app->request->isPost && Yii::$app->request->post('overview') == '1') {
+            $url = $model->isSpaceProduct() ?
+                $model->space->createUrl('/xcoin/product/overview', [
+                    'container' => $model->space,
+                    'productId' => Yii::$app->request->post('prodId')
+                ]) :
+                $user->createUrl('/xcoin/product/overview', [
+                    'container' => $user,
+                    'productId' => Yii::$app->request->post('prodId')
+                ]);
+
+            return $this->redirect($url);
         }
 
     }

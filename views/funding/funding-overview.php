@@ -36,7 +36,7 @@ Select2BootstrapAsset::register($this);
 <div class="modal-body">
     <div class="row text-center">
         <div class="col-md-12">
-            <?= Yii::t('XcoinModule.transaction', 'After review and approval by marketplace admin , your project will be visible in this public space') ?>
+            <?= Yii::t('XcoinModule.transaction', 'After review and approval by challenge admin , your project will be visible in this public space') ?>
             <a class="add-challenge"
                href="<?= Url::to($model->space->getUrl()) ?>"
                data-toggle="tooltip" style="color: #3cbeef; margin-top: 4px">
