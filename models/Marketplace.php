@@ -108,7 +108,6 @@ class Marketplace extends ActiveRecord
                 'hide_unverified_submissions'
             ],
             self::SCENARIO_EDIT => [
-                'asset_id',
                 'title',
                 'description',
                 'stopped',
