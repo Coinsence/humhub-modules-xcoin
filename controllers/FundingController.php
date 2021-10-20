@@ -39,7 +39,6 @@ use yii\web\UploadedFile;
  */
 class FundingController extends ContentContainerController
 {
-
     /**
      * @inheritdoc
      */
@@ -155,7 +154,7 @@ class FundingController extends ContentContainerController
         $model->challenge_id = $challenge->id;
         $model->scenario = Funding::SCENARIO_NEW;
 
-        if (empty(Yii::$app->request->post('step'))) {
+        if (empty(Yii::$app->request->post('step')) && empty(Yii::$app->request->post('overview'))) {
 
             $spaces = SpaceHelper::getSubmitterSpaces($user);
 
@@ -213,12 +212,11 @@ class FundingController extends ContentContainerController
                     'spaceId' => $challenge->space_id,
                 ]);
             }
-            return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
-                'container' => $model->space,
-                'fundingId' => $model->id
-            ]));
-
+            return $this->renderAjax('funding-overview', [
+                'model' => $model,
+            ]);
         }
+
         // Check validation
         if ($model->hasErrors() && $model->isSecondStep()) {
             return $this->renderAjax('overview', [
@@ -234,6 +232,13 @@ class FundingController extends ContentContainerController
             ]));
         }
 
+        if (Yii::$app->request->isPost && Yii::$app->request->post('overview') == '1') {
+            $funding = Funding::find()->where(['space_id' => $model->space->id,'title'=>$model->title,'challenge_id'=>$model->challenge_id])->one();
+            return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
+                'container' => $model->space,
+                'fundingId' => $funding->id,
+            ]));
+        }
         // Step 2: Details
         return $this->renderAjax('details', [
             'model' => $model,
