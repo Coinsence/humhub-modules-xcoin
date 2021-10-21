@@ -38,7 +38,9 @@ Select2BootstrapAsset::register($this);
         <div class="col-md-12">
             <?= Yii::t('XcoinModule.transaction', 'After review and approval by challenge admin , your project will be visible in this public space') ?>
             <a class="add-challenge"
-               href="<?= Url::to($model->space->getUrl()) ?>"
+               href="<?= Url::to($model->challenge->space->createUrl('/xcoin/challenge/overview', [
+                   'challengeId' => $model->challenge_id
+               ])) ?>"
                data-toggle="tooltip" style="color: #3cbeef; margin-top: 4px">
                 <span class="text"><?= Yii::t('XcoinModule.challenge', 'link') ?></span>
             </a>
