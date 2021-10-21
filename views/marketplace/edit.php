@@ -39,20 +39,6 @@ $upload = Upload::forModel($model, $model->coverFile);
             <?= $form->field($model, 'hide_unverified_submissions')->checkbox(); ?>
         </div>
         <div class="col-md-12">
-            <?=
-            $form->field($model, 'asset_id')->widget(Select2::class, [
-                'data' => $assets,
-                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.marketplace', 'Select coin') . ' - ', 'value' => $model->asset_id],
-                'theme' => Select2::THEME_BOOTSTRAP,
-                'hideSearch' => true,
-                'pluginOptions' => [
-                    'allowClear' => false,
-                    'escapeMarkup' => new JsExpression("function(m) { return m; }"),
-                ],
-            ])->label(Yii::t('XcoinModule.marketplace', 'Sales coin'));
-            ?>
-        </div>
-        <div class="col-md-12">
             <?= $form->field($model, 'categories_names')->widget(Select2::class, [
                 'model' => $model,
                 'attribute' => 'categories_names',

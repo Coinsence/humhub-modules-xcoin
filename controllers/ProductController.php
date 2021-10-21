@@ -32,7 +32,7 @@ class ProductController extends ContentContainerController
         if ($this->contentContainer instanceof Space) {
             $products = Product::find()->where(['space_id' => $this->contentContainer->id])->all();
 
-            $products = array_filter($products, function($product) {
+            $products = array_filter($products, function ($product) {
                 return
                     $product->status == Product::STATUS_AVAILABLE ||
                     AssetHelper::canManageAssets($this->contentContainer) ||
@@ -48,7 +48,7 @@ class ProductController extends ContentContainerController
                 'product_type' => Product::TYPE_PERSONAL
             ])->all();
 
-            $products = array_filter($products, function($product) {
+            $products = array_filter($products, function ($product) {
                 return
                     $product->status == Product::STATUS_AVAILABLE ||
                     AssetHelper::canManageAssets($this->contentContainer) ||
@@ -100,7 +100,7 @@ class ProductController extends ContentContainerController
                 return $this->renderAjax('../product/details', [
                     'model' => $model,
                     'accountsList' => $accountsList,
-                    'imageError'=> null
+                    'imageError' => null
                 ]);
             }
         }
@@ -149,28 +149,33 @@ class ProductController extends ContentContainerController
 
             $this->view->saved();
 
-            $url = $model->isSpaceProduct() ?
-                $model->space->createUrl('/xcoin/product/overview', [
-                    'container' => $model->space,
-                    'productId' => $model->id
-                ]) :
-                $user->createUrl('/xcoin/product/overview', [
-                    'container' => $user,
-                    'productId' => $model->id
-                ]);
-
-            return $this->redirect($url);
+            return $this->renderAjax('product-overview', [
+                'model' => $model,
+                'id' => $model->id
+            ]);
         }
-
         // Check validation
         if ($model->hasErrors() && $model->isSecondStep()) {
 
             return $this->renderAjax('../product/details', [
                 'model' => $model,
                 'accountsList' => $accountsList,
-                'imageError'=>null
+                'imageError' => null
             ]);
 
+        }
+        if (Yii::$app->request->isPost && Yii::$app->request->post('overview') == '1') {
+            $url = $model->isSpaceProduct() ?
+                $model->space->createUrl('/xcoin/product/overview', [
+                    'container' => $model->space,
+                    'productId' => Yii::$app->request->post('prodId')
+                ]) :
+                $user->createUrl('/xcoin/product/overview', [
+                    'container' => $user,
+                    'productId' => Yii::$app->request->post('prodId')
+                ]);
+
+            return $this->redirect($url);
         }
     }
 
@@ -191,7 +196,6 @@ class ProductController extends ContentContainerController
             'product' => $product,
         ]);
     }
-
 
 
     /**
@@ -248,7 +252,7 @@ class ProductController extends ContentContainerController
         return $this->renderAjax('edit', [
             'model' => $model,
             'assetList' => $assetList,
-            'imageError'=>null
+            'imageError' => null
         ]);
     }
 

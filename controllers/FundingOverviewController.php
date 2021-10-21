@@ -124,7 +124,7 @@ class FundingOverviewController extends Controller
         $model->created_by = $user->id;
         $model->scenario = Funding::SCENARIO_NEW;
 
-        if (empty(Yii::$app->request->post('step'))) {
+        if (empty(Yii::$app->request->post('step')) && empty(Yii::$app->request->post('overview'))) {
 
             $spaces = SpaceHelper::getSubmitterSpaces($user);
 
@@ -203,10 +203,9 @@ class FundingOverviewController extends Controller
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
             $this->view->saved();
 
-            return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
-                'container' => $model->space,
-                'fundingId' => $model->id
-            ]));
+            return $this->renderAjax('../funding/funding-overview', [
+                'model' => $model,
+            ]);
         }
 
         // Check validation
@@ -219,6 +218,13 @@ class FundingOverviewController extends Controller
             ]);
         }
 
+        if (Yii::$app->request->isPost && Yii::$app->request->post('overview') == '1') {
+            $funding = Funding::find()->where(['space_id' => $model->space->id,'title'=>$model->title,'challenge_id'=>$model->challenge_id])->one();
+            return $this->redirect($model->space->createUrl('funding/overview', [
+                'container' => $model->space,
+                'fundingId' => $funding->id,
+            ]));
+        }
         // Step 2: Details
         return $this->renderAjax('../funding/details', [
             'model' => $model,
