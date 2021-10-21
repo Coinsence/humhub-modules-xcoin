@@ -44,9 +44,11 @@ Select2BootstrapAsset::register($this);
 <div class="modal-body">
     <div class="row text-center">
         <div class="col-md-12">
-            <?= Yii::t('XcoinModule.transaction', 'After review and approval by marketplace admin , your project will be visible in this public space') ?>
+            <?= Yii::t('XcoinModule.transaction', 'After review and approval by marketplace admin , your offer will be visible in this public space') ?>
             <a class="add-challenge"
-               href="<?= Url::to($model->marketplace->space->getUrl()) ?>"
+               href="<?= Url::to($model->marketplace->space->createUrl('/xcoin/marketplace/overview', [
+                   'marketplaceId' => $model->marketplace_id
+               ])) ?>"
                data-toggle="tooltip" style="color: #3cbeef; margin-top: 4px">
                 <span class="text"><?= Yii::t('XcoinModule.challenge', 'link') ?></span>
             </a>
@@ -63,7 +65,7 @@ Select2BootstrapAsset::register($this);
 
 </div>
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'See created project')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.funding', 'See created offer')); ?>
 </div>
 <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>
