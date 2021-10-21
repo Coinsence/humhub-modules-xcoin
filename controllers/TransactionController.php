@@ -214,10 +214,10 @@ class TransactionController extends ContentContainerController
                     return $this->redirect($product->link);
                 }
 
-                return $this->htmlRedirect($seller->createUrl('/xcoin/product/overview', ['productId' => $product->id]));
+                return $this->redirect($seller->createUrl('/xcoin/product/overview', ['productId' => $product->id]));
             }
 
-            return $this->redirect(['/xcoin/product/buy', 'container' => Yii::$app->user->identity, 'productId' => $product->id]);
+            return $this->htmlRedirect(['/xcoin/product/buy', 'container' => Yii::$app->user->identity, 'productId' => $product->id]);
         }
 
         return $this->renderAjax('pay', [

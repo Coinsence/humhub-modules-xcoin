@@ -188,7 +188,7 @@ Assets::register($this);
                                         <?= Html::a(
                                             $product->marketplace->action_name ? $product->marketplace->action_name : Yii::t('XcoinModule.product', 'Buy this product'),
                                             ['/xcoin/product/buy', 'container' => Yii::$app->user->identity, 'productId' => $product->id],
-                                            ['data-ui-loader' => true]
+                                            ['data-ui-loader' => true, 'class' => 'js-buy-product']
                                         ) ?>
                                     <?php endif; ?>
                                 <?php endif; ?>

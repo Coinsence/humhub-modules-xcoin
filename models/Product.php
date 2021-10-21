@@ -267,18 +267,24 @@ class Product extends ActiveRecord
         }
 
         if ($this->vouchers) {
-            foreach (array_unique(array_filter(array_map('trim', explode(";", $this->vouchers)))) as $voucherValue) {
+
+            $vouchersValues = array_unique(array_filter(array_map('trim', explode(";", $this->vouchers))));
+
+            // remove vouchers deleted from list
+            /** @var Voucher $voucher */
+            foreach ($this->getVouchers()->all() as $voucher) {
+                if(!in_array($voucher->value, $vouchersValues) && Voucher::STATUS_READY == $voucher->status) {
+                    $voucher->delete();
+                }
+            }
+
+            foreach ($vouchersValues as $voucherValue) {
                $voucherModel = Voucher::findOneByValueAndProduct($voucherValue, $this->id);
 
                if (!$voucherModel) {
                    $voucher = Voucher::create($voucherValue, $this->id);
                    $voucher->save();
                }
-            }
-
-            // make sure that the product is available once new vouchers are added
-            if (self::STATUS_UNAVAILABLE == $this->status) {
-                $this->updateAttributes(['status' => self::STATUS_AVAILABLE]);
             }
         }
 
@@ -472,7 +478,7 @@ class Product extends ActiveRecord
 
     public function isPaymentFirst()
     {
-        return $this->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS && $this->payment_first == Product::PAYMENT_FIRST;
+        return ($this->offer_type == Product::OFFER_TOTAL_PRICE_IN_COINS || $this->isVoucherProduct()) && $this->payment_first == Product::PAYMENT_FIRST;
     }
 
     private function AttachSpace()

@@ -329,13 +329,6 @@ class ProductController extends ContentContainerController
             throw new HttpException(404);
         }
 
-        if (null === Yii::$app->request->getReferrer()) {
-            return $this->redirect($this->contentContainer->createUrl('/xcoin/product/overview', [
-                'container' => $this->contentContainer,
-                'productId' => $product->id
-            ]));
-        }
-
         $message = new Message(['title' => Yii::t('XcoinModule.product', "Sales discussion for : {$product->name}")]);
         $message->save();
 
@@ -356,7 +349,7 @@ class ProductController extends ContentContainerController
             if (null === $voucher) {
                 $this->view->info(Yii::t('XcoinModule.product', "No vouchers remaining"));
 
-                return $this->redirect($this->contentContainer->createUrl('/xcoin/product/overview', [
+                return $this->htmlRedirect($this->contentContainer->createUrl('/xcoin/product/overview', [
                     'container' => $this->contentContainer,
                     'productId' => $product->id
                 ]));
@@ -384,6 +377,6 @@ class ProductController extends ContentContainerController
 
         $this->view->info(Yii::t('XcoinModule.product', "You have a new message from {$seller->profile->firstname} {$seller->profile->lastname}"));
 
-        return $this->htmlRedirect('/mail/mail/index');
+        return $this->redirect('/mail/mail/index');
     }
 }

@@ -111,6 +111,13 @@ humhub.module('xcoin', function (module, require, $) {
         }
     });
 
+    // dismiss product modal on buy action after 2 seconds
+    $('body').on('click', '.js-buy-product', function () {
+        setTimeout(function (){
+            $('#product-popup').find('.modal-dialog ').find('.close').trigger('click');
+        }, 2000)
+    })
+
     event.on('humhub:modules:client:pjax:success', function (evt, events, update) {
         initProfileCarousels();
     });

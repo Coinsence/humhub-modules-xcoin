@@ -41,6 +41,7 @@ class SenderAccountGridView extends GridView
 
         $this->dataProvider = new ActiveDataProvider([
             'query' => AccountHelper::getAccountsQuery($contentContainer, $this->requireAsset),
+            'pagination' => false
         ]);
 
         $this->columns = [
