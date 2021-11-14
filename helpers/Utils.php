@@ -24,13 +24,13 @@ class Utils
     const SCHEDULE_DELAY_WEEKLY = 3600 * 24 * 7;
     const SCHEDULE_DELAY_MONTHLY = 3600 * 24 * 7 * 4;
 
-    static function mempty()
+    static function mempty(...$arguments)
     {
-        foreach(func_get_args() as $arg)
-            if(empty($arg))
-                continue;
-            else
-                return false;
-        return true;
+        foreach($arguments as $argument) {
+            if(empty($argument)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
