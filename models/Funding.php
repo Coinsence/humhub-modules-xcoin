@@ -54,6 +54,9 @@ class Funding extends ActiveRecord
     // Funding review status
     const FUNDING_NOT_REVIEWED = 0;
     const FUNDING_REVIEWED = 1;
+    const FUNDING_LUNCHING_SOON = 2;
+
+
 
     // Funding status
     const FUNDING_STATUS_IN_PROGRESS = 0;
