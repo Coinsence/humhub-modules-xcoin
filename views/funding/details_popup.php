@@ -118,7 +118,14 @@ Assets::register($this);
                 <div class="side-widget">
                     <div class="info">
                         <label><?= Yii::t('XcoinModule.funding', 'Created by') ?></label>
-                        <span><strong><?= $space->name ?></strong></span>
+                        <span>
+                        <?= SpaceImage::widget([
+                            'space' => $space,
+                            'width' => 24,
+                            'showTooltip' => false,
+                            'link' => true
+                        ]); ?>
+                        <strong><?= $space->name ?></strong></span>
 
                         <?php if ($funding->canInvest()) : ?>
                             <label><?= Yii::t('XcoinModule.funding', 'Requesting') ?></label>

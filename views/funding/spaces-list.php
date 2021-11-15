@@ -36,8 +36,8 @@ Assets::register($this);
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ],
             ])
-                ->label(Yii::t('XcoinModule.funding', 'Select from which space you want to create your campaign'))
-                ->hint(Yii::t('XcoinModule.funding', 'Leave empty if you want to create automatically a new space for this campaign'));
+                ->label(Yii::t('XcoinModule.funding', 'Select from which space you want to create your campaign. <br>Leave empty if you want to create automatically a new space for this campaign'))
+                ->hint(Yii::t('XcoinModule.funding', 'The start a campaign, you have either to select your project space or create a new space for your project.'));
             ?>
         </div>
         <div class="col-md-2">
