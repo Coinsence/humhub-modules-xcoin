@@ -72,7 +72,7 @@ Assets::register($this);
                                             <div style="color: orange; display: inline">
                                                 <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.funding', 'Under review') ?>"></i>
                                             </div>
-                                        <?php elseif ($funding->review_status == Funding::FUNDING_LUNCHING_SOON) : ?>
+                                        <?php elseif ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON) : ?>
                                             <div style="color: orange; display: inline">
                                                 <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip" title="<?= Yii::t('XcoinModule.funding', 'Launching soon') ?>"></i>
                                             </div>
@@ -100,7 +100,7 @@ Assets::register($this);
                                             <!-- campaign raised end -->
                                         </div>
                                         <div class="pull-right">
-                                            <?php if ($funding->review_status == Funding::FUNDING_LUNCHING_SOON): ?>
+                                            <?php if ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON): ?>
                                                 <strong style="color: orange"><?= Yii::t('XcoinModule.funding', 'Launching soon') ?></strong>
                                             <?php else : ?>
                                                 <!-- campaign remaining days start -->

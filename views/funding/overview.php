@@ -88,7 +88,7 @@ Assets::register($this);
                              aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Under review') ?>
                         )
                     </div>
-                <?php elseif ($funding->review_status == Funding::FUNDING_LUNCHING_SOON) : ?>
+                <?php elseif ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON) : ?>
                     <div style="color: orange; display: inline">
                         ( <i class="fa fa-check-circle-o"
                              aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Launching soon') ?>
@@ -277,8 +277,8 @@ Assets::register($this);
         <!-- campaign review button start -->
         <?php if (SpaceHelper::canReviewProject($funding->challenge->space) || PublicOffersHelper::canReviewSubmittedProjects()): ?>
         <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
-            <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Launching soon'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_LUNCHING_SOON, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
-            <?php elseif ($funding->review_status == Funding::FUNDING_LUNCHING_SOON) : ?>
+            <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Launching soon'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_LAUNCHING_SOON, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
+            <?php elseif ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON) : ?>
                 <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Trusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
             <?php else : ?>
                 <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('XcoinModule.funding', 'Untrusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted pull-right']) ?>
