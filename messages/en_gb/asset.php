@@ -17,7 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Create/Edit Asset' => 'Create/Edit COINs',
     'Issue new' => 'Create new COINs',
-    'Save' => 'Create',
 ];

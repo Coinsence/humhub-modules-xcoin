@@ -30,8 +30,8 @@ return [
     'Ethereum Address' => '',
     'Manager' => '',
     'No Coins found' => '',
-    'Owner' => '',
-    'Transfer' => '',
     'No assets available' => 'No COINs available',
+    'Owner' => '',
     'Save' => 'Transfer',
+    'Transfer' => '',
 ];

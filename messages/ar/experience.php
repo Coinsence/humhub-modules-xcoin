@@ -17,13 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Please enter a description for this experience' => 'الرجاء إدخال وصف لهذه الوظيفة',
-    'Please enter the city' => 'الرجاء إدخال المدينة',
-    'Please enter the country' => 'الرجاء إدخال البلد',
-    'Please enter the employer' => 'الرجاء إدخال صاحب العمل',
-    'Please enter the position' => 'الرجاء إدخال الوظيفة ',
-    'When was this experience ended' => 'متى انتهت هذه الوظيفة',
-    'When was this experience started' => 'متى بدأت هذه الوظيفة',
     'Add Experience' => 'إضافة وظيفة',
     'Are you sure about deleting this experience' => 'هل أنت متأكد من حذف هذه الوظيفة',
     'Delete Experience' => 'حذف الوظيفة',
