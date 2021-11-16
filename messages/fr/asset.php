@@ -19,5 +19,5 @@
 return [
     'Create/Edit Asset' => 'Créer/ Modifier les COIN',
     'Issue new' => 'Nouvelle émission',
-    'Save' => 'Enregistrer',
+    'Save' => 'Créer maintenant',
 ];

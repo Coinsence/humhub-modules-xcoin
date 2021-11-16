@@ -22,7 +22,7 @@ return [
     '<strong>Transfer</strong> details' => '<strong >Transaction</strong> détails',
     'Amount' => 'Monatant',
     'Comment' => 'Commentaire',
-    'Date' => '',
+    'Date' => 'Date',
     'Ethereum transaction Hash' => 'Ethereum transaction Hash',
     'Select asset' => 'Sélectionner les COIN',
     'Sender account' => 'Compte expéditeur',

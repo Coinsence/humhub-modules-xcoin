@@ -19,7 +19,7 @@
 return [
     'Currently there are no products available!' => 'Actuellement,il n y apas de produits disponibles!',
     'Discount' => 'Remise',
-    'Marketplace' => '',
+    'Marketplace' => 'Marketplace',
     'Picture' => 'Image',
     'Please choose the payment type for your product' => 'Veuillez choisir le type de paiement pour votre produit',
     'Please choose the type of coin you are accepting' => 'Veuillez choisir le type de COIN que vous acceptez',

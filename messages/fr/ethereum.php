@@ -22,6 +22,6 @@ return [
     'Enable ethereum' => 'Activer Ethereum',
     'Ethereum' => 'Ethereum',
     'Ethereum summary' => 'Résumé Ethereum',
-    'unavailable' => 'indisponible',
+    'unavailable' => 'Indisponible',
     'Space Ethereum migration is in progress ! This could take some minutes.' => 'La migration de l\'espace vers Ethereum est en cours! Cela pourrait prendre quelques minutes.'
 ];
