@@ -185,7 +185,7 @@ $upload = Upload::withName();
         </div>
         <div class="col-md-12">
             <?php if ($imageError) : ?>
-                <p class="help-block help-block-error" style="color:red"><?= Yii::t('XcoinModule.challenge', $imageError) ?></p>
+                <p class="help-block help-block-error" style="color:red"><?= $imageError ?></p>
             <?php endif; ?>
 
         </div>

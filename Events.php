@@ -116,7 +116,7 @@ class Events
             if (Yii::$app->getModule('xcoin')->isCrowdfundingEnabled() && ($isChallengesActive || $isFundingsActive)) {
                 $event->sender->addItemGroup([
                     'id' => 'crowdfunding',
-                    'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', Yii::t('XcoinModule.base', 'Crowdfunding')),
+                    'label' => Yii::t('XcoinModule.base', 'Crowdfunding'),
                     'sortOrder' => 30000,
                 ]);
 
@@ -146,7 +146,7 @@ class Events
             if ($isMarketplacesActive || $isProductsActive) {
                 $event->sender->addItemGroup([
                     'id' => 'marketplace',
-                    'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', Yii::t('XcoinModule.base', 'Marketplace')),
+                    'label' => Yii::t('XcoinModule.base', 'Marketplace'),
                     'sortOrder' => 40000,
                 ]);
 

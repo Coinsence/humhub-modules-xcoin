@@ -333,7 +333,7 @@ class ProductController extends ContentContainerController
             throw new HttpException(404);
         }
 
-        $message = new Message(['title' => Yii::t('XcoinModule.product', "Sales discussion for : {$product->name}")]);
+        $message = new Message(['title' => Yii::t('XcoinModule.product', "Sales discussion for : {0}", [$product->name])]);
         $message->save();
 
         /** @var User $buyer */
@@ -379,7 +379,7 @@ class ProductController extends ContentContainerController
             Yii::error('Could not send notification e-mail to: ' . $buyer->username . ". Error:" . $e->getMessage());
         }
 
-        $this->view->info(Yii::t('XcoinModule.product', "You have a new message from {$seller->profile->firstname} {$seller->profile->lastname}"));
+        $this->view->info(Yii::t('XcoinModule.product', "You have a new message from {0} {1}", [$seller->profile->firstname, $seller->profile->lastname]));
 
         return $this->redirect('/mail/mail/index');
     }

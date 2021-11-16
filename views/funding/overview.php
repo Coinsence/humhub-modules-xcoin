@@ -411,11 +411,11 @@ Assets::register($this);
                             <?php if ($contactButton->isButtonEnabled()) : ?>
                                 <?php if (Yii::$app->user->isGuest): ?>
                                     <div class="custom-btn">
-                                        <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+                                        <?= Html::a($contactButton->button_title, Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                                     </div>
                                 <?php else: ?>
                                     <div class="custom-btn">
-                                        <?= Html::a(Yii::t('XcoinModule.funding', $contactButton->button_title), [
+                                        <?= Html::a($contactButton->button_title, [
                                             'contact',
                                             'fundingId' => $funding->id,
                                             'contactButtonId' => $contactButton->id,
