@@ -17,9 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Conversations' => '',
-    'See all conversations' => 'Voir tous les conversations',
-    'Messages' => 'Messages',
-    'New message' => 'Nouveau message',
-    'Show all messages' => 'Afficher tous les messages',
+    '<strong>Select</strong> sender account' => '<strong>Selectionner</strong> compte expéditeur',
+    '<strong>Transfer</strong> asset' => '<strong> Transferer </strong> des COIN',
+    '<strong>Transfer</strong> details' => '<strong >Transaction</strong> détails',
+    'Amount' => 'Monatant',
+    'Comment' => 'Commentaire',
+    'Date' => '',
+    'Ethereum transaction Hash' => 'Ethereum transaction Hash',
+    'Select asset' => 'Sélectionner les COIN',
+    'Sender account' => 'Compte expéditeur',
+    'Target account' => 'Compte recepteur',
+    'Transaction ID' => 'ID de transaction',
 ];

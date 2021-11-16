@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'New' => 'Nouveau',
-    'Conversations' => 'Conversations',
-    'There are no messages yet.' => 'Il n\'y a aucun message.',
+    'Create/Edit Asset' => 'Créer/ Modifier les COIN',
+    'Issue new' => 'Nouvelle émission',
+    'Save' => 'Enregistrer',
 ];
