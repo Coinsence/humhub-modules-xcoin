@@ -99,54 +99,6 @@ Assets::register($this);
                 'categoryId' => $category->id,
             ]); ?>" class="cs-category <?= $activeCategory == $category->id ? 'active' : '' ?>"><?= $category->name ?></a>
             <?php endforeach; ?>
-            <?php foreach ($categories as $category): ?>
-            <a href="<?= $space->createUrl('/xcoin/challenge/overview', [
-                'challengeId' => $challenge->id,
-                'categoryId' => $category->id,
-            ]); ?>" class="cs-category <?= $activeCategory == $category->id ? 'active' : '' ?>"><?= $category->name ?></a>
-            <?php endforeach; ?>
-            <?php foreach ($categories as $category): ?>
-            <a href="<?= $space->createUrl('/xcoin/challenge/overview', [
-                'challengeId' => $challenge->id,
-                'categoryId' => $category->id,
-            ]); ?>" class="cs-category <?= $activeCategory == $category->id ? 'active' : '' ?>"><?= $category->name ?></a>
-            <?php endforeach; ?>
-            <?php foreach ($categories as $category): ?>
-            <a href="<?= $space->createUrl('/xcoin/challenge/overview', [
-                'challengeId' => $challenge->id,
-                'categoryId' => $category->id,
-            ]); ?>" class="cs-category <?= $activeCategory == $category->id ? 'active' : '' ?>"><?= $category->name ?></a>
-            <?php endforeach; ?>
-            <?php foreach ($categories as $category): ?>
-            <a href="<?= $space->createUrl('/xcoin/challenge/overview', [
-                'challengeId' => $challenge->id,
-                'categoryId' => $category->id,
-            ]); ?>" class="cs-category <?= $activeCategory == $category->id ? 'active' : '' ?>"><?= $category->name ?></a>
-            <?php endforeach; ?>
-            <?php foreach ($categories as $category): ?>
-            <a href="<?= $space->createUrl('/xcoin/challenge/overview', [
-                'challengeId' => $challenge->id,
-                'categoryId' => $category->id,
-            ]); ?>" class="cs-category <?= $activeCategory == $category->id ? 'active' : '' ?>"><?= $category->name ?></a>
-            <?php endforeach; ?>
-            <?php foreach ($categories as $category): ?>
-            <a href="<?= $space->createUrl('/xcoin/challenge/overview', [
-                'challengeId' => $challenge->id,
-                'categoryId' => $category->id,
-            ]); ?>" class="cs-category <?= $activeCategory == $category->id ? 'active' : '' ?>"><?= $category->name ?></a>
-            <?php endforeach; ?>
-            <?php foreach ($categories as $category): ?>
-            <a href="<?= $space->createUrl('/xcoin/challenge/overview', [
-                'challengeId' => $challenge->id,
-                'categoryId' => $category->id,
-            ]); ?>" class="cs-category <?= $activeCategory == $category->id ? 'active' : '' ?>"><?= $category->name ?></a>
-            <?php endforeach; ?>
-            <?php foreach ($categories as $category): ?>
-            <a href="<?= $space->createUrl('/xcoin/challenge/overview', [
-                'challengeId' => $challenge->id,
-                'categoryId' => $category->id,
-            ]); ?>" class="cs-category <?= $activeCategory == $category->id ? 'active' : '' ?>"><?= $category->name ?></a>
-            <?php endforeach; ?>
         </div>
         <h3 class="header"><?= Yii::t('XcoinModule.challenge', 'Received Submissions') . ' (' . count($fundings) . ')' ?></h3>
         <div class="received-funding">
