@@ -17,15 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add Experience' => '',
-    'Are you sure about deleting this experience' => '',
-    'Delete Experience' => '',
-    'Edit Experience' => '',
-    'Experience' => '',
-    'Experience Start Date must be greater than End Date' => '',
-    'No experiences found.' => '',
-    'Provide experience details' => '',
-    'Save' => '',
-    'Select country' => '',
-    'Today' => '',
+    'Add Experience' => 'Ajouter votre expérience',
+    'Are you sure about deleting this experience' => 'Êtes-vous sûr de supprimer cette expérience',
+    'Delete Experience' => 'Supprimer l\'expérience',
+    'Edit Experience' => 'Modifier l\'expérience',
+    'Experience' => 'Expérience',
+    'Experience Start Date must be greater than End Date' => 'La date de début de l\'expérience doit être postérieure à la date de fin',
+    'No experiences found.' => 'Aucune expérience trouvée.',
+    'Provide experience details' => 'Ajouter les détails de l\'expérience',
+    'Save' => 'Sauvegarder',
+    'Select country' => 'Sélectionner le pays',
+    'Today' => 'Aujourd\'hui',
 ];

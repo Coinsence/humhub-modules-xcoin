@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Button title' => '',
+    'Button title' => 'Titre du button',
     'ID' => '',
-    'Popup text' => '',
+    'Popup text' => 'Texte dans le popup',
 ];

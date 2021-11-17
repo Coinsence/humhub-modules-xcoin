@@ -17,17 +17,17 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Account Owner' => '',
-    'Address' => '',
+    'Account Owner' => 'Propriétaire du compte',
+    'Address' => 'Adresse',
     'BIC' => '',
-    'Bank Name' => '',
+    'Bank Name' => 'Nom de la banque',
     'Cash Out' => '',
-    'City' => '',
-    'Country' => '',
+    'City' => 'Ville',
+    'Country' => 'Pays',
     'IBAN' => '',
-    'Minimum : 10 coins / Maximum : thi' => '',
-    'Number of COINs' => '',
+    'Minimum : 10 coins / Maximum : thi' => 'Minimum : 10 COINs / Maximum : thi',
+    'Number of COINs' => 'Montant en COIN',
     'SWIFT' => '',
-    'State' => '',
-    'Zip Code' => '',
+    'State' => 'Etat',
+    'Zip Code' => 'Code postal',
 ];

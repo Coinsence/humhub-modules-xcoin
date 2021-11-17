@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add recipients' => '',
-    'Send' => '',
+    'Add recipients' => 'Ajouter des destinataires',
+    'Send' => 'Envoyer',
 ];

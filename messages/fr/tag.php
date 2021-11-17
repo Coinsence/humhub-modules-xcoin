@@ -18,9 +18,9 @@
  */
 return [
     'ID' => '',
-    'Name' => '',
-    'Space' => '',
-    'The type must be either "Space" or "User".' => '',
-    'User' => '',
-    'the combination {attributes} is already used ' => '',
+    'Name' => 'Nom',
+    'Space' => 'Espace',
+    'The type must be either "Space" or "User".' => 'Le type doit être soit "Espace" soit "Utilisateur"',
+    'User' => 'Utilisateur',
+    'the combination {attributes} is already used ' => 'la combinaison {attributs} est déjà utilisée',
 ];

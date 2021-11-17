@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'All Spaces' => '',
-    'All Users' => '',
-    'Follower' => '',
-    'See Profile' => '',
-    'Space' => '',
-    'User' => '',
-    'Visit Space' => '',
+    'All Spaces' => 'Tous les espaces',
+    'All Users' => 'Tous les utilisateurs',
+    'Follower' => 'Abonné',
+    'See Profile' => 'Voir profil',
+    'Space' => 'Espace',
+    'User' => 'Utilisateur',
+    'Visit Space' => 'Visiter l\'espace',
 ];

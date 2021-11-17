@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Followers' => '',
-    'Following' => '',
-    'Friends' => '',
-    'Spaces' => '',
+    'Followers' => 'Abonnés',
+    'Following' => 'Abonnements',
+    'Friends' => 'Amis',
+    'Spaces' => 'Espaces',
 ];

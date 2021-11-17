@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Please enter What I need from the community' => '',
-    'Please enter What I offer to the community' => '',
-    'Provide Profile details' => '',
-    'Save' => '',
+    'Please enter What I need from the community' => 'Veuillez saisir ce dont vous avez besoin de la communauté',
+    'Please enter What I offer to the community' => 'Veuillez saisir ce que vous pouvez offrir à la communauté',
+    'Provide Profile details' => 'Fournir les détails du profil',
+    'Save' => 'Sauvegarder',
 ];

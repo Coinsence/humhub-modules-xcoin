@@ -17,13 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Address' => '',
+    'Address' => 'Adresse',
     'Checkout' => '',
-    'City' => '',
-    'Minimum amount of COINs is 10' => '',
-    'Number of COINs' => '',
-    'Postcode' => '',
-    'Select country' => '',
-    'Selected COIN' => '',
-    'State' => '',
+    'City' => 'Ville',
+    'Minimum amount of COINs is 10' => 'Le montant minimum de COIN est de 10',
+    'Number of COINs' => 'Nombre des COIN',
+    'Postcode' => 'Code postal',
+    'Select country' => 'Sélectionner le pays',
+    'Selected COIN' => 'COIN sélectionnées',
+    'State' => 'Etat',
 ];

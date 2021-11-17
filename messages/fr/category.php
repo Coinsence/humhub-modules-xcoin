@@ -20,7 +20,7 @@ return [
     'Crowdfunding' => '',
     'ID' => '',
     'Marketplace' => '',
-    'Name' => '',
-    'The type must be either "Crowdfunding" or "Marketplace".' => '',
-    'the combination {attributes} is already used ' => '',
+    'Name' => 'Nom',
+    'The type must be either "Crowdfunding" or "Marketplace".' => 'Type doit être "Crowdfunding" ou "Marketplace".',
+    'the combination {attributes} is already used ' => 'La combination {attributes} est déja utilisé',
 ];

@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Address' => '',
-    'City' => '',
-    'Country' => '',
-    'Number of COINs' => '',
-    'Postcode' => '',
-    'Selected COIN' => '',
-    'State' => '',
+    'Address' => 'Adresse',
+    'City' => 'Ville',
+    'Country' => 'Pays',
+    'Number of COINs' => 'Montant en COIN',
+    'Postcode' => 'Code postal',
+    'Selected COIN' => 'COIN sélectionné',
+    'State' => 'Etat',
 ];
