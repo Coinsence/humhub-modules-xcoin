@@ -155,6 +155,12 @@ Assets::register($this);
                                                             rel="tooltip"
                                                             title="<?= Yii::t('XcoinModule.funding', 'Under review') ?>"></i>
                                                     </div>
+                                                <?php elseif ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON) :?>
+                                                    <div style="color: orange; display: inline">
+                                                        <i class="fa fa-check-circle-o" aria-hidden="true"
+                                                           rel="tooltip"
+                                                           title="<?= Yii::t('XcoinModule.funding', 'Launching Soon') ?>"></i>
+                                                    </div>
                                                 <?php else: ?>
                                                     <div style="color: dodgerblue; display: inline">
                                                         <i class="fa fa-check-circle-o" aria-hidden="true"
@@ -182,6 +188,9 @@ Assets::register($this);
                                                     <!-- campaign raised end -->
                                                 </div>
                                                 <div class="pull-right">
+                                                    <?php if($funding->review_status == Funding::FUNDING_LAUNCHING_SOON) :?>
+                                                        <strong style="color: orange"><?= Yii::t('XcoinModule.funding', 'Launching soon') ?></strong>
+                                                    <?php else : ?>
                                                     <!-- campaign remaining days start -->
                                                     <?php if ($funding->getRemainingDays() > 2) : ?>
                                                         <div class="clock"></div>
@@ -195,6 +204,8 @@ Assets::register($this);
                                                             <strong><?= Yii::t('XcoinModule.funding', 'Closed') ?></strong>
                                                         <?php endif; ?>
                                                     </div>
+                                                    <?php endif; ?>
+
                                                     <!-- campaign remaining days end -->
                                                 </div>
                                                 <!-- campaign raised start -->
@@ -223,7 +234,9 @@ Assets::register($this);
                                 </a>
                                 <?php if (SpaceHelper::canReviewProject($funding->challenge->space) || PublicOffersHelper::canReviewSubmittedProjects()): ?>
                                     <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
-                                        <?= Html::a('<i class="fa fa-close"></i>', ['/xcoin/challenge/review-funding', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted']) ?>
+                                        <?= Html::a('<i class="fa fa-close"></i>', ['/xcoin/challenge/review-funding', 'id' => $funding->id, 'status' => Funding::FUNDING_LAUNCHING_SOON, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted']) ?>
+                                    <?php elseif ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON) : ?>
+                                        <?= Html::a('<i class="fa fa-check"></i>', ['/xcoin/challenge/review-funding', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted']) ?>
                                     <?php else : ?>
                                         <?= Html::a('<i class="fa fa-check"></i>', ['/xcoin/challenge/review-funding', 'id' => $funding->id, 'status' => Funding::FUNDING_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted']) ?>
                                     <?php endif; ?>

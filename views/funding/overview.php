@@ -71,53 +71,59 @@ Assets::register($this);
                 <?php if ($funding->status == Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED) : ?>
                     <div style="color: green; display: inline">
                         ( <i class="fa fa-check-circle-o"
-                                aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Investment Accepted') ?>
+                             aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Investment Accepted') ?>
                         )
                     </div>
                 <?php endif; ?>
                 <?php if ($funding->status == Funding::FUNDING_STATUS_INVESTMENT_RESTARTED) : ?>
                     <div style="color: orange; display: inline">
                         ( <i class="fa fa-refresh"
-                                aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Investment Restarted') ?>
+                             aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Investment Restarted') ?>
                         )
                     </div>
                 <?php endif; ?>
                 <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
                     <div style="color: orange; display: inline">
                         ( <i class="fa fa-check-circle-o"
-                                aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Under review') ?>
+                             aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Under review') ?>
+                        )
+                    </div>
+                <?php elseif ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON) : ?>
+                    <div style="color: orange; display: inline">
+                        ( <i class="fa fa-check-circle-o"
+                             aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Launching soon') ?>
                         )
                     </div>
                 <?php else: ?>
                     <div style="color: dodgerblue; display: inline">
                         ( <i class="fa fa-check-circle-o"
-                                aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Verified') ?>
+                             aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Verified') ?>
                         )
                     </div>
                 <?php endif; ?>
                 <?php if ($funding->published == Funding::FUNDING_HIDDEN) : ?>
                     <div style="color: orange; display: inline">
                         ( <i class="fa fa-check-circle-o"
-                                aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Hidden') ?>
+                             aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Hidden') ?>
                         )
                     </div>
                 <?php else: ?>
                     <div style="color: green; display: inline">
                         ( <i class="fa fa-check-circle-o"
-                                aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Published') ?>
+                             aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Published') ?>
                         )
                     </div>
                 <?php endif; ?>
                 <?php if ($funding->activate_funding == Funding::FUNDING_DEACTIVATED) : ?>
                     <div style="color: orange; display: inline">
                         ( <i class="fa fa-check-circle-o"
-                                aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Deactivated') ?>
+                             aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Deactivated') ?>
                         )
                     </div>
                 <?php else: ?>
                     <div style="color: green; display: inline">
                         ( <i class="fa fa-check-circle-o"
-                                aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Activated') ?>
+                             aria-hidden="true"></i> <?= Yii::t('XcoinModule.funding', 'Activated') ?>
                         )
                     </div>
                 <?php endif; ?>
@@ -149,14 +155,14 @@ Assets::register($this);
                     ]) ?>
                 <?php else: ?>
                     <div class="bg"
-                        style="background-image: url('<?= $cover->getUrl() ?>')"></div>
+                         style="background-image: url('<?= $cover->getUrl() ?>')"></div>
                     <?= Html::img($cover->getUrl(), [
                         'width' => '100%'
                     ]) ?>
                 <?php endif; ?>
             <?php else : ?>
                 <div class="bg"
-                    style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
+                     style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
                 <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
                     'width' => '100%'
                 ]) ?>
@@ -270,10 +276,12 @@ Assets::register($this);
 
         <!-- campaign review button start -->
         <?php if (SpaceHelper::canReviewProject($funding->challenge->space) || PublicOffersHelper::canReviewSubmittedProjects()): ?>
-            <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
-                <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Trusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted pull-right']) ?>
+        <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
+            <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Launching soon'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_LAUNCHING_SOON, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
+            <?php elseif ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON) : ?>
+                <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Trusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
             <?php else : ?>
-                <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('XcoinModule.funding', 'Untrusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
+                <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('XcoinModule.funding', 'Untrusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted pull-right']) ?>
             <?php endif; ?>
         <?php endif; ?>
         <!-- campaign review button end -->
@@ -292,7 +300,9 @@ Assets::register($this);
 
                 <?php if (!empty($funding->youtube_link)): ?>
                     <div class="youtube-video">
-                        <iframe id="player" type="text/html" width="640" height="390" src="<?= FundingHelper::getYoutubeEmbedUrl($funding->youtube_link) ?>" frameborder="0"></iframe>
+                        <iframe id="player" type="text/html" width="640" height="390"
+                                src="<?= FundingHelper::getYoutubeEmbedUrl($funding->youtube_link) ?>"
+                                frameborder="0"></iframe>
                     </div>
                 <?php endif; ?>
             </div>
