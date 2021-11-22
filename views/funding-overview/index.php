@@ -277,6 +277,11 @@ Select2BootstrapAsset::register($this);
                                                     <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip"
                                                        title="<?= Yii::t('XcoinModule.funding', 'Under review') ?>"></i>
                                                 </div>
+                                            <?php elseif ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON) : ?>
+                                                <div style="color: orange; display: inline">
+                                                    <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip"
+                                                       title="<?= Yii::t('XcoinModule.funding', 'Launching soon') ?>"></i>
+                                                </div>
                                             <?php else: ?>
                                                 <div style="color: dodgerblue; display: inline">
                                                     <i class="fa fa-check-circle-o" aria-hidden="true" rel="tooltip"
@@ -307,18 +312,20 @@ Select2BootstrapAsset::register($this);
                                             </div>
 
                                             <div class="pull-right">
-
-                                                <!-- campaign remaining days start -->
-                                                <?php if ($funding->getRemainingDays() > 2) : ?>
-                                                    <div class="clock"></div>
-                                                <?php else: ?>
-                                                    <div class="clock red"></div>
+                                                <?php if ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON): ?>
+                                                    <strong style="color: orange"><?= Yii::t('XcoinModule.funding', 'Launching soon') ?></strong>
+                                                <?php else : ?>
+                                                    <!-- campaign remaining days start -->
+                                                    <?php if ($funding->getRemainingDays() > 2) : ?>
+                                                        <div class="clock"></div>
+                                                    <?php else: ?>
+                                                        <div class="clock red"></div>
+                                                    <?php endif; ?>
+                                                    <div class="days">
+                                                        <strong><?= $funding->getRemainingDays() ?></strong> <?= $funding->getRemainingDays() > 1 ? Yii::t('XcoinModule.funding', 'Days left') : Yii::t('XcoinModule.funding', 'Day left') ?>
+                                                    </div>
+                                                    <!-- campaign remaining days end -->
                                                 <?php endif; ?>
-                                                <div class="days">
-                                                    <strong><?= $funding->getRemainingDays() ?></strong> <?= $funding->getRemainingDays() > 1 ? Yii::t('XcoinModule.funding', 'Days left') : Yii::t('XcoinModule.funding', 'Day left') ?>
-                                                </div>
-                                                <!-- campaign remaining days end -->
-
                                             </div>
 
                                             <!-- campaign raised start -->
