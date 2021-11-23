@@ -34,6 +34,7 @@ return [
     'Edit Challenge' => 'Modifier le challenge',
     'Hide unverified Submissions' => 'Cacher les soumissions non verifiés',
     'ID' => '',
+    'If you have a project and want to join this campaign' => '',
     'No rewarding' => 'Pas de récompenses',
     'Please enter your challenge description' => 'Veuillez saisir la description de votre challenge',
     'Please enter your challenge title' => 'Veuillez saisir le titre de votre challenge',

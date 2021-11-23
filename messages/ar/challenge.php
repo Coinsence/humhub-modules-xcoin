@@ -34,6 +34,8 @@ return [
     'Edit Challenge' => 'تحرير التحدي',
     'Hide unverified Submissions' => '',
     'ID' => 'المعرف',
+    'If you have a job and want to add it' => '',
+    'If you have a project and want to join this campaign' => '',
     'No rewarding' => '',
     'Please enter your challenge description' => 'الرجاء إدخال وصف التحدي',
     'Please enter your challenge title' => 'الرجاء إدخال عنوان التحدي',

@@ -34,6 +34,8 @@ return [
     'Edit Challenge' => '',
     'Hide unverified Submissions' => '',
     'ID' => '',
+    'If you have a job and want to add it' => '',
+    'If you have a project and want to join this campaign' => '',
     'No rewarding' => '',
     'Please enter your challenge description' => '',
     'Please enter your challenge title' => '',
