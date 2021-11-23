@@ -117,7 +117,7 @@ Assets::register($this);
         <div class="cs-categories">
             <a href="<?= $space->createUrl('/xcoin/marketplace/overview', [
                 'marketplaceId' => $marketplace->id
-            ]); ?>" class="cs-category <?= !$activeCategory ? 'active' : '' ?>"><?= Yii::t('XcoinModule.challenge', 'All Projects') ?></a>
+            ]); ?>" class="cs-category <?= !$activeCategory ? 'active' : '' ?>"><?= Yii::t('XcoinModule.challenge', 'All Products') ?></a>
             <?php foreach ($categories as $category): ?>
             <a href="<?= $space->createUrl('/xcoin/marketplace/overview', [
                 'marketplaceId' => $marketplace->id,
