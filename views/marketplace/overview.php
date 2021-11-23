@@ -73,6 +73,7 @@ Assets::register($this);
                     <?= Yii::t('XcoinModule.marketplace', 'This marketplace is closed') ?>
                 </div>
             <?php else: ?>
+                <h5 class="add-btn-text"></h5>
                 <?php if (Yii::$app->user->isGuest): ?>
                     <?= Html::a(
                         '<i class="fa fa-plus-circle"></i>&nbsp;&nbsp;' . Yii::t('XcoinModule.marketplace', 'Add your job'),
