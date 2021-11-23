@@ -53,7 +53,10 @@ class FundingOverviewController extends Controller
         ]); // only not investment accepted campaigns
         $query->andWhere(['IS NOT', 'xcoin_funding.id', new Expression('NULL')]);
         $query->orderBy(['created_at' => SORT_DESC]);
-        $query->andWhere(['review_status' => Funding::FUNDING_REVIEWED]);
+        $query->andWhere(['or',
+            ['xcoin_funding.review_status' => Funding::FUNDING_LAUNCHING_SOON],
+            ['xcoin_funding.review_status' => Funding::FUNDING_REVIEWED]
+        ]);
         $query->innerJoin('xcoin_challenge', 'xcoin_funding.challenge_id = xcoin_challenge.id');
         $query->andWhere('xcoin_challenge.status = 1');
         $query->andWhere('xcoin_challenge.stopped = 0');
