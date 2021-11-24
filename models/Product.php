@@ -11,6 +11,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\Utils;
+use Symfony\Component\Filesystem\Filesystem;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\web\HttpException;
@@ -90,6 +91,12 @@ class Product extends ActiveRecord
     // unmapped field used to store vouchers in runtime when creating product
     public $vouchers;
 
+    // used to select if this is a cloned product
+    public $clone_id;
+
+    // used to store temporarily the cloned image guid
+    public $picture_file_guid;
+
     /**
      * @inheritdoc
      */
@@ -127,6 +134,7 @@ class Product extends ActiveRecord
             [
                 [
                     'marketplace_id',
+                    'clone_id',
                     'created_by',
                     'product_type',
                     'payment_first',
@@ -141,6 +149,7 @@ class Product extends ActiveRecord
             [['discount'], 'number', 'min' => '0', 'max' => '100'],
             [['created_at'], 'safe'],
             [['marketplace_id'], 'exist', 'skipOnError' => true, 'targetClass' => Marketplace::class, 'targetAttribute' => ['marketplace_id' => 'id']],
+            [['clone_id'], 'exist', 'skipOnError' => true, 'targetClass' => self::class, 'targetAttribute' => ['clone_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['name', 'description'], 'string', 'max' => 255],
@@ -179,6 +188,8 @@ class Product extends ActiveRecord
                 'buy_message',
                 'payment_first',
                 'vouchers',
+                'clone_id',
+                'picture_file_guid'
             ],
             self::SCENARIO_EDIT => [
                 'name',
@@ -515,5 +526,55 @@ class Product extends ActiveRecord
             ->getVouchers()
             ->andWhere(['status' => Voucher::STATUS_READY])
             ->one();
+    }
+
+    public function cloneProduct(Product $clone) {
+        $this->name = $clone->name;
+        $this->description = $clone->description;
+        $this->content = $clone->content;
+        $this->country = $clone->country;
+        $this->city = $clone->city;
+        $this->product_type = $clone->product_type;
+        $this->offer_type = $clone->offer_type;
+        $this->payment_type = $clone->payment_type;
+        $this->price = $clone->price;
+        $this->discount = $clone->discount;
+        $this->link = $clone->link;
+        $this->buy_message = $clone->buy_message;
+        $this->payment_first = $clone->payment_first;
+        $this->created_by = $clone->created_by;
+        $this->space_id = $clone->space_id;
+
+        $files = $clone->fileManager->findAll();
+        if(!empty($files)) {
+
+            // delete unassigned files before attaching the new file
+            foreach (File::findAll(['object_model' => get_class($this), 'object_id' => null]) as $file) {
+                $file->delete();
+            }
+
+            $picture = new File();
+            $picture->file_name = $files[0]->file_name;
+            $picture->mime_type = $files[0]->mime_type;
+            $picture->size = $files[0]->size;
+            $picture->show_in_stream = $files[0]->show_in_stream;
+
+            $picture->save();
+
+            $fileSystem = new Filesystem();
+            $fileSystem->mirror(rtrim($files[0]->getStore()->get(), '/file'), rtrim($picture->getStore()->get(), '/file'));
+
+            $this->fileManager->attach($picture);
+            $this->picture_file_guid = $picture->guid;
+        }
+
+        $categories = [];
+        /** @var Category $category */
+        foreach ($clone->getCategories()->all() as $category) {
+            if(in_array($category, $this->marketplace->getCategories()->all())) {
+                $categories[$category->name] = $category->name;
+            }
+        }
+        $this->categories_names = $categories;
     }
 }

@@ -4,6 +4,7 @@ namespace humhub\modules\xcoin\controllers;
 
 use Exception;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\file\models\File;
 use humhub\modules\mail\models\Message;
 use humhub\modules\mail\models\MessageEntry;
 use humhub\modules\space\models\Space;
@@ -80,6 +81,20 @@ class ProductController extends ContentContainerController
 
         $model->load(Yii::$app->request->post());
 
+        if (!Yii::$app->request->post('step') == '2' && null === Yii::$app->request->post('overview')) {
+
+            $products = [];
+
+            foreach (Product::findAll(['created_by' => $user->id]) as $product) {
+                $products[$product->id] = $product->name;
+            }
+
+            return $this->renderAjax('../product/clone', [
+                'model' => $model,
+                'products' => $products,
+            ]);
+        }
+
         $spaces = SpaceHelper::getSellerSpaces($user);
 
         $accountsList = [];
@@ -90,19 +105,21 @@ class ProductController extends ContentContainerController
             if (AssetHelper::getSpaceAsset($space))
                 $accountsList[$space->id] = SpaceImage::widget(['space' => $space, 'width' => 16, 'showTooltip' => true, 'link' => true]) . ' ' . $space->name;
         }
-        // Step 2: Details
-        if ($model->isSecondStep()) {
 
+        // Step 2: Details
+        if ($model->isSecondStep() && Yii::$app->request->post('step') == '1') {
 
             $model->account = Product::PRODUCT_USER_DEFAULT_ACCOUNT;
 
-            if (!Yii::$app->request->isPost) {
-                return $this->renderAjax('../product/details', [
-                    'model' => $model,
-                    'accountsList' => $accountsList,
-                    'imageError' => null
-                ]);
+            if (!empty($model->clone_id) && null !== $clone = Product::findOne(['id' => $model->clone_id, 'created_by' => $user->id])) {
+                $model->cloneProduct($clone);
             }
+
+            return $this->renderAjax('../product/details', [
+                'model' => $model,
+                'accountsList' => $accountsList,
+                'imageError' => null
+            ]);
         }
 
         // Step 3: Gallery
@@ -145,7 +162,13 @@ class ProductController extends ContentContainerController
                 ]);
 
             }
-            $model->fileManager->attach(Yii::$app->request->post('fileList'));
+            if (null !== Yii::$app->request->post('fileList')) {
+                $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
+            } elseif (!empty($model->clone_id) && null !== $file = File::findOne(['guid' => $model->picture_file_guid])) {
+                $file->object_id = $model->id;
+                $file->save();
+            }
 
             $this->view->saved();
 
@@ -154,6 +177,7 @@ class ProductController extends ContentContainerController
                 'id' => $model->id
             ]);
         }
+
         // Check validation
         if ($model->hasErrors() && $model->isSecondStep()) {
 
@@ -164,6 +188,7 @@ class ProductController extends ContentContainerController
             ]);
 
         }
+
         if (Yii::$app->request->isPost && Yii::$app->request->post('overview') == '1') {
             $url = $model->isSpaceProduct() ?
                 $model->space->createUrl('/xcoin/product/overview', [
