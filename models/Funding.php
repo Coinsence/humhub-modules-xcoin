@@ -16,6 +16,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use humhub\modules\xcoin\helpers\Utils;
+use Symfony\Component\Filesystem\Filesystem;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\web\HttpException;
@@ -77,6 +78,12 @@ class Funding extends ActiveRecord
     // used when creating funding
     public $categories_names;
 
+    // used to select if this is a cloned product
+    public $clone_id;
+
+    // used to store temporarily the cloned image guid
+    public $picture_file_guid;
+
     /**
      * @inheritdoc
      */
@@ -106,11 +113,12 @@ class Funding extends ActiveRecord
                 'required'
             ],
             ['categories_names', 'required', 'message' => 'Please choose at least a category'],
-            [['space_id', 'challenge_id', 'amount', 'created_by', 'activate_funding', 'published'], 'integer'],
+            [['space_id', 'challenge_id', 'clone_id', 'amount', 'created_by', 'activate_funding', 'published'], 'integer'],
             [['amount'], 'number', 'min' => '1'],
             [['exchange_rate'], 'number', 'min' => '0.1'],
             [['created_at'], 'safe'],
             [['challenge_id'], 'exist', 'skipOnError' => true, 'targetClass' => Challenge::class, 'targetAttribute' => ['challenge_id' => 'id']],
+            [['clone_id'], 'exist', 'skipOnError' => true, 'targetClass' => self::class, 'targetAttribute' => ['clone_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['title', 'description', 'city'], 'string', 'max' => 255],
@@ -143,6 +151,8 @@ class Funding extends ActiveRecord
                 'city',
                 'categories_names',
                 'youtube_link',
+                'clone_id',
+                'picture_file_guid'
             ],
             self::SCENARIO_EDIT => [
                 'amount',
@@ -226,6 +236,7 @@ class Funding extends ActiveRecord
         if ($challenge->acceptSpecificRewardingAsset()) {
             $this->exchange_rate = $challenge->exchange_rate;
         }
+
         return parent::beforeSave($insert);
     }
 
@@ -603,5 +614,49 @@ class Funding extends ActiveRecord
     public function isActivated()
     {
         return $this->activate_funding == self::FUNDING_ACTIVATED;
+    }
+
+    public function cloneFunding(Funding $clone) {
+        $this->title = $clone->title;
+        $this->description = $clone->description;
+        $this->content = $clone->content;
+        $this->deadline = $clone->deadline;
+        $this->city = $clone->city;
+        $this->country = $clone->country;
+        $this->youtube_link = $clone->youtube_link;
+        $this->amount = $clone->amount;
+        $this->exchange_rate = $clone->exchange_rate;
+        $this->created_by = $clone->created_by;
+
+        $files = $clone->fileManager->findAll();
+        if(!empty($files)) {
+
+            // delete unassigned files before attaching the new file
+            foreach (File::findAll(['object_model' => get_class($this), 'object_id' => null]) as $file) {
+                $file->delete();
+            }
+
+            $picture = new File();
+            $picture->file_name = $files[0]->file_name;
+            $picture->mime_type = $files[0]->mime_type;
+            $picture->size = $files[0]->size;
+            $picture->show_in_stream = $files[0]->show_in_stream;
+
+            $picture->save();
+
+            $fileSystem = new Filesystem();
+            $fileSystem->mirror(rtrim($files[0]->getStore()->get(), '/file'), rtrim($picture->getStore()->get(), '/file'));
+
+            $this->fileManager->attach($picture);
+            $this->picture_file_guid = $picture->guid;
+        }
+
+        $categories = [];
+        /** @var Category $category */
+        foreach ($clone->getCategories()->all() as $category) {
+                $categories[$category->name] = $category->name;
+        }
+
+        $this->categories_names = $categories;
     }
 }

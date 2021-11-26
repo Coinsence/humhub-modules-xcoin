@@ -4,6 +4,7 @@ use humhub\libs\Iso3166Codes;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Category;
+use humhub\modules\xcoin\models\Funding;
 use humhub\modules\xcoin\widgets\AmountField;
 use kartik\widgets\Select2;
 use yii\bootstrap\Html;
@@ -14,6 +15,7 @@ use humhub\modules\ui\form\widgets\DatePicker;
 use yii\helpers\ArrayHelper;
 use yii\web\JsExpression;
 
+/** @var $model Funding */
 /** @var $myAsset Asset */
 /** @var $imageError string */
 
@@ -22,10 +24,12 @@ use yii\web\JsExpression;
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Provide details'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 
-<?= Html::hiddenInput('step', '2'); ?>
+<?= Html::hiddenInput('step', '4'); ?>
 
 <?= $form->field($model, 'challenge_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'clone_id')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'picture_file_guid')->hiddenInput()->label(false) ?>
 
 <div class="modal-body">
     <div class="row">

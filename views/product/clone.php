@@ -9,7 +9,6 @@ use yii\helpers\Html;
 use yii\web\JsExpression;
 use kartik\widgets\Select2;
 
-/** @var $marketplacesList array */
 /** @var $products array */
 /** @var $model Product */
 
