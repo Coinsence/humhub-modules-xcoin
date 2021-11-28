@@ -478,7 +478,8 @@ class Product extends ActiveRecord
                 $this->content,
                 $this->country,
                 $this->city,
-                $this->offer_type
+                $this->offer_type,
+                $this->categories_names
             ) || strlen($this->description) > 255 ||
             ($this->offer_type == self::OFFER_DISCOUNT_FOR_COINS && empty($this->discount)) ||
             ($this->offer_type == self::OFFER_TOTAL_PRICE_IN_COINS && (empty($this->price) || empty($this->payment_type))) ||

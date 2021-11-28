@@ -34,19 +34,21 @@ Select2BootstrapAsset::register($this);
                 ],
             ])->label(Yii::t('XcoinModule.product', 'Marketplace'));
             ?>
-            <?=
-            $form->field($model, 'clone_id')->widget(Select2::class, [
-                'data' => $products,
-                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.product', 'Select existing product') . ' - '],
-                'theme' => Select2::THEME_BOOTSTRAP,
-                'hideSearch' => false,
-                'pluginOptions' => [
-                    'allowClear' => false,
-                    'escapeMarkup' => new JsExpression("function(m) { return m; }"),
-                ],
-            ])->label(Yii::t('XcoinModule.product', 'Use Existing Product Data ?'))
-            ->hint(Yii::t('XcoinModule.product', 'Leave empty to create a new Product Dataset'));
-            ?>
+            <?php if (!empty($products)) : ?>
+                <?=
+                $form->field($model, 'clone_id')->widget(Select2::class, [
+                    'data' => $products,
+                    'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.product', 'Select existing product') . ' - '],
+                    'theme' => Select2::THEME_BOOTSTRAP,
+                    'hideSearch' => false,
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'escapeMarkup' => new JsExpression("function(m) { return m; }"),
+                    ],
+                ])->label(Yii::t('XcoinModule.product', 'Use Existing Product Data ?'))
+                    ->hint(Yii::t('XcoinModule.product', 'Leave empty to create a new Product Dataset'));
+                ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>

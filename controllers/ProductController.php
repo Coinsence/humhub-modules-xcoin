@@ -81,14 +81,14 @@ class ProductController extends ContentContainerController
 
         $model->load(Yii::$app->request->post());
 
-        if (!Yii::$app->request->post('step') == '2' && null === Yii::$app->request->post('overview')) {
+        $products = [];
 
-            $products = [];
+        foreach (Product::findAll(['created_by' => $user->id]) as $product) {
+            $products[$product->id] = $product->name;
+        }
 
-            foreach (Product::findAll(['created_by' => $user->id]) as $product) {
-                $products[$product->id] = $product->name;
-            }
 
+        if (!Yii::$app->request->post('step') == '2' && !empty($products) && null === Yii::$app->request->post('overview')) {
             return $this->renderAjax('../product/clone', [
                 'model' => $model,
                 'products' => $products,
@@ -107,7 +107,10 @@ class ProductController extends ContentContainerController
         }
 
         // Step 2: Details
-        if ($model->isSecondStep() && Yii::$app->request->post('step') == '1') {
+        if (
+            ($model->isSecondStep() && Yii::$app->request->post('step') == '1') ||
+            (empty($products) && !in_array(Yii::$app->request->post('step'), ['2', '3']) )
+        ) {
 
             $model->account = Product::PRODUCT_USER_DEFAULT_ACCOUNT;
 
