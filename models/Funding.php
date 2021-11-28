@@ -403,7 +403,8 @@ class Funding extends ActiveRecord
                 $this->deadline,
                 $this->country,
                 $this->city,
-                $this->youtube_link
+                $this->youtube_link,
+                $this->categories_names
             ) || strlen($this->description) > 255;
     }
 
