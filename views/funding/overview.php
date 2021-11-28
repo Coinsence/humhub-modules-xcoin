@@ -191,7 +191,7 @@ Assets::register($this);
             ) ?>
 
             <?php if ($funding->status != Funding::FUNDING_STATUS_INVESTMENT_ACCEPTED) : ?>
-                <?= Html::a('<i class="fa fa-check"></i>' . Yii::t('XcoinModule.funding', 'Close funding and enable transaction from funding account'),
+                <?= Html::a('<i class="fa fa-check"></i>' . Yii::t('XcoinModule.funding', 'Enable transaction from funding account'),
                     [
                         '/xcoin/funding/accept',
                         'id' => $funding->id,
