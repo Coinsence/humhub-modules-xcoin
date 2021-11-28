@@ -175,14 +175,13 @@ class FundingController extends ContentContainerController
 
         $model->load(Yii::$app->request->post());
 
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '1') {
+        $fundings = [];
 
-            $fundings = [];
+        foreach (Funding::findAll(['created_by' => $user->id]) as $funding) {
+            $fundings[$funding->id] = $funding->title;
+        }
 
-            foreach (Funding::findAll(['created_by' => $user->id]) as $funding) {
-                $fundings[$funding->id] = $funding->title;
-            }
-
+        if (Yii::$app->request->isPost && !empty($fundings) && Yii::$app->request->post('step') == '1') {
             return $this->renderAjax('../funding/clone', [
                 'model' => $model,
                 'fundings' => $fundings,

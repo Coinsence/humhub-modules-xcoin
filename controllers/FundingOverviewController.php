@@ -194,7 +194,8 @@ class FundingOverviewController extends Controller
         if (
             Yii::$app->request->isPost &&
             Yii::$app->request->post('step') == '5'
-            && $model->isNameUnique()
+            && $model->isNameUnique() &&
+            $model->validate()
         ) {
 
             $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
