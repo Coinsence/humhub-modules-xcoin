@@ -17,11 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'See Profile' => 'انظر الملف الشخصي',
-    'Connect' => 'اتصال',
     'All Spaces' => 'كل الفضاءات',
     'All Users' => 'كل المستخدمين',
     'Follower' => 'المتابع',
+    'See Profile' => 'انظر الملف الشخصي',
     'Space' => 'الفضاء',
     'User' => 'مستخدم',
     'Visit Space' => 'زيارة الفضاء',

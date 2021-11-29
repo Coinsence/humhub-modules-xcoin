@@ -21,7 +21,7 @@ return [
     'Add new offer' => 'Ajouter nouvelle offre',
     'Asset Exchange' => 'Échange de COIN',
     'Buy' => 'Acheter',
-    'Change' => '',
+    'Change' => 'Changer',
     'Price per unit' => 'Prix unitaire',
     'Select asset' => 'Sélectionner un COIN',
     'Sender account' => 'Compte expéditeur',
