@@ -153,9 +153,9 @@ class FundingController extends ContentContainerController
         $model->challenge_id = $challenge->id;
         $model->scenario = Funding::SCENARIO_NEW;
 
-        if (empty(Yii::$app->request->post('step')) && empty(Yii::$app->request->post('overview'))) {
+        $spaces = SpaceHelper::getSubmitterSpaces($user);
 
-            $spaces = SpaceHelper::getSubmitterSpaces($user);
+        if (empty(Yii::$app->request->post('step')) && empty(Yii::$app->request->post('overview')) && !empty($spaces)) {
 
             $spacesList = [];
             foreach ($spaces as $space) {

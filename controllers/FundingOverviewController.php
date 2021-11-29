@@ -125,9 +125,9 @@ class FundingOverviewController extends Controller
         $model->created_by = $user->id;
         $model->scenario = Funding::SCENARIO_NEW;
 
-        if (empty(Yii::$app->request->post('step')) && empty(Yii::$app->request->post('overview'))) {
+        $spaces = SpaceHelper::getSubmitterSpaces($user);
 
-            $spaces = SpaceHelper::getSubmitterSpaces($user);
+        if (empty(Yii::$app->request->post('step')) && empty(Yii::$app->request->post('overview')) && !empty($spaces)) {
 
             $spacesList = [];
             foreach ($spaces as $space) {
