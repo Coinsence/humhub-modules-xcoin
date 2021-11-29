@@ -37,7 +37,7 @@ Assets::register($this);
                 ],
             ])
                 ->label(Yii::t('XcoinModule.funding', 'Select from which space you want to create your campaign. <br>Leave empty if you want to create automatically a new space for this campaign'))
-                ->hint(Yii::t('XcoinModule.funding', 'The start a campaign, you have either to select your project space or create a new space for your project.'));
+                ->hint(Yii::t('XcoinModule.funding', 'To start a campaign, you have either to select your project space or create a new space for your project.'));
             ?>
         </div>
         <div class="col-md-2">
