@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\file\models\File;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\xcoin\helpers\AssetHelper;
@@ -110,7 +111,7 @@ class MarketplaceOverviewController extends Controller
         // Step 1: Choose marketplace
         if ($model->isFirstStep()) {
 
-            $marketplacesList = [];
+            $marketplacesList = $products = [];
 
             foreach ($marketplaces as $marketplace) {
                 if ($marketplace->isStopped() or $marketplace->isDisabled())
@@ -124,9 +125,14 @@ class MarketplaceOverviewController extends Controller
                 }
             }
 
+            foreach (Product::findAll(['created_by' => $user->id]) as $product) {
+                $products[$product->id] = $product->name;
+            }
+
             return $this->renderAjax('../product/create', [
                     'model' => $model,
-                    'marketplacesList' => $marketplacesList
+                    'marketplacesList' => $marketplacesList,
+                    'products' => $products
                 ]
             );
         }
@@ -151,6 +157,10 @@ class MarketplaceOverviewController extends Controller
         }
 
         if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '1') {
+
+            if (!empty($model->clone_id) && null !== $clone = Product::findOne(['id' => $model->clone_id, 'created_by' => $user->id])) {
+                $model->cloneProduct($clone);
+            }
 
             return $this->renderAjax('../product/details', [
                 'model' => $model,
@@ -197,8 +207,17 @@ class MarketplaceOverviewController extends Controller
                     ]
                 );
             }
+
             $model->save();
-            $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
+            if (null !== Yii::$app->request->post('fileList')) {
+                $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
+            } elseif (!empty($model->clone_id) && null !== $file = File::findOne(['guid' => $model->picture_file_guid])) {
+                $file->object_id = $model->id;
+                $file->save();
+            }
+
             $this->view->saved();
 
             return $this->renderAjax('../product/product-overview', [

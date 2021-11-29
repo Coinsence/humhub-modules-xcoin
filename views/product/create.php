@@ -10,6 +10,7 @@ use yii\web\JsExpression;
 use kartik\widgets\Select2;
 
 /** @var $marketplacesList array */
+/** @var $products array */
 /** @var $model Product */
 
 Select2BootstrapAsset::register($this);
@@ -33,6 +34,21 @@ Select2BootstrapAsset::register($this);
                 ],
             ])->label(Yii::t('XcoinModule.product', 'Marketplace'));
             ?>
+            <?php if (!empty($products)) : ?>
+                <?=
+                $form->field($model, 'clone_id')->widget(Select2::class, [
+                    'data' => $products,
+                    'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.product', 'Select existing product') . ' - '],
+                    'theme' => Select2::THEME_BOOTSTRAP,
+                    'hideSearch' => false,
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'escapeMarkup' => new JsExpression("function(m) { return m; }"),
+                    ],
+                ])->label(Yii::t('XcoinModule.product', 'Use Existing Product Data ?'))
+                    ->hint(Yii::t('XcoinModule.product', 'Leave empty to create a new Product Dataset'));
+                ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>

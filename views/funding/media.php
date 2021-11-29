@@ -1,10 +1,13 @@
 <?php
 
 use humhub\modules\file\widgets\Upload;
+use humhub\modules\xcoin\models\Funding;
 use yii\bootstrap\Html;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
+
+/** @var $model Funding */
 
 $upload = Upload::withName();
 /**
@@ -15,7 +18,7 @@ $upload = Upload::withName();
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', 'Gallery'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'account-form']); ?>
 
-<?= Html::hiddenInput('step', '3'); ?>
+<?= Html::hiddenInput('step', '5'); ?>
 
 <?= $form->field($model, 'challenge_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'amount', ['enableError' => false])->hiddenInput()->label(false)->hint(false) ?>
@@ -28,6 +31,9 @@ $upload = Upload::withName();
 <?= $form->field($model, 'deadline')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'youtube_link')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'clone_id')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'picture_file_guid')->hiddenInput()->label(false) ?>
+
 <?php if ($model->categories_names): ?>
     <?= $form->field($model, 'categories_names')->hiddenInput(['value' => implode(",", $model->categories_names)])->label(false) ?>
 <?php endif; ?>

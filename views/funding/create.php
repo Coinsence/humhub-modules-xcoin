@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\xcoin\models\Funding;
 use yii\bootstrap\Html;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
@@ -9,6 +10,9 @@ use yii\web\JsExpression;
 use kartik\widgets\Select2;
 
 /** @var $challengesList array */
+/** @var $fundings array */
+/** @var $model Funding */
+
 
 Select2BootstrapAsset::register($this);
 ?>
@@ -32,6 +36,21 @@ Select2BootstrapAsset::register($this);
                 ],
             ])->label(Yii::t('XcoinModule.funding', 'Challenge'));
             ?>
+            <?php if (!empty($fundings)) : ?>
+                <?=
+                $form->field($model, 'clone_id')->widget(Select2::class, [
+                    'data' => $fundings,
+                    'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.funding', 'Select existing project') . ' - '],
+                    'theme' => Select2::THEME_BOOTSTRAP,
+                    'hideSearch' => false,
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'escapeMarkup' => new JsExpression("function(m) { return m; }"),
+                    ],
+                ])->label(Yii::t('XcoinModule.funding', 'Use Existing Project Data ?'))
+                    ->hint(Yii::t('XcoinModule.funding', 'Leave empty to create a new Project Dataset'));
+                ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>

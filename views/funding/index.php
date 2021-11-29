@@ -27,8 +27,6 @@ Assets::register($this);
                     </p>
                 <?php endif; ?>
                 <?php foreach ($fundings as $funding): ?>
-                    <?php if (in_array($funding->id, [])): continue; endif; ?>
-                    <?php if ($funding->id < 10): continue; endif; ?>
                     <?php
                     $space = $funding->getSpace()->one();
                     $cover = $funding->getCover();

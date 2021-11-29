@@ -20,7 +20,7 @@ Assets::register($this);
 
 <?php ModalDialog::begin(['header'=> Yii::t('XcoinModule.funding', 'Select space') , 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'funding-form']); ?>
-<?= Html::hiddenInput('step', '-1'); ?>
+<?= Html::hiddenInput('step', '1'); ?>
 
 <div class="modal-body">
     <div class="row" style=" display: flex; align-items: center;">

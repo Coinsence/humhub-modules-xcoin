@@ -2,13 +2,12 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\file\models\File;
 use humhub\modules\mail\models\forms\CreateMessage;
 use humhub\modules\mail\models\Message;
 use humhub\modules\mail\models\MessageEntry;
 use humhub\modules\mail\models\UserMessage;
-use humhub\modules\user\models\fieldtype\DateTime;
 use humhub\modules\user\models\User;
-use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\PublicOffersHelper;
 use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\AccountBalance;
@@ -154,9 +153,9 @@ class FundingController extends ContentContainerController
         $model->challenge_id = $challenge->id;
         $model->scenario = Funding::SCENARIO_NEW;
 
-        if (empty(Yii::$app->request->post('step')) && empty(Yii::$app->request->post('overview'))) {
+        $spaces = SpaceHelper::getSubmitterSpaces($user);
 
-            $spaces = SpaceHelper::getSubmitterSpaces($user);
+        if (empty(Yii::$app->request->post('step')) && empty(Yii::$app->request->post('overview')) && !empty($spaces)) {
 
             $spacesList = [];
             foreach ($spaces as $space) {
@@ -176,8 +175,21 @@ class FundingController extends ContentContainerController
 
         $model->load(Yii::$app->request->post());
 
-        // Try Save Step 2
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
+        $fundings = [];
+
+        foreach (Funding::findAll(['created_by' => $user->id]) as $funding) {
+            $fundings[$funding->id] = $funding->title;
+        }
+
+        if (Yii::$app->request->isPost && !empty($fundings) && Yii::$app->request->post('step') == '1') {
+            return $this->renderAjax('../funding/clone', [
+                'model' => $model,
+                'fundings' => $fundings,
+            ]);
+        }
+
+        // Try Save Step 4
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '4') {
 
             if ($model->space && !SpaceHelper::canSubmitProject($model->space)) {
                 throw new HttpException(401);
@@ -190,8 +202,8 @@ class FundingController extends ContentContainerController
             ]);
         }
 
-        // Try Save Step 3
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '3' && $model->save()) {
+        // Try Save Step 5
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '5' && $model->save()) {
             $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
             if ($imageValidation == false) {
                 return $this->renderAjax('details', [
@@ -201,8 +213,17 @@ class FundingController extends ContentContainerController
 
                 ]);
             }
-            $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
+            if (null !== Yii::$app->request->post('fileList')) {
+                $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
+            } elseif (!empty($model->clone_id) && null !== $file = File::findOne(['guid' => $model->picture_file_guid])) {
+                $file->object_id = $model->id;
+                $file->save();
+            }
+
             $this->view->saved();
+
             if ($challenge->acceptSpecificRewardingAsset()) {
                 return $this->renderAjax('add-specific-account', [
                     'model' => $model,
@@ -212,6 +233,7 @@ class FundingController extends ContentContainerController
                     'spaceId' => $challenge->space_id,
                 ]);
             }
+
             return $this->renderAjax('funding-overview', [
                 'model' => $model,
             ]);
@@ -219,13 +241,15 @@ class FundingController extends ContentContainerController
 
         // Check validation
         if ($model->hasErrors() && $model->isSecondStep()) {
-            return $this->renderAjax('overview', [
+            return $this->renderAjax('../funding/details', [
                 'model' => $model,
-                'myAsset' => AssetHelper::getSpaceAsset($currentSpace)
+                'myAsset' => $model->space ? AssetHelper::getSpaceAsset($model->space) : null,
+                'imageError' => null
             ]);
         }
-        //try save step 4
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '4' && $model->save()) {
+
+        //try save step 5
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '5' && $model->save()) {
             return $this->redirect($model->space->createUrl('/xcoin/funding/overview', [
                 'container' => $model->space,
                 'fundingId' => $model->id,
@@ -239,7 +263,12 @@ class FundingController extends ContentContainerController
                 'fundingId' => $funding->id,
             ]));
         }
-        // Step 2: Details
+
+        if (!empty($model->clone_id) && !$model->hasErrors() && null !== $clone = Funding::findOne(['id' => $model->clone_id, 'created_by' => $user->id])) {
+            $model->cloneFunding($clone);
+        }
+
+        // Step 3: Details
         return $this->renderAjax('details', [
             'model' => $model,
             'myAsset' => AssetHelper::getSpaceAsset($currentSpace),

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\file\models\File;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AssetHelper;
@@ -127,9 +128,9 @@ class FundingOverviewController extends Controller
         $model->created_by = $user->id;
         $model->scenario = Funding::SCENARIO_NEW;
 
-        if (empty(Yii::$app->request->post('step')) && empty(Yii::$app->request->post('overview'))) {
+        $spaces = SpaceHelper::getSubmitterSpaces($user);
 
-            $spaces = SpaceHelper::getSubmitterSpaces($user);
+        if (empty(Yii::$app->request->post('step')) && empty(Yii::$app->request->post('overview')) && !empty($spaces)) {
 
             $spacesList = [];
             foreach ($spaces as $space) {
@@ -148,7 +149,7 @@ class FundingOverviewController extends Controller
         // Step 1: Choose challenge
         if ($model->isFirstStep()) {
 
-            $challengesList = [];
+            $challengesList = $fundings = [];
 
             foreach ($challenges as $challenge) {
                 if ($challenge->isStopped() or $challenge->isDisabled())
@@ -162,15 +163,20 @@ class FundingOverviewController extends Controller
                 }
             }
 
+            foreach (Funding::findAll(['created_by' => $user->id]) as $funding) {
+                $fundings[$funding->id] = $funding->title;
+            }
+
             return $this->renderAjax('../funding/create', [
                     'model' => $model,
-                    'challengesList' => $challengesList
+                    'challengesList' => $challengesList,
+                    'fundings' => $fundings
                 ]
             );
         }
 
         // Try Save Step 2
-        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '2') {
+        if (Yii::$app->request->isPost && Yii::$app->request->post('step') == '4') {
 
             if ($model->challenge->isStopped()) {
                 throw new HttpException(403, 'You can`t submit a funding to a stopped challenge!');
@@ -190,8 +196,9 @@ class FundingOverviewController extends Controller
         // Try Save Step 3
         if (
             Yii::$app->request->isPost &&
-            Yii::$app->request->post('step') == '3'
-            && $model->isNameUnique()
+            Yii::$app->request->post('step') == '5'
+            && $model->isNameUnique() &&
+            $model->validate()
         ) {
 
             $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
@@ -202,8 +209,17 @@ class FundingOverviewController extends Controller
                     'imageError' => "Image size cannot be more than 500 kb"
                 ]);
             }
+
             $model->save();
-            $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
+            if (null !== Yii::$app->request->post('fileList')) {
+                $model->fileManager->attach(Yii::$app->request->post('fileList'));
+
+            } elseif (!empty($model->clone_id) && null !== $file = File::findOne(['guid' => $model->picture_file_guid])) {
+                $file->object_id = $model->id;
+                $file->save();
+            }
+
             $this->view->saved();
 
             return $this->renderAjax('../funding/funding-overview', [
@@ -222,12 +238,17 @@ class FundingOverviewController extends Controller
         }
 
         if (Yii::$app->request->isPost && Yii::$app->request->post('overview') == '1') {
-            $funding = Funding::find()->where(['space_id' => $model->space->id,'title'=>$model->title,'challenge_id'=>$model->challenge_id])->one();
+            $funding = Funding::find()->where(['space_id' => $model->space->id, 'title' => $model->title, 'challenge_id' => $model->challenge_id])->one();
             return $this->redirect($model->space->createUrl('funding/overview', [
                 'container' => $model->space,
                 'fundingId' => $funding->id,
             ]));
         }
+
+        if (!empty($model->clone_id) && null !== $clone = Funding::findOne(['id' => $model->clone_id, 'created_by' => $user->id])) {
+            $model->cloneFunding($clone);
+        }
+
         // Step 2: Details
         return $this->renderAjax('../funding/details', [
             'model' => $model,

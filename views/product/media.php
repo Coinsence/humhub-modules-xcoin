@@ -33,6 +33,8 @@ $upload = Upload::withName();
 <?= $form->field($model, 'buy_message')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'payment_first')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'vouchers')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'clone_id')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'picture_file_guid')->hiddenInput()->label(false) ?>
 
 <?php if ($model->categories_names): ?>
     <?= $form->field($model, 'categories_names')->hiddenInput(['value' => implode(",", $model->categories_names)])->label(false) ?>
