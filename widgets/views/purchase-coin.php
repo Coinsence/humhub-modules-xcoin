@@ -17,7 +17,7 @@ $res = Yii::$app->request->get('res');
 ?>
 <?php if ($noCoinsWarning): ?>
     <div style="margin-bottom: 18px;">
-        <span><?= Yii::t('XcoinModule.overview', 'Your current balance is:') ?></span> <strong><?= $coinsBlanace ?></strong>&nbsp; <?= SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) ?>
+        <span><?= Yii::t('XcoinModule.overview', 'Your current balance is:') ?></span> <strong><?= $coinsBlanace ?></strong>&nbsp; <?= SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => false]) ?>
         <p><?= Yii::t('XcoinModule.overview', 'You can buy and get instantly COINs using the button below') ?></p>
     </div>
 <?php endif; ?>
