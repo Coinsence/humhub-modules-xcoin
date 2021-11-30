@@ -225,7 +225,7 @@ class Product extends ActiveRecord
             'price' => Yii::t('XcoinModule.base', 'Price'),
             'created_at' => Yii::t('XcoinModule.base', 'Created At'),
             'created_by' => Yii::t('XcoinModule.base', 'Created By'),
-            'name' => Yii::t('XcoinModule.base', 'Name'),
+            'name' => Yii::t('XcoinModule.base', 'Product Name'),
             'description' => Yii::t('XcoinModule.base', 'Description'),
             'content' => Yii::t('XcoinModule.base', 'Detailed Description'),
             'offer_type' => Yii::t('XcoinModule.base', 'Offer Type'),
