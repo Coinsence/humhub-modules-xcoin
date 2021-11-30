@@ -131,7 +131,7 @@ class SenderAccountGridView extends GridView
                     foreach ($model->getAssets() as $asset) {
                         if ($assetName === '' || $assetName === $asset->space->name)
                             $list[] = '<strong>' . $model->getAssetBalance($asset) . '</strong>&nbsp; ' .
-                                SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]);
+                                SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => false]);
                     }
 
                     return implode('&nbsp;&nbsp;&middot;&nbsp;&nbsp;', $list);
