@@ -12,6 +12,7 @@ use humhub\modules\xcoin\models\ProductCategory;
 use yii\helpers\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\widgets\SocialShare;
+use yii\helpers\Url;
 
 Assets::register($this);
 
@@ -19,6 +20,7 @@ Assets::register($this);
 /** @var $products Product[] */
 /** @var $categories ProductCategory[] */
 /** @var $activeCategory number */
+/** @var $userGuide boolean */
 
 ?>
 <!-- TODO : move styling to css/less files, @craxrev -->
@@ -86,6 +88,21 @@ Assets::register($this);
                         'marketplaceId' => $marketplace->id,
                         'container' => $this->context->contentContainer
                     ], ['class' => 'btn btn-gradient-1 add-btn', 'data-target' => '#globalModal']); ?>
+                <?php endif; ?>
+                <?php if ($userGuide) : ?>
+                    <div class="col-md-12">
+                        <div class="s2_streamContent" data-stream-content="">
+                            <div class="streamMessage placeholder-empty-stream">
+                                <div class="panel">
+                                    <a class="add-product"
+                                       href="<?= Url::to(['/xcoin/product/new', 'marketplaceId' => $marketplace->id, 'container' => $this->context->contentContainer]) ?>"
+                                       data-target="#globalModal">
+                                        <?= Yii::t('XcoinModule.marketplace', '<b>You got no submitted Products !</b><br>You can start selling your products by clicking here ') ?>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <?php endif; ?>
             <?php endif; ?>
         </div>

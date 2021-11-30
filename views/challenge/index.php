@@ -10,6 +10,7 @@ use yii\helpers\Html;
 Assets::register($this);
 
 /** @var $challenges Challenge[] */
+/** @var $userGuide boolean */
 
 ?>
 
@@ -33,6 +34,20 @@ Assets::register($this);
                             <span class="text"><?= Yii::t('XcoinModule.challenge', 'Add a challenge!') ?></span>
                         </a>
                     </div>
+                    <?php if ($userGuide) : ?>
+                        <div class="col-md-12">
+                            <div class="s2_streamContent" data-stream-content="">
+                                <div class="streamMessage placeholder-empty-stream">
+                                    <div class="panel">
+                                        <a href="<?= Url::to(['/xcoin/challenge/create', 'container' => $this->context->contentContainer]) ?>"
+                                           data-target="#globalModal" class="panel-body">
+                                            <?= Yii::t('XcoinModule.marketplace', '<b>This Challenge is empty !</b><br>You can start here by adding a new challenge') ?>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 <?php else: ?>
                     <?php if (count($challenges) == 0): ?>
                         <p class="alert alert-warning col-md-12">

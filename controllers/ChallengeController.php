@@ -56,9 +56,9 @@ class ChallengeController extends ContentContainerController
             ->where(['space_id' => $this->contentContainer->id])
             ->orderBy(['created_at' => SORT_DESC])
             ->all();
-
         return $this->render('index', [
-            'challenges' => $challenges
+            'challenges' => $challenges,
+            'userGuide' =>empty($challenges)
         ]);
     }
 
@@ -70,15 +70,16 @@ class ChallengeController extends ContentContainerController
     public function actionOverview($challengeId, $categoryId = null)
     {
         $challenge = Challenge::findOne(['id' => $challengeId, 'space_id' => $this->contentContainer]);
-
         if (!$challenge) {
             throw new HttpException(404);
         }
 
         if ($challenge->showUnreviewedSubmissions() || Space::findOne(['id' => $challenge->space_id])->isAdmin(Yii::$app->user->identity)) {
             $fundings = $challenge->getFundings()->all();
+            $userGuide = empty($fundings);
         } else {
             $fundings = Funding::findAll(['challenge_id' => $challenge->id, 'published' => 1,'review_status'=>[1,2]]);
+            $userGuide = empty(Funding::findAll(['challenge_id'=>$challenge,'created_by'=>Yii::$app->user->identity->id]));
         }
 
         $categories = [];
@@ -103,6 +104,7 @@ class ChallengeController extends ContentContainerController
             'fundings' => $fundings,
             'categories' => array_unique($categories, SORT_REGULAR),
             'activeCategory' => $categoryId,
+            'userGuide'=>$userGuide
         ]);
     }
 

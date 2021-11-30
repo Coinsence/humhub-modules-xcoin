@@ -33,6 +33,8 @@ class MarketplaceController extends ContentContainerController
 
     public function actionIndex()
     {
+        $userGuide = false;
+
         $marketplaces = Marketplace::find()
             ->where(['space_id' => $this->contentContainer->id])
             ->orderBy(['created_at' => SORT_DESC])
@@ -40,7 +42,8 @@ class MarketplaceController extends ContentContainerController
 
         return $this->render('index', [
             'marketplaces' => $marketplaces,
-            'user' => $this->contentContainer
+            'user' => $this->contentContainer,
+            'userGuide' => empty($marketplaces) ? true : false
         ]);
     }
 
@@ -59,6 +62,9 @@ class MarketplaceController extends ContentContainerController
 
         if (Space::findOne(['id' => $marketplace->space_id])->isAdmin(Yii::$app->user->identity)) {
             $products = $marketplace->getProducts()->all();
+            if(empty($products)){
+                $userGuide = true;
+            }
         } else {
             if ($marketplace->showUnreviewedSubmissions()) {
                 $products = Product::findAll([
@@ -72,6 +78,10 @@ class MarketplaceController extends ContentContainerController
                     'status' => Product::STATUS_AVAILABLE,
                 ]);
             }
+            $userGuide = empty(Product::findAll([
+                'marketplace_id'=>$marketplace->id,
+                'created_by'=>Yii::$app->user->identity->id
+            ]));
         }
 
         $categories = [];
@@ -82,8 +92,8 @@ class MarketplaceController extends ContentContainerController
         }
 
         if ($categoryId) {
-            $products = array_filter($products, function($product) use ($categoryId) {
-                $categories_ids = array_map(function($category) {
+            $products = array_filter($products, function ($product) use ($categoryId) {
+                $categories_ids = array_map(function ($category) {
                     return $category->id;
                 }, $product->getCategories()->all());
 
@@ -96,6 +106,7 @@ class MarketplaceController extends ContentContainerController
             'products' => $products,
             'categories' => array_unique($categories, SORT_REGULAR),
             'activeCategory' => $categoryId,
+            'userGuide' => $userGuide
         ]);
     }
 
@@ -143,7 +154,7 @@ class MarketplaceController extends ContentContainerController
                 'model' => $model,
                 'assets' => $assets,
                 'defaultAsset' => $defaultAsset,
-                'imageError'=>null
+                'imageError' => null
 
             ]
         );
@@ -194,7 +205,7 @@ class MarketplaceController extends ContentContainerController
         return $this->renderAjax('edit', [
                 'model' => $model,
                 'assets' => $assets,
-                'imageError'=>null
+                'imageError' => null
             ]
         );
     }
@@ -203,7 +214,7 @@ class MarketplaceController extends ContentContainerController
     {
         $model = Product::findOne(['id' => $id]);
         if ($model == null) {
-            throw new HttpException(404,'Product Not found');
+            throw new HttpException(404, 'Product Not found');
         }
 
         if (!SpaceHelper::canReviewProject($model->marketplace->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {

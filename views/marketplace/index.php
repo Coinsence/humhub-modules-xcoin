@@ -9,6 +9,7 @@ use yii\helpers\Html;
 Assets::register($this);
 
 /** @var $marketplaces Marketplace[] */
+/** @var $userGuide boolean */
 
 ?>
 
@@ -19,17 +20,31 @@ Assets::register($this);
         </div>
         <div class="panel-body">
             <div class="panels">
-
                 <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
                     <div class="col-sm-6 col-md-4 col-lg-3">
-
-                        <a class="add-challenge" href="<?= Url::to(['/xcoin/marketplace/create', 'container' => $this->context->contentContainer]) ?>" data-target="#globalModal">
+                        <a class="add-challenge"
+                           href="<?= Url::to(['/xcoin/marketplace/create', 'container' => $this->context->contentContainer]) ?>"
+                           data-target="#globalModal">
                             <span class="icon">
                                 <i class="cross"></i>
                             </span>
                             <span class="text"><?= Yii::t('XcoinModule.marketplace', 'Add a marketplace!') ?></span>
                         </a>
                     </div>
+                    <?php if ($userGuide) : ?>
+                        <div class="col-md-12">
+                            <div class="s2_streamContent" data-stream-content="">
+                                <div class="streamMessage placeholder-empty-stream">
+                                    <div class="panel">
+                                        <a href="<?= Url::to(['/xcoin/marketplace/create', 'container' => $this->context->contentContainer]) ?>"
+                                           data-target="#globalModal" class="panel-body">
+                                            <?= Yii::t('XcoinModule.marketplace', '<b>This marketplace is empty !</b><br>You can Start here by adding a new marketplace') ?>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 <?php else: ?>
                     <?php if (count($marketplaces) == 0): ?>
                         <p class="alert alert-warning col-md-12">

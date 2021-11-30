@@ -12,6 +12,7 @@ use yii\helpers\Html;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\widgets\SocialShare;
 use yii\bootstrap\Progress;
+use yii\helpers\Url;
 
 Assets::register($this);
 
@@ -19,6 +20,7 @@ Assets::register($this);
 /** @var $fundings Funding[] */
 /** @var $categories FundingCategory[] */
 /** @var $activeCategory number */
+/** @var $userGuide boolean */
 
 ?>
 
@@ -62,6 +64,20 @@ Assets::register($this);
                         'challengeId' => $challenge->id,
                         'container' => $this->context->contentContainer
                     ], ['class' => 'btn btn-gradient-1 add-btn', 'data-target' => '#globalModal']); ?>
+                    <?php if ($userGuide) : ?>
+                        <div class="col-md-12">
+                            <div class="s2_streamContent" data-stream-content="">
+                                <div class="streamMessage placeholder-empty-stream">
+                                    <div class="panel">
+                                        <a href="<?= Url::to(['/xcoin/funding/new', 'challengeId' => $challenge->id, 'container' => $this->context->contentContainer]) ?>"
+                                           data-target="#globalModal" class="panel-body">
+                                            <?= Yii::t('XcoinModule.marketplace', '<b>You have no submitted projects !</b><br>You can start adding your projects by clicking here') ?>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
