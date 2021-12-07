@@ -23,6 +23,7 @@ use yii\db\Expression;
  * @property string $title
  * @property string $guid
  * @property string $ethereum_address
+ * @property string $algorand_public_key
  * @property integer $funding_id
  * @property integer $investor_id
  * @property integer $archived
