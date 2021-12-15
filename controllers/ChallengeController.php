@@ -56,9 +56,10 @@ class ChallengeController extends ContentContainerController
             ->where(['space_id' => $this->contentContainer->id])
             ->orderBy(['created_at' => SORT_DESC])
             ->all();
+
         return $this->render('index', [
             'challenges' => $challenges,
-            'userGuide' =>empty($challenges)
+            'userGuide' => empty($challenges)
         ]);
     }
 
@@ -104,7 +105,7 @@ class ChallengeController extends ContentContainerController
             'fundings' => $fundings,
             'categories' => array_unique($categories, SORT_REGULAR),
             'activeCategory' => $categoryId,
-            'userGuide'=>$userGuide
+            'userGuide' => $userGuide
         ]);
     }
 
@@ -260,7 +261,7 @@ class ChallengeController extends ContentContainerController
                 'model' => $model,
                 'assets' => $assets,
                 'contactButtons' => $contactButtons,
-                'imageError'=>null
+                'imageError'=> null
             ]
         );
     }

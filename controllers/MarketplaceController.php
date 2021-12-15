@@ -43,7 +43,7 @@ class MarketplaceController extends ContentContainerController
         return $this->render('index', [
             'marketplaces' => $marketplaces,
             'user' => $this->contentContainer,
-            'userGuide' => empty($marketplaces) ? true : false
+            'userGuide' => empty($marketplaces)
         ]);
     }
 
@@ -62,9 +62,7 @@ class MarketplaceController extends ContentContainerController
 
         if (Space::findOne(['id' => $marketplace->space_id])->isAdmin(Yii::$app->user->identity)) {
             $products = $marketplace->getProducts()->all();
-            if(empty($products)){
-                $userGuide = true;
-            }
+            $userGuide = empty($products);
         } else {
             if ($marketplace->showUnreviewedSubmissions()) {
                 $products = Product::findAll([
@@ -79,8 +77,8 @@ class MarketplaceController extends ContentContainerController
                 ]);
             }
             $userGuide = empty(Product::findAll([
-                'marketplace_id'=>$marketplace->id,
-                'created_by'=>Yii::$app->user->identity->id
+                'marketplace_id' => $marketplace->id,
+                'created_by' => Yii::$app->user->identity->id
             ]));
         }
 
