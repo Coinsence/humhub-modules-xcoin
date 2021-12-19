@@ -5,6 +5,7 @@ namespace humhub\modules\xcoin\helpers;
 use humhub\components\Event;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\models\Transaction;
 use humhub\modules\xcoin\permissions\CreateAccount;
 use Yii;
 use humhub\modules\space\models\Space;
@@ -58,7 +59,7 @@ class AccountHelper
             $query = Account::find()
                 ->andWhere(['space_id' => $container->id])
                 ->andWhere(['!=', 'account_type', Account::TYPE_ISSUE])
-                ->andWhere(['archived' => [0,1]]);
+                ->andWhere(['archived' => [0, 1]]);
 
             if ($asset) {
                 $query
@@ -210,9 +211,10 @@ class AccountHelper
     {
         if ($requested) {
             $asset = Asset::findOne(['id' => $funding->challenge->asset_id]);
-        } else {
-            $asset = AssetHelper::getSpaceAsset($funding->space);
+            return AccountHelper::getAccountAssetIncome(AccountHelper::getFundingAccount($funding), $asset);
         }
+
+        $asset = AssetHelper::getSpaceAsset($funding->space);
         return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
 
     }
@@ -235,4 +237,13 @@ class AccountHelper
         return $accountAssetList;
     }
 
+    public static function getAccountAssetIncome(Account $account, Asset $asset)
+    {
+        $incomeAmount = Transaction::find()
+            ->where(['to_account_id' => $account->id])
+            ->andWhere(['asset_id' => $asset->id])
+            ->sum('amount');
+
+        return round($incomeAmount, 4);
+    }
 }
