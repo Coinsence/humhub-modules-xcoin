@@ -47,12 +47,12 @@ Class DashboardStatistics implements DashboardStatisticsInterface
         $volumes = [];
         foreach ($transactions as $transaction) {
             array_push($dates, date('Y-m-d', strtotime($transaction->created_at)));
-            $thatDayTransactions = Transaction::find()->where(['<=', 'created_at', $transaction->created_at])->all();
+            $currentDayTransactions = Transaction::find()->where(['<=', 'created_at', $transaction->created_at])->all();
             $transactionsVolume = 0;
-            foreach ($thatDayTransactions as $tr) {
-                $transactionsVolume += $tr->amount;
+            foreach ($currentDayTransactions as $currentDayTransaction) {
+                $transactionsVolume += $currentDayTransaction->amount;
             }
-            array_push($values, (int)count($thatDayTransactions));
+            array_push($values, (int)count($currentDayTransactions));
             array_push($volumes, $transactionsVolume);
         }
         $dataSet["dates"] = $dates;
