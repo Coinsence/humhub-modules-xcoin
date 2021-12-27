@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin;
 
+use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
@@ -71,7 +72,7 @@ class Events
                 Yii::$app->controller->action->id == 'members'
             ),
         ]);
-        
+
         $event->sender->addItem([
             'label' => Yii::t('DashboardModule.base', 'Spaces'),
             'id' => 'dashboard',
@@ -346,5 +347,21 @@ class Events
         $user = $event->identity;
 
         AccountHelper::initContentContainer($user);
+    }
+
+    public static function onAdminMenuInit($event)
+    {
+        $user = Yii::$app->user->getIdentity();
+
+        if ($user->isModuleEnabled('xcoin')) {
+            $event->sender->addItem([
+                'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Statistics'),
+                'url' => Url::toRoute('/xcoin/dashboard/statistics'),
+                'icon' => '<i class="fa fa-bar-chart"></i>',
+                'sortOrder' => 10000,
+                'newItemCount' => 0,
+                'isVisible' => Yii::$app->user->can(new SeeAdminInformation())
+            ]);
+        }
     }
 }
