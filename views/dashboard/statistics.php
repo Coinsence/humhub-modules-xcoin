@@ -12,6 +12,7 @@ use humhub\modules\xcoin\services\DashboardStatistics;
 
 Assets::register($this);
 Select2BootstrapAsset::register($this);
+
 /* @var $totalUsers [] */
 /* @var $totalTransactions [] */
 /* @var $totalOffers [] */
@@ -297,7 +298,7 @@ Select2BootstrapAsset::register($this);
                             ],
                             'clientOptions' => [
                                 'legend' => [
-                                    'display' => true,
+                                    'display' => false,
                                     'position' => 'bottom',
                                     'labels' => [
                                         'fontSize' => 14,
@@ -435,7 +436,7 @@ Select2BootstrapAsset::register($this);
                             ],
                             'clientOptions' => [
                                 'legend' => [
-                                    'display' => false,
+                                    'display' =>true,
                                     'position' => 'left',
                                     'labels' => [
                                         'fontSize' => 14,
