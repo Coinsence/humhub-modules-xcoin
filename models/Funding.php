@@ -15,6 +15,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\helpers\FundingHelper;
 use humhub\modules\xcoin\helpers\Utils;
 use Symfony\Component\Filesystem\Filesystem;
 use Yii;
@@ -125,6 +126,11 @@ class Funding extends ActiveRecord
             [['country'], 'string', 'max' => 2],
             [['content'], 'string'],
             [['deadline'], DbDateValidator::class],
+            ['youtube_link', function($attribute){
+                if (null === FundingHelper::getYoutubeEmbedUrl($this->$attribute)) {
+                    $this->addError($attribute, Yii::t('XcoinModule.funding', 'Invalid youtube link.'));
+                }
+            }],
         ];
     }
 
