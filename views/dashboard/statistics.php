@@ -116,52 +116,6 @@ Select2BootstrapAsset::register($this);
                     <div class="col-md-4">
                         <?= ChartJs::widget([
                             'type' => 'line',
-                            'id' => 'volumeOfTransactions',
-                            'options' => [
-                                'height' => 400,
-                                'width' => 400,
-                            ],
-                            'data' => [
-                                'labels' => $totalTransactions['dates'], // Your labels
-                                'datasets' => [
-                                    ['data' => $totalTransactions['volumes'], // Your dataset
-                                        'label' => '',
-                                    ]
-                                ]
-                            ],
-                            'clientOptions' => [
-                                'legend' =>
-                                    ['display' => false,
-                                        'position' => 'bottom',
-                                        'labels' =>
-                                            ['fontSize' => 14,
-                                                'fontColor' => "#425062"
-                                                ,]
-                                    ],
-                                'tooltips' => [
-                                    'enabled' => true,
-                                    'intersect' => true
-                                ],
-                                'hover' => [
-                                    'mode' => false
-                                ],
-                                'title' => [
-                                    'display' => true,
-                                    'text' => Yii::t('XcoinModule.funding', 'Volume of transactions'),
-                                ],
-                                'maintainAspectRatio' => false,
-                            ]
-                        ])
-                        ?>
-                    </div>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-4">
-                        <?= ChartJs::widget([
-                            'type' => 'line',
                             'id' => 'totalOffers',
                             'options' => [
                                 'height' => 400,
@@ -198,43 +152,10 @@ Select2BootstrapAsset::register($this);
                                 'maintainAspectRatio' => false,]])
                         ?>
                     </div>
-                    <div class="col-md-4">
-                        <?= ChartJs::widget(['type' => 'line',
-                            'id' => 'totalfundings',
-                            'options' => [
-                                'height' => 400,
-                                'width' => 400
-                                ,],
-                            'data' => ['labels' => $totalFundings['dates'], // Your labels
-                                'datasets' => [
-                                    [
-                                        'data' => $totalFundings['values'], // Your dataset
-                                        'label' => Yii::t('XcoinModule.funding', 'Total of fundings'),
-                                    ]
-                                ]
-                            ],
-                            'clientOptions' =>
-                                [
-                                    'legend' => [
-                                        'display' => false,
-                                        'position' => 'bottom',
-                                    ],
-                                    'tooltips' =>
-                                        [
-                                            'enabled' => true,
-                                            'intersect' => true
-                                        ],
-                                    'title' =>
-                                        [
-                                            'display' => true,
-                                            'text' => Yii::t('XcoinModule.funding', 'Total of fundings'),
-                                        ],
-                                    'hover' => [
-                                        'mode' => false],
-                                    'maintainAspectRatio' => false,
-                                ]])
-                        ?>
-                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <div class="col-md-4">
                         <?= ChartJs::widget(['type' => 'line',
                             'id' => 'totalUpdatedProfiles',
@@ -267,91 +188,6 @@ Select2BootstrapAsset::register($this);
                                 'tooltips' => [
                                     'enabled' => true,
                                     'intersect' => true],
-                                'hover' => [
-                                    'mode' => false
-                                ],
-                                'maintainAspectRatio' => false,
-                            ]
-                        ])
-                        ?>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-4">
-                        <?= ChartJs::widget(['type' => 'bar',
-                            'id' => 'coinsPerUsers',
-                            'options' => [
-                                'height' => 400,
-                                'width' => 400,
-                            ],
-                            'data' => [
-                                'labels' => $coinsPerUsers['names'], // Your labels
-                                'datasets' => [
-                                    [
-                                        'data' => $coinsPerUsers['values'], // Your dataset
-                                        'label' => 'Total of Coin per user '
-                                        ,
-                                    ]
-                                ]
-                            ],
-                            'clientOptions' => [
-                                'legend' => [
-                                    'display' => false,
-                                    'position' => 'bottom',
-                                    'labels' => [
-                                        'fontSize' => 14,
-                                        'fontColor' => "#425062",]
-                                ],
-                                'title' => [
-                                    'display' => true,
-                                    'text' => Yii::t('XcoinModule.funding', 'Coins per user'),
-                                ],
-                                'tooltips' => [
-                                    'enabled' => true,
-                                    'intersect' => true],
-                                'hover' => [
-                                    'mode' => false
-                                ],
-                                'maintainAspectRatio' => false,
-                            ]
-                        ])
-                        ?>
-                    </div>
-                    <div class="col-md-4">
-                        <?= ChartJs::widget(['type' => 'line',
-                            'id' => 'totalSpaces',
-                            'options' => [
-                                'height' => 400,
-                                'width' => 400,
-                            ],
-                            'data' => [
-                                'labels' => $totalSpaces['dates'], // Your labels
-                                'datasets' => [
-                                    [
-                                        'data' => $totalSpaces['values'], // Your dataset
-                                        'label' => 'Total of Spaces '
-                                        ,
-                                    ]
-                                ]
-                            ],
-                            'clientOptions' => [
-                                'legend' => [
-                                    'display' => false,
-                                    'position' => 'bottom',
-                                    'labels' => [
-                                        'fontSize' => 14,
-                                        'fontColor' => "#425062",]
-                                ],
-                                'title' => [
-                                    'display' => true,
-                                    'text' => Yii::t('XcoinModule.funding', 'Total of spaces'),
-                                ],
-                                'tooltips' => [
-                                    'enabled' => true,
-                                    'intersect' => true
-                                ],
                                 'hover' => [
                                     'mode' => false
                                 ],
@@ -400,11 +236,9 @@ Select2BootstrapAsset::register($this);
                         ])
                         ?>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                         <?= ChartJs::widget([
-                            'type' => 'doughnut',
+                            'type' => 'bar',
                             'id' => 'userDistribution',
                             'options' => [
                                 'height' => 400,
@@ -436,7 +270,7 @@ Select2BootstrapAsset::register($this);
                             ],
                             'clientOptions' => [
                                 'legend' => [
-                                    'display' =>true,
+                                    'display' => false,
                                     'position' => 'left',
                                     'labels' => [
                                         'fontSize' => 14,

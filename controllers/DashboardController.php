@@ -48,9 +48,6 @@ class DashboardController extends Controller
             'totalUsers'=>DashboardStatistics::getTotalUsers(),
             'totalTransactions'=>DashboardStatistics::getTotalOfTransactions(),
             'totalOffers'=>DashboardStatistics::getTotalOfMarketplaceOffers(),
-            'totalFundings'=>DashboardStatistics::getTotalOfFundings(),
-            'coinsPerUsers'=>DashboardStatistics::getCoinsPerUser(),
-            'totalSpaces'=>DashboardStatistics::getTotalSpaces(),
             'totalMarketPlaces'=>DashboardStatistics::getTotalMarketplaces(),
         ]);
     }
