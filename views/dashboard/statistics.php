@@ -20,11 +20,36 @@ Select2BootstrapAsset::register($this);
 /* @var $coinsPerUsers [] */
 /* @var $totalSpaces [] */
 /* @var $totalMarketPlaces [] */
+/* @var $startDate string */
+/* @var $endDate string */
+/* @var $type string */
 ?>
 
 <div class="crowd-funding">
     <div class="container">
-        <div class="filters">
+        <div class="col-md-2">
+            <div class="row">
+                <label for="startDate"><?= Yii::t('XcoinModule.stats', 'Start date: ') ?></label>
+                <input type="date" value="<?= $startDate ?>" id="startDate">
+            </div>
+            <div class="row">
+                <label for="endDate"><?= Yii::t('XcoinModule.stats', 'End date: ') ?></label>
+                <input type="date" value="<?= $endDate ?>" id="endDate">
+                <label for="type-select"><?= Yii::t('XcoinModule.stats', 'Resolution:') ?></label>
+            </div>
+            <div class="row">
+                <select name="type" id="type-select">
+                    <option value="" disabled>--Please choose an option--</option>
+                    <option value="monthly"<?= $type == "monthly" ? "selected" : "" ?> ><?= Yii::t('XcoinModule.stats', 'Monthly') ?></option>
+                    <option value="daily" <?= $type == "daily" ? "selected" : "" ?>><?= Yii::t('XcoinModule.stats', 'Daily') ?></option>
+                    <option value="weekly" <?= $type == "weekly" ? "selected" : "" ?>><?= Yii::t('XcoinModule.stats', 'Weekly') ?></option>
+                </select>
+                <button type="button" class="btn btn-primary"
+                        onclick="updateData()"> <?= Yii::t('XcoinModule.stats', 'Show data') ?>
+                </button>
+            </div>
+        </div>
+        <div class="filters col-md-10">
             <div class="row">
                 <div class="col-md-12">
                     <div class="col-md-4">
@@ -62,7 +87,7 @@ Select2BootstrapAsset::register($this);
                                 ],
                                 'title' => [
                                     'display' => true,
-                                    'text' => Yii::t('XcoinModule.funding', 'User registration'),
+                                    'text' => Yii::t('XcoinModule.stats', 'User registration'),
                                 ],
                                 'maintainAspectRatio' => false,
 
@@ -91,7 +116,7 @@ Select2BootstrapAsset::register($this);
                                     'position' => 'bottom',
                                     'title' => [
                                         'display' => true,
-                                        'text' => Yii::t('XcoinModule.funding', 'Custom shit'),
+                                        'text' => Yii::t('XcoinModule.stats', 'Custom shit'),
                                     ],
                                     'labels' => [
                                         'fontSize' => 14,
@@ -100,7 +125,7 @@ Select2BootstrapAsset::register($this);
                                 ],
                                 'title' => [
                                     'display' => true,
-                                    'text' => Yii::t('XcoinModule.funding', 'Number of transactions'),
+                                    'text' => Yii::t('XcoinModule.stats', 'Number of transactions'),
                                 ],
                                 'tooltips' => [
                                     'enabled' => true,
@@ -147,7 +172,7 @@ Select2BootstrapAsset::register($this);
                                 ],
                                 'title' => [
                                     'display' => true,
-                                    'text' => Yii::t('XcoinModule.funding', 'Total of products'),
+                                    'text' => Yii::t('XcoinModule.stats', 'Total of products'),
                                 ],
                                 'maintainAspectRatio' => false,]])
                         ?>
@@ -183,7 +208,7 @@ Select2BootstrapAsset::register($this);
                                 ],
                                 'title' => [
                                     'display' => true,
-                                    'text' => Yii::t('XcoinModule.funding', 'Total of updated profiles'),
+                                    'text' => Yii::t('XcoinModule.stats', 'Total of updated profiles'),
                                 ],
                                 'tooltips' => [
                                     'enabled' => true,
@@ -223,7 +248,7 @@ Select2BootstrapAsset::register($this);
                                 ],
                                 'title' => [
                                     'display' => true,
-                                    'text' => Yii::t('XcoinModule.funding', 'Total of market places'),
+                                    'text' => Yii::t('XcoinModule.stats', 'Total of market places'),
                                 ],
                                 'tooltips' => [
                                     'enabled' => true,
@@ -283,7 +308,7 @@ Select2BootstrapAsset::register($this);
                                 ],
                                 'title' => [
                                     'display' => true,
-                                    'text' => Yii::t('XcoinModule.funding', 'User distribution based on time since last login'),
+                                    'text' => Yii::t('XcoinModule.stats', 'User distribution based on time since last login'),
                                 ],
 
                                 'hover' => [
@@ -299,3 +324,15 @@ Select2BootstrapAsset::register($this);
         </div>
     </div>
 </div>
+
+<script>
+    function updateData() {
+        startDate = $('#startDate').val();
+        endDate = $('#endDate').val();
+        type = $('#type-select').val();
+        if (startDate && endDate && endDate > startDate) {
+            location.href = "/xcoin/dashboard/statistics?startDate=" + startDate + "&endDate=" + endDate + "&type=" + type;
+        }
+
+    }
+</script>

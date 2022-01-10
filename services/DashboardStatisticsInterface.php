@@ -3,11 +3,11 @@ namespace humhub\modules\xcoin\services;
 
 interface DashboardStatisticsInterface
 {
-    public static function getTotalUsers();
+    public static function getTotalUsers($startDate = null ,$endDate = null , $type = null);
 
-    public static function getTotalOfTransactions();
+    public static function getTotalOfTransactions($startDate = null, $endDate = null, $type = null);
 
-    public static function getTotalOfMarketplaceOffers();
+    public static function getTotalOfMarketplaceOffers($startDate = null, $endDate = null, $type = null);
 
     public static function getTotalOfFundings();
 
@@ -15,7 +15,7 @@ interface DashboardStatisticsInterface
 
     public static function getTotalSpaces();
 
-    public static function getTotalMarketplaces();
+    public static function getTotalMarketplaces($startDate = null, $endDate = null, $type = null);
 
     public static function getUserDistributionBasedOnLogin($startDate, $endDate);
 

@@ -42,13 +42,16 @@ class DashboardController extends Controller
     }
 
 
-    public function actionStatistics()
+    public function actionStatistics($startDate = null , $endDate = null , $type = null)
     {
         return $this->render('statistics', [
-            'totalUsers'=>DashboardStatistics::getTotalUsers(),
-            'totalTransactions'=>DashboardStatistics::getTotalOfTransactions(),
-            'totalOffers'=>DashboardStatistics::getTotalOfMarketplaceOffers(),
-            'totalMarketPlaces'=>DashboardStatistics::getTotalMarketplaces(),
+            'totalUsers'=>DashboardStatistics::getTotalUsers($startDate,$endDate,$type),
+            'totalTransactions'=>DashboardStatistics::getTotalOfTransactions($startDate,$endDate,$type),
+            'totalOffers'=>DashboardStatistics::getTotalOfMarketplaceOffers($startDate,$endDate,$type),
+            'totalMarketPlaces'=>DashboardStatistics::getTotalMarketplaces($startDate,$endDate,$type),
+            'startDate'=>$startDate,
+            'endDate'=>$endDate,
+            'type'=>$type
         ]);
     }
 }

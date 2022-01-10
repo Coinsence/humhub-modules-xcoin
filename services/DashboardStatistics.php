@@ -20,17 +20,21 @@ use humhub\modules\xcoin\services\DashboardStatisticsInterface;
 Class DashboardStatistics implements DashboardStatisticsInterface
 {
 
-    public static function getTotalUsers()
+    public static function getTotalUsers($startDate = null, $endDate = null, $type = null)
     {
-
-        $users = User::find()->all();
         $dates = [];
         $values = [];
         $updatedProfiles = [];
-        foreach ($users as $user) {
-            array_push($dates, date('Y-m-d', strtotime($user->created_at)));
-            array_push($values, (int)count(User::find()->where(['<=', 'created_at', $user->created_at])->all()));
-            array_push($updatedProfiles, (int)count(User::find()->where(['<=', 'updated_at', $user->created_at])->all()));
+        $daysToAdd = self::getDaysToAdd($type);
+        if ($startDate == null || $endDate == null) {
+            $startDate = date("Y-m-d", strtotime("-1 year", time()));
+            $endDate = date("Y-m-d", time());
+        }
+        while ($endDate > $startDate) {
+            array_push($dates, $startDate);
+            array_push($values, User::find()->where(['<=', 'created_at', $startDate])->count());
+            array_push($updatedProfiles, User::find()->where(['<=', 'updated_at', $startDate])->count());
+            $startDate = date('Y-m-d', strtotime($startDate . ' +' . $daysToAdd . 'days'));
         }
         $dataSet["dates"] = $dates;
         $dataSet["values"] = $values;
@@ -38,53 +42,63 @@ Class DashboardStatistics implements DashboardStatisticsInterface
         return $dataSet;
     }
 
-    public static function getTotalOfTransactions()
+    public static function getTotalOfTransactions($startDate = null, $endDate = null, $type = null)
     {
-
-        $transactions = Transaction::find()->all();
         $dates = [];
         $values = [];
         $volumes = [];
-        foreach ($transactions as $transaction) {
-            array_push($dates, date('Y-m-d', strtotime($transaction->created_at)));
-            $currentDayTransactions = Transaction::find()->where(['<=', 'created_at', $transaction->created_at])->all();
-            $transactionsVolume = 0;
-            foreach ($currentDayTransactions as $currentDayTransaction) {
-                $transactionsVolume += $currentDayTransaction->amount;
-            }
-            array_push($values, (int)count($currentDayTransactions));
-            array_push($volumes, $transactionsVolume);
+        $daysToAdd = self::getDaysToAdd($type);
+        if ($startDate == null || $endDate == null) {
+            $startDate = date("Y-m-d", strtotime("-1 year", time()));
+            $endDate = date("Y-m-d", time());
+        }
+        while ($endDate > $startDate) {
+            array_push($dates, $startDate);
+            array_push($values, Transaction::find()->where(['<=', 'created_at', $startDate])->count());
+            $startDate = date('Y-m-d', strtotime($startDate . ' +' . $daysToAdd . 'days'));
+
         }
         $dataSet["dates"] = $dates;
         $dataSet["values"] = $values;
-        $dataSet["volumes"] = $volumes;
+//        $dataSet["volumes"] = $volumes;
         return $dataSet;
     }
 
-    public static function getTotalOfMarketplaceOffers()
+    public static function getTotalOfMarketplaceOffers($startDate = null, $endDate = null, $type = null)
     {
 
-        $products = Product::find()->all();
         $dates = [];
         $values = [];
-        foreach ($products as $product) {
-            array_push($dates, date('Y-m-d', strtotime($product->created_at)));
-            array_push($values, (int)count(Product::find()->where(['<=', 'created_at', $product->created_at])->all()));
+        $daysToAdd = self::getDaysToAdd($type);
+        if ($startDate == null || $endDate == null) {
+            $startDate = date("Y-m-d", strtotime("-1 year", time()));
+            $endDate = date("Y-m-d", time());
         }
+        while ($endDate > $startDate) {
+            array_push($dates, $startDate);
+            array_push($values, Product::find()->where(['<=', 'created_at', $startDate])->count());
+            $startDate = date('Y-m-d', strtotime($startDate . ' +' . $daysToAdd . 'days'));
+
+        }
+
         $dataSet["dates"] = $dates;
         $dataSet["values"] = $values;
         return $dataSet;
     }
 
-    public static function getTotalOfFundings()
+    public static function getTotalOfFundings($startDate = null, $endDate = null, $type = null)
     {
-
-        $fundings = Funding::find()->all();
         $dates = [];
         $values = [];
-        foreach ($fundings as $funding) {
-            array_push($dates, date('Y-m-d', strtotime($funding->created_at)));
-            array_push($values, (int)count(Funding::find()->where(['<=', 'created_at', $funding->created_at])->all()));
+        $daysToAdd = self::getDaysToAdd($type);
+        if ($startDate == null || $endDate == null) {
+            $startDate = date("Y-m-d", strtotime("-1 year", time()));
+            $endDate = date("Y-m-d", time());
+        }
+        while ($endDate > $startDate) {
+            array_push($dates, $startDate);
+            array_push($values, Funding::find()->where(['<=', 'created_at', $startDate])->count());
+            $startDate = date('Y-m-d', strtotime($startDate . ' +' . $daysToAdd . 'days'));
 
         }
         $dataSet["dates"] = $dates;
@@ -138,17 +152,41 @@ Class DashboardStatistics implements DashboardStatisticsInterface
         $dataSet["values"] = $values;
         return $dataSet;
     }
-    public static function getTotalMarketplaces()
+
+    public static function getTotalMarketplaces($startDate = null, $endDate = null, $type = null)
     {
         $marketPlaces = Marketplace::find()->all();
         $dates = [];
         $values = [];
-        foreach ($marketPlaces as $marketPlace) {
-            array_push($dates, date('Y-m-d', strtotime($marketPlace->created_at)));
-            array_push($values, (int)count(Funding::find()->where(['<=', 'created_at', $marketPlace->created_at])->all()));
+        $daysToAdd = self::getDaysToAdd($type);
+        if ($startDate == null || $endDate == null) {
+            $startDate = date("Y-m-d", strtotime("-1 year", time()));
+            $endDate = date("Y-m-d", time());
+        }
+        while ($endDate > $startDate) {
+            array_push($dates, $startDate);
+            array_push($values, Marketplace::find()->where(['<=', 'created_at', $startDate])->count());
+            $startDate = date('Y-m-d', strtotime($startDate . ' +' . $daysToAdd . 'days'));
+
         }
         $dataSet["dates"] = $dates;
         $dataSet["values"] = $values;
         return $dataSet;
+    }
+
+    public static function getDaysToAdd($type)
+    {
+        switch ($type) {
+            case "weekly":
+                return 7;
+                break;
+            case "daily":
+                return 1;
+                break;
+            case "monthly":
+                return 30;
+                break;
+        }
+        return 30;
     }
 }
