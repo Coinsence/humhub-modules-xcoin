@@ -76,7 +76,7 @@ Assets::register($this);
                 <h5 class="add-btn-text"></h5>
                 <?php if (Yii::$app->user->isGuest): ?>
                     <?= Html::a(
-                        '<i class="fa fa-plus-circle"></i>&nbsp;&nbsp;' . Yii::t('XcoinModule.marketplace', 'Add your job'),
+                        '<i class="fa fa-plus-circle"></i>&nbsp;&nbsp;' . ($marketplace->isTasksMarketplace() ? Yii::t('XcoinModule.marketplace', 'Add your job') : Yii::t('XcoinModule.marketplace', 'Sell Your Product')),
                         Yii::$app->user->loginUrl,
                         ['class' => 'btn btn-gradient-1 add-btn', 'data-target' => '#globalModal']) ?>
                 <?php else: ?>
