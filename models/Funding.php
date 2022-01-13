@@ -241,15 +241,15 @@ class Funding extends ActiveRecord
         if ($challenge->acceptSpecificRewardingAsset()) {
             $this->exchange_rate = $challenge->exchange_rate;
         }
-        if (!$this->isNewRecord && !$this->challenge->acceptNoRewarding() && (int)$this->amount < $this->getOldAttribute('amount')) {
+        if (!$this->isNewRecord && !$this->challenge->acceptNoRewarding() && (int)$this->amount < (int)$this->getOldAttribute('amount')) {
             $transaction = new Transaction();
             $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
             $transaction->from_account_id = Account::findOne(['funding_id' => $this->id])->id;
-            $transaction->to_account_id = Account::findOne(['space_id' => $this->space_id, 'account_type' => 4])->id;;
-            $transaction->amount = $this->getOldAttribute('amount') - (int)$this->amount;
+            $transaction->to_account_id = Account::findOne(['space_id' => $this->space_id, 'account_type' => ACCOUNT::TYPE_DEFAULT])->id;;
+            $transaction->amount = (int)$this->getOldAttribute('amount') - (int)$this->amount;
             $transaction->asset_id = AssetHelper::getSpaceAsset($this->space)->id;
             if (!$transaction->save()) {
-                throw new Exception('Could not create revert transaction');
+                throw new Exception('Could not create deduction transaction');
             }
         }
         return parent::beforeSave($insert);
