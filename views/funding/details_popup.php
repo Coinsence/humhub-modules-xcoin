@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Funding;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
@@ -256,7 +257,7 @@ Assets::register($this);
                                 <?php if (Yii::$app->user->isGuest): ?>
                                     <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                                 <?php else: ?>
-                                    <?php if ($funding->activate_funding !== Funding::FUNDING_DEACTIVATED): ?>
+                                    <?php if ($funding->activate_funding !== Funding::FUNDING_DEACTIVATED && SpaceHelper::canIssueCoins($funding->space)): ?>
                                         <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
                                             'invest',
                                             'fundingId' => $funding->id,
