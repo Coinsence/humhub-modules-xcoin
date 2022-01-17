@@ -8,6 +8,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Challenge;
+use humhub\modules\xcoin\permissions\IssueCoins;
 use humhub\modules\xcoin\permissions\ReviewSubmittedProjects;
 use humhub\modules\xcoin\permissions\SellSpaceProducts;
 use humhub\modules\xcoin\permissions\SubmitSpaceProjects;
@@ -80,5 +81,10 @@ class SpaceHelper
     public static function canAddSpaceToListForProject(Challenge $challenge, Space $space)
     {
         return $challenge->acceptAnyRewardingAsset() && AssetHelper::getSpaceAsset($space) && AssetHelper::getSpaceAsset($space)->id != $challenge->asset_id;
+    }
+
+    public static function canIssueCoins(ContentContainerActiveRecord $container)
+    {
+        return $container->permissionManager->can(new IssueCoins());
     }
 }

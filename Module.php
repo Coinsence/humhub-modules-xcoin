@@ -65,12 +65,12 @@ class Module extends ContentContainerModule
     public function getPermissions($contentContainer = null)
     {
         $permissions [] = new permissions\ReviewSubmittedProjects();
+        $permissions [] = new permissions\IssueCoins();
+        $permissions [] = new permissions\SubmitSpaceProjects();
 
         if ($contentContainer !== null) {
             $permissions [] = new permissions\CreateAccount();
         }
-
-        $permissions [] = new permissions\SubmitSpaceProjects();
 
         return $permissions;
     }
