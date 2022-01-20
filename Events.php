@@ -351,9 +351,6 @@ class Events
 
     public static function onAdminMenuInit($event)
     {
-        $user = Yii::$app->user->getIdentity();
-
-        if ($user->isModuleEnabled('xcoin')) {
             $event->sender->addItem([
                 'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Statistics'),
                 'url' => Url::toRoute('/xcoin/dashboard/statistics'),
@@ -362,6 +359,5 @@ class Events
                 'newItemCount' => 0,
                 'isVisible' => Yii::$app->user->can(new SeeAdminInformation())
             ]);
-        }
     }
 }

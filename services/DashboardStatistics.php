@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\services;
 
+use DateTime;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\AccountHelper;
@@ -30,12 +31,18 @@ Class DashboardStatistics implements DashboardStatisticsInterface
             $startDate = date("Y-m-d", strtotime("-1 year", time()));
             $endDate = date("Y-m-d", time());
         }
-        while ($endDate > $startDate) {
+        while ($endDate >= $startDate) {
             array_push($dates, $startDate);
             array_push($values, User::find()->where(['<=', 'created_at', $startDate])->count());
-            array_push($updatedProfiles, User::find()->where(['<=', 'updated_at', $startDate])->count());
-            $startDate = date('Y-m-d', strtotime($startDate . ' +' . $daysToAdd . 'days'));
-        }
+            array_push($updatedProfiles,
+                User::find()
+                    ->where(['<=', 'updated_at', $startDate])
+                    ->andWhere('updated_at != created_at')
+                    ->count());
+            $startDate = new DateTime($startDate);
+            $startDate->modify($daysToAdd);
+            $startDate = $startDate->format('Y-m-d');
+        };
         $dataSet["dates"] = $dates;
         $dataSet["values"] = $values;
         $dataSet["updatedProfiles"] = $updatedProfiles;
@@ -52,10 +59,12 @@ Class DashboardStatistics implements DashboardStatisticsInterface
             $startDate = date("Y-m-d", strtotime("-1 year", time()));
             $endDate = date("Y-m-d", time());
         }
-        while ($endDate > $startDate) {
+        while ($endDate >= $startDate) {
             array_push($dates, $startDate);
             array_push($values, Transaction::find()->where(['<=', 'created_at', $startDate])->count());
-            $startDate = date('Y-m-d', strtotime($startDate . ' +' . $daysToAdd . 'days'));
+            $startDate = new DateTime($startDate);
+            $startDate->modify($daysToAdd);
+            $startDate = $startDate->format('Y-m-d');
 
         }
         $dataSet["dates"] = $dates;
@@ -77,8 +86,9 @@ Class DashboardStatistics implements DashboardStatisticsInterface
         while ($endDate > $startDate) {
             array_push($dates, $startDate);
             array_push($values, Product::find()->where(['<=', 'created_at', $startDate])->count());
-            $startDate = date('Y-m-d', strtotime($startDate . ' +' . $daysToAdd . 'days'));
-
+            $startDate = new DateTime($startDate);
+            $startDate->modify($daysToAdd);
+            $startDate = $startDate->format('Y-m-d');
         }
 
         $dataSet["dates"] = $dates;
@@ -95,11 +105,12 @@ Class DashboardStatistics implements DashboardStatisticsInterface
             $startDate = date("Y-m-d", strtotime("-1 year", time()));
             $endDate = date("Y-m-d", time());
         }
-        while ($endDate > $startDate) {
+        while ($endDate >= $startDate) {
             array_push($dates, $startDate);
             array_push($values, Funding::find()->where(['<=', 'created_at', $startDate])->count());
-            $startDate = date('Y-m-d', strtotime($startDate . ' +' . $daysToAdd . 'days'));
-
+            $startDate = new DateTime($startDate);
+            $startDate->modify($daysToAdd);
+            $startDate = $startDate->format('Y-m-d');
         }
         $dataSet["dates"] = $dates;
         $dataSet["values"] = $values;
@@ -163,11 +174,12 @@ Class DashboardStatistics implements DashboardStatisticsInterface
             $startDate = date("Y-m-d", strtotime("-1 year", time()));
             $endDate = date("Y-m-d", time());
         }
-        while ($endDate > $startDate) {
+        while ($endDate >= $startDate) {
             array_push($dates, $startDate);
             array_push($values, Marketplace::find()->where(['<=', 'created_at', $startDate])->count());
-            $startDate = date('Y-m-d', strtotime($startDate . ' +' . $daysToAdd . 'days'));
-
+            $startDate = new DateTime($startDate);
+            $startDate->modify($daysToAdd);
+            $startDate=$startDate->format('Y-m-d');
         }
         $dataSet["dates"] = $dates;
         $dataSet["values"] = $values;
@@ -178,15 +190,15 @@ Class DashboardStatistics implements DashboardStatisticsInterface
     {
         switch ($type) {
             case "weekly":
-                return 7;
+                return "1 week";
                 break;
             case "daily":
-                return 1;
+                return "1 day";
                 break;
             case "monthly":
-                return 30;
+                return "1 month";
                 break;
         }
-        return 30;
+        return "1 month";
     }
 }
