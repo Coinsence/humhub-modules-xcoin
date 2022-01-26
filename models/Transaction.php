@@ -2,11 +2,13 @@
 
 namespace humhub\modules\xcoin\models;
 
+use cornernote\linkall\LinkAllBehavior;
 use humhub\components\Event;
 use humhub\modules\xcoin\helpers\Utils;
 use Yii;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -21,6 +23,7 @@ use yii\db\ActiveRecord;
  * @property integer $amount
  * @property string $comment
  * @property string $eth_hash
+ * @property string $created_at
  *
  * @property Asset $asset
  * @property Account $fromAccount
@@ -60,6 +63,7 @@ class Transaction extends ActiveRecord
             [['asset_id', 'to_account_id', 'amount'], 'required'],
             [['asset_id', 'transaction_type', 'to_account_id', 'from_account_id'], 'integer'],
             [['amount'], 'number', 'min' => 0.001],
+            [['created_at'], 'safe'],
             [['comment'], 'string', 'max' => 200],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::className(), 'targetAttribute' => ['asset_id' => 'id']],
             [['from_account_id'], 'exist', 'skipOnError' => true, 'targetClass' => Account::className(), 'targetAttribute' => ['from_account_id' => 'id']],
@@ -120,6 +124,10 @@ class Transaction extends ActiveRecord
 
     public function beforeSave($insert)
     {
+        if (parent::beforeSave($insert)) {
+            if ($insert)
+                $this->created_at = date('Y-m-d H:i:s');
+        }
         if ($this->transaction_type != self::TRANSACTION_TYPE_ISSUE && $this->eth_hash == null) {
             Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_TRANSFER, new Event(['sender' => $this]));
         }
