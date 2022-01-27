@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\xcoin\assets\Assets;
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Asset;
 use yii\bootstrap\Html;
 use humhub\modules\xcoin\grids\AccountsGridView;
@@ -45,7 +46,7 @@ Assets::register($this);
         <div class="pull-right">
             <?= Html::a(Yii::t('XcoinModule.overview', 'Shareholder list'), ['/xcoin/overview/shareholder-list', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
             <?= Html::a(Yii::t('XcoinModule.overview', 'Latest asset transactions'), ['/xcoin/overview/latest-asset-transactions', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
-            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) && $asset !== null): ?>
+            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) && $asset !== null && SpaceHelper::canIssueCoins($this->context->contentContainer)): ?>
                 <?= Html::a(Yii::t('XcoinModule.overview', 'Issue new assets'), ['/xcoin/asset/issue', 'id' => $asset->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']); ?>
             <?php endif; ?>
         </div>
