@@ -39,7 +39,7 @@ return [
     'Transaction ID' => 'ID de transaction',
     'You and other members can see your offer on your page following the link below.From there , you can edit your project anytime' => 'Vous et les autres membres pouvez voir votre offre sur votre page en suivant le lien ci-dessous. De là, vous pouvez modifier votre projet à tout moment',
     'You and other members can see your project on your page following the link below.From there , you can edit your project anytime' => 'Vous et les autres membres pouvez voir votre projet sur votre page en suivant le lien ci-dessous. De là, vous pouvez modifier votre projet à tout moment',
-    'You\'ve recieved {amount}' => 'Vous avez reçu {montant}',
+    'You\'ve recieved {amount}' => 'Vous avez reçu {amount}',
     'Your transfer of {amount} was successfull' => 'Votre virement de {amount} a été effectué avec succès',
     'link to blockchain transaction: ' => 'lien vers la transaction blockchain:',
 ];
