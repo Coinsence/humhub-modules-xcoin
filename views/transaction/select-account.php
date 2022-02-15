@@ -24,15 +24,4 @@ $isCoinCashOut = isset($isCoinCashOut) ? $isCoinCashOut : false;
     ])
     ?>
 </div>
-
-<?php if (isset($requireAsset) && !$isCoinCashOut): ?>
-<div class="modal-footer">
-    <?= PurchaseCoin::widget([
-        'contentContainer' => $contentContainer,
-        'requireAsset' => $requireAsset,
-        'noCoinsWarning' => true
-    ]) ?>
-    <?= ModalButton::cancel(); ?>
-</div>
-<?php endif;?>
 <?php ModalDialog::end() ?>
