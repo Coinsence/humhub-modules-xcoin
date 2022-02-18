@@ -47,7 +47,7 @@ class PurchaseCoin extends Widget
         $noCoinsWarning = false;
         $currentCoinsBalance = 0;
         if ($this->noCoinsWarning) {
-            $accounts = AccountHelper::getAccountsQuery($this->contentContainer, $this->requireAsset)->all();
+            $accounts = AccountHelper::getAccountsQuery($identity, $this->requireAsset)->all();
             foreach ($accounts as $account) {
                 foreach ($account->getAssets() as $asset) {
                     if ($assetName === $asset->space->name) {
