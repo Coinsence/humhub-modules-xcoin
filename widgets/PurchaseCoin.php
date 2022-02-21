@@ -23,6 +23,7 @@ class PurchaseCoin extends Widget
     public $style;
     public $requireAsset;
     public $noCoinsWarning;
+    public $space;
 
     /**
      * @inheritdoc
@@ -57,14 +58,14 @@ class PurchaseCoin extends Widget
             }
             $noCoinsWarning = true;
         }
-
         return $this->render('@xcoin/widgets/views/purchase-coin', [
             'style' => $this->style,
             'contentContainer' => $user,
             'name' => Yii::$app->params['coinPurchase']['coin'],
             'noCoinsWarning' => $noCoinsWarning,
             'coinsBlanace' => $currentCoinsBalance,
-            'asset' => $this->requireAsset
+            'asset' => $this->requireAsset,
+            'space'=>$this->space
         ]);
     }
 

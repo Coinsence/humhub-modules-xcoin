@@ -47,19 +47,22 @@ class OverviewController extends ContentContainerController
         return $this->render('shareholder-list', ['asset' => AssetHelper::getSpaceAsset($this->contentContainer)]);
     }
 
-    public function actionPurchaseCoin()
+    public function actionPurchaseCoin($spaceId = null)
     {
         $form = new PurchaseForm();
-
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
-
             $bridge = Yii::$app->params['coinPurchase']['bridge'];
             $defaultAccount = Account::findOne([
                 'user_id' => $this->contentContainer->id,
                 'account_type' => Account::TYPE_DEFAULT
             ]);
-
+            if ($spaceId) {
+                $space = Space::find()->where(['id' => $spaceId])->one();
+                $redirectUrl = Url::toRoute(['/xcoin/funding', 'contentContainer' => $space], true) . '?res=success';
+            } else {
+                $redirectUrl = Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success';
+            }
             $data = [
                 'fullName' => $this->contentContainer->displayName,
                 'email' => $this->contentContainer->email,
@@ -71,7 +74,7 @@ class OverviewController extends ContentContainerController
                 'coin' => $form->coin,
                 'amount' => intval($form->amount),
                 'pAddress' => $defaultAccount->ethereum_address,
-                'redirectUrl' => Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success',
+                'redirectUrl' => $redirectUrl,
             ];
 
             $jsonData = json_encode($data);
