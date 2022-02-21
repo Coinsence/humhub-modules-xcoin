@@ -23,6 +23,7 @@ class PurchaseCoin extends Widget
     public $style;
     public $requireAsset;
     public $noCoinsWarning;
+    public $space;
 
     /**
      * @inheritdoc
@@ -47,7 +48,7 @@ class PurchaseCoin extends Widget
         $noCoinsWarning = false;
         $currentCoinsBalance = 0;
         if ($this->noCoinsWarning) {
-            $accounts = AccountHelper::getAccountsQuery($this->contentContainer, $this->requireAsset)->all();
+            $accounts = AccountHelper::getAccountsQuery($identity, $this->requireAsset)->all();
             foreach ($accounts as $account) {
                 foreach ($account->getAssets() as $asset) {
                     if ($assetName === $asset->space->name) {
@@ -57,14 +58,14 @@ class PurchaseCoin extends Widget
             }
             $noCoinsWarning = true;
         }
-
         return $this->render('@xcoin/widgets/views/purchase-coin', [
             'style' => $this->style,
             'contentContainer' => $user,
             'name' => Yii::$app->params['coinPurchase']['coin'],
             'noCoinsWarning' => $noCoinsWarning,
             'coinsBlanace' => $currentCoinsBalance,
-            'asset' => $this->requireAsset
+            'asset' => $this->requireAsset,
+            'space'=>$this->space
         ]);
     }
 
