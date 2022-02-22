@@ -9,7 +9,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 /** @var $noCoinsWarning boolean */
 /** @var $coinsBlanace number */
 /** @var $asset humhub\modules\xcoin\models\Asset */
-/** @var $space */
+/** @var $funding */
 
 /** @var $res string */
 
@@ -23,9 +23,9 @@ $res = Yii::$app->request->get('res');
         <p><?= Yii::t('XcoinModule.overview', 'To be able to invest in this project') ?></p>
     </div>
 <?php endif; ?>
-<?php if ($space) : ?>
+<?php if ($funding) : ?>
     <?= Html::a('<i class="fa fa-money" aria-hidden="true"></i> ' . Yii::t('XcoinModule.overview', 'Buy') . ' ' . $name, [
-        '/xcoin/overview/purchase-coin?spaceId=' . $space,
+        '/xcoin/overview/purchase-coin?fundingId=' . $funding,
         'container' => $contentContainer,
     ], ['class' => 'btn ' . ($coinsBlanace > 0 ? 'btn-default' : 'btn-primary'), 'data-target' => '#globalModal', 'style' => $style]) ?>
 <?php else : ?>

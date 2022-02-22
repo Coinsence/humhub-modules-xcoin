@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\xcoin\models\Funding;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
@@ -47,7 +48,7 @@ class OverviewController extends ContentContainerController
         return $this->render('shareholder-list', ['asset' => AssetHelper::getSpaceAsset($this->contentContainer)]);
     }
 
-    public function actionPurchaseCoin($spaceId = null)
+    public function actionPurchaseCoin($fundingId = null)
     {
         $form = new PurchaseForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
@@ -57,9 +58,9 @@ class OverviewController extends ContentContainerController
                 'user_id' => $this->contentContainer->id,
                 'account_type' => Account::TYPE_DEFAULT
             ]);
-            if ($spaceId) {
-                $space = Space::find()->where(['id' => $spaceId])->one();
-                $redirectUrl = Url::toRoute(['/xcoin/funding', 'contentContainer' => $space], true) . '?res=success';
+            if ($fundingId) {
+                $funding = Funding::find()->where(['id' => $fundingId])->one();
+                $redirectUrl = Url::toRoute(['/xcoin/funding/overview', "fundingId" => $fundingId, 'contentContainer' => $funding->space], true) . '?res=success';
             } else {
                 $redirectUrl = Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success';
             }
