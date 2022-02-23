@@ -23,7 +23,7 @@ class PurchaseCoin extends Widget
     public $style;
     public $requireAsset;
     public $noCoinsWarning;
-    public $space;
+    public $funding;
 
     /**
      * @inheritdoc
@@ -65,7 +65,7 @@ class PurchaseCoin extends Widget
             'noCoinsWarning' => $noCoinsWarning,
             'coinsBlanace' => $currentCoinsBalance,
             'asset' => $this->requireAsset,
-            'space'=>$this->space
+            'funding'=>$this->funding
         ]);
     }
 

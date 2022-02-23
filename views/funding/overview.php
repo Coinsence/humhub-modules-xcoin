@@ -447,7 +447,7 @@ Assets::register($this);
                                             'contentContainer' => $funding->space,
                                             'requireAsset' => $challenge->asset,
                                             'noCoinsWarning' => true,
-                                            'space'=>$funding->space->id
+                                            'funding'=>$funding->id
                                         ]) ?>
                                         <p><?= Yii::t('XcoinModule.overview', 'To recieve the equivalent rewarding coins') ?></p>
                                         <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
