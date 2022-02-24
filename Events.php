@@ -11,6 +11,7 @@ use humhub\modules\xcoin\models\Challenge;
 use humhub\modules\xcoin\models\Funding;
 use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
+use humhub\modules\xcoin\models\Projectplace;
 use humhub\modules\xcoin\models\Transaction;
 use humhub\widgets\TopMenu;
 use Yii;
@@ -110,6 +111,7 @@ class Events
             ]);
 
             $isChallengesActive = AssetHelper::canManageAssets($space) || Challenge::find()->where(['space_id' => $space->id])->count() > 0;
+            $isProjectplaceActive = AssetHelper::canManageAssets($space) || Projectplace::find()->where(['space_id' => $space->id])->count() > 0;
             $isFundingsActive = AssetHelper::canManageAssets($space) || Funding::find()->where(['space_id' => $space->id])->count() > 0;
             $isMarketplacesActive = AssetHelper::canManageAssets($space) || Marketplace::find()->where(['space_id' => $space->id])->count() > 0;
             $isProductsActive = AssetHelper::canManageAssets($space) || Product::find()->where(['space_id' => $space->id])->count() > 0;
@@ -128,6 +130,17 @@ class Events
                         'url' => $space->createUrl('/xcoin/challenge'),
                         'icon' => '<i class="fa fa-users"></i>',
                         'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'challenge'),
+                        'sortOrder' => 30000,
+                    ]);
+                }
+
+                if ($isProjectplaceActive) {
+                    $event->sender->addItem([
+                        'label' => Yii::t('XcoinModule.base', 'Space Projectplaces'),
+                        'group' => 'crowdfunding',
+                        'url' => $space->createUrl('/xcoin/projectplace'),
+                        'icon' => '<i class="fa fa-users"></i>',
+                        'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'xcoin' && Yii::$app->controller->id === 'projectplace'),
                         'sortOrder' => 30000,
                     ]);
                 }
