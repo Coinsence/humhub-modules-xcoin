@@ -1,4 +1,11 @@
 <?php
+/**
+ * @link https://coinsence.org/
+ * @copyright Copyright (c) 2022 Coinsence
+ * @license https://www.humhub.com/licences
+ *
+ * @author Daly Ghaith <daly.ghaith@gmail.com>
+ */
 
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\helpers\AssetHelper;
@@ -8,7 +15,7 @@ use yii\helpers\Html;
 
 Assets::register($this);
 
-/** @var $projectPlaces Projectplace[] */
+/** @var $projectplaces Projectplace[] */
 
 ?>
 
@@ -23,7 +30,7 @@ Assets::register($this);
                     <div class="col-sm-6 col-md-4 col-lg-3">
 
                         <a class="add-challenge"
-                           href="<?= Url::to(['/xcoin/projectplace/create', 'container' => $this->context->contentContainer]) ?>"
+                           href="<?= Url::to(['/xcoin/projectplace/form', 'container' => $this->context->contentContainer]) ?>"
                            data-target="#globalModal">
                             <span class="icon">
                                 <i class="cross"></i>
@@ -32,29 +39,29 @@ Assets::register($this);
                         </a>
                     </div>
                 <?php else: ?>
-                    <?php if (empty($projectPlaces)): ?>
+                    <?php if (empty($projectplaces)): ?>
                         <p class="alert alert-warning col-md-12">
                             <?= Yii::t('XcoinModule.Projectplace', 'Currently there are no projectplaces for this space.') ?>
                         </p>
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <?php foreach ($projectPlaces as $projectPlace): ?>
-                    <a href="<?= $projectPlace->space->createUrl('/xcoin/projectplace/overview', [
-                        'projectPlaceId' => $projectPlace->id
+                <?php foreach ($projectplaces as $projectplace): ?>
+                    <a href="<?= $projectplace->space->createUrl('/xcoin/projectplace/overview', [
+                        'projectplaceId' => $projectplace->id
                     ]); ?>">
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="panel">
                                 <div class="panel-heading">
                                     <!-- projectplace image start -->
-                                        <div class="bg" style="background-image: url('<?= $projectPlace->getCover()->getUrl() ?>')"></div>
-                                        <?= Html::img($projectPlace->getCover()->getUrl(), ['height' => '240']) ?>
+                                        <div class="bg" style="background-image: url('<?= $projectplace->getCover()->getUrl() ?>')"></div>
+                                        <?= Html::img($projectplace->getCover()->getUrl(), ['height' => '240']) ?>
                                     <!-- projectplace image end -->
                                 </div>
                                 <div class="panel-body">
                                     <!-- projectplace title start -->
                                     <h5 class="challenge-title">
-                                        <?= Html::encode($projectPlace->title); ?>
+                                        <?= Html::encode($projectplace->title); ?>
                                     </h5>
                                     <!-- projectplace title end -->
                                 </div>

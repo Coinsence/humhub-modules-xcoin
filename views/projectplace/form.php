@@ -22,32 +22,39 @@ use yii\widgets\ActiveForm;
 Select2BootstrapAsset::register($this);
 Assets::register($this);
 
-/** @var $model Projectplace */
+/** @var $projectplace Projectplace */
 /** @var $assets Asset[] */
 /** @var $defaultAsset Asset */
+/** @var $isCreateForm bool */
 
-$upload = Upload::forModel($model, 'cover');
+/** @var $upload Upload */
+$upload = Upload::forModel($projectplace, 'cover');
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('XcoinModule.Projectplace', 'Create Projectplace'), 'closable' => false]) ?>
+<?php ModalDialog::begin([
+    'header' => $isCreateForm ? Yii::t('XcoinModule.Projectplace', 'Create Projectplace') : Yii::t('XcoinModule.Projectplace', 'Edit Projectplace'),
+    'closable' => false
+]) ?>
 <?php $form = ActiveForm::begin(['id' => 'project-place-form']); ?>
 
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'title')->textInput()->hint(Yii::t('XcoinModule.Projectplace', 'Please enter your projectplace title')) ?>
+            <?= $form->field($projectplace, 'title')->textInput()->hint(Yii::t('XcoinModule.Projectplace', 'Please enter your projectplace title')) ?>
         </div>
         <div class="col-md-12">
-            <?= $form->field($model, 'description')->widget(RichTextField::class, ['preset' => 'full'])
+            <?= $form->field($projectplace, 'description')->widget(RichTextField::class, ['preset' => 'full'])
                 ->hint(Yii::t('XcoinModule.Projectplace', 'Please enter your projectplace description')) ?>
         </div>
         <div class="col-md-12">
             <?=
-            $form->field($model, 'invest_asset_id')->widget(Select2::class, [
+            $form->field($projectplace, 'invest_asset_id')->widget(Select2::class, [
                 'data' => $assets,
-                'options' => ['placeholder' => ''],
+                'options' => [
+                    'placeholder' => '',
+                    'disabled' => !$isCreateForm,
+                ],
                 'theme' => Select2::THEME_BOOTSTRAP,
-                'hideSearch' => true,
                 'pluginOptions' => [
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
@@ -57,11 +64,13 @@ $upload = Upload::forModel($model, 'cover');
         </div>
         <div class="col-md-12">
             <?=
-            $form->field($model, 'reward_asset_id')->widget(Select2::class, [
+            $form->field($projectplace, 'reward_asset_id')->widget(Select2::class, [
                 'data' => $assets,
-                'options' => ['placeholder' => ''],
+                'options' => [
+                    'placeholder' => '',
+                    'disabled' => !$isCreateForm,
+                ],
                 'theme' => Select2::THEME_BOOTSTRAP,
-                'hideSearch' => true,
                 'pluginOptions' => [
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
@@ -73,7 +82,7 @@ $upload = Upload::forModel($model, 'cover');
             <div class="row">
                 <div class="col-md-2">
                     <?= $upload->button([
-                        'label' => $model->getAttributeLabel('cover'),
+                        'label' => $projectplace->getAttributeLabel('cover'),
                         'tooltip' => false,
                         'options' => ['accept' => 'image/*'],
                         'cssButtonClass' => 'btn-default btn-sm',
@@ -85,17 +94,15 @@ $upload = Upload::forModel($model, 'cover');
                 <div class="col-md-9">
                     <?= $upload->preview([
                         'options' => ['style' => 'margin-top:5px'],
-                        'model' => $model,
-                        'showInStream' => false,
+                        'model' => $projectplace,
+                        'showInStream' => true,
+                        'edit' => false
                     ]) ?>
                 </div>
             </div>
-            <div class="help-block">
-                <?= Yii::t('XcoinModule.Projectplace', 'Please note that first picture will be used as cover (MAXIMUM FILE SIZE IS 500kb).') ?>
-            </div>
-            <?php if ($model->hasErrors('cover')): ?>
+            <?php if ($projectplace->hasErrors('cover')): ?>
                 <div class="has-error">
-                    <?php foreach ($model->getErrors('cover') as $error): ?>
+                    <?php foreach ($projectplace->getErrors('cover') as $error): ?>
                         <div class="help-block"><?= $error ?></div>
                     <?php endforeach; ?>
                 </div>

@@ -9,9 +9,9 @@
 
 namespace humhub\modules\xcoin\models;
 
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\utils\StringUtils;
-use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -35,7 +35,7 @@ use Yii;
  * @property User $createdBy
  * @property User $updatedBy
  */
-class Projectplace extends ActiveRecord
+class Projectplace extends ContentActiveRecord
 {
     const SCENARIO_INSERT = 'insert';
     const SCENARIO_UPDATE = 'update';
@@ -50,13 +50,16 @@ class Projectplace extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description', 'cover'], 'required'],
+            [['title', 'description'], 'required'],
             [['space_id', 'invest_asset_id', 'reward_asset_id'], 'integer'],
             ['space_id', 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             ['invest_asset_id', 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['invest_asset_id' => 'id']],
             ['reward_asset_id', 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['reward_asset_id' => 'id']],
             ['title', 'string', 'max' => 255],
             ['description', 'string'],
+            ['cover', 'required', 'when' => function (self $model) {
+                return $model->isNewRecord || null == $model->getCover();
+            }],
         ];
     }
 
@@ -92,6 +95,14 @@ class Projectplace extends ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
+        // delete old covers
+        foreach ($this->fileManager->findAll() as $oldCover) {
+            if (null !== $this->cover && $oldCover->guid !== $this->cover) {
+                $oldCover->delete();
+            }
+        }
+
+        // attach new cover
         $this->fileManager->attach($this->cover);
 
         parent::afterSave($insert, $changedAttributes);
