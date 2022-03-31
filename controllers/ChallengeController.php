@@ -52,10 +52,18 @@ class ChallengeController extends ContentContainerController
 
     public function actionIndex()
     {
-        $challenges = Challenge::find()
-            ->where(['space_id' => $this->contentContainer->id])
-            ->orderBy(['created_at' => SORT_DESC])
-            ->all();
+        if (Yii::$app->user->isAdmin()) {
+            $challenges = Challenge::find()
+                ->where(['space_id' => $this->contentContainer->id])
+                ->orderBy(['created_at' => SORT_DESC])
+                ->all();
+        } else {
+            $challenges = Challenge::find()
+                ->where(['space_id' => $this->contentContainer->id])
+                ->orderBy(['created_at' => SORT_DESC])
+                ->andWhere(['hidden' => Challenge::CHALLENGE_SHOWN])
+                ->all();
+        }
 
         return $this->render('index', [
             'challenges' => $challenges
@@ -78,7 +86,7 @@ class ChallengeController extends ContentContainerController
         if ($challenge->showUnreviewedSubmissions() || Space::findOne(['id' => $challenge->space_id])->isAdmin(Yii::$app->user->identity)) {
             $fundings = $challenge->getFundings()->all();
         } else {
-            $fundings = Funding::findAll(['challenge_id' => $challenge->id, 'published' => 1,'review_status'=>[1,2]]);
+            $fundings = Funding::findAll(['challenge_id' => $challenge->id, 'published' => 1, 'review_status' => [1, 2]]);
         }
 
         $categories = [];
@@ -89,8 +97,8 @@ class ChallengeController extends ContentContainerController
         }
 
         if ($categoryId) {
-            $fundings = array_filter($fundings, function($funding) use ($categoryId) {
-                $categories_ids = array_map(function($category) {
+            $fundings = array_filter($fundings, function ($funding) use ($categoryId) {
+                $categories_ids = array_map(function ($category) {
                     return $category->id;
                 }, $funding->getCategories()->all());
 
@@ -126,13 +134,13 @@ class ChallengeController extends ContentContainerController
         $defaultAsset = AssetHelper::getDefaultAsset();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->fileManager->attach(Yii::$app->request->post('fileList'));
-            $imageValidation =ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
-            if($imageValidation == false){
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
                 return $this->renderAjax('create', [
                         'model' => $model,
                         'assets' => $assets,
                         'defaultAsset' => $defaultAsset,
-                        'imageError'=>"Image size cannot be more than 500 kb"
+                        'imageError' => "Image size cannot be more than 500 kb"
                     ]
                 );
             }
@@ -165,7 +173,7 @@ class ChallengeController extends ContentContainerController
                 'model' => $model,
                 'assets' => $assets,
                 'defaultAsset' => $defaultAsset,
-                'imageError'=>null
+                'imageError' => null
             ]
         );
     }
@@ -216,13 +224,13 @@ class ChallengeController extends ContentContainerController
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $imageValidation =ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
-            if($imageValidation == false){
+            $imageValidation = ImageUtils::checkImageSize(Yii::$app->request->post('fileList'));
+            if ($imageValidation == false) {
                 return $this->renderAjax('edit', [
                         'model' => $model,
                         'assets' => $assets,
                         'contactButtons' => $contactButtons,
-                        'imageError'=>"Image size cannot be more than 500 kb"
+                        'imageError' => "Image size cannot be more than 500 kb"
                     ]
                 );
             }
@@ -258,7 +266,7 @@ class ChallengeController extends ContentContainerController
                 'model' => $model,
                 'assets' => $assets,
                 'contactButtons' => $contactButtons,
-                'imageError'=>null
+                'imageError' => null
             ]
         );
     }
