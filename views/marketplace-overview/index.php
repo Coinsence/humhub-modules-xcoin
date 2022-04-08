@@ -35,6 +35,9 @@ Select2BootstrapAsset::register($this);
     .crowd-funding .content .add-project{
         height: 320px;
     }
+    .crowd-funding .content .marketplace-card {
+        height: 320px;
+    }
 </style>
 
 <div class="crowd-funding">
