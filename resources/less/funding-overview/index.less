@@ -1,3 +1,4 @@
+// main: ../build.less
 /* -------------------------------------------- */
 /* Crowd-funding styling */
 /* -------------------------------------------- */
@@ -60,6 +61,40 @@
       margin-top: 24px;
       font-size: 18px;
       color: #202020;
+    }
+
+    .marketplace-card span {
+      position: relative;
+      height: 364px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      border: 1px #cecece dashed;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      background-size: cover;
+      background-position: center;
+    }
+    .marketplace-card span::after {
+      content: '';
+      position: absolute;
+      background-color: black;
+      height: 100%;
+      width: 100%;
+      left: 0;
+      opacity: .5;
+      z-index: 0;
+    }
+    .marketplace-card span label {
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 0 10px;
+      text-align: center;
+      cursor: pointer;
+      z-index: 1;
     }
 
     .panel {
