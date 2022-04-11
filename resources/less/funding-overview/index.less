@@ -76,6 +76,7 @@
       margin-bottom: 15px;
       background-size: cover;
       background-position: center;
+      background-size: 1px 1px;
     }
     .marketplace-card span::after {
       content: '';
@@ -85,9 +86,21 @@
       width: 100%;
       left: 0;
       opacity: .5;
-      z-index: 0;
+    }
+    .marketplace-card span img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
     }
     .marketplace-card span label {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       color: #fff;
       font-size: 14px;
       font-weight: bold;

@@ -213,8 +213,16 @@ Select2BootstrapAsset::register($this);
             <div class="panels">
                 <?php if ($selectedChallenge): ?>
                     <div class="col-sm-6 col-md-4 col-lg-3">
+                        <?php
+                        $challengeCover = ChallengeHelper::getChallengeCoverUrl($selectedChallenge->id);
+                        ?>
                         <a class="marketplace-card" href="<?= $selectedChallenge->space->createUrl('/xcoin/challenge/overview', ['challengeId' => $selectedChallenge->id]) ?>">
-                            <span style="background-image: url('<?= ChallengeHelper::getChallengeCoverUrl($selectedChallenge->id) ?>'); "><label>Go to <?= $selectedChallenge->title ?></label></span>
+                            <span style="background-image: url('<?= $challengeCover ?>'); ">
+                                <?php if ($challengeCover): ?>
+                                    <?= Html::img($challengeCover) ?>    
+                                <?php endif; ?>
+                                <label>Go to <?= $selectedChallenge->title ?></label>
+                            </span>
                         </a>
                     </div>
                 <?php endif; ?>

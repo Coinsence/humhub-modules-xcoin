@@ -223,8 +223,16 @@ Select2BootstrapAsset::register($this);
             <div class="panels">
                 <?php if ($selectedMarketplace): ?>
                     <div class="col-sm-6 col-md-4 col-lg-3">
+                        <?php
+                        $marketplaceCover = MarketplaceHelper::getMarketplaceCoverUrl($selectedMarketplace->id);
+                        ?>
                         <a class="marketplace-card" href="<?= $selectedMarketplace->space->createUrl('/xcoin/marketplace/overview', ['marketplaceId' => $selectedMarketplace->id]) ?>">
-                            <span style="background-image: url('<?= MarketplaceHelper::getMarketplaceCoverUrl($selectedMarketplace->id) ?>'); "><label>Go to <?= $selectedMarketplace->title ?></label></span>
+                            <span style="background-image: url('<?= $marketplaceCover ?>'); ">
+                                <?php if ($marketplaceCover): ?>
+                                    <?= Html::img($marketplaceCover) ?>
+                                <?php endif; ?>
+                                <label>Go to <?= $selectedMarketplace->title ?></label>
+                            </span>
                         </a>
                     </div>
                 <?php endif; ?>
