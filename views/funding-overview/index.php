@@ -3,6 +3,7 @@
 use humhub\libs\Iso3166Codes;
 use humhub\modules\xcoin\assets\Assets;
 use \humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\helpers\ChallengeHelper;
 use humhub\widgets\ActiveForm;
 use kv4nt\owlcarousel\OwlCarouselWidget;
 use humhub\assets\Select2BootstrapAsset;
@@ -205,25 +206,26 @@ Select2BootstrapAsset::register($this);
         </div>
         <div class="content">
             <div class="row header">
-                <?php if ($selectedChallenge): ?>
-                    <div class="col-md-12">
-                        <a class="challenge-url" href="<?= $selectedChallenge->space->createUrl('/xcoin/challenge/overview', ['challengeId' => $selectedChallenge->id]) ?>"><?= $selectedChallenge->title ?></a>
-                    </div>
-                <?php endif; ?>
                 <div class="col-md-6">
                     <span class="num-projects"><?= count($fundings) . ' ' . Yii::t('XcoinModule.funding', 'Project(s)') ?></span>
                 </div>
             </div>
             <div class="panels">
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <a class="add-project" href="<?= Url::to(['/xcoin/funding-overview/new']) ?>"
-                       data-target="#globalModal">
-                        <span class="icon">
-                            <i class="cross"></i>
-                        </span>
-                        <span class="text"><?= Yii::t('XcoinModule.funding', 'Create Your Project!') ?></span>
-                    </a>
-                </div>
+                <?php if ($selectedChallenge): ?>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <?php
+                        $challengeCover = ChallengeHelper::getChallengeCoverUrl($selectedChallenge->id);
+                        ?>
+                        <a class="marketplace-card" href="<?= $selectedChallenge->space->createUrl('/xcoin/challenge/overview', ['challengeId' => $selectedChallenge->id]) ?>">
+                            <span style="background-image: url('<?= $challengeCover ?>'); ">
+                                <?php if ($challengeCover): ?>
+                                    <?= Html::img($challengeCover) ?>    
+                                <?php endif; ?>
+                                <label>Go to <?= $selectedChallenge->title ?></label>
+                            </span>
+                        </a>
+                    </div>
+                <?php endif; ?>
                 <?php foreach ($fundings as $funding): ?>
                     <?php if ($funding->getRemainingDays() > 0): ?>
                         <?php

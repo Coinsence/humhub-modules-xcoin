@@ -6,6 +6,7 @@ use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\models\Marketplace;
 use humhub\modules\xcoin\models\Product;
 use humhub\modules\xcoin\models\ProductFilter;
+use humhub\modules\xcoin\helpers\MarketplaceHelper;
 use humhub\widgets\ActiveForm;
 use kv4nt\owlcarousel\OwlCarouselWidget;
 use humhub\assets\Select2BootstrapAsset;
@@ -32,6 +33,9 @@ Select2BootstrapAsset::register($this);
 
 <style>
     .crowd-funding .content .add-project{
+        height: 320px;
+    }
+    .crowd-funding .content .marketplace-card span {
         height: 320px;
     }
 </style>
@@ -212,25 +216,26 @@ Select2BootstrapAsset::register($this);
         </div>
         <div class="content">
             <div class="row header">
-                <?php if ($selectedMarketplace): ?>
-                    <div class="col-md-12">
-                        <a class="challenge-url" href="<?= $selectedMarketplace->space->createUrl('/xcoin/marketplace/overview', ['marketplaceId' => $selectedMarketplace->id]) ?>"><?= $selectedMarketplace->title ?></a>
-                    </div>
-                <?php endif; ?>
                 <div class="col-md-6">
                     <span class="num-projects"><?= count($products) . ' ' . Yii::t('XcoinModule.marketplace', 'Product(s)') ?></span>
                 </div>
             </div>
             <div class="panels">
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <a class="add-project" href="<?= Url::to(['/xcoin/marketplace-overview/new']) ?>"
-                       data-target="#globalModal">
-                        <span class="icon">
-                            <i class="cross"></i>
-                        </span>
-                        <span class="text"><?= Yii::t('XcoinModule.marketplace', 'List your Product/Service') ?></span>
-                    </a>
-                </div>
+                <?php if ($selectedMarketplace): ?>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <?php
+                        $marketplaceCover = MarketplaceHelper::getMarketplaceCoverUrl($selectedMarketplace->id);
+                        ?>
+                        <a class="marketplace-card" href="<?= $selectedMarketplace->space->createUrl('/xcoin/marketplace/overview', ['marketplaceId' => $selectedMarketplace->id]) ?>">
+                            <span style="background-image: url('<?= $marketplaceCover ?>'); ">
+                                <?php if ($marketplaceCover): ?>
+                                    <?= Html::img($marketplaceCover) ?>
+                                <?php endif; ?>
+                                <label>Go to <?= $selectedMarketplace->title ?></label>
+                            </span>
+                        </a>
+                    </div>
+                <?php endif; ?>
                 <?php foreach ($products as $product): ?>
                    <?php
                         $owner = $product->isSpaceProduct() ? $product->getSpace()->one() : $product->getCreatedBy()->one();
