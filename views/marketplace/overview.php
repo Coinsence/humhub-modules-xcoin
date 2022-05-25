@@ -139,6 +139,7 @@ Assets::register($this);
                         </p>
                     <?php endif; ?>
                     <?php foreach ($products as $product): ?>
+                    <?php if ($product->hidden == Product::PRODUCT_NOT_HIDDEN) : ?>
                         <?php
                         $owner = $marketplace->getSpace()->one();
                         $picture = $product->getPicture();
@@ -262,6 +263,7 @@ Assets::register($this);
                                 <?php endif; ?>
                             </div>
                         </div>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             </div>
