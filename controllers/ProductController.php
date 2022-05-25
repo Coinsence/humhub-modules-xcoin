@@ -334,7 +334,27 @@ class ProductController extends ContentContainerController
             'productId' => $model->id
         ]));
     }
+    public function actionHide($id, $status)
+    {
 
+        $model = Product::findOne(['id' => $id]);
+
+        if (!SpaceHelper::canReviewProject($model->marketplace->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {
+            throw new HttpException(401);
+        }
+
+        $model->scenario = Product::SCENARIO_EDIT;
+        $model->hidden = $status;
+
+        $model->save();
+
+        $this->view->saved();
+
+        return $this->redirect($this->contentContainer->createUrl('/xcoin/product/overview', [
+            'container' => $this->contentContainer,
+            'productId' => $model->id
+        ]));
+    }
     /**
      * @param $productId
      * @return string

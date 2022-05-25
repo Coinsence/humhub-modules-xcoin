@@ -21,7 +21,11 @@ Assets::register($this);
  * @var $product Product
  */
 ?>
-
+<style>
+    .review-btn-show, .review-btn-delete {
+        top: 120px !important;
+    }
+</style>
 <div class="co-overview">
     <?php
     $cover = $product->getPicture();
@@ -63,13 +67,13 @@ Assets::register($this);
                 <?php if ($product->review_status == Product::PRODUCT_NOT_REVIEWED) : ?>
                     <div style="color: orange; display: inline">
                         ( <i class="fa fa-check-circle-o"
-                                aria-hidden="true"></i> <?= Yii::t('XcoinModule.product', 'Under review') ?>
+                             aria-hidden="true"></i> <?= Yii::t('XcoinModule.product', 'Under review') ?>
                         )
                     </div>
                 <?php else: ?>
                     <div style="color: dodgerblue; display: inline">
                         ( <i class="fa fa-check-circle-o"
-                                aria-hidden="true"></i> <?= Yii::t('XcoinModule.product', 'Verified') ?>
+                             aria-hidden="true"></i> <?= Yii::t('XcoinModule.product', 'Verified') ?>
                         )
                     </div>
                 <?php endif; ?>
@@ -101,14 +105,14 @@ Assets::register($this);
                     ]) ?>
                 <?php else: ?>
                     <div class="bg"
-                            style="background-image: url('<?= $cover->getUrl() ?>')"></div>
+                         style="background-image: url('<?= $cover->getUrl() ?>')"></div>
                     <?= Html::img($cover->getUrl(), [
                         'width' => '100%'
                     ]) ?>
                 <?php endif; ?>
             <?php else : ?>
                 <div class="bg"
-                        style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png' ?>')"></div>
+                     style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png' ?>')"></div>
                 <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-product-cover.png', [
                     'width' => '100%'
                 ]) ?>
@@ -147,6 +151,13 @@ Assets::register($this);
             <?php endif; ?>
         <?php endif; ?>
         <!-- product review button end -->
+        <?php if (SpaceHelper::canReviewProject($product->marketplace->space) || PublicOffersHelper::canReviewSubmittedProjects()): ?>
+            <?php if ($product->hidden == Product::PRODUCT_HIDDEN) : ?>
+                <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.product', 'Show'), ['/xcoin/product/hide', 'id' => $product->id, 'status' => Product::PRODUCT_NOT_HIDDEN, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted pull-right review-btn-show']) ?>
+            <?php else : ?>
+                <?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('XcoinModule.product', 'Delete'), ['/xcoin/product/hide', 'id' => $product->id, 'status' => Product::PRODUCT_HIDDEN, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right review-btn-delete']) ?>
+            <?php endif; ?>
+        <?php endif; ?>
     </div>
     <div class="panel panel-default panel-body">
         <div class="co-overview-container row">
@@ -226,7 +237,7 @@ Assets::register($this);
 
                         <label><?= Yii::t('XcoinModule.product', 'Category') ?></label>
                         <span>
-                            <?= join(', ', array_map(function($cat) {
+                            <?= join(', ', array_map(function ($cat) {
                                 return '<strong>' . $cat->name . '</strong>';
                             }, $product->getCategories()->all())) ?>
                         </span>

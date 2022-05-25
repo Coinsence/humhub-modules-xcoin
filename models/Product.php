@@ -34,6 +34,7 @@ use yii\web\HttpException;
  * @property float $discount
  * @property integer $payment_type
  * @property integer $review_status
+ * @property integer $hidden
  * @property string $country
  * @property string $city
  * @property string $link
@@ -76,6 +77,12 @@ class Product extends ActiveRecord
     // Product review status
     const PRODUCT_NOT_REVIEWED = 0;
     const PRODUCT_REVIEWED = 1;
+
+    // Product hidden or not hidden
+
+    const PRODUCT_NOT_HIDDEN = 0;
+    const PRODUCT_HIDDEN = 1 ;
+
 
     // Product user default account index
     const PRODUCT_USER_DEFAULT_ACCOUNT = 0;
@@ -143,6 +150,7 @@ class Product extends ActiveRecord
                     'status',
                     'offer_type',
                     'payment_type',
+                    'hidden'
                 ], 'integer'
             ],
             [['price'], 'number', 'min' => '0'],
@@ -206,6 +214,7 @@ class Product extends ActiveRecord
                 'buy_message',
                 'payment_first',
                 'vouchers',
+                'hidden'
             ],
             self::SCENARIO_REVIEW => [
                 'review_status'
