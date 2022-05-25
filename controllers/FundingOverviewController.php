@@ -21,12 +21,6 @@ use yii\web\HttpException;
 class FundingOverviewController extends Controller
 {
 
-    public function getAccessRules()
-    {
-        return [
-            ['login']
-        ];
-    }
 
     /**
      * @inheritdoc
