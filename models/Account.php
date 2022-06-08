@@ -22,8 +22,7 @@ use yii\db\Expression;
  * @property integer $account_type
  * @property string $title
  * @property string $guid
- * @property string $ethereum_address
- * @property string $algorand_public_key
+ * @property string $algorand_address
  * @property integer $funding_id
  * @property integer $investor_id
  * @property integer $archived
@@ -37,7 +36,6 @@ use yii\db\Expression;
  */
 class Account extends ActiveRecord
 {
-
     const TYPE_STANDARD = 1;
     const TYPE_ISSUE = 2;
     const TYPE_FUNDING = 3;
@@ -48,14 +46,12 @@ class Account extends ActiveRecord
     const ACCOUNT_ARCHIVED = 1;
     const ACCOUNT_DELETED = 2;
 
-    /** @var Event this event is dispatched when account with
-     * TYPE_DEFAULT is created for space in order to create ethereum DAO
-     */
-    const EVENT_DEFAULT_SPACE_ACCOUNT_CREATED = 'defaultSpaceAccountCreated';
-
     public $editFieldManager;
 
-    public $mnemonic;
+    /**
+     * @var string Alogrand Mnemonic
+     */
+    public $algorand_mnemonic;
 
     /**
      * @inheritdoc

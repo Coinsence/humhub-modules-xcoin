@@ -22,7 +22,7 @@ use humhub\modules\user\widgets\UserPickerField;
         ?>
     <?php endif; ?>
 
-    <?= Html::error($account, 'ethereum_address', ['class' => 'error-block', 'style' => 'color:red']); ?>
+    <?= Html::error($account, 'algorand_address', ['class' => 'error-block', 'style' => 'color:red']); ?>
 </div>
 
 <div class="modal-footer">

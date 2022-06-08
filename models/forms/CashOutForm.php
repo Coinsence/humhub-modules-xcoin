@@ -87,7 +87,7 @@ class CashOutForm extends Model
 
         $this->cashOutSpace = Space::findOne(['name' => Yii::$app->params['coinCashOut']['space']]);
         $this->cashOutAsset = Asset::findOne(['space_id' => $this->cashOutSpace->id]);
-        $this->cashOutAccount = Account::findOne(['ethereum_address' => Yii::$app->params['coinCashOut']['redeem-account-eth-address']]);
+        $this->cashOutAccount = Account::findOne(['algorand_address' => Yii::$app->params['coinCashOut']['redeem-account-eth-address']]);
         $this->cashOutAssetName = $this->cashOutSpace->name;
         $this->cashOutBridge =  Yii::$app->params['coinCashOut']['bridge'];
     }

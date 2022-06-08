@@ -70,7 +70,7 @@ class OverviewController extends ContentContainerController
                 'country' => $form->country,
                 'coin' => $form->coin,
                 'amount' => intval($form->amount),
-                'pAddress' => $defaultAccount->ethereum_address,
+                'pAddress' => $defaultAccount->algorand_address,
                 'redirectUrl' => Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success',
             ];
 

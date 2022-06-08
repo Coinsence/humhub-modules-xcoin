@@ -68,7 +68,7 @@ class CashoutCoinButton extends Widget
         $cashOutSpace = Space::findOne(['name' => Yii::$app->params['coinCashOut']['space']]);
 
         /** @var Account $cashOutAccount */
-        $cashOutAccount = Account::findOne(['ethereum_address' => Yii::$app->params['coinCashOut']['redeem-account-eth-address']]);
+        $cashOutAccount = Account::findOne(['algorand_address' => Yii::$app->params['coinCashOut']['redeem-account-eth-address']]);
 
         if (null === $cashOutSpace || null === $cashOutAccount) {
             return null;
