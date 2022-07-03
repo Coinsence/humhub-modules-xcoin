@@ -20,7 +20,7 @@ use yii\db\ActiveRecord;
  * @property integer $from_account_id
  * @property integer $amount
  * @property string $comment
- * @property string $eth_hash
+ * @property string $algorand_tx_id
  *
  * @property Asset $asset
  * @property Account $fromAccount
@@ -120,7 +120,7 @@ class Transaction extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        if ($this->transaction_type != self::TRANSACTION_TYPE_ISSUE && $this->eth_hash == null) {
+        if ($this->transaction_type != self::TRANSACTION_TYPE_ISSUE && $this->algorand_tx_id == null) {
             Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_TRANSFER, new Event(['sender' => $this]));
         }
 

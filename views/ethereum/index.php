@@ -64,7 +64,7 @@ use yii\bootstrap\Html; ?>
                 <td><strong><?= Yii::t('XcoinModule.ethereum', 'Dao Address') ?></strong></td>
                 <td style="vertical-align: middle;">
                     <?php if ($space->dao_address) : ?>
-                        <?= Html::a($space->dao_address, "https://rinkeby.etherscan.io/address/$space->dao_address", ['target' => '_blank']) ?>
+                        <?= Html::a($space->dao_address, "https://testnet.algoexplorer.io/address/$space->dao_address", ['target' => '_blank']) ?>
                     <?php else : ?>
                         <span class="label label-default"><?= Yii::t('XcoinModule.ethereum', 'unavailable') ?></span>
                     <?php endif; ?>
@@ -74,9 +74,9 @@ use yii\bootstrap\Html; ?>
                 <td><strong><?= Yii::t('XcoinModule.ethereum', 'Coin Address') ?></strong></td>
                 <td style="vertical-align: middle;">
                     <?php if ($space->coin_address) : ?>
-                        <?= Html::a($space->coin_address, "https://rinkeby.etherscan.io/address/$space->coin_address", ['target' => '_blank']) ?>
+                        <?= Html::a($space->coin_address, "https://testnet.algoexplorer.io/address/$space->coin_address", ['target' => '_blank']) ?>
                         <br>
-                        <?= Html::a(Html::img("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=ethereum:{$space->coin_address}&choe=UTF-8", ['alt' => 'ethereum address', 'style' => 'width: 100%; max-width: 250px']), "https://rinkeby.etherscan.io/address/$space->coin_address", ['target' => '_blank']) ?>
+                        <?= Html::a(Html::img("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=ethereum:{$space->coin_address}&choe=UTF-8", ['alt' => 'ethereum address', 'style' => 'width: 100%; max-width: 250px']), "https://testnet.algoexplorer.io/address/$space->coin_address", ['target' => '_blank']) ?>
                     <?php else : ?>
                         <span class="label label-default"><?= Yii::t('XcoinModule.ethereum', 'unavailable') ?></span>
                     <?php endif; ?>

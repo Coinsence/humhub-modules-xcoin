@@ -16,16 +16,16 @@ use yii\helpers\StringHelper;
             <td><?= Yii::t('XcoinModule.transaction', 'Transaction ID') ?></td>
             <td><?= $transaction->id; ?></td>
         </tr>
-        <?php if ($transaction->eth_hash) : ?>
+        <?php if ($transaction->algorand_tx_id) : ?>
             <tr>
                 <td><?= Yii::t('XcoinModule.transaction', 'Ethereum transaction Hash') ?></td>
                 <td>
                     <?= Html::a(
-                        StringHelper::truncate($transaction->eth_hash, 30, '...'),
-                        " https://rinkeby.etherscan.io/tx/$transaction->eth_hash",
+                        StringHelper::truncate($transaction->algorand_tx_id, 30, '...'),
+                        " https://testnet.algoexplorer.io/tx/$transaction->algorand_tx_id",
                         [
                             'target' => '_blank',
-                            'title' => $transaction->eth_hash,
+                            'title' => $transaction->algorand_tx_id,
                             'data-toggle' => 'tooltip',
                         ]) ?>
                 </td>

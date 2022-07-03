@@ -68,7 +68,7 @@ Select2BootstrapAsset::register($this);
                 <?=
                 Html::a(
                     StringHelper::truncate($transaction->eth_hash, 30, '...'),
-                    " https://rinkeby.etherscan.io/tx/$transaction->eth_hash",
+                    " https://testnet.algoexplorer.io/tx/$transaction->eth_hash",
                     [
                         'target' => '_blank',
                         'title' => $transaction->eth_hash,

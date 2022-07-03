@@ -33,8 +33,6 @@ class AccountHelper
                 $account->space_id = $container->id;
                 $account->account_type = Account::TYPE_DEFAULT;
                 $account->save();
-
-                Event::trigger(Account::class, Account::EVENT_DEFAULT_SPACE_ACCOUNT_CREATED, new Event(['sender' => $container]));
             }
         } else {
             if (Account::find()->andWhere(['user_id' => $container->id, 'account_type' => Account::TYPE_DEFAULT])->count() == 0) {
