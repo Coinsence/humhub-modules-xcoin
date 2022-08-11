@@ -5,9 +5,7 @@ namespace humhub\modules\xcoin\grids;
 use Yii;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
-use humhub\modules\xcoin\helpers\TransactionHelper;
 use humhub\modules\space\widgets\Image as SpaceImage;
-use humhub\modules\xcoin\grids\AccountColumn;
 use humhub\libs\ActionColumn;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Transaction;
@@ -16,6 +14,7 @@ use humhub\modules\xcoin\models\Transaction;
  * Description of LatestTransactionsGridView
  *
  * @author Luke
+ * @contributer Daly Ghaith <daly.ghaith@gmail.com>
  */
 class TransactionsGridView extends GridView
 {
@@ -35,6 +34,7 @@ class TransactionsGridView extends GridView
      */
     public function init()
     {
+        $transactions =
         $query = Transaction::find();
         $query->andWhere(['from_account_id' => $this->account->id]);
         $query->orWhere(['to_account_id' => $this->account->id]);
@@ -52,27 +52,6 @@ class TransactionsGridView extends GridView
 
 
         $this->columns = [
-            /*
-              [
-              'attribute' => 'id',
-              'options' => [
-              'style' => 'width:50px',
-              ]
-              ],
-             *
-             */
-            /*
-              [
-              'attribute' => 'transaction_type',
-              'label' => 'Type',
-              'format' => 'raw',
-              'value' => function ($model) {
-              return '<span class="badge badge-default">' . TransactionHelper::getTypeTitle($model->transaction_type) . '</span>';
-              },
-              'options' => ['style' => 'width:90px']
-              ],
-             *
-             */
             [
                 'attribute' => 'created_at',
                 'label' => Yii::t('XcoinModule.base', 'Date'),

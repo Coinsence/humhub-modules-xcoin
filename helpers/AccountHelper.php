@@ -23,7 +23,6 @@ use humhub\modules\space\widgets\Image as SpaceImage;
  */
 class AccountHelper
 {
-
     public static function initContentContainer(ContentContainerActiveRecord $container)
     {
         if ($container instanceof Space) {
@@ -56,7 +55,7 @@ class AccountHelper
             $query = Account::find()
                 ->andWhere(['space_id' => $container->id])
                 ->andWhere(['!=', 'account_type', Account::TYPE_ISSUE])
-                ->andWhere(['archived' => [0,1]]);
+                ->andWhere(['archived' => [0, 1]]);
 
             if ($asset) {
                 $query
@@ -95,6 +94,15 @@ class AccountHelper
     public static function getAccounts(ContentContainerActiveRecord $container)
     {
         return self::getAccountsQuery($container)->all();
+    }
+
+    public static function getDefaultAccount(ContentContainerActiveRecord $container)
+    {
+        if ($container instanceof User) {
+            return Account::findOne(['user_id' => $container->id, 'account_type' => Account::TYPE_DEFAULT]);
+        } else {
+            return Account::findOne(['space_id' => $container->id, 'account_type' => Account::TYPE_DEFAULT]);
+        }
     }
 
     public static function getAccountsDropDown(ContentContainerActiveRecord $container)

@@ -18,7 +18,7 @@ use yii\helpers\StringHelper;
         </tr>
         <?php if ($transaction->algorand_tx_id) : ?>
             <tr>
-                <td><?= Yii::t('XcoinModule.transaction', 'Ethereum transaction Hash') ?></td>
+                <td><?= Yii::t('XcoinModule.transaction', 'Algorand TxID') ?></td>
                 <td>
                     <?= Html::a(
                         StringHelper::truncate($transaction->algorand_tx_id, 30, '...'),
