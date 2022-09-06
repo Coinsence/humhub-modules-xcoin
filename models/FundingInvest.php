@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\models;
 
+use humhub\modules\algorand\utils\Helpers;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use Yii;
 use yii\base\Model;
@@ -121,7 +122,7 @@ class FundingInvest extends Model
 
     public function getBuyAmount()
     {
-        return $this->amountPay * $this->funding->exchange_rate;
+        return Helpers::formatCoinAmount($this->amountPay * $this->funding->exchange_rate);
     }
 
 

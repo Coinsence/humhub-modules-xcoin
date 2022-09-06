@@ -25,17 +25,3 @@ Assets::register($this);
         <?= AccountsGridView::widget(['contentContainer' => $this->context->contentContainer]) ?>
     </div>
 </div>
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <?php if ($isOwner): ?>
-            <?= Yii::t('XcoinModule.overview', '<strong>Latest</strong> transactions in your accounts') ?>
-        <?php else: ?>
-            <?= Yii::t('XcoinModule.overview', '<strong>Latest</strong> transactions') ?>
-        <?php endif; ?>
-    </div>
-
-    <div class="panel-body">
-        <?= LatestTransactionsGridView::widget(['contentContainer' => $this->context->contentContainer]) ?>
-    </div>
-</div>

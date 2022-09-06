@@ -37,27 +37,6 @@ class LatestTransactionsGridView extends GridView
 
 
         $this->columns = [
-            /*
-              [
-              'attribute' => 'id',
-              'options' => [
-              'style' => 'width:50px',
-              ]
-              ],
-             *
-             */
-            /*
-              [
-              'attribute' => 'transaction_type',
-              'label' => 'Type',
-              'format' => 'raw',
-              'value' => function ($model) {
-              return '<span class="badge badge-default">' . TransactionHelper::getTypeTitle($model->transaction_type) . '</span>';
-              },
-              'options' => ['style' => 'width:90px']
-              ],
-             *
-             */
             [
                 'attribute' => 'created_at',
                 'label' => Yii::t('XcoinModule.base', 'Date'),
@@ -74,29 +53,11 @@ class LatestTransactionsGridView extends GridView
                 }
             ],
             [
-                'format' => 'raw',
-                'value' => function($model) {
-                    return '';
-                }
-            ],
-            [
                 'class' => AccountColumn::class,
                 'accountAttribute' => 'fromAccount',
                 'label' => Yii::t('XcoinModule.base', 'Sender'),
                 'showIssueWhenEmpty' => true
             ],
-            /*
-              [
-              'options' => ['style' => 'width:50px'],
-              'format' => 'raw',
-              'value' => function($model) {
-              if ($model->from_account_id === null) {
-              return '';
-              }
-              return '<center><i class="fa fa-arrow-right" style="font-size:20px" aria-hidden="true"></i></center>';
-              }
-              ],
-             */
             [
                 'class' => AccountColumn::class,
                 'accountAttribute' => 'toAccount',

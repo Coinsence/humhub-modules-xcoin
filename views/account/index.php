@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\algorand\calls\Coin;
+use humhub\modules\algorand\utils\Helpers;
 use yii\bootstrap\Html;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\helpers\AccountHelper;
@@ -85,7 +87,12 @@ use humhub\modules\user\widgets\Image as UserImage;
                     <?php
                     $list = [];
                     foreach ($account->getAssets() as $asset) {
-                        $list[] = '<strong>' . $account->getAssetBalance($asset) . '</strong>&nbsp; ' .
+                        $coinBalance = Coin::balance($account, $asset);
+                        if (null === $coinBalance) {
+                            continue;
+                        }
+
+                        $list[] = '<strong>' . Helpers::formatCoinAmount($coinBalance->amount, true) . '</strong>&nbsp; ' .
                             SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) . '</span>';
                     }
                     if (empty($list)) {

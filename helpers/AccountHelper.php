@@ -3,6 +3,8 @@
 namespace humhub\modules\xcoin\helpers;
 
 use humhub\components\Event;
+use humhub\modules\algorand\calls\Coin;
+use humhub\modules\algorand\utils\Helpers;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
 use humhub\modules\xcoin\permissions\CreateAccount;
@@ -209,7 +211,8 @@ class AccountHelper
                 $asset = AssetHelper::getSpaceAsset($funding->space);
             }
         }
-        return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
+
+        return Helpers::formatCoinAmount(Coin::balance(AccountHelper::getFundingAccount($funding), $asset)->amount, true);
     }
 
     public function getFundingRequestedAccountBalance(Funding $funding, $requested = true)
@@ -219,8 +222,8 @@ class AccountHelper
         } else {
             $asset = AssetHelper::getSpaceAsset($funding->space);
         }
-        return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
 
+        return Helpers::formatCoinAmount(Coin::balance(AccountHelper::getFundingAccount($funding), $asset)->amount, true);
     }
 
     public static function getAssetsList(Account $account)
