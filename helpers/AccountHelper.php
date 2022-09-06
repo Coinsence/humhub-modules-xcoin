@@ -212,7 +212,9 @@ class AccountHelper
             }
         }
 
-        return Helpers::formatCoinAmount(Coin::balance(AccountHelper::getFundingAccount($funding), $asset)->amount, true);
+        $balance = Coin::balance(AccountHelper::getFundingAccount($funding), $asset);
+
+        return $balance !== null ? Helpers::formatCoinAmount($balance->amount, true) : 0;
     }
 
     public function getFundingRequestedAccountBalance(Funding $funding, $requested = true)
@@ -223,7 +225,9 @@ class AccountHelper
             $asset = AssetHelper::getSpaceAsset($funding->space);
         }
 
-        return Helpers::formatCoinAmount(Coin::balance(AccountHelper::getFundingAccount($funding), $asset)->amount, true);
+        $balance = Coin::balance(AccountHelper::getFundingAccount($funding), $asset);
+
+        return $balance !== null ? Helpers::formatCoinAmount($balance->amount, true) : 0;
     }
 
     public static function getAssetsList(Account $account)
