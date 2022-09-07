@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\xcoin\grids\AccountVouchersGridView;
 use yii\bootstrap\Html;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\helpers\AccountHelper;
@@ -16,29 +17,9 @@ use humhub\modules\user\widgets\Image as UserImage;
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="pull-right">
-            <?= Html::a(Yii::t('XcoinModule.account', 'Back to overview'), ['/xcoin/overview', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default']); ?>
-            <?= Html::a(Yii::t('XcoinModule.account', 'Voucher'), ['/xcoin/account/vouchers', 'id' => $account->id,'container' => $this->context->contentContainer], ['class' => 'btn btn-default']); ?>
+            <?= Html::a(Yii::t('XcoinModule.account', 'Create'), ['/xcoin/account/create-voucher', 'accountId' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']); ?>
+            <?= Html::a(Yii::t('XcoinModule.account', 'Redeem'), ['/xcoin/account/redeem-voucher', 'accountId' => $account->id,'container' => $this->context->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']); ?>
 
-            <?php if (AccountHelper::canManageAccount($account)) : ?>
-                <?php if ($account->account_type == Account::TYPE_STANDARD): ?>
-                    <?= Html::a(Yii::t('XcoinModule.account', 'Edit'), ['/xcoin/account/edit', 'id' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']); ?>
-                <?php endif; ?>
-                <?php if (!isset($allowDirectCoinTransfer) || $allowDirectCoinTransfer): ?>
-                    <?= Html::a(Yii::t('XcoinModule.account', 'Transfer'), ['/xcoin/transaction/transfer', 'accountId' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']); ?>
-                <?php else: ?>
-                    <?= Html::a(
-                        Yii::t('XcoinModule.account', 'Transfer'),
-                        ['/xcoin/transaction/transfer',
-                            'accountId' => $account->id,
-                            'container' => $this->context->contentContainer],
-                        ['class' => 'btn btn-default',
-                            'disabled' => 'disabled',
-                            'onclick' => 'return false;',
-                            'data-toggle' => 'tooltip',
-                            'data-placement' => 'right',
-                            'title' => Yii::t('XcoinModule.base', 'Direct coin transfer disabled by the space admin')]); ?>
-                <?php endif ?>
-            <?php endif; ?>
         </div>
         <?= '<strong>' . Yii::t('XcoinModule.account', 'Account overview:') . '</strong> ' . $account->title; ?>
     </div>
@@ -107,6 +88,6 @@ use humhub\modules\user\widgets\Image as UserImage;
         <br/>
 
 
-        <?= TransactionsGridView::widget(['account' => $account, 'contentContainer' => $this->context->contentContainer]) ?>
+        <?= AccountVouchersGridView::widget(['account' => $account, 'contentContainer' => $this->context->contentContainer]) ?>
     </div>
 </div>
