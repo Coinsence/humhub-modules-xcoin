@@ -8,6 +8,7 @@ use humhub\widgets\ModalDialog;
 use humhub\assets\Select2BootstrapAsset;
 use humhub\modules\xcoin\widgets\AmountField;
 use humhub\modules\xcoin\widgets\SenderAccountField;
+use humhub\modules\space\widgets\Image as SpaceImage;
 
 Select2BootstrapAsset::register($this);
 
@@ -17,15 +18,28 @@ Select2BootstrapAsset::register($this);
 <?php ModalDialog::begin(['header' => Yii::t('XcoinModule.funding', '<strong>Funding</strong> Invest'), 'closable' => false]) ?>
 <?php $form = ActiveForm::begin(['id' => 'asset-form']); ?>
 <div class="modal-body">
-    <?= SenderAccountField::widget(['backRoute' => ['/xcoin/funding/invest', 'fundingId' => $funding->id, 'container' => $this->context->contentContainer], 'senderAccount' => $fromAccount]); ?>
-    <br/>
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'amountPay')->widget(AmountField::classname(), ['asset' => $model->getPayAsset()]); ?>
+    <div class="row text-center">
+        <div class="col-md-12">
+            <?= Yii::t('XcoinModule.transaction', '<strong> How many COINs you want to invest in this project ? </strong> <br> ') ?>
+            <?= Yii::t('XcoinModule.transaction', 'The maximum number of COINs that can be invested here is {max_buy}', [
+                'max_buy' => $model->getMaxBuyAmount()
+            ]) ?>
+        </div>
+        <div class="col-lg-6 col-lg-offset-3">
+            <?= $form->field($model, 'amountPay')->widget(AmountField::classname(), ['asset' => $model->getPayAsset()])->hint('')->label(''); ?>
         </div>
         <?php if (!$model->funding->challenge->acceptNoRewarding()): ?>
-            <div class="col-md-6">
-                <?= $form->field($model, 'amountBuy')->widget(AmountField::classname(), ['asset' => $model->getBuyAsset(), 'readonly' => true]); ?>
+            <div class="col-md-12">
+                <?= Yii::t('XcoinModule.transaction', '<strong> As rewarding , you will receive <br> {exchange_rate} for each coin you invest. </strong>', [
+                    'exchange_rate' =>
+                        $model->funding->exchange_rate .
+                        '<span style="margin-left: 4px;">' . SpaceImage::widget([
+                            'space' => $model->getBuyAsset()->space,
+                            'width' => 16,
+                            'showTooltip' => true,
+                            'link' => true
+                        ]) . '</span>'
+                ]) ?>
             </div>
         <?php endif; ?>
     </div>
@@ -41,6 +55,7 @@ Select2BootstrapAsset::register($this);
         reCalc();
     });
     reCalc();
+
     function reCalc() {
         $val = $('#fundinginvest-amountpay').val();
         $val = $val * <?= $model->funding->exchange_rate; ?>;

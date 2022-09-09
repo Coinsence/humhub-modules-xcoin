@@ -31,6 +31,7 @@ use yii\helpers\Url;
  * @property integer $status
  * @property integer $stopped
  * @property integer $hide_unverified_submissions
+ * @property integer $hidden
  * @property integer $no_rewarding
  * @property integer $any_reward_asset
  * @property integer $specific_reward_asset
@@ -54,6 +55,8 @@ class Challenge extends ActiveRecord
     const CHALLENGE_ACTIVE = 0;
     const CHALLENGE_STOPPED = 1;
     const CHALLENGE_CLOSED = 2;
+    const CHALLENGE_SHOWN = 0;
+    const CHALLENGE_HIDDEN = 1;
 
 
     // challenges investor reward options
@@ -87,7 +90,7 @@ class Challenge extends ActiveRecord
         return [
             [['space_id', 'asset_id', 'title', 'description', 'created_by'], 'required'],
             [['exchange_rate'], 'number', 'min' => '0.1'],
-            [['space_id', 'asset_id', 'created_by', 'no_rewarding', 'any_reward_asset', 'specific_reward_asset', 'specific_reward_asset_id', 'hide_unverified_submissions'], 'integer'],
+            [['space_id', 'asset_id', 'created_by', 'no_rewarding', 'any_reward_asset', 'specific_reward_asset', 'specific_reward_asset_id', 'hide_unverified_submissions', 'hidden'], 'integer'],
             [['created_at', 'status', 'stopped'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['specific_reward_asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['specific_reward_asset_id' => 'id']],
@@ -117,6 +120,7 @@ class Challenge extends ActiveRecord
                 'title',
                 'description',
                 'stopped',
+                'hidden',
                 'hide_unverified_submissions'
             ],
             self::SCENARIO_EDIT_ADMIN => [
@@ -245,7 +249,7 @@ class Challenge extends ActiveRecord
 
         $targetFile = $file->getStoredFilePath();
         $path = $targetFile . "file";
-        $targetPath = ImageUtils::resizeImage($path, "challenge_image", $width, $height, $file->guid . "_".$type);
+        $targetPath = ImageUtils::resizeImage($path, "challenge_image", $width, $height, $file->guid . "_" . $type);
 
         return Url::base() . "/uploads/challenge_image/" . basename($targetPath);
     }
@@ -293,6 +297,11 @@ class Challenge extends ActiveRecord
     public function showUnreviewedSubmissions()
     {
         return $this->hide_unverified_submissions == self::UNREVIEWED_SUBMISSIONS_VISIBLE;
+    }
+
+    public function isChallengeHidden()
+    {
+        return $this->hidden == self::CHALLENGE_HIDDEN;
     }
 
 }

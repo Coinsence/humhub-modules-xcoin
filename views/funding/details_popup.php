@@ -1,6 +1,8 @@
 <?php
 
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\widgets\PurchaseCoin;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\ActiveForm;
 use humhub\modules\xcoin\models\ChallengeContactButton as ChallengeContactButtonAlias;
@@ -256,7 +258,14 @@ Assets::register($this);
                                 <?php if (Yii::$app->user->isGuest): ?>
                                     <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                                 <?php else: ?>
-                                    <?php if ($funding->activate_funding !== Funding::FUNDING_DEACTIVATED): ?>
+                                    <?php if ($funding->activate_funding !== Funding::FUNDING_DEACTIVATED ): ?>
+                                        <?= PurchaseCoin::widget([
+                                            'contentContainer' => $funding->space,
+                                            'requireAsset' => $challenge->asset,
+                                            'noCoinsWarning' => true,
+                                            'funding'=>$funding->id
+                                        ]) ?>
+                                        <p><?= Yii::t('XcoinModule.overview', 'To recieve the equivalent rewarding coins') ?></p>
                                         <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
                                             'invest',
                                             'fundingId' => $funding->id,

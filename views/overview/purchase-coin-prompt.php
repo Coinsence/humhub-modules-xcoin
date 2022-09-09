@@ -17,13 +17,14 @@ use yii\web\JsExpression;
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'coin')->textInput(['type' => 'text', 'readonly' => true])->label(Yii::t('XcoinModule.purchase', 'Selected COIN')); ?>
+            <?= $form->field($model, 'amount')
+                ->textInput(['type' => 'number', 'min' => 10])
+                ->label(Yii::t('XcoinModule.purchase', 'How many COINs you want to buy ?'))
+                ->hint(Yii::t('XcoinModule.purchase', 'Minimum amount of COINs is 10')); ?>
+            <p><?= Yii::t('XcoinModule.purchase', 'The total price will be shown in the next step.') ?></p>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'amount')
-                    ->textInput(['type' => 'number', 'min' => 10])
-                    ->label(Yii::t('XcoinModule.purchase', 'Number of COINs'))
-                    ->hint(Yii::t('XcoinModule.purchase', 'Minimum amount of COINs is 10')); ?>
+            <?= $form->field($model, 'coin')->textInput(['type' => 'text', 'readonly' => true])->label(Yii::t('XcoinModule.purchase', 'Selected COIN')); ?>
         </div>
     </div>
     <hr>
@@ -45,7 +46,7 @@ use yii\web\JsExpression;
             <?= $form->field($model, 'zip')->textInput(['type' => 'text'])->label(Yii::t('XcoinModule.purchase', 'Postcode')); ?>
         </div>
         <div class="col-md-6">
-        <?= $form->field($model, 'country')->widget(Select2::class, [
+            <?= $form->field($model, 'country')->widget(Select2::class, [
                 'data' => Iso3166Codes::$countries,
                 'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.purchase', 'Select country') . ' - '],
                 'theme' => Select2::THEME_BOOTSTRAP,
@@ -54,13 +55,13 @@ use yii\web\JsExpression;
                     'allowClear' => false,
                     'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                 ],
-            ])?>
+            ]) ?>
         </div>
     </div>
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.purchase', 'Checkout')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('XcoinModule.purchase', 'Continue to the payment process')); ?>
 </div>
 
 <?php ActiveForm::end(); ?>

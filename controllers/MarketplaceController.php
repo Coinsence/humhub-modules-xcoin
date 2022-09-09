@@ -33,10 +33,18 @@ class MarketplaceController extends ContentContainerController
 
     public function actionIndex()
     {
-        $marketplaces = Marketplace::find()
-            ->where(['space_id' => $this->contentContainer->id])
-            ->orderBy(['created_at' => SORT_DESC])
-            ->all();
+        if (Yii::$app->user->isAdmin()) {
+            $marketplaces = Marketplace::find()
+                ->where(['space_id' => $this->contentContainer->id])
+                ->orderBy(['created_at' => SORT_DESC])
+                ->all();
+        } else {
+            $marketplaces = Marketplace::find()
+                ->where(['space_id' => $this->contentContainer->id])
+                ->andWhere(['hidden' => Marketplace::MARKETPLACE_SHOWN])
+                ->orderBy(['created_at' => SORT_DESC])
+                ->all();
+        }
 
         return $this->render('index', [
             'marketplaces' => $marketplaces,
@@ -82,8 +90,8 @@ class MarketplaceController extends ContentContainerController
         }
 
         if ($categoryId) {
-            $products = array_filter($products, function($product) use ($categoryId) {
-                $categories_ids = array_map(function($category) {
+            $products = array_filter($products, function ($product) use ($categoryId) {
+                $categories_ids = array_map(function ($category) {
                     return $category->id;
                 }, $product->getCategories()->all());
 
@@ -143,7 +151,7 @@ class MarketplaceController extends ContentContainerController
                 'model' => $model,
                 'assets' => $assets,
                 'defaultAsset' => $defaultAsset,
-                'imageError'=>null
+                'imageError' => null
 
             ]
         );
@@ -194,7 +202,7 @@ class MarketplaceController extends ContentContainerController
         return $this->renderAjax('edit', [
                 'model' => $model,
                 'assets' => $assets,
-                'imageError'=>null
+                'imageError' => null
             ]
         );
     }
@@ -203,7 +211,7 @@ class MarketplaceController extends ContentContainerController
     {
         $model = Product::findOne(['id' => $id]);
         if ($model == null) {
-            throw new HttpException(404,'Product Not found');
+            throw new HttpException(404, 'Product Not found');
         }
 
         if (!SpaceHelper::canReviewProject($model->marketplace->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {

@@ -5,6 +5,7 @@ use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\ChallengeContactButton as ChallengeContactButtonAlias;
 use humhub\modules\xcoin\models\Funding;
 use humhub\modules\xcoin\widgets\ChallengeImage;
+use humhub\modules\xcoin\widgets\PurchaseCoin;
 use yii\bootstrap\Carousel;
 use humhub\libs\Html;
 use humhub\modules\xcoin\helpers\AssetHelper;
@@ -162,14 +163,14 @@ Assets::register($this);
                         ]) ?>
                     <?php else: ?>
                         <div class="bg"
-                            style="background-image: url('<?= $cover->getUrl() ?>')"></div>
+                             style="background-image: url('<?= $cover->getUrl() ?>')"></div>
                         <?= Html::img($cover->getUrl(), [
                             'width' => '100%'
                         ]) ?>
                     <?php endif; ?>
                 <?php else : ?>
                     <div class="bg"
-                        style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
+                         style="background-image: url('<?= Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png' ?>')"></div>
                     <?= Html::img(Yii::$app->getModule('xcoin')->getAssetsUrl() . '/images/default-funding-cover.png', [
                         'width' => '100%'
                     ]) ?>
@@ -284,8 +285,8 @@ Assets::register($this);
 
         <!-- campaign review button start -->
         <?php if (SpaceHelper::canReviewProject($funding->challenge->space) || PublicOffersHelper::canReviewSubmittedProjects()): ?>
-        <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
-            <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Launching soon'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_LAUNCHING_SOON, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
+            <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
+                <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Launching soon'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_LAUNCHING_SOON, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
             <?php elseif ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON) : ?>
                 <?= Html::a('<i class="fa fa-check"></i> ' . Yii::t('XcoinModule.funding', 'Trusted'), ['/xcoin/funding/review', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted pull-right']) ?>
             <?php else : ?>
@@ -442,6 +443,13 @@ Assets::register($this);
                                     <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
                                 <?php else: ?>
                                     <?php if ($funding->activate_funding !== Funding::FUNDING_DEACTIVATED): ?>
+                                        <?= PurchaseCoin::widget([
+                                            'contentContainer' => $funding->space,
+                                            'requireAsset' => $challenge->asset,
+                                            'noCoinsWarning' => true,
+                                            'funding'=>$funding->id
+                                        ]) ?>
+                                        <p><?= Yii::t('XcoinModule.overview', 'To recieve the equivalent rewarding coins') ?></p>
                                         <?= Html::a(Yii::t('XcoinModule.funding', 'Fund this project'), [
                                             'invest',
                                             'fundingId' => $funding->id,

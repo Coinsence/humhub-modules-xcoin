@@ -89,7 +89,7 @@ class FundingInvest extends Model
     /**
      * @return int
      */
-    protected function getMaxBuyAmount()
+    public function getMaxBuyAmount()
     {
         $left = $this->funding->getAvailableAmount();
         // Check max amount of current account

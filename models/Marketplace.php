@@ -35,6 +35,7 @@ use yii\helpers\Url;
  * @property string $action_name
  * @property integer $selling_option
  * @property integer $is_tasks_marketplace
+ * @property integer $hidden
  *
  * @property Asset $asset
  * @property User $createdBy
@@ -51,7 +52,8 @@ class Marketplace extends ActiveRecord
     const MARKETPLACE_STATUS_ENABLED = 1;
     const MARKETPLACE_ACTIVE = 0;
     const MARKETPLACE_STOPPED = 1;
-
+    const MARKETPLACE_SHOWN = 0;
+    const MARKETPLACE_HIDDEN = 1;
     // options
     const OPTION_SEND_MESSAGE = 0;
     const OPTION_REDIRECT_TO_LINK = 1;
@@ -84,7 +86,7 @@ class Marketplace extends ActiveRecord
         return [
             [['space_id', 'asset_id', 'title', 'description', 'created_by'], 'required'],
             ['categories_names', 'required', 'message' => 'Please choose at least a category'],
-            [['space_id', 'asset_id', 'created_by', 'hide_unverified_submissions'], 'integer'],
+            [['space_id', 'asset_id', 'created_by', 'hide_unverified_submissions','hidden'], 'integer'],
             [['created_at', 'status', 'stopped'], 'safe'],
             [['asset_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asset::class, 'targetAttribute' => ['asset_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
@@ -115,7 +117,8 @@ class Marketplace extends ActiveRecord
                 'selling_option',
                 'is_tasks_marketplace',
                 'hide_unverified_submissions',
-                'categories_names'
+                'categories_names',
+                'hidden'
             ],
             self::SCENARIO_EDIT_ADMIN => [
                 'status',
@@ -315,5 +318,8 @@ class Marketplace extends ActiveRecord
     public function showUnreviewedSubmissions()
     {
         return $this->hide_unverified_submissions == self::UNREVIEWED_SUBMISSIONS_VISIBLE;
+    }
+    public function isMarketplaceHidden(){
+        return $this->hidden == self::MARKETPLACE_HIDDEN;
     }
 }

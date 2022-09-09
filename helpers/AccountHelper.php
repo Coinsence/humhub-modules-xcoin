@@ -7,6 +7,7 @@ use humhub\modules\algorand\calls\Coin;
 use humhub\modules\algorand\utils\Helpers;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\models\Transaction;
 use humhub\modules\xcoin\permissions\CreateAccount;
 use Yii;
 use humhub\modules\space\models\Space;
@@ -226,7 +227,6 @@ class AccountHelper
         }
 
         $balance = Coin::balance(AccountHelper::getFundingAccount($funding), $asset);
-
         return $balance !== null ? Helpers::formatCoinAmount($balance->amount, true) : 0;
     }
 
@@ -248,4 +248,13 @@ class AccountHelper
         return $accountAssetList;
     }
 
+    public static function getAccountAssetIncome(Account $account, Asset $asset)
+    {
+        $incomeAmount = Transaction::find()
+            ->where(['to_account_id' => $account->id])
+            ->andWhere(['asset_id' => $asset->id])
+            ->sum('amount');
+
+        return round($incomeAmount, 4);
+    }
 }

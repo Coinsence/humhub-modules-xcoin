@@ -3,6 +3,7 @@
 namespace humhub\modules\xcoin\controllers;
 
 use humhub\components\Event;
+use humhub\modules\xcoin\helpers\SpaceHelper;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\content\components\ContentContainerController;
@@ -35,7 +36,9 @@ class AssetController extends ContentContainerController
         if ($asset === null) {
             throw new HttpException(404);
         }
-
+        if(!SpaceHelper::canIssueCoins($this->contentContainer)){
+            throw new HttpException(403);
+        }
         $issueAccount = AccountHelper::getIssueAccount($asset->space);
 
         $transaction = new Transaction();

@@ -39,6 +39,9 @@ $upload = Upload::forModel($model, $model->coverFile);
             <?= $form->field($model, 'hide_unverified_submissions')->checkbox(); ?>
         </div>
         <div class="col-md-12">
+            <?= $form->field($model, 'hidden')->checkbox(); ?>
+        </div>
+        <div class="col-md-12">
             <?= $form->field($model, 'categories_names')->widget(Select2::class, [
                 'model' => $model,
                 'attribute' => 'categories_names',

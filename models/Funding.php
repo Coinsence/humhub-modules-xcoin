@@ -15,6 +15,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\helpers\FundingHelper;
 use humhub\modules\xcoin\helpers\Utils;
 use Symfony\Component\Filesystem\Filesystem;
 use Yii;
@@ -56,7 +57,6 @@ class Funding extends ActiveRecord
     const FUNDING_NOT_REVIEWED = 0;
     const FUNDING_REVIEWED = 1;
     const FUNDING_LAUNCHING_SOON = 2;
-
 
 
     // Funding status
@@ -125,6 +125,11 @@ class Funding extends ActiveRecord
             [['country'], 'string', 'max' => 2],
             [['content'], 'string'],
             [['deadline'], DbDateValidator::class],
+            ['youtube_link', function ($attribute) {
+                if (null === FundingHelper::getYoutubeEmbedUrl($this->$attribute)) {
+                    $this->addError($attribute, Yii::t('XcoinModule.funding', 'Invalid youtube link.'));
+                }
+            }],
         ];
     }
 
@@ -236,7 +241,17 @@ class Funding extends ActiveRecord
         if ($challenge->acceptSpecificRewardingAsset()) {
             $this->exchange_rate = $challenge->exchange_rate;
         }
-
+        if (!$this->isNewRecord && !$this->challenge->acceptNoRewarding() && (int)$this->amount < (int)$this->getOldAttribute('amount')) {
+            $transaction = new Transaction();
+            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
+            $transaction->from_account_id = Account::findOne(['funding_id' => $this->id])->id;
+            $transaction->to_account_id = Account::findOne(['space_id' => $this->space_id, 'account_type' => ACCOUNT::TYPE_DEFAULT])->id;;
+            $transaction->amount = (int)$this->getOldAttribute('amount') - (int)$this->amount;
+            $transaction->asset_id = AssetHelper::getSpaceAsset($this->space)->id;
+            if (!$transaction->save()) {
+                throw new Exception('Could not create deduction transaction');
+            }
+        }
         return parent::beforeSave($insert);
     }
 
@@ -245,7 +260,7 @@ class Funding extends ActiveRecord
         if ($insert)
             $this->createFundingAccount();
         else {
-            if (isset($changedAttributes['amount']) && $changedAttributes['amount'] != $this->amount)
+            if (isset($changedAttributes['amount']) && $changedAttributes['amount'] < $this->amount)
                 $this->adjustIssuesAmount();
         }
         if ($this->categories_names && !is_array($this->categories_names)) {
@@ -617,7 +632,8 @@ class Funding extends ActiveRecord
         return $this->activate_funding == self::FUNDING_ACTIVATED;
     }
 
-    public function cloneFunding(Funding $clone) {
+    public function cloneFunding(Funding $clone)
+    {
         $this->title = $clone->title;
         $this->description = $clone->description;
         $this->content = $clone->content;
@@ -630,7 +646,7 @@ class Funding extends ActiveRecord
         $this->created_by = $clone->created_by;
 
         $files = $clone->fileManager->findAll();
-        if(!empty($files)) {
+        if (!empty($files)) {
 
             // delete unassigned files before attaching the new file
             foreach (File::findAll(['object_model' => get_class($this), 'object_id' => null]) as $file) {
@@ -655,7 +671,7 @@ class Funding extends ActiveRecord
         $categories = [];
         /** @var Category $category */
         foreach ($clone->getCategories()->all() as $category) {
-                $categories[$category->name] = $category->name;
+            $categories[$category->name] = $category->name;
         }
 
         $this->categories_names = $categories;

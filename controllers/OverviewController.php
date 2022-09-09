@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\xcoin\models\Funding;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
@@ -47,19 +48,22 @@ class OverviewController extends ContentContainerController
         return $this->render('shareholder-list', ['asset' => AssetHelper::getSpaceAsset($this->contentContainer)]);
     }
 
-    public function actionPurchaseCoin()
+    public function actionPurchaseCoin($fundingId = null)
     {
         $form = new PurchaseForm();
-
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
-
             $bridge = Yii::$app->params['coinPurchase']['bridge'];
             $defaultAccount = Account::findOne([
                 'user_id' => $this->contentContainer->id,
                 'account_type' => Account::TYPE_DEFAULT
             ]);
-
+            if ($fundingId) {
+                $funding = Funding::find()->where(['id' => $fundingId])->one();
+                $redirectUrl = Url::toRoute(['/xcoin/funding/overview', "fundingId" => $fundingId, 'contentContainer' => $funding->space], true) . '?res=success';
+            } else {
+                $redirectUrl = Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success';
+            }
             $data = [
                 'fullName' => $this->contentContainer->displayName,
                 'email' => $this->contentContainer->email,
@@ -71,7 +75,7 @@ class OverviewController extends ContentContainerController
                 'coin' => $form->coin,
                 'amount' => intval($form->amount),
                 'pAddress' => $defaultAccount->algorand_address,
-                'redirectUrl' => Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success',
+                'redirectUrl' => $redirectUrl,
             ];
 
             $jsonData = json_encode($data);
