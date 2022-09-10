@@ -218,7 +218,7 @@ class AccountHelper
         return $balance !== null ? Helpers::formatCoinAmount($balance->amount, true) : 0;
     }
 
-    public function getFundingRequestedAccountBalance(Funding $funding, $requested = true)
+    public static function getFundingRequestedAccountBalance(Funding $funding, $requested = true)
     {
         if ($requested) {
             $asset = Asset::findOne(['id' => $funding->challenge->asset_id]);

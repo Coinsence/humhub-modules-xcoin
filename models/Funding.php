@@ -252,17 +252,16 @@ class Funding extends ActiveRecord
                 throw new Exception('Could not create deduction transaction');
             }
         }
+
         return parent::beforeSave($insert);
     }
 
     public function afterSave($insert, $changedAttributes)
     {
-        if ($insert)
+        if ($insert) {
             $this->createFundingAccount();
-        else {
-            if (isset($changedAttributes['amount']) && $changedAttributes['amount'] < $this->amount)
-                $this->adjustIssuesAmount();
         }
+
         if ($this->categories_names && !is_array($this->categories_names)) {
             foreach (explode(",", $this->categories_names) as $category_name) {
                 $category = Category::getCategoryByName($category_name);
@@ -492,6 +491,7 @@ class Funding extends ActiveRecord
         if (!$this->challenge->acceptNoRewarding()) {
             return $this->getAvailableAmount() > 0 && $this->getRemainingDays() > 0;
         }
+
         return true;
     }
 
@@ -562,28 +562,6 @@ class Funding extends ActiveRecord
 
         if (!$account->save()) {
             throw new \yii\base\Exception('Could not create funding account!');
-        }
-
-        $asset = AssetHelper::getSpaceAsset($this->space);
-        if ($asset === null) {
-            throw new HttpException(404);
-        }
-
-        $issueAccount = AccountHelper::getIssueAccount($this->space);
-
-        if ($this->challenge->acceptAnyRewardingAsset()) {
-            $transaction = new Transaction();
-            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_ISSUE;
-            $transaction->asset_id = $asset->id;
-            $transaction->from_account_id = $issueAccount->id;
-            $transaction->to_account_id = $account->id;
-            $transaction->amount = $this->amount * $this->exchange_rate;
-
-            if (!$transaction->save()) {
-                throw new Exception('Could not create issue transaction for funding account');
-            }
-
-            Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_ISSUE, new Event(['sender' => $transaction]));
         }
     }
 
