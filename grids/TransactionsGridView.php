@@ -67,9 +67,9 @@ class TransactionsGridView extends GridView
                 'value' => function($model) {
                     $fromAccount = Account::findOne(['algorand_address' => $model->fromAccount]);
                     if ($fromAccount->id == $this->account->id) {
-                        return '<span style="color:red;font-weight:bold">-' . Helpers::formatCoinAmount($model->amount, true) . '</span>';
+                        return '<span style="color:red;font-weight:bold">-' . Helpers::formatCoinAmount($model->{'asset-transfer-transaction'}->amount, true) . '</span>';
                     } else {
-                        return '<span style="color:green;font-weight:bold">+' . Helpers::formatCoinAmount($model->amount, true) . '</span>';
+                        return '<span style="color:green;font-weight:bold">+' . Helpers::formatCoinAmount($model->{'asset-transfer-transaction'}->amount, true) . '</span>';
                     }
                 }
             ],
