@@ -38,6 +38,10 @@ class TransactionsGridView extends GridView
     {
         $transactions = Coin::transactionsList($this->account);
 
+        $transactions = array_filter($transactions, function ($transaction) {
+            return property_exists($transaction, 'asset-transfer-transaction');
+        });
+
         $this->dataProvider = new ArrayDataProvider([
             'allModels' => $transactions,
             'pagination' => [
