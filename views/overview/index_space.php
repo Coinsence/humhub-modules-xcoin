@@ -17,8 +17,9 @@ Assets::register($this);
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="pull-right">
-            <?= Html::a(Yii::t('XcoinModule.overview', 'Ethereum'), ['/xcoin/ethereum', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
-            <?= Html::a(Yii::t('XcoinModule.overview', 'Latest account transactions'), ['/xcoin/overview/latest-transactions', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
+            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) && $asset !== null && SpaceHelper::canIssueCoins($this->context->contentContainer)): ?>
+                <?= Html::a(Yii::t('XcoinModule.overview', 'Issue new assets'), ['/xcoin/asset/issue', 'id' => $asset->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']); ?>
+            <?php endif; ?>            <?= Html::a(Yii::t('XcoinModule.overview', 'Latest account transactions'), ['/xcoin/overview/latest-transactions', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
             <?php if (AccountHelper::canCreateAccount($this->context->contentContainer)) : ?>
                 <?= Html::a(Yii::t('XcoinModule.overview', 'Create account'), ['/xcoin/account/edit', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']); ?>
             <?php endif; ?>
@@ -41,19 +42,17 @@ Assets::register($this);
     </div>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <div class="pull-right">
-            <?= Html::a(Yii::t('XcoinModule.overview', 'Shareholder list'), ['/xcoin/overview/shareholder-list', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
-            <?= Html::a(Yii::t('XcoinModule.overview', 'Latest asset transactions'), ['/xcoin/overview/latest-asset-transactions', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
-            <?php if (AssetHelper::canManageAssets($this->context->contentContainer) && $asset !== null && SpaceHelper::canIssueCoins($this->context->contentContainer)): ?>
-                <?= Html::a(Yii::t('XcoinModule.overview', 'Issue new assets'), ['/xcoin/asset/issue', 'id' => $asset->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']); ?>
-            <?php endif; ?>
-        </div>
-        <?= Yii::t('XcoinModule.overview', '<strong>Asset</strong> distribution') ?>
-    </div>
-
-    <div class="panel-body">
-        <?= AssetDistribution::widget(['asset' => $asset]) ?>
-    </div>
-</div>
+<!--TODO put back short echo starting tag when uncommenting this-->
+<!--<div class="panel panel-default">-->
+<!--    <div class="panel-heading">-->
+<!--        <div class="pull-right">-->
+<!--            Html::a(Yii::t('XcoinModule.overview', 'Shareholder list'), ['/xcoin/overview/shareholder-list', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>-->
+<!--            Html::a(Yii::t('XcoinModule.overview', 'Latest asset transactions'), ['/xcoin/overview/latest-asset-transactions', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>-->
+<!--        </div>-->
+<!--        Yii::t('XcoinModule.overview', '<strong>Asset</strong> distribution') ?>-->
+<!--    </div>-->
+<!---->
+<!--    <div class="panel-body">-->
+<!--        AssetDistribution::widget(['asset' => $asset]) ?>-->
+<!--    </div>-->
+<!--</div>-->
