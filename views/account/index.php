@@ -55,9 +55,9 @@ use humhub\modules\user\widgets\Image as UserImage;
                 <tr>
                     <td><strong><?= Yii::t('XcoinModule.account', 'Algorand Address') ?></strong></td>
                     <td style="vertical-align: middle; text-align: center;">
-                        <?= Html::a(Html::img("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=https://testnet.algoexplorer.io/address/{$account->algorand_address}&choe=UTF-8", ['alt' => 'algorand address', 'style' => 'width: 100%; max-width: 180px']), "https://testnet.algoexplorer.io/address/$account->algorand_address", ['target' => '_blank', 'class' => 'eth-qr-code']) ?>
+                        <?= Html::a(Html::img("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=https://algoexplorer.io/address/{$account->algorand_address}&choe=UTF-8", ['alt' => 'algorand address', 'style' => 'width: 100%; max-width: 180px']), "https://algoexplorer.io/address/$account->algorand_address", ['target' => '_blank', 'class' => 'eth-qr-code']) ?>
                         <br>
-                        <?= Html::a($account->algorand_address, "https://testnet.algoexplorer.io/address/$account->algorand_address", ['target' => '_blank', 'style' => 'font-size: 10px;', 'class' => 'eth-address']) ?>
+                        <?= Html::a($account->algorand_address, "https://algoexplorer.io/address/$account->algorand_address", ['target' => '_blank', 'style' => 'font-size: 10px;', 'class' => 'eth-address']) ?>
                     </td>
                 </tr>
             <?php endif; ?>

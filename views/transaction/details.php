@@ -20,7 +20,7 @@ use yii\helpers\StringHelper;
             <td>
                 <?= Html::a(
                     StringHelper::truncate($transaction->id, 30, '...'),
-                    " https://testnet.algoexplorer.io/tx/$transaction->id",
+                    " https://algoexplorer.io/tx/$transaction->id",
                     [
                         'target' => '_blank',
                         'title' => $transaction->id,

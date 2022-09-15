@@ -68,7 +68,7 @@ Select2BootstrapAsset::register($this);
                 <?=
                 Html::a(
                     StringHelper::truncate($transaction->algorand_tx_id, 30, '...'),
-                    " https://testnet.algoexplorer.io/tx/$transaction->algorand_tx_id",
+                    " https://algoexplorer.io/tx/$transaction->algorand_tx_id",
                     [
                         'target' => '_blank',
                         'title' => $transaction->algorand_tx_id,
