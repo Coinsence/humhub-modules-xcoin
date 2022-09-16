@@ -227,9 +227,9 @@ class TransactionController extends ContentContainerController
         ]);
     }
 
-    public function actionDetails($txId)
+    public function actionDetails($id)
     {
-        $transaction = Coin::transaction($txId);
+        $transaction = Coin::transaction($id);
 
         return $this->renderAjax('details', ['transaction' => $transaction]);
     }
