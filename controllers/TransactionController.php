@@ -227,10 +227,9 @@ class TransactionController extends ContentContainerController
         ]);
     }
 
-    public function actionDetails($id)
+    public function actionDetails($txId)
     {
-        $transaction = Transaction::findOne(['id' => $id]);
-        $transaction = Coin::transaction($transaction->algorand_tx_id);
+        $transaction = Coin::transaction($txId);
 
         return $this->renderAjax('details', ['transaction' => $transaction]);
     }
