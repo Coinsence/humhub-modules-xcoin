@@ -145,6 +145,7 @@ class AccountController extends ContentContainerController
                 $voucher->status = AccountVoucher::STATUS_READY;
                 $voucher->value = $this->generateRandomString();
                 $voucher->asset_id = $accountVoucher->asset_id;
+                $voucher->tag = $accountVoucher->tag;
                 $voucher->save();
                 $i++;
             }
@@ -179,6 +180,11 @@ class AccountController extends ContentContainerController
                 return $this->renderAjax('voucher-redeem', [
                     'model' => $model]);
             }
+            if($voucherToRedeem && $voucherToRedeem->status == AccountVoucher::STATUS_DISABLED){
+                $model->addError('value', 'Voucher Disabled');
+                return $this->renderAjax('voucher-redeem', [
+                    'model' => $model]);
+            }
             $transaction = new Transaction();
             $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
             $transaction->from_account_id = $voucherToRedeem->account_id;
@@ -187,6 +193,7 @@ class AccountController extends ContentContainerController
             $transaction->amount = $voucherToRedeem->amount;
             $transaction->save();
             $voucherToRedeem->status = AccountVoucher::STATUS_USED;
+            $voucherToRedeem->redeemed_account_id = $transaction->to_account_id;
             $voucherToRedeem->save();
             return $this->htmlRedirect(['/xcoin/overview', 'container' => $this->contentContainer]);
 
@@ -207,5 +214,23 @@ class AccountController extends ContentContainerController
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+    public function actionEnableVoucher($voucherId, $accountId)
+    {
+        $account = Account::findOne(['id' => $accountId]);
+        $voucher = AccountVoucher::findOne(['id' => $voucherId]);
+
+
+        if ($account === null || $voucher === null) {
+            throw new HttpException(404);
+        }
+        if ($voucher->isVoucherReady()) {
+            $voucher->updateAttributes(['status' => AccountVoucher::STATUS_DISABLED]);
+        } else {
+            $voucher->updateAttributes(['status' => AccountVoucher::STATUS_READY]);
+        }
+        return $this->render('vouchers', ['account' => $account, 'allowDirectCoinTransfer' => false]);
+
     }
 }

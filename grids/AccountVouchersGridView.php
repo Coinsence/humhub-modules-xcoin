@@ -8,6 +8,7 @@
 namespace humhub\modules\xcoin\grids;
 
 
+use humhub\libs\ActionColumn;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\AccountVoucher;
 use humhub\modules\xcoin\models\Transaction;
@@ -68,6 +69,15 @@ class AccountVouchersGridView extends GridView
                 }
             ],
             [
+                'attribute' => 'tag',
+                'label' => Yii::t('XcoinModule.base', 'Tag'),
+                'format' => 'raw',
+                'options' => ['style' => 'width:80px'],
+                'value' => function ($model) {
+                    return '<span style="font-weight:bold">' . $model->tag . '</span>';
+                }
+            ],
+            [
                 'attribute' => 'asset_id',
                 'label' => Yii::t('XcoinModule.base', 'Asset'),
                 'format' => 'raw',
@@ -75,6 +85,22 @@ class AccountVouchersGridView extends GridView
                 'value' => function ($model) {
 
                     return SpaceImage::widget(['space' => $model->asset->space, 'width' => 26, 'link' => true, 'showTooltip' => true]);
+                }
+            ],
+            [
+                'attribute' => 'status',
+                'label' => Yii::t('XcoinModule.base', 'Status'),
+                'format' => 'raw',
+                'options' => ['style' => 'width:80px'],
+                'value' => function ($model) {
+                    if ($model->status == AccountVoucher::STATUS_USED) {
+                        return '<span style="color:red;font-weight:bold">' . Yii::t('XcoinModule.base', 'REDEEMED') . '</span>';
+                    } elseif ($model->status == AccountVoucher::STATUS_READY) {
+                        return '<span style="color:green;font-weight:bold">' . Yii::t('XcoinModule.base', 'AVAILABLE') . '</span>';
+                    } else {
+                        return '<span style="color:orange;font-weight:bold">' . Yii::t('XcoinModule.base', 'DISABLED') . '</span>';
+
+                    }
                 }
             ],
             [
@@ -87,9 +113,23 @@ class AccountVouchersGridView extends GridView
                 'class' => AccountColumn::class,
                 'accountAttribute' => function ($model) {
 
-                    return $model->account;
+                    return $model->getRedeemedAccount()->one();
                 },
                 'label' => Yii::t('XcoinModule.base', 'Related account')
+            ],
+            [
+                'class' => ActionColumn::class,
+                'actions' => function ($model) {
+                    if ($model->status == AccountVoucher::STATUS_USED) {
+                        $actions = [];
+                        return $actions;
+
+                    } else {
+                        $actions = [];
+                        $actions['Disable/Enable'] = ['/xcoin/account/enable-voucher', 'voucherId' => $model->id, 'accountId' => $this->account->id, 'container' => $this->contentContainer];
+                        return $actions;
+                    }
+                },
             ],
 
         ];

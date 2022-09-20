@@ -47,6 +47,11 @@ Select2BootstrapAsset::register($this);
 
             </div>
         </div>
+        <div class="col-md-12">
+            <div>
+                <?= $form->field($voucher, 'tag'); ?>
+            </div>
+        </div>
     </div>
 </div>
 
