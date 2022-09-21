@@ -2,7 +2,6 @@
 
 namespace humhub\modules\xcoin\controllers;
 
-use humhub\modules\algorand\calls\Algo;
 use humhub\modules\algorand\calls\Coin;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
