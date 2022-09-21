@@ -2,6 +2,9 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\modules\algorand\calls\Algo;
+use humhub\modules\algorand\calls\Coin;
+use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
@@ -58,6 +61,13 @@ class OverviewController extends ContentContainerController
                 'user_id' => $this->contentContainer->id,
                 'account_type' => Account::TYPE_DEFAULT
             ]);
+
+            $space = Space::findOne(['name' => $form->coin]);
+            $spaceAsset = Asset::findOne(['space_id' => $space->id]);
+
+            // ensure minimum algo balance for default account
+            Coin::optinCoin($defaultAccount, $spaceAsset->algorand_asset_id);
+
             if ($fundingId) {
                 $funding = Funding::find()->where(['id' => $fundingId])->one();
                 $redirectUrl = Url::toRoute(['/xcoin/funding/overview', "fundingId" => $fundingId, 'contentContainer' => $funding->space], true) . '?res=success';
