@@ -42,17 +42,12 @@ Assets::register($this);
     </div>
 </div>
 
-<!--TODO put back short echo starting tag when uncommenting this-->
-<!--<div class="panel panel-default">-->
-<!--    <div class="panel-heading">-->
-<!--        <div class="pull-right">-->
-<!--            Html::a(Yii::t('XcoinModule.overview', 'Shareholder list'), ['/xcoin/overview/shareholder-list', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>-->
-<!--            Html::a(Yii::t('XcoinModule.overview', 'Latest asset transactions'), ['/xcoin/overview/latest-asset-transactions', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>-->
-<!--        </div>-->
-<!--        Yii::t('XcoinModule.overview', '<strong>Asset</strong> distribution') ?>-->
-<!--    </div>-->
-<!---->
-<!--    <div class="panel-body">-->
-<!--        AssetDistribution::widget(['asset' => $asset]) ?>-->
-<!--    </div>-->
-<!--</div>-->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <?= Yii::t('XcoinModule.overview', '<strong>Asset</strong> distribution') ?>
+    </div>
+
+    <div class="panel-body">
+        <?= AssetDistribution::widget(['asset' => $asset]) ?>
+    </div>
+</div>
