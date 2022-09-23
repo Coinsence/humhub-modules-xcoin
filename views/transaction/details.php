@@ -2,7 +2,6 @@
 
 use humhub\modules\algorand\utils\Helpers;
 use humhub\modules\xcoin\models\Account;
-use humhub\modules\xcoin\models\Transaction;
 use yii\bootstrap\Html;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;

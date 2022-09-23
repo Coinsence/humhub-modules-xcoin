@@ -42,6 +42,14 @@ class TransactionsGridView extends GridView
             return property_exists($transaction, 'asset-transfer-transaction');
         });
 
+        $transactions = array_filter($transactions, function ($transaction) {
+            $tx = Coin::transaction($transaction->txID);
+            $fromAccount = Account::findOne(['algorand_address' => $transaction->fromAccount]);
+            $toAccount =  Account::findOne(['algorand_address' => $transaction->toAccount]);
+
+            return null !== $tx && null !== $fromAccount && null !== $toAccount ;
+        });
+
         $this->dataProvider = new ArrayDataProvider([
             'allModels' => $transactions,
             'pagination' => [
