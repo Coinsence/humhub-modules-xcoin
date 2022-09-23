@@ -19,7 +19,7 @@ Assets::register($this);
         <div class="pull-right">
             <?php if (AssetHelper::canManageAssets($this->context->contentContainer) && $asset !== null && SpaceHelper::canIssueCoins($this->context->contentContainer)): ?>
                 <?= Html::a(Yii::t('XcoinModule.overview', 'Issue new assets'), ['/xcoin/asset/issue', 'id' => $asset->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']); ?>
-            <?php endif; ?>            <?= Html::a(Yii::t('XcoinModule.overview', 'Latest account transactions'), ['/xcoin/overview/latest-transactions', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm']); ?>
+            <?php endif; ?>
             <?php if (AccountHelper::canCreateAccount($this->context->contentContainer)) : ?>
                 <?= Html::a(Yii::t('XcoinModule.overview', 'Create account'), ['/xcoin/account/edit', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default btn-sm', 'data-target' => '#globalModal']); ?>
             <?php endif; ?>
