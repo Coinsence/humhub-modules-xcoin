@@ -91,8 +91,7 @@ class TransactionsGridView extends GridView
                 'format' => 'raw',
                 'options' => ['style' => 'width:120px'],
                 'value' => function($model) {
-                    $transaction = Coin::transaction($model->txID);
-                    $asset = Asset::findOne(['algorand_asset_id' => $transaction->{'asset-transfer-transaction'}->{'asset-id'}]);
+                    $asset = Asset::findOne(['algorand_asset_id' => $model->{'asset-transfer-transaction'}->{'asset-id'}]);
 
                     return SpaceImage::widget(['space' => $asset->space, 'width' => 26, 'link' => true, 'showTooltip' => true]);
                 }
