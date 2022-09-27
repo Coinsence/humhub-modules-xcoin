@@ -1,5 +1,6 @@
 <?php
 
+use humhub\libs\Iso3166Codes;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\helpers\AssetHelper;
@@ -177,6 +178,10 @@ Assets::register($this);
                                                         <!-- campaign description start -->
                                                         <p class="media-heading"><?= Html::encode($funding->shortenDescription()); ?></p>
                                                         <!-- campaign description end -->
+
+                                                        <!-- campaign location start -->
+                                                        <p class="funding-location"><i class="fa fa-map-marker"></i><?= Iso3166Codes::country($funding->country) . ', ' . $funding->city ?></p>
+                                                        <!-- campaign location end -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -241,6 +246,18 @@ Assets::register($this);
                                             <?= Html::a('<i class="fa fa-check"></i>', ['/xcoin/challenge/review-funding', 'id' => $funding->id, 'status' => Funding::FUNDING_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-untrusted']) ?>
                                         <?php else : ?>
                                             <?= Html::a('<i class="fa fa-check"></i>', ['/xcoin/challenge/review-funding', 'id' => $funding->id, 'status' => Funding::FUNDING_NOT_REVIEWED, 'container' => $this->context->contentContainer], ['class' => 'review-btn-trusted']) ?>
+                                        <?php endif; ?>
+
+                                        <?php if ($funding->hidden_location == Funding::FUNDING_LOCATION_HIDDEN) : ?>
+                                            <?= Html::a('<i class="fa fa-map-marker"></i>', ['/xcoin/challenge/hide-funding-location', 'id' => $funding->id, 'status' => Funding::FUNDING_LOCATION_SHOWN, 'container' => $this->context->contentContainer], ['class' => 'location-btn-hidden']) ?>
+                                        <?php else : ?>
+                                            <?= Html::a('<i class="fa fa-map-marker"></i>', ['/xcoin/challenge/hide-funding-location', 'id' => $funding->id, 'status' => Funding::FUNDING_LOCATION_HIDDEN, 'container' => $this->context->contentContainer], ['class' => 'location-btn-shown']) ?>
+                                        <?php endif; ?>
+
+                                        <?php if ($funding->hidden_details == Funding::FUNDING_DETAILS_HIDDEN) : ?>
+                                            <?= Html::a('<i class="fa fa-info-circle"></i>', ['/xcoin/challenge/hide-funding-details', 'id' => $funding->id, 'status' => Funding::FUNDING_DETAILS_SHOWN, 'container' => $this->context->contentContainer], ['class' => 'details-btn-hidden']) ?>
+                                        <?php else : ?>
+                                            <?= Html::a('<i class="fa fa-info-circle"></i>', ['/xcoin/challenge/hide-funding-details', 'id' => $funding->id, 'status' => Funding::FUNDING_DETAILS_HIDDEN, 'container' => $this->context->contentContainer], ['class' => 'details-btn-shown']) ?>
                                         <?php endif; ?>
                                     <?php endif; ?>
                                 </div>
