@@ -149,7 +149,7 @@ Assets::register($this);
                                                     <!-- space image end -->
                                                 </div>
                                             </div>
-                                            <div class="panel-body">
+                                            <div class="panel-body <?= $funding->hidden_details && $funding->hidden_location ? 'sm' : ''?>">
                                                 <h4 class="funding-title">
                                                     <?= Html::encode($funding->title); ?>
                                                     <?php if ($funding->review_status == Funding::FUNDING_NOT_REVIEWED) : ?>
@@ -179,12 +179,17 @@ Assets::register($this);
                                                         <p class="media-heading"><?= Html::encode($funding->shortenDescription()); ?></p>
                                                         <!-- campaign description end -->
 
+                                                        <?php if (!$funding->hidden_location): ?>
                                                         <!-- campaign location start -->
                                                         <p class="funding-location"><i class="fa fa-map-marker"></i><?= Iso3166Codes::country($funding->country) . ', ' . $funding->city ?></p>
                                                         <!-- campaign location end -->
+                                                        <?php endif; ?>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <?php if (!$funding->hidden_details): ?>
+
                                             <div class="panel-footer">
                                                 <div class="funding-progress">
                                                     <div>
@@ -237,6 +242,8 @@ Assets::register($this);
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <?php endif; ?>
                                         </div>
                                     </a>
                                     <?php if (SpaceHelper::canReviewProject($funding->challenge->space) || PublicOffersHelper::canReviewSubmittedProjects()): ?>
