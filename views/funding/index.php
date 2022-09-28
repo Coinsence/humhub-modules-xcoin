@@ -96,7 +96,12 @@ Assets::register($this);
                                 </div>
                                 <div class="panel-footer">
                                     <div class="funding-progress">
-                                        
+                                        <div>
+                                            <!-- campaign raised start -->
+                                            <?= Yii::t('XcoinModule.funding', 'Raised:') ?> <strong><?= $funding->getRaisedAmount() ?></strong>
+                                            (<strong><?= $funding->getRaisedPercentage() ?>%</strong>)
+                                            <!-- campaign raised end -->
+                                        </div>
                                         <div class="pull-right">
                                             <?php if ($funding->review_status == Funding::FUNDING_LAUNCHING_SOON): ?>
                                                 <strong style="color: orange"><?= Yii::t('XcoinModule.funding', 'Launching soon') ?></strong>
@@ -118,7 +123,9 @@ Assets::register($this);
                                             <!-- campaign remaining days end -->
                                         </div>
                                         <!-- campaign raised start -->
-                                        
+                                        <?php echo Progress::widget([
+                                            'percent' => $funding->getRaisedPercentage()
+                                        ]); ?>
                                     </div>
                                     <div class="funding-details row">
                                         <div class="col-md-12">
