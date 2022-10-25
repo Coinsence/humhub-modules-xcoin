@@ -7,6 +7,8 @@ use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\AccountVoucher;
 use humhub\modules\xcoin\models\Transaction;
 use humhub\modules\xcoin\models\Voucher;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\xcoin\models\Account;
@@ -98,8 +100,10 @@ class AccountController extends ContentContainerController
     {
         $account = Account::findOne(['id' => $id]);
 
-
         if ($account === null) {
+            throw new HttpException(404);
+        }
+        if (!AccountHelper::canManageAccount($account)) {
             throw new HttpException(404);
         }
         return $this->render('vouchers', ['account' => $account, 'allowDirectCoinTransfer' => false]);
@@ -180,7 +184,7 @@ class AccountController extends ContentContainerController
                 return $this->renderAjax('voucher-redeem', [
                     'model' => $model]);
             }
-            if($voucherToRedeem && $voucherToRedeem->status == AccountVoucher::STATUS_DISABLED){
+            if ($voucherToRedeem && $voucherToRedeem->status == AccountVoucher::STATUS_DISABLED) {
                 $model->addError('value', 'Voucher Disabled');
                 return $this->renderAjax('voucher-redeem', [
                     'model' => $model]);
@@ -233,4 +237,6 @@ class AccountController extends ContentContainerController
         return $this->render('vouchers', ['account' => $account, 'allowDirectCoinTransfer' => false]);
 
     }
+
+
 }
