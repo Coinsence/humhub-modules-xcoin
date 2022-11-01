@@ -274,7 +274,7 @@ class AccountController extends ContentContainerController
 
         header('Content-Type: application/vnd.ms-excel');
         $filename = $title.".xls";
-        header('Content-Disposition: attachment;filename='.$filename .' ');
+        header('Content-Disposition: attachment;filename='.$filename . date('d-m-y h:i:s'));
         header('Cache-Control: max-age=0');
         $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($objPHPExcel, 'Xls');
         $objWriter->save('php://output');
