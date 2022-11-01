@@ -19,6 +19,7 @@ use humhub\modules\user\widgets\Image as UserImage;
         <div class="pull-right">
             <?= Html::a(Yii::t('XcoinModule.account', 'Create'), ['/xcoin/account/create-voucher', 'accountId' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']); ?>
             <?= Html::a(Yii::t('XcoinModule.account', 'Redeem'), ['/xcoin/account/redeem-voucher', 'accountId' => $account->id,'container' => $this->context->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']); ?>
+            <?= Html::a(Yii::t('XcoinModule.account', 'Export'), ['/xcoin/account/export-vouchers', 'accountId' => $account->id,'container' => $this->context->contentContainer], ['class' => 'btn btn-default']); ?>
 
         </div>
         <?= '<strong>' . Yii::t('XcoinModule.account', 'Account overview:') . '</strong> ' . $account->title; ?>

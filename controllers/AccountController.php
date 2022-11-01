@@ -5,11 +5,12 @@ namespace humhub\modules\xcoin\controllers;
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\AccountVoucher;
+use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Transaction;
 use humhub\modules\xcoin\models\Voucher;
+use Yii;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Yii;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\helpers\AccountHelper;
@@ -238,5 +239,45 @@ class AccountController extends ContentContainerController
 
     }
 
+    public function actionExportVouchers($accountId){
 
+        $title = 'Vouchers list';
+        $model = new AccountVoucher();
+
+        $objPHPExcel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet=0;
+
+        $objPHPExcel->setActiveSheetIndex($sheet);
+
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->setTitle($title);
+
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', 'Voucher');
+        $objPHPExcel->getActiveSheet()->setCellValue('B1', 'Tag');
+        $objPHPExcel->getActiveSheet()->setCellValue('C1', 'Amount');
+        $objPHPExcel->getActiveSheet()->setCellValue('D1', 'Space');
+        $objPHPExcel->getActiveSheet()->setCellValue('E1', 'Coin');
+        $i = 2 ;
+        $vouchers = AccountVoucher::findAll([ 'status' => AccountVoucher::STATUS_READY,'account_id'=>$accountId]);
+        foreach ( $vouchers as $voucher){
+            $objPHPExcel->getActiveSheet()->setCellValue('A'.$i, $voucher->value);
+            $objPHPExcel->getActiveSheet()->setCellValue('B'.$i, $voucher->tag);
+            $objPHPExcel->getActiveSheet()->setCellValue('C'.$i, $voucher->amount);
+            $objPHPExcel->getActiveSheet()->setCellValue('D'.$i, Asset::findOne(['id'=>$voucher->asset_id])->space->name);
+            $objPHPExcel->getActiveSheet()->setCellValue('E'.$i, Asset::findOne(['id'=>$voucher->asset_id])->title);
+            $i++;
+        }
+
+
+        header('Content-Type: application/vnd.ms-excel');
+        $filename = $title.".xls";
+        header('Content-Disposition: attachment;filename='.$filename .' ');
+        header('Cache-Control: max-age=0');
+        $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($objPHPExcel, 'Xls');
+        $objWriter->save('php://output');
+        die();
+    }
 }
