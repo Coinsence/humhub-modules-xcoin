@@ -18,6 +18,9 @@ use humhub\modules\user\widgets\Image as UserImage;
         <div class="pull-right">
             <?= Html::a(Yii::t('XcoinModule.account', 'Back to overview'), ['/xcoin/overview', 'container' => $this->context->contentContainer], ['class' => 'btn btn-default']); ?>
             <?php if (AccountHelper::canManageAccount($account)) : ?>
+                <?= Html::a(Yii::t('XcoinModule.account', 'Voucher'), ['/xcoin/account/vouchers', 'id' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default']); ?>
+            <?php endif; ?>
+            <?php if (AccountHelper::canManageAccount($account)) : ?>
                 <?php if ($account->account_type == Account::TYPE_STANDARD): ?>
                     <?= Html::a(Yii::t('XcoinModule.account', 'Edit'), ['/xcoin/account/edit', 'id' => $account->id, 'container' => $this->context->contentContainer], ['class' => 'btn btn-default', 'data-target' => '#globalModal']); ?>
                 <?php endif; ?>
