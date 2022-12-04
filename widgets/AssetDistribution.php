@@ -5,6 +5,7 @@ namespace humhub\modules\xcoin\widgets;
 use GuzzleHttp\Exception\GuzzleException;
 use humhub\modules\algorand\calls\Coin;
 use humhub\modules\algorand\models\AssetHolder;
+use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\models\Asset;
 use humhub\components\Widget;
 use yii\web\BadRequestHttpException;
@@ -35,12 +36,15 @@ class AssetDistribution extends Widget
     {
         $result = [];
 
-
         $issuedAmount = $asset->getIssuedAmount();
 
         /** @var AssetHolder $assetHolder */
         foreach (Coin::assetHolders($asset) as $assetHolder) {
             $account = $assetHolder->getAccount();
+
+            if (!$account instanceof Account) {
+                continue;
+            }
 
             $contentContainer = ($account->space !== null) ? $account->space : $account->user;
             $id = $contentContainer->contentContainerRecord->id;
