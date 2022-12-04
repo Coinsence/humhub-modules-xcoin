@@ -2,6 +2,7 @@
 
 namespace humhub\modules\xcoin\models;
 
+use humhub\modules\algorand\utils\Helpers;
 use humhub\modules\xcoin\helpers\AssetHelper;
 use Yii;
 use yii\base\Model;
@@ -99,6 +100,7 @@ class FundingInvest extends Model
         if ($accountLeft < $left) {
             return $accountLeft;
         }
+
         return $left;
     }
 
@@ -116,6 +118,7 @@ class FundingInvest extends Model
         if ($this->funding->challenge->acceptSpecificRewardingAsset()) {
             return AssetHelper::getChallengeSpecificRewardAsset($this->funding->challenge->specific_reward_asset_id);
         }
+
         return AssetHelper::getSpaceAsset($this->funding->space);
     }
 
@@ -124,14 +127,13 @@ class FundingInvest extends Model
         return $this->amountPay * $this->funding->exchange_rate;
     }
 
-
     public function invest()
     {
         if (!$this->validate()) {
             return false;
         }
-        $fundingAccount = $this->funding->getFundingAccount();
 
+        $fundingAccount = $this->funding->getFundingAccount();
         // Buy transaction only when the challenge accepts specific reward asset or any reward asset
         if (!$this->funding->challenge->acceptNoRewarding()) {
             // Buy Transaction
@@ -143,6 +145,7 @@ class FundingInvest extends Model
             $transaction->amount = $this->getBuyAmount();
             $transaction->comment = Yii::t('XcoinModule.base', 'Funding Invest');
             if (!$transaction->save()) {
+
                 Yii::error(Yii::t('XcoinModule.base', 'Buy transaction failed: {0} amount: {1} asset Id: {2} from acc: {3}', [
                     print_r($transaction->getErrors(), 1),
                     $this->getBuyAmount(),

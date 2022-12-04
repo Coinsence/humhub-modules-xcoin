@@ -3,6 +3,7 @@
 namespace humhub\modules\xcoin\controllers;
 
 use Da\QrCode\QrCode;
+use humhub\modules\algorand\calls\Coin;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
@@ -228,7 +229,7 @@ class TransactionController extends ContentContainerController
 
     public function actionDetails($id)
     {
-        $transaction = Transaction::findOne(['id' => $id]);
+        $transaction = Coin::transaction($id);
 
         return $this->renderAjax('details', ['transaction' => $transaction]);
     }

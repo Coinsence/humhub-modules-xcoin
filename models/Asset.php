@@ -14,6 +14,7 @@ use yii\db\ActiveRecord;
  * @property integer $id
  * @property integer $space_id
  * @property string $title
+ * @property string $algorand_asset_id
  *
  * @property Space $space
  * @property Transaction[] $xcoinTransactions

@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\algorand\calls\Coin;
+use humhub\modules\algorand\utils\Helpers;
 use yii\bootstrap\Html;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\helpers\AccountHelper;
@@ -52,13 +54,13 @@ use humhub\modules\user\widgets\Image as UserImage;
             <tr>
                 <td colspan="2"><strong><?= Yii::t('XcoinModule.account', 'Account summary') ?></strong></td>
             </tr>
-            <?php if ($account->ethereum_address) : ?>
+            <?php if ($account->algorand_address) : ?>
                 <tr>
-                    <td><strong><?= Yii::t('XcoinModule.account', 'Ethereum Address') ?></strong></td>
+                    <td><strong><?= Yii::t('XcoinModule.account', 'Algorand Address') ?></strong></td>
                     <td style="vertical-align: middle; text-align: center;">
-                        <?= Html::a(Html::img("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=ethereum:{$account->ethereum_address}&choe=UTF-8", ['alt' => 'ethereum address', 'style' => 'width: 100%; max-width: 180px']), "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank', 'class' => 'eth-qr-code']) ?>
+                        <?= Html::a(Html::img("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=https://algoexplorer.io/address/{$account->algorand_address}&choe=UTF-8", ['alt' => 'algorand address', 'style' => 'width: 100%; max-width: 180px']), "https://algoexplorer.io/address/$account->algorand_address", ['target' => '_blank', 'class' => 'eth-qr-code']) ?>
                         <br>
-                        <?= Html::a($account->ethereum_address, "https://rinkeby.etherscan.io/address/$account->ethereum_address", ['target' => '_blank', 'style' => 'font-size: 10px;', 'class' => 'eth-address']) ?>
+                        <?= Html::a($account->algorand_address, "https://algoexplorer.io/address/$account->algorand_address", ['target' => '_blank', 'style' => 'font-size: 10px;', 'class' => 'eth-address']) ?>
                     </td>
                 </tr>
             <?php endif; ?>
@@ -88,7 +90,12 @@ use humhub\modules\user\widgets\Image as UserImage;
                     <?php
                     $list = [];
                     foreach ($account->getAssets() as $asset) {
-                        $list[] = '<strong>' . $account->getAssetBalance($asset) . '</strong>&nbsp; ' .
+                        $coinBalance = Coin::balance($account, $asset);
+                        if (null === $coinBalance) {
+                            continue;
+                        }
+
+                        $list[] = '<strong>' . Helpers::formatCoinAmount($coinBalance->amount, true) . '</strong>&nbsp; ' .
                             SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) . '</span>';
                     }
                     if (empty($list)) {

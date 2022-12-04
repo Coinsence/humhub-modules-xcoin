@@ -2,6 +2,8 @@
 
 namespace humhub\modules\xcoin\grids;
 
+use humhub\modules\algorand\calls\Coin;
+use humhub\modules\algorand\utils\Helpers;
 use humhub\modules\xcoin\helpers\SpaceHelper;
 use humhub\modules\xcoin\models\Funding;
 use humhub\widgets\ModalConfirm;
@@ -117,7 +119,12 @@ class AccountsGridView extends GridView
                 'value' => function ($model) {
                     $list = [];
                     foreach ($model->getAssets() as $asset) {
-                        $list[] = '<div class="asset-balance"><strong>' . $model->getAssetBalance($asset) . '</strong>' .
+                        $coinBalance = Coin::balance($model, $asset);
+                        if (null === $coinBalance) {
+                            continue;
+                        }
+
+                        $list[] = '<div class="asset-balance"><strong>' . Helpers::formatCoinAmount($coinBalance->amount, true) . '</strong>' .
                             SpaceImage::widget(['space' => $asset->space, 'width' => 20, 'showTooltip' => true, 'link' => true]) . '</div>';
                     }
                     return implode('', $list);

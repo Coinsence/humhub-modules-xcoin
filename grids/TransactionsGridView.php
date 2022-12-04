@@ -2,20 +2,21 @@
 
 namespace humhub\modules\xcoin\grids;
 
+use humhub\modules\algorand\calls\Coin;
+use humhub\modules\algorand\utils\Helpers;
+use humhub\modules\xcoin\models\Asset;
 use Yii;
 use humhub\widgets\GridView;
-use yii\data\ActiveDataProvider;
-use humhub\modules\xcoin\helpers\TransactionHelper;
 use humhub\modules\space\widgets\Image as SpaceImage;
-use humhub\modules\xcoin\grids\AccountColumn;
 use humhub\libs\ActionColumn;
 use humhub\modules\xcoin\models\Account;
-use humhub\modules\xcoin\models\Transaction;
+use yii\data\ArrayDataProvider;
 
 /**
  * Description of LatestTransactionsGridView
  *
  * @author Luke
+ * @contributer Daly Ghaith <daly.ghaith@gmail.com>
  */
 class TransactionsGridView extends GridView
 {
@@ -35,13 +36,22 @@ class TransactionsGridView extends GridView
      */
     public function init()
     {
-        $query = Transaction::find();
-        $query->andWhere(['from_account_id' => $this->account->id]);
-        $query->orWhere(['to_account_id' => $this->account->id]);
-        $query->addOrderBy(['id' => SORT_DESC]);
+        $transactions = Coin::transactionsList($this->account);
 
-        $this->dataProvider = new ActiveDataProvider([
-            'query' => $query,
+        $transactions = array_filter($transactions, function ($transaction) {
+            return property_exists($transaction, 'asset-transfer-transaction');
+        });
+
+        $transactions = array_filter($transactions, function ($transaction) {
+            $tx = Coin::transaction($transaction->txID);
+            $fromAccount = Account::findOne(['algorand_address' => $transaction->fromAccount]);
+            $toAccount =  Account::findOne(['algorand_address' => $transaction->toAccount]);
+
+            return null !== $tx && null !== $fromAccount && null !== $toAccount ;
+        });
+
+        $this->dataProvider = new ArrayDataProvider([
+            'allModels' => $transactions,
             'pagination' => [
                 'pageSize' => 30,
             ],
@@ -52,34 +62,13 @@ class TransactionsGridView extends GridView
 
 
         $this->columns = [
-            /*
-              [
-              'attribute' => 'id',
-              'options' => [
-              'style' => 'width:50px',
-              ]
-              ],
-             *
-             */
-            /*
-              [
-              'attribute' => 'transaction_type',
-              'label' => 'Type',
-              'format' => 'raw',
-              'value' => function ($model) {
-              return '<span class="badge badge-default">' . TransactionHelper::getTypeTitle($model->transaction_type) . '</span>';
-              },
-              'options' => ['style' => 'width:90px']
-              ],
-             *
-             */
             [
                 'attribute' => 'created_at',
                 'label' => Yii::t('XcoinModule.base', 'Date'),
                 'options' => ['style' => 'width:180px'],
                 'format' => 'raw',
                 'value' => function($model) {
-                    return Yii::$app->formatter->asDateTime($model->created_at, 'short');
+                    return Yii::$app->formatter->asDateTime($model->date, 'short');
                 }
             ],
             [
@@ -88,10 +77,11 @@ class TransactionsGridView extends GridView
                 'format' => 'raw',
                 'options' => ['style' => 'width:80px'],
                 'value' => function($model) {
-                    if ($model->from_account_id == $this->account->id) {
-                        return '<span style="color:red;font-weight:bold">-' . $model->amount . '</span>';
+                    $fromAccount = Account::findOne(['algorand_address' => $model->fromAccount]);
+                    if ($fromAccount->id == $this->account->id) {
+                        return '<span style="color:red;font-weight:bold">-' . Helpers::formatCoinAmount($model->{'asset-transfer-transaction'}->amount, true) . '</span>';
                     } else {
-                        return '<span style="color:green;font-weight:bold">+' . $model->amount . '</span>';
+                        return '<span style="color:green;font-weight:bold">+' . Helpers::formatCoinAmount($model->{'asset-transfer-transaction'}->amount, true) . '</span>';
                     }
                 }
             ],
@@ -101,23 +91,19 @@ class TransactionsGridView extends GridView
                 'format' => 'raw',
                 'options' => ['style' => 'width:120px'],
                 'value' => function($model) {
+                    $asset = Asset::findOne(['algorand_asset_id' => $model->{'asset-transfer-transaction'}->{'asset-id'}]);
 
-                    return SpaceImage::widget(['space' => $model->asset->space, 'width' => 26, 'link' => true, 'showTooltip' => true]);
-                }
-            ],
-            [
-                'format' => 'raw',
-                'value' => function($model) {
-                    return '';
+                    return SpaceImage::widget(['space' => $asset->space, 'width' => 26, 'link' => true, 'showTooltip' => true]);
                 }
             ],
             [
                 'class' => AccountColumn::class,
                 'accountAttribute' => function($model) {
-                    if ($model->from_account_id == $this->account->id) {
-                        return $model->toAccount;
+                    $fromAccount = Account::findOne(['algorand_address' => $model->fromAccount]);
+                    if ($fromAccount->id == $this->account->id) {
+                        return Account::findOne(['algorand_address' => $model->toAccount]);
                     } else {
-                        return $model->fromAccount;
+                        return $fromAccount;
                     }
                 },
                 'label' => Yii::t('XcoinModule.base', 'Related account')
@@ -125,10 +111,13 @@ class TransactionsGridView extends GridView
             [
                 'class' => ActionColumn::class,
                 'actions' => function($model) {
+                    $fromAccount = Account::findOne(['algorand_address' => $model->fromAccount]);
+                    $toAccount =  Account::findOne(['algorand_address' => $model->toAccount]);
+
                     $actions = [];
-                    $actions['Show transaction details'] = ['/xcoin/transaction/details', 'container' => $this->contentContainer, 'linkOptions' => ['data-target' => '#globalModal']];
+                    $actions['Show transaction details'] = ['/xcoin/transaction/details', 'id'  => $model->txID, 'container' => $this->contentContainer, 'linkOptions' => ['data-target' => '#globalModal']];
                     $actions[] = '---';
-                    $relatedAccountId = ($model->from_account_id != $this->account->id) ? $model->from_account_id : $model->to_account_id;
+                    $relatedAccountId = ($fromAccount->id != $this->account->id) ? $fromAccount->id : $toAccount->id;
                     $actions['Open related account'] = ['/xcoin/account', 'id' => $relatedAccountId, 'container' => $this->contentContainer];
                     return $actions;
                 }

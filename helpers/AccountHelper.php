@@ -3,6 +3,8 @@
 namespace humhub\modules\xcoin\helpers;
 
 use humhub\components\Event;
+use humhub\modules\algorand\calls\Coin;
+use humhub\modules\algorand\utils\Helpers;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
 use humhub\modules\xcoin\models\Transaction;
@@ -24,7 +26,6 @@ use humhub\modules\space\widgets\Image as SpaceImage;
  */
 class AccountHelper
 {
-
     public static function initContentContainer(ContentContainerActiveRecord $container)
     {
         if ($container instanceof Space) {
@@ -34,8 +35,6 @@ class AccountHelper
                 $account->space_id = $container->id;
                 $account->account_type = Account::TYPE_DEFAULT;
                 $account->save();
-
-                Event::trigger(Account::class, Account::EVENT_DEFAULT_SPACE_ACCOUNT_CREATED, new Event(['sender' => $container]));
             }
         } else {
             if (Account::find()->andWhere(['user_id' => $container->id, 'account_type' => Account::TYPE_DEFAULT])->count() == 0) {
@@ -98,6 +97,15 @@ class AccountHelper
     public static function getAccounts(ContentContainerActiveRecord $container)
     {
         return self::getAccountsQuery($container)->all();
+    }
+
+    public static function getDefaultAccount(ContentContainerActiveRecord $container)
+    {
+        if ($container instanceof User) {
+            return Account::findOne(['user_id' => $container->id, 'account_type' => Account::TYPE_DEFAULT]);
+        } else {
+            return Account::findOne(['space_id' => $container->id, 'account_type' => Account::TYPE_DEFAULT]);
+        }
     }
 
     public static function getAccountsDropDown(ContentContainerActiveRecord $container)
@@ -204,19 +212,22 @@ class AccountHelper
                 $asset = AssetHelper::getSpaceAsset($funding->space);
             }
         }
-        return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
+
+        $balance = Coin::balance(AccountHelper::getFundingAccount($funding), $asset);
+
+        return $balance !== null ? Helpers::formatCoinAmount($balance->amount, true) : 0;
     }
 
-    public function getFundingRequestedAccountBalance(Funding $funding, $requested = true)
+    public static function getFundingRequestedAccountBalance(Funding $funding, $requested = true)
     {
         if ($requested) {
             $asset = Asset::findOne(['id' => $funding->challenge->asset_id]);
-            return AccountHelper::getAccountAssetIncome(AccountHelper::getFundingAccount($funding), $asset);
+        } else {
+            $asset = AssetHelper::getSpaceAsset($funding->space);
         }
 
-        $asset = AssetHelper::getSpaceAsset($funding->space);
-        return AccountHelper::getFundingAccount($funding)->getAssetBalance($asset);
-
+        $balance = Coin::balance(AccountHelper::getFundingAccount($funding), $asset);
+        return $balance !== null ? Helpers::formatCoinAmount($balance->amount, true) : 0;
     }
 
     public static function getAssetsList(Account $account)

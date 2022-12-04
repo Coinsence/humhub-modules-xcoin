@@ -1,21 +1,22 @@
 <?php
+/**
+ * @link https://coinsence.org/
+ * @copyright Copyright (c) 2022 Coinsence
+ * @license https://www.humhub.com/licences
+ *
+ * @author : Ala Daly <rafin_ala03@hotmail.fr>
+ * @contributer Daly Ghaith <daly.ghaith@gmail.com>
+ */
 
 namespace humhub\modules\xcoin\widgets;
 
-use humhub\modules\xcoin\models\Account;
+use humhub\modules\algorand\calls\Coin;
+use humhub\modules\algorand\utils\Helpers;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use Yii;
 
-/**
- * UserTagsWidget lists all skills/tags of the user
- *
- * @package humhub.modules_core.user.widget
- * @since 0.5
- * @author andystrobel
- */
 class UserCoin extends \yii\base\Widget
 {
     /**
@@ -24,35 +25,39 @@ class UserCoin extends \yii\base\Widget
     public $user;
 
     /**
-     * @var \humhub\modules\space\models\Space the Space which this header belongs to
+     * @var Space the Space which this header belongs to
      */
     public $space;
     /**
      * @var string css classes
      */
     public $cssClass;
- 
+
     public function run()
     {
         $coins = [];
-        foreach (AccountHelper::getAccounts($this->user) as $account) {
-            if ($account->account_type !== Account::TYPE_DEFAULT) {
+
+        $account = AccountHelper::getDefaultAccount($this->user);
+
+        foreach ($account->getAssets() as $asset) {
+
+            $coinBalance = Coin::balance($account, $asset);
+
+            if (null === $coinBalance) {
                 continue;
             }
-            foreach ($account->getAssets() as $asset) {
-                $coins[] = '<div class="coin">' .
-                    SpaceImage::widget(['space' => $asset->space, 'width' => 24, 'showTooltip' => true, 'link' => true]) .
-                    '<span class="amountCoin">' . $account->getAssetBalance($asset) . '</span>' .
+
+            $coins[] = '<div class="coin">' .
+                SpaceImage::widget(['space' => $asset->space, 'width' => 24, 'showTooltip' => true, 'link' => true]) .
+                '<span class="amountCoin">' . Helpers::formatCoinAmount($coinBalance->amount, true) . '</span>' .
                 '</div>';
-            }
         }
 
         return $this->render('userCoin', [
-            'user' => $this->user, 
+            'user' => $this->user,
             'coins' => implode('', $coins),
             'cssClass' => $this->cssClass
         ]);
     }
 }
 
-?>
