@@ -298,9 +298,14 @@ Select2BootstrapAsset::register($this);
                                                 <!-- campaign description start -->
                                                 <p class="media-heading"><?= Html::encode($funding->shortenDescription()); ?></p>
                                                 <!-- campaign description end -->
+
+                                                <!-- campaign location start -->
+                                                <p class="funding-location"><i class="fa fa-map-marker"></i><?= Iso3166Codes::country($funding->country) . ', ' . $funding->city ?></p>
+                                                <!-- campaign location end -->
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="panel-footer">
 
                                         <div class="funding-progress">

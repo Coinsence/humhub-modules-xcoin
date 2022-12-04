@@ -303,9 +303,12 @@ i.ether-icon-menu {
 .cs-cards,
 .received-funding .panels {
   .review-btn-trusted,
-  .review-btn-untrusted {
+  .review-btn-untrusted,
+  .location-btn-shown,
+  .location-btn-hidden,
+  .details-btn-shown,
+  .details-btn-hidden {
     position: absolute;
-    top: 20px;
     right: 30px;
     opacity: .5;
     font-weight: bold;
@@ -317,18 +320,42 @@ i.ether-icon-menu {
       box-shadow @overview-action-btn-transition,
       opacity @overview-action-btn-transition;
   }
-  .review-btn-trusted {
+  .review-btn-trusted,
+  .review-btn-untrusted {
+    top: 20px;
+  }
+  .location-btn-shown,
+  .location-btn-hidden {
+    top: 54px;
+  }
+  .details-btn-shown,
+  .details-btn-hidden {
+    top: 88px;
+  }
+  .review-btn-trusted,
+  .location-btn-shown,
+  .details-btn-shown {
     color: white;
     background: #4ac309;
   }
-  .review-btn-untrusted {
+  .review-btn-untrusted,
+  .location-btn-hidden,
+  .details-btn-hidden {
     color: white;
     background: #d60000;
   }
   .review-btn-trusted:hover,
   .review-btn-untrusted:hover,
+  .location-btn-shown:hover,
+  .location-btn-hidden:hover,
+  .details-btn-shown:hover,
+  .details-btn-hidden:hover,
   .review-btn-trusted:active,
-  .review-btn-untrusted:active {
+  .review-btn-untrusted:active,
+  .location-btn-shown:active,
+  .location-btn-hidden:active,
+  .details-btn-shown:active,
+  .details-btn-hidden:active {
     box-shadow: @overview-action-btn-shadow-transitioned;
     opacity: 1;
     z-index: 1;

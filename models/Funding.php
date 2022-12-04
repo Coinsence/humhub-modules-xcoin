@@ -43,6 +43,8 @@ use yii\web\HttpException;
  * @property string $country
  * @property string $city
  * @property string $youtube_link
+ * @property integer $hidden_location
+ * @property integer $hidden_details
  *
  * @property Challenge $challenge
  * @property User $createdBy
@@ -71,6 +73,14 @@ class Funding extends ActiveRecord
     // Hide or publish funding
     const FUNDING_HIDDEN = 0;
     const FUNDING_PUBLISHED = 1;
+
+    // Hide or show location
+    const FUNDING_LOCATION_SHOWN = 0;
+    const FUNDING_LOCATION_HIDDEN = 1;
+
+    // Hide or show details
+    const FUNDING_DETAILS_SHOWN = 0;
+    const FUNDING_DETAILS_HIDDEN = 1;
 
     // used in readonly for setting up exchange rate
     public $rate = 1;
@@ -483,7 +493,7 @@ class Funding extends ActiveRecord
 
     public function shortenDescription()
     {
-        return (strlen($this->description) > 100) ? substr($this->description, 0, 97) . '...' : $this->description;
+        return (strlen($this->description) > 50) ? substr($this->description, 0, 47) . '...' : $this->description;
     }
 
     public function canInvest()

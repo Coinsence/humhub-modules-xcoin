@@ -320,4 +320,52 @@ class ChallengeController extends ContentContainerController
             'challengeId' => $model->challenge_id
         ]));
     }
+
+    public function actionHideFundingLocation($id, $status)
+    {
+        $model = Funding::findOne(['id' => $id]);
+        if ($model == null) {
+            throw new HttpException(404, 'Funding Not found');
+        }
+
+        if (!SpaceHelper::canReviewProject($model->challenge->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {
+            throw new HttpException(401);
+        }
+
+        $model->scenario = Funding::SCENARIO_EDIT;
+        $model->hidden_location = $status;
+
+        $model->save();
+
+        $this->view->saved();
+
+        return $this->redirect($this->contentContainer->createUrl('/xcoin/challenge/overview', [
+            'container' => $this->contentContainer,
+            'challengeId' => $model->challenge_id
+        ]));
+    }
+
+    public function actionHideFundingDetails($id, $status)
+    {
+        $model = Funding::findOne(['id' => $id]);
+        if ($model == null) {
+            throw new HttpException(404, 'Funding Not found');
+        }
+
+        if (!SpaceHelper::canReviewProject($model->challenge->space) && !PublicOffersHelper::canReviewSubmittedProjects()) {
+            throw new HttpException(401);
+        }
+
+        $model->scenario = Funding::SCENARIO_EDIT;
+        $model->hidden_details = $status;
+
+        $model->save();
+
+        $this->view->saved();
+
+        return $this->redirect($this->contentContainer->createUrl('/xcoin/challenge/overview', [
+            'container' => $this->contentContainer,
+            'challengeId' => $model->challenge_id
+        ]));
+    }
 }
