@@ -43,7 +43,7 @@ Select2BootstrapAsset::register($this);
             <?= Html::a(Yii::t('XcoinModule.challenge', 'Edit'), ['/xcoin/challenge/edit', 'id' => $challenge->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
         <?php endif; ?>
         <!-- campaign edit button end --> 
-    <? else: ?>
+    <?php else: ?>
         <div class="panel panel-default panel-head">
             <div class="cs-overview-info">
                 <h2 class="cs-overview-title"><?= $challenge->title ?></h2>
