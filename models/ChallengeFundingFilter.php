@@ -23,12 +23,7 @@ class ChallengeFundingFilter extends Model
     /**
      * @var string
      */
-    public $country;
-
-    /**
-     * @var string
-     */
-    public $city;
+    public $location;
 
     /**
      * @inheritdoc
@@ -52,7 +47,7 @@ class ChallengeFundingFilter extends Model
     public function rules()
     {
         return [
-            [['category', 'country', 'city'], 'safe']
+            [['category', 'location'], 'safe']
         ];
     }
 
@@ -62,9 +57,8 @@ class ChallengeFundingFilter extends Model
     public function attributeLabels()
     {
         return [
-            'category' => Yii::t('XcoinModule.base', 'Categories'),
-            'country' => Yii::t('XcoinModule.base', 'Country'),
-            'city' => Yii::t('XcoinModule.base', 'City'),
+            'category' => Yii::t('XcoinModule.base', 'Category'),
+            'location' => Yii::t('XcoinModule.base', 'Location'),
         ];
     }
 

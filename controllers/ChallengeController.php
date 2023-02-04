@@ -9,6 +9,7 @@
 
 namespace humhub\modules\xcoin\controllers;
 
+use humhub\libs\Iso3166Codes;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\xcoin\helpers\AssetHelper;
@@ -102,16 +103,27 @@ class ChallengeController extends ContentContainerController
         if ($challenge->with_location_filter === Challenge::CHALLENGE_LOCATION_FILTER_SHOWN) {
             $model = new ChallengeFundingFilter();
 
+            $locations = [];
+            foreach ($query->all() as $funding) {
+                $locations[$funding->country . "|" . $funding->city] = $funding->country . ", " . $funding->city;
+            }
+
             if ($model->load(Yii::$app->request->post()) && $model->validate()) {
                 if ($model->category) {
                     $query->joinWith('categories category');
                     $query->andWhere(['category.id' => [$model->category]]);
                 }
 
-                if ($model->country)
-                    $query->andWhere(['country' => $model->country]);
-                if ($model->city)
-                    $query->andWhere(['like', 'city', $model->city . '%', false]);
+                $locations = [];
+                foreach ($query->all() as $funding) {
+                    $locations[$funding->country . "|" . $funding->city] = iso3166Codes::country($funding->country) . ", " . $funding->city;
+                }
+
+                if ($model->location) {
+                    [$country, $city] = explode('|', $model->location);
+                    $query->andWhere(['country' => $country]);
+                    $query->andWhere(['like', 'city', $city . '%', false]);
+                }
             }
 
             return $this->render('overview', [
@@ -119,6 +131,7 @@ class ChallengeController extends ContentContainerController
                 'challenge' => $challenge,
                 'fundings' => $query->all(),
                 'categories' => $categories,
+                'locations' => $locations,
             ]);
         } else {
             if ($categoryId) {

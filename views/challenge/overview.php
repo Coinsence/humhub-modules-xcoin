@@ -26,6 +26,7 @@ Select2BootstrapAsset::register($this);
 /** @var $fundings Funding[] */
 /** @var $categories FundingCategory[] */
 /** @var $activeCategory number */
+/** @var $locations */
 
 ?>
 
@@ -135,60 +136,16 @@ Select2BootstrapAsset::register($this);
                         ])->label(false) ?>
                     </div>
                     <div class="col-md-3 location">
-                        <div id="location-field" class="location-field">
-                            <div class="location-selection">
-                                <span class="selection-text">
-                                    <?php if ($model->country): ?>
-                                        <?= iso3166Codes::country($model->country) ?>
-                                    <?php endif ?>
-                                    <?php if ($model->city && $model->country): ?>
-                                        <?= Html::encode(' , ' . ucfirst($model->city)) ?>
-                                    <?php else : ?>
-                                        <?= Html::encode(ucfirst($model->city)) ?>
-                                    <?php endif ?>
-                                    <?php if (!$model->country && !$model->city): ?>
-                                        <?= Yii::t('XcoinModule.challenge', 'Select location..') ?>
-                                    <?php endif ?>
-                                </span>
-                                <span class="selection-arrow">
-                                    <b></b>
-                                </span>
-                            </div>
-                            <div class="location-dropdown">
-                                <div class="dropdown-body">
-                                    <div class="row">
-                                        <div class="col-md-6"><?= Yii::t('XcoinModule.challenge', 'Country:') ?></div>
-                                        <div class="col-md-6">
-                                            <?=
-                                            $form->field($model, 'country')->widget(Select2::class, [
-                                                'data' => iso3166Codes::$countries,
-                                                'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.challenge', 'Select country') . ' - '],
-                                                'theme' => Select2::THEME_BOOTSTRAP,
-                                                'hideSearch' => false,
-                                                'pluginOptions' => [
-                                                    'allowClear' => true,
-                                                    'escapeMarkup' => new JsExpression("function(m) { return m; }"),
-                                                ],
-                                            ])->label(false)
-                                            ?>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6"><?= Yii::t('XcoinModule.challenge', 'City:') ?></div>
-                                        <div class="col-md-6">
-                                            <?=
-                                            $form->field($model, 'city')->textInput([
-                                                'placeholder' => Yii::t('XcoinModule.challenge', 'Type your city name')
-                                            ])->label(false)
-                                            ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dropdown-footer">
-                                    <a class="reset-location" href="javascript:"><i class="fa fa-undo"></i> Reset</a>
-                                </div>
-                            </div>
-                        </div>
+                        <?= $form->field($model, 'location')->widget(Select2::class, [
+                            'data' => $locations,
+                            'options' => ['placeholder' => '- ' . Yii::t('XcoinModule.challenge', 'Location') . ' - ', 'value' => $model->location ? $model->location : null],
+                            'theme' => Select2::THEME_BOOTSTRAP,
+                            'hideSearch' => true,
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'escapeMarkup' => new JsExpression("function(m) { return m; }"),
+                            ],
+                        ])->label(false) ?>
                     </div>
                     <div class="col-md-6 filter-actions">
                         <?= Html::submitButton(Yii::t('XcoinModule.challenge', 'Apply filter'), ['class' => 'sumbit btn btn-gradient-1']) ?>
