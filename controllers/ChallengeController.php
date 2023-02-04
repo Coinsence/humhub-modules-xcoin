@@ -131,7 +131,7 @@ class ChallengeController extends ContentContainerController
                 'challenge' => $challenge,
                 'fundings' => $query->all(),
                 'categories' => $categories,
-                'locations' => $locations,
+                'locations' => array_unique($locations, SORT_REGULAR),
             ]);
         } else {
             if ($categoryId) {
