@@ -105,7 +105,7 @@ class ChallengeController extends ContentContainerController
 
             $locations = [];
             foreach ($query->all() as $funding) {
-                $locations[$funding->country . "|" . $funding->city] = $funding->country . ", " . $funding->city;
+                $locations[$funding->country . "|" . $funding->city] = iso3166Codes::country($funding->country) . ", " . $funding->city;
             }
 
             if ($model->load(Yii::$app->request->post()) && $model->validate()) {
