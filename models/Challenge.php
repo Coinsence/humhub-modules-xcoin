@@ -32,6 +32,8 @@ use yii\helpers\Url;
  * @property integer $stopped
  * @property integer $hide_unverified_submissions
  * @property integer $hidden
+ * @property boolean $hidden_description
+ * @property boolean $with_location_filter
  * @property integer $no_rewarding
  * @property integer $any_reward_asset
  * @property integer $specific_reward_asset
@@ -98,6 +100,8 @@ class Challenge extends ActiveRecord
             [['space_id'], 'exist', 'skipOnError' => true, 'targetClass' => Space::class, 'targetAttribute' => ['space_id' => 'id']],
             [['title'], 'string', 'max' => 255],
             [['description'], 'string'],
+            [['hidden_description'], 'boolean'],
+            [['with_location_filter'], 'boolean'],
         ];
     }
 
@@ -113,7 +117,9 @@ class Challenge extends ActiveRecord
                 'asset_id',
                 'title',
                 'description',
-                'hide_unverified_submissions'
+                'hide_unverified_submissions',
+                'hidden_description',
+                'with_location_filter',
             ],
             self::SCENARIO_EDIT => [
                 'contactButtons',
@@ -121,7 +127,9 @@ class Challenge extends ActiveRecord
                 'description',
                 'stopped',
                 'hidden',
-                'hide_unverified_submissions'
+                'hide_unverified_submissions',
+                'hidden_description',
+                'with_location_filter',
             ],
             self::SCENARIO_EDIT_ADMIN => [
                 'status',
@@ -147,6 +155,8 @@ class Challenge extends ActiveRecord
             'no_rewarding' => Yii::t('XcoinModule.challenge', 'No rewarding'),
             'specific_reward_asset_id' => Yii::t('XcoinModule.challenge', 'Requested coin'),
             'hide_unverified_submissions' => Yii::t('XcoinModule.challenge', 'Hide unverified Submissions'),
+            'hidden_description' => Yii::t('XcoinModule.challenge', 'Hide description block'),
+            'with_location_filter' => Yii::t('XcoinModule.challenge', 'Show location filter'),
         ];
     }
 

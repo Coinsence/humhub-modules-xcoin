@@ -159,6 +159,12 @@ $upload = Upload::forModel($model, $model->coverFile);
             <?php endif; ?>
 
         </div>
+        <div class="col-md-12">
+            <?= $form->field($model, 'hidden_description')->checkbox(); ?>
+        </div>
+        <div class="col-md-12">
+            <?= $form->field($model, 'with_location_filter')->checkbox(); ?>
+        </div>
     </div>
 </div>
 

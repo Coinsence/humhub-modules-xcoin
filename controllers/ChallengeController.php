@@ -19,6 +19,7 @@ use humhub\modules\xcoin\models\ChallengeContactButton;
 use humhub\modules\xcoin\models\Funding;
 use humhub\modules\xcoin\models\FundingCategory;
 use humhub\modules\xcoin\utils\ImageUtils;
+use humhub\modules\xcoin\models\ChallengeFundingFilter;
 use Yii;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -82,36 +83,56 @@ class ChallengeController extends ContentContainerController
         if (!$challenge) {
             throw new HttpException(404);
         }
+        
+        $query = Funding::find();
 
         if ($challenge->showUnreviewedSubmissions() || Space::findOne(['id' => $challenge->space_id])->isAdmin(Yii::$app->user->identity)) {
-            $fundings = $challenge->getFundings()->all();
+            $query->where(['challenge_id' => $challenge->id]);
         } else {
-            $fundings = Funding::findAll(['challenge_id' => $challenge->id, 'published' => 1, 'review_status' => [1, 2]]);
+            $query->where(['challenge_id' => $challenge->id, 'published' => 1, 'review_status' => [1, 2]]);
         }
 
         $categories = [];
-        foreach ($fundings as $funding) {
+        foreach ($query->all() as $funding) {
             foreach ($funding->getCategories()->all() as $category) {
                 $categories[] = $category;
             }
         }
 
-        if ($categoryId) {
-            $fundings = array_filter($fundings, function ($funding) use ($categoryId) {
-                $categories_ids = array_map(function ($category) {
-                    return $category->id;
-                }, $funding->getCategories()->all());
+        if ($challenge->with_location_filter) {
+            $model = new ChallengeFundingFilter();
 
-                return in_array($categoryId, $categories_ids);
-            });
+            if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+                if ($model->category) {
+                    $query->joinWith('categories category');
+                    $query->andWhere(['category.id' => [$model->category]]);
+                }
+
+                if ($model->country)
+                    $query->andWhere(['country' => $model->country]);
+                if ($model->city)
+                    $query->andWhere(['like', 'city', $model->city . '%', false]);
+            }
+
+            return $this->render('overview', [
+                'model' => $model,
+                'challenge' => $challenge,
+                'fundings' => $query->all(),
+                'categories' => $categories,
+            ]);
+        } else {
+            if ($categoryId) {
+                $query->joinWith('categories category');
+                $query->andWhere(['category.id' => [$categoryId]]);
+            }
+    
+            return $this->render('overview', [
+                'challenge' => $challenge,
+                'fundings' => $query->all(),
+                'categories' => array_unique($categories, SORT_REGULAR),
+                'activeCategory' => $categoryId,
+            ]);
         }
-
-        return $this->render('overview', [
-            'challenge' => $challenge,
-            'fundings' => $fundings,
-            'categories' => array_unique($categories, SORT_REGULAR),
-            'activeCategory' => $categoryId,
-        ]);
     }
 
     /**
