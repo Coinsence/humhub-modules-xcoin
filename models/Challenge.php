@@ -74,6 +74,12 @@ class Challenge extends ActiveRecord
     const UNREVIEWED_SUBMISSIONS_VISIBLE = 0;
     const UNREVIEWED_SUBMISSIONS_UNVISIBLE = 1;
 
+    // challenge optional hide options
+    const CHALLENGE_DESCRIPTION_SHOWN = 0;
+    const CHALLENGE_DESCRIPTION_HIDDEN = 1;
+    const CHALLENGE_LOCATION_FILTER_SHOWN = 1;
+    const CHALLENGE_LOCATION_FILTER_HIDDEN = 0;
+
     public $coverFile;
 
     /**

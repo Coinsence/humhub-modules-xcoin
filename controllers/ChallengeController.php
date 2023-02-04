@@ -99,7 +99,7 @@ class ChallengeController extends ContentContainerController
             }
         }
 
-        if ($challenge->with_location_filter) {
+        if ($challenge->with_location_filter === Challenge::CHALLENGE_LOCATION_FILTER_SHOWN) {
             $model = new ChallengeFundingFilter();
 
             if ($model->load(Yii::$app->request->post()) && $model->validate()) {

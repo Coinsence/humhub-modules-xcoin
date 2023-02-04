@@ -37,7 +37,7 @@ Select2BootstrapAsset::register($this);
     $cover = $challenge->getCover();
     ?>
 
-    <?php if ($challenge->hidden_description): ?>
+    <?php if ($challenge->hidden_description === Challenge::CHALLENGE_DESCRIPTION_HIDDEN): ?>
        <!-- campaign edit button start -->
        <?php if (AssetHelper::canManageAssets($this->context->contentContainer)): ?>
             <?= Html::a(Yii::t('XcoinModule.challenge', 'Edit'), ['/xcoin/challenge/edit', 'id' => $challenge->id, 'container' => $this->context->contentContainer], ['data-target' => '#globalModal', 'class' => 'edit-btn']) ?>
@@ -106,7 +106,7 @@ Select2BootstrapAsset::register($this);
         </div>
     <?php endif; ?>
     <div class="panel panel-default panel-body">
-        <?php if (!$challenge->with_location_filter): ?>
+        <?php if ($challenge->with_location_filter === Challenge::CHALLENGE_LOCATION_FILTER_HIDDEN): ?>
             <div class="cs-categories">
                 <a href="<?= $space->createUrl('/xcoin/challenge/overview', [
                     'challengeId' => $challenge->id
