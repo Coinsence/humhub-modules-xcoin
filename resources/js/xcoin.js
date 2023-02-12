@@ -40,44 +40,102 @@ humhub.module('xcoin', function (module, require, $) {
             }
         }).on('click', '.crowd-funding .reset', function () {
 
-        $('#fundingfilter-asset_id').val(null).trigger('change');
+            $('#fundingfilter-asset_id').val(null).trigger('change');
 
-        $('#fundingfilter-categories').val(null).trigger('change');
+            $('#fundingfilter-categories').val(null).trigger('change');
 
-        $('#fundingfilter-country').val(null).trigger('change');
-        $('#fundingfilter-city').val(null).trigger('change');
-        $('.location-selection .selection-text').html('Select location..')
-            .removeClass('placeholder')
-            .addClass('placeholder');
+            $('#fundingfilter-country').val(null).trigger('change');
+            $('#fundingfilter-city').val(null).trigger('change');
+            $('.location-selection .selection-text').html('Select location..')
+                .removeClass('placeholder')
+                .addClass('placeholder');
 
-        $('#fundingfilter-keywords').val(null).trigger('change');
+            $('#fundingfilter-keywords').val(null).trigger('change');
 
-    }).on('click', '.reset-location', function () {
-        $('#fundingfilter-country').val('').trigger('change');
-        $('#fundingfilter-city').val('').trigger('change');
-        $('.location-selection .selection-text').html('Select location..')
-            .removeClass('placeholder')
-            .addClass('placeholder');
-        console.log('changed');
-    }).on('blur', '#fundingfilter-city', function () {
-        var countryISO = $('#fundingfilter-country').val();
-        var city = $('#fundingfilter-city').val();
-        setLocation(countryISO, city);
-    }).on('change', '#fundingfilter-country', function () {
-        var countryISO = $('#fundingfilter-country').val();
-        var city = $('#fundingfilter-city').val();
-        setLocation(countryISO, city);
-    }).on('keydown', '#fundingfilter-city', function (event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            $(this).blur();
-            return false;
-        }
-    });
+        }).on('click', '.reset-location', function () {
+            $('#fundingfilter-country').val('').trigger('change');
+            $('#fundingfilter-city').val('').trigger('change');
+            $('.location-selection .selection-text').html('Select location..')
+                .removeClass('placeholder')
+                .addClass('placeholder');
+            console.log('changed');
+        }).on('blur', '#fundingfilter-city', function () {
+            var countryISO = $('#fundingfilter-country').val();
+            var city = $('#fundingfilter-city').val();
+            setFundingLocation(countryISO, city);
+        }).on('change', '#fundingfilter-country', function () {
+            var countryISO = $('#fundingfilter-country').val();
+            var city = $('#fundingfilter-city').val();
+            setFundingLocation(countryISO, city);
+        }).on('keydown', '#fundingfilter-city', function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                $(this).blur();
+                return false;
+            }
+        });
+    
+    // Space-layout-container
 
-    function setLocation(countryISO, city) {
+    $('body')
+        .on('click', '.space-layout-container', function (e) {
+            if ($(e.target).closest('#location-field').length > 0) {
+                if ($(e.target).closest('#location-field .location-selection').length > 0)
+                    $('#location-field').toggleClass('selected');
+            } else if ($(e.target).closest('.space-layout-container button[type="reset"]').length === 0) {
+                $('#location-field').removeClass('selected');
+            }
+        }).on('click', '.space-layout-container .reset', function () {
+
+            $('#challengefundingfilter-asset_id').val(null).trigger('change');
+
+            $('#challengefundingfilter-category').val(null).trigger('change');
+
+            $('#challengefundingfilter-country').val(null).trigger('change');
+            $('#challengefundingfilter-city').val(null).trigger('change');
+            $('.location-selection .selection-text').html('Select location..')
+                .removeClass('placeholder')
+                .addClass('placeholder');
+
+            $('#challengefundingfilter-keywords').val(null).trigger('change');
+
+        }).on('click', '.reset-location', function () {
+            $('#challengefundingfilter-country').val('').trigger('change');
+            $('#challengefundingfilter-city').val('').trigger('change');
+            $('.location-selection .selection-text').html('Select location..')
+                .removeClass('placeholder')
+                .addClass('placeholder');
+            console.log('changed');
+        }).on('blur', '#challengefundingfilter-city', function () {
+            var countryISO = $('#challengefundingfilter-country').val();
+            var city = $('#challengefundingfilter-city').val();
+            setChallengeFundingLocation(countryISO, city);
+        }).on('change', '#challengefundingfilter-country', function () {
+            var countryISO = $('#challengefundingfilter-country').val();
+            var city = $('#challengefundingfilter-city').val();
+            setChallengeFundingLocation(countryISO, city);
+        }).on('keydown', '#challengefundingfilter-city', function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                $(this).blur();
+                return false;
+            }
+        });
+
+    function setFundingLocation(countryISO, city) {
         if (countryISO && city) {
             var country = $('#fundingfilter-country').select2('data')[0].text;
+            $('.location-selection .selection-text').html(`${country}, ${city}`).removeClass('placeholder');
+        } else {
+            $('.location-selection .selection-text').html('Select location..')
+                .removeClass('placeholder')
+                .addClass('placeholder');
+        }
+    }
+
+    function setChallengeFundingLocation(countryISO, city) {
+        if (countryISO && city) {
+            var country = $('#challengefundingfilter-country').select2('data')[0].text;
             $('.location-selection .selection-text').html(`${country}, ${city}`).removeClass('placeholder');
         } else {
             $('.location-selection .selection-text').html('Select location..')
