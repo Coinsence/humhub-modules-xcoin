@@ -72,6 +72,13 @@ class FundingController extends ContentContainerController
 
     public function actionOverview($fundingId)
     {
+        $callback = Yii::$app->request->get('res');
+        $key = Yii::$app->request->get('key');
+
+        if ($callback === 'success' && !empty($key)) {
+            Transaction::copyTransaction($key);
+        }
+
         $funding = Funding::findOne(['id' => $fundingId]);
 
         if (!$funding) {
