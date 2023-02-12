@@ -1,5 +1,6 @@
 <?php
 
+use humhub\libs\Iso3166Codes;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\models\Funding;
 use yii\helpers\Html;
@@ -86,6 +87,10 @@ Assets::register($this);
                                             <!-- campaign description start -->
                                             <p class="media-heading"><?= Html::encode($funding->shortenDescription()); ?></p>
                                             <!-- campaign description end -->
+
+                                            <!-- campaign location start -->
+                                            <p class="funding-location"><i class="fa fa-map-marker"></i><?= Iso3166Codes::country($funding->country) . ', ' . $funding->city ?></p>
+                                                <!-- campaign location end -->
                                         </div>
                                     </div>
                                 </div>
@@ -126,9 +131,9 @@ Assets::register($this);
                                         <div class="col-md-12">
                                             <!-- campaign requesting start -->
                                             <span>
-                                    <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
-                                    <strong><?= $funding->getRequestedAmount() ?></strong>
-                                </span>
+                                                <?= Yii::t('XcoinModule.funding', 'Requesting:') ?>
+                                                <strong><?= $funding->getRequestedAmount() ?></strong>
+                                            </span>
                                             <?= SpaceImage::widget([
                                                 'space' => $funding->getChallenge()->one()->asset->space,
                                                 'width' => 16,

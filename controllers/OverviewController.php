@@ -99,6 +99,7 @@ class OverviewController extends ContentContainerController
                 'coin' => $form->coin,
                 'amount' => intval($form->amount),
                 'pAddress' => $defaultAccount->algorand_address,
+                'accountId' => $defaultAccount->guid,
                 'redirectUrl' => $redirectUrl,
             ];
 

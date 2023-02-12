@@ -4,12 +4,19 @@ namespace humhub\modules\xcoin\controllers;
 
 use humhub\modules\user\models\User;
 use humhub\modules\xcoin\helpers\SpaceHelper;
+use humhub\modules\xcoin\models\AccountVoucher;
+use humhub\modules\xcoin\models\Asset;
+use humhub\modules\xcoin\models\Transaction;
+use humhub\modules\xcoin\models\Voucher;
 use Yii;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\xcoin\models\Account;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\space\models\Space;
 use yii\web\HttpException;
+use humhub\modules\space\widgets\Image as SpaceImage;
 
 /**
  * Description of AccountController
@@ -41,8 +48,8 @@ class AccountController extends ContentContainerController
 
     public function actionEdit()
     {
-        if($this->contentContainer instanceof User){
-            $this->redirect($this->contentContainer->createUrl('/xcoin/overview'),302);
+        if ($this->contentContainer instanceof User) {
+            $this->redirect($this->contentContainer->createUrl('/xcoin/overview'), 302);
         }
 
         $account = Account::findOne(['id' => Yii::$app->request->get('id')]);
@@ -77,8 +84,8 @@ class AccountController extends ContentContainerController
 
     public function actionDisable($id)
     {
-        if($this->contentContainer instanceof User){
-            $this->redirect($this->contentContainer->createUrl('/xcoin/overview'),302);
+        if ($this->contentContainer instanceof User) {
+            $this->redirect($this->contentContainer->createUrl('/xcoin/overview'), 302);
         }
 
         if (!$account = Account::findOne(['id' => $id])) {
@@ -88,5 +95,189 @@ class AccountController extends ContentContainerController
         $account->disable();
 
         $this->redirect($this->contentContainer->createUrl('/xcoin/overview'));
+    }
+
+    public function actionVouchers($id)
+    {
+        $account = Account::findOne(['id' => $id]);
+
+        if ($account === null) {
+            throw new HttpException(404);
+        }
+        if (!AccountHelper::canManageAccount($account)) {
+            throw new HttpException(404);
+        }
+        return $this->render('vouchers', ['account' => $account, 'allowDirectCoinTransfer' => false]);
+
+    }
+
+    public function actionCreateVoucher($accountId)
+    {
+        $account = Account::findOne(['id' => $accountId]);
+
+
+        if ($account === null) {
+            throw new HttpException(404);
+        }
+        $accountAssetList = [];
+        foreach ($account->getAssets() as $asset) {
+            $max = $account->getAssetBalance($asset);
+            if (!empty($max)) {
+                $accountAssetList[$asset->id] = SpaceImage::widget([
+                        'space' => $asset->space,
+                        'width' => 16,
+                        'showTooltip' => true,
+                        'link' => true])
+                    . ' ' . $asset->space->name . '<small class="pull-rightx"> - max. ' . $max . '</small>';
+            }
+        }
+
+        if (empty($accountAssetList)) {
+            throw new HttpException(404, 'No assets available on this account!');
+        }
+        $accountVoucher = new AccountVoucher();
+        $accountVoucher->load(Yii::$app->request->post());
+        if (Yii::$app->request->isPost) {
+            $number = 1;
+            if (isset($_POST['number'])) {
+                $number = (int)$_POST['number'];
+            }
+            $i = 1;
+            while ($i <= $number) {
+                $voucher = new AccountVoucher();
+                $voucher->account_id = $accountId;
+                $voucher->amount = $accountVoucher->amount;
+                $voucher->status = AccountVoucher::STATUS_READY;
+                $voucher->value = $this->generateRandomString();
+                $voucher->asset_id = $accountVoucher->asset_id;
+                $voucher->tag = $accountVoucher->tag;
+                $voucher->save();
+                $i++;
+            }
+            return $this->htmlRedirect(['/xcoin/overview', 'container' => $this->contentContainer]);
+
+
+        }
+        return $this->renderAjax('voucher-create', ['accountAssetList' => $accountAssetList,
+            'voucher' => $accountVoucher]);
+    }
+
+    public function actionRedeemVoucher($accountId)
+    {
+        $account = Account::findOne(['id' => $accountId]);
+
+
+        if ($account === null) {
+            throw new HttpException(404);
+        }
+
+        $model = new AccountVoucher();
+        $model->load(Yii::$app->request->post());
+        if (Yii::$app->request->isPost) {
+            $voucherToRedeem = AccountVoucher::findOne(['value' => $model->value]);
+            if (!$voucherToRedeem) {
+                $model->addError('value', 'this voucher does not exist');
+                return $this->renderAjax('voucher-redeem', [
+                    'model' => $model]);
+            }
+            if ($voucherToRedeem && $voucherToRedeem->status == AccountVoucher::STATUS_USED) {
+                $model->addError('value', 'Voucher already used');
+                return $this->renderAjax('voucher-redeem', [
+                    'model' => $model]);
+            }
+            if ($voucherToRedeem && $voucherToRedeem->status == AccountVoucher::STATUS_DISABLED) {
+                $model->addError('value', 'Voucher Disabled');
+                return $this->renderAjax('voucher-redeem', [
+                    'model' => $model]);
+            }
+            $transaction = new Transaction();
+            $transaction->transaction_type = Transaction::TRANSACTION_TYPE_TRANSFER;
+            $transaction->from_account_id = $voucherToRedeem->account_id;
+            $transaction->to_account_id = $accountId;
+            $transaction->asset_id = $voucherToRedeem->asset_id;
+            $transaction->amount = $voucherToRedeem->amount;
+            $transaction->save();
+            $voucherToRedeem->status = AccountVoucher::STATUS_USED;
+            $voucherToRedeem->redeemed_account_id = $transaction->to_account_id;
+            $voucherToRedeem->save();
+            return $this->htmlRedirect(['/xcoin/overview', 'container' => $this->contentContainer]);
+
+        }
+
+
+        return $this->renderAjax('voucher-redeem', [
+            'model' => $model]);
+    }
+
+
+    function generateRandomString($length = 8)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
+    public function actionEnableVoucher($voucherId, $accountId)
+    {
+        $account = Account::findOne(['id' => $accountId]);
+        $voucher = AccountVoucher::findOne(['id' => $voucherId]);
+
+
+        if ($account === null || $voucher === null) {
+            throw new HttpException(404);
+        }
+        if ($voucher->isVoucherReady()) {
+            $voucher->updateAttributes(['status' => AccountVoucher::STATUS_DISABLED]);
+        } else {
+            $voucher->updateAttributes(['status' => AccountVoucher::STATUS_READY]);
+        }
+        return $this->render('vouchers', ['account' => $account, 'allowDirectCoinTransfer' => false]);
+
+    }
+
+    public function actionExportVouchers($accountId){
+
+        $title = 'Vouchers list';
+        $model = new AccountVoucher();
+
+        $objPHPExcel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet=0;
+
+        $objPHPExcel->setActiveSheetIndex($sheet);
+
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->setTitle($title);
+
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', 'Voucher');
+        $objPHPExcel->getActiveSheet()->setCellValue('B1', 'Tag');
+        $objPHPExcel->getActiveSheet()->setCellValue('C1', 'Amount');
+        $objPHPExcel->getActiveSheet()->setCellValue('D1', 'Space');
+        $objPHPExcel->getActiveSheet()->setCellValue('E1', 'Coin');
+        $i = 2 ;
+        $vouchers = AccountVoucher::findAll([ 'status' => AccountVoucher::STATUS_READY,'account_id'=>$accountId]);
+        foreach ( $vouchers as $voucher){
+            $objPHPExcel->getActiveSheet()->setCellValue('A'.$i, $voucher->value);
+            $objPHPExcel->getActiveSheet()->setCellValue('B'.$i, $voucher->tag);
+            $objPHPExcel->getActiveSheet()->setCellValue('C'.$i, $voucher->amount);
+            $objPHPExcel->getActiveSheet()->setCellValue('D'.$i, Asset::findOne(['id'=>$voucher->asset_id])->space->name);
+            $objPHPExcel->getActiveSheet()->setCellValue('E'.$i, Asset::findOne(['id'=>$voucher->asset_id])->title);
+            $i++;
+        }
+
+
+        header('Content-Type: application/vnd.ms-excel');
+        $filename = $title.".xls";
+        header('Content-Disposition: attachment;filename='.$filename . date('d-m-y h:i:s'));
+        header('Cache-Control: max-age=0');
+        $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($objPHPExcel, 'Xls');
+        $objWriter->save('php://output');
+        die();
     }
 }
