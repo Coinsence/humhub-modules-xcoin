@@ -37,6 +37,7 @@ class Transaction extends ActiveRecord
     const TRANSACTION_TYPE_TASK_PAYMENT = 3;
     const TRANSACTION_TYPE_REVERT = 4;
     const TRANSACTION_TYPE_ALLOCATE = 5;
+    const TRANSACTION_TYPE_COPY = 6;
 
     /** @var Event this event is dispatched a transaction with TRANSACTION_TYPE_ISSUE is triggered
      */
@@ -128,7 +129,7 @@ class Transaction extends ActiveRecord
             if ($insert)
                 $this->created_at = date('Y-m-d H:i:s');
         }
-        if ($this->transaction_type != self::TRANSACTION_TYPE_ISSUE && $this->algorand_tx_id == null) {
+        if (!in_array($this->transaction_type, [Transaction::TRANSACTION_TYPE_ISSUE, Transaction::TRANSACTION_TYPE_COPY]) && $this->algorand_tx_id == null) {
             Event::trigger(Transaction::class, Transaction::EVENT_TRANSACTION_TYPE_TRANSFER, new Event(['sender' => $this]));
         }
 
@@ -159,4 +160,24 @@ class Transaction extends ActiveRecord
         return $this->hasOne(Account::className(), ['id' => 'to_account_id']);
     }
 
+    public static function copyTransaction($key)
+    {
+        $holderTransaction = PurchaseTransaction::findOne(['key' => $key]);
+
+        if ($holderTransaction === null) {
+            return;
+        }
+
+        $transaction = new self();
+
+        $transaction->asset_id = $holderTransaction->asset_id;
+        $transaction->transaction_type = $holderTransaction->transaction_type;
+        $transaction->to_account_id = $holderTransaction->to_account_id;
+        $transaction->from_account_id = $holderTransaction->from_account_id;
+        $transaction->amount = $holderTransaction->amount;
+
+        $transaction->save();
+
+        $holderTransaction->delete();
+    }
 }

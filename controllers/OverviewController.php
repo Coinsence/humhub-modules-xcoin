@@ -5,6 +5,7 @@ namespace humhub\modules\xcoin\controllers;
 use humhub\modules\algorand\calls\Coin;
 use humhub\modules\xcoin\models\Asset;
 use humhub\modules\xcoin\models\Funding;
+use humhub\modules\xcoin\models\Transaction;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
@@ -24,6 +25,13 @@ class OverviewController extends ContentContainerController
 
     public function actionIndex()
     {
+        $callback = Yii::$app->request->get('res');
+        $key = Yii::$app->request->get('key');
+
+        if ($callback === 'success' && !empty($key)) {
+            Transaction::copyTransaction($key);
+        }
+
         if ($this->contentContainer instanceof Space) {
             return $this->render('index_space', [
                 'asset' => AssetHelper::getSpaceAsset($this->contentContainer)
@@ -64,14 +72,21 @@ class OverviewController extends ContentContainerController
             $space = Space::findOne(['name' => $form->coin]);
             $spaceAsset = Asset::findOne(['space_id' => $space->id]);
 
+            $defaultSpaceAccount = Account::findOne([
+                'space_id' => $space->id,
+                'account_type' => Account::TYPE_DEFAULT
+            ]);
+
             // ensure minimum algo balance for default account
             Coin::optinCoin($defaultAccount, $spaceAsset->algorand_asset_id);
 
+            $form->saveHolderTransaction($spaceAsset->id, $defaultAccount->id, $defaultSpaceAccount->id);
+
             if ($fundingId) {
                 $funding = Funding::find()->where(['id' => $fundingId])->one();
-                $redirectUrl = Url::toRoute(['/xcoin/funding/overview', "fundingId" => $fundingId, 'contentContainer' => $funding->space], true) . '?res=success';
+                $redirectUrl = Url::toRoute(['/xcoin/funding/overview', "fundingId" => $fundingId, 'contentContainer' => $funding->space], true) . '?res=success&key=' . $form->transaction->key;
             } else {
-                $redirectUrl = Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success';
+                $redirectUrl = Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success&key=' . $form->transaction->key;
             }
             $data = [
                 'fullName' => $this->contentContainer->displayName,

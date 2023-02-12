@@ -11,6 +11,8 @@ namespace humhub\modules\xcoin\models\forms;
 
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
+use humhub\modules\xcoin\models\PurchaseTransaction;
+use humhub\modules\xcoin\models\Transaction;
 use Yii;
 use yii\base\Model;
 use yii\web\IdentityInterface;
@@ -43,6 +45,7 @@ class PurchaseForm extends Model
     public $city;
     public $zip;
     public $country;
+    public $transaction;
 
     private $user;
 
@@ -125,5 +128,22 @@ class PurchaseForm extends Model
         $profile->country = $this->country;
 
         return $profile->validate() && $profile->save();
+    }
+
+    public function saveHolderTransaction($assetId, $toAccountId, $fromAccountId)
+    {
+        // save holder transaction
+        $transaction = new PurchaseTransaction();
+
+        $transaction->asset_id = $assetId;
+        $transaction->transaction_type = Transaction::TRANSACTION_TYPE_COPY;
+        $transaction->to_account_id = $toAccountId;
+        $transaction->from_account_id = $fromAccountId;
+        $transaction->amount = $this->amount;
+        $transaction->key = uniqid();
+
+        $transaction->save();
+
+        $this->transaction = $transaction;
     }
 }
