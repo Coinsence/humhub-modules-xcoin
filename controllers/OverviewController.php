@@ -84,7 +84,7 @@ class OverviewController extends ContentContainerController
 
             if ($fundingId) {
                 $funding = Funding::find()->where(['id' => $fundingId])->one();
-                $redirectUrl = Url::toRoute(['/xcoin/funding/overview', "fundingId" => $fundingId, 'contentContainer' => $funding->space], true) . '?res=success&key=' . $form->transaction->key;
+                $redirectUrl = Url::toRoute(['/xcoin/funding/overview', "fundingId" => $fundingId, 'contentContainer' => $funding->space], true) . '&res=success&key=' . $form->transaction->key;
             } else {
                 $redirectUrl = Url::toRoute(['/xcoin/overview', 'contentContainer' => $this->contentContainer], true) . '?res=success&key=' . $form->transaction->key;
             }
